@@ -1,0 +1,9 @@
+# Environment files
+.env
+.env.local
+env
+env.local
+*.env
+!.env.local.template
+!*.env.template
+supabase/signing_keys.json
