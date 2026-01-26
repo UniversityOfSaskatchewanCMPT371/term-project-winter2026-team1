@@ -1,7 +1,3 @@
-# Supabase self-host containers should started before running this compose file
-# You can start it with:
-#   supabase start
-
 services:
   powersync:
     container_name: powersync_demo
