@@ -1,0 +1,20 @@
+name: BACKEND
+
+services:
+  ubuntu_container:
+    build: .
+    # Command to keep the container running so you can interact with it
+    command: ["tail", "-f", "/dev/null"] 
+    ports:
+      - "8000:8000" # Example port mapping for API if needed
+      # Note: Supabase services (Studio 54323, API 54321, etc.) run in sibling containers. 
+      # They bind to the host's localhost by default, so mapping them here might conflict.
+      # We map 8000 just in case you run a server inside this container.
+    volumes:
+      # Mount the supabase directory
+      - ./supabase:/app/supabase
+      # Mount other app data if needed
+      # - ./app_data:/app_data 
+      # Mount Docker socket to allow Supabase CLI to spawn sibling containers
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
