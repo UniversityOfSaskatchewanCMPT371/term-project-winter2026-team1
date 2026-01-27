@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://unpkg.com/@powersync/service-schema@latest/json-schema/powersync-config.json
+replication:
+  connections:
+    - type: postgresql
+      uri: "postgresql://postgres:postgres@localhost:54322/postgres"
+      sslmode: disable
+
+storage:
+  type: postgresql
+  uri: "postgresql://postgres:postgres@localhost:54322/postgres"
+  sslmode: disable
+
+port: 8080
+
+sync_rules:
+  content: |
+    bucket_definitions:
+      global:
+        data:
+          - SELECT * FROM counters
+
+client_auth:
+  jwks_uri: "http://localhost:54321/auth/v1/.well-known/jwks.json"
+  audience: ["powersync-dev", "powersync", "authenticated"]
+
+telemetry:
+  prometheus_port: 9090
+  disable_telemetry_sharing: true
+  enable_client_logging: true
+
+api:
+  tokens:
+    - "powersync-dev"
