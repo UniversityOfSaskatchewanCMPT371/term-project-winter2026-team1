@@ -36,3 +36,5 @@ coverage/
 
 # temp files
 *.temp
+*.log
+*.branches
