@@ -19,6 +19,10 @@ services:
     build: ./powersync/
     restart: unless-stopped
     stop_grace_period: 1m
-    network_mode: host
     depends_on:
       - ubuntu_vm
+    ports:
+      - "8080:8080"  # forward vm to windows
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # access the network mode host on the vm
+    

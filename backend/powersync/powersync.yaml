@@ -2,12 +2,12 @@
 replication:
   connections:
     - type: postgresql
-      uri: "postgresql://postgres:postgres@localhost:54322/postgres"
+      uri: "postgresql://postgres:postgres@host.docker.internal:54322/postgres"
       sslmode: disable
 
 storage:
   type: postgresql
-  uri: "postgresql://postgres:postgres@localhost:54322/postgres"
+  uri: "postgresql://postgres:postgres@host.docker.internal:54322/postgres"
   sslmode: disable
 
 port: 8080
@@ -20,7 +20,7 @@ sync_rules:
           - SELECT * FROM counters
 
 client_auth:
-  jwks_uri: "http://localhost:54321/auth/v1/.well-known/jwks.json"
+  jwks_uri: "http://host.docker.internal:54321/auth/v1/.well-known/jwks.json"
   audience: ["powersync-dev", "powersync", "authenticated"]
 
 telemetry:
