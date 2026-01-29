@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_supabase_template/utils/injections.dart';
 import 'package:logging/logging.dart';
-import 'package:powersync/powersync.dart';
-import 'package:provider/provider.dart';
+import 'features/counter/presentation/bloc/counter_page_bloc.dart';
+import 'features/counter/presentation/pages/counter_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import './models/counter.dart';
-import './powersync.dart';
-import './widgets/status_app_bar.dart';
-import './widgets/status_section.dart';
-import './widgets/counters_list.dart';
+import 'utils/constants.dart';
 
 void main() async {
   // Set up logging for debugging
@@ -16,7 +14,8 @@ void main() async {
   Logger.root.onRecord.listen((record) {
     if (kDebugMode) {
       print(
-        '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}',
+        '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record
+            .message}',
       );
 
       if (record.error != null) {
@@ -30,97 +29,28 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database before starting the app
-  final database = await openDatabase();
+  // Initialize before starting the app
+  await initInjections();
 
-  runApp(MyApp(database: database));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final PowerSyncDatabase database;
 
-  const MyApp({super.key, required this.database});
-
-  @override
-  Widget build(BuildContext context) {
-    return Provider<PowerSyncDatabase>(
-      create: (_) => database,
-      dispose: (_, value) => value.close(),
-      child: MaterialApp(
-        title: 'PowerSync Counter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const CountersPage(),
-      ),
-    );
-  }
-}
-
-/// Main page that displays the list of counters
-class CountersPage extends StatelessWidget {
-  const CountersPage({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const StatusAppBar(title: Text('Counter Demo')),
-      body: const _HomeBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await context.createCounter();
-        },
-        tooltip: 'Add new counter',
-        child: const Icon(Icons.add),
+    return MaterialApp(
+      title: 'Counter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // Simple drawer menu
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Sign Out'),
-              onTap: () async {
-                Navigator.pop(context);
-                final db = context.read<PowerSyncDatabase>();
-                await logout(db);
-              },
-            ),
-          ],
-        ),
+      home: BlocProvider(
+        create: (context) => getIt<CounterPageBloc>(),
+        child: CounterPage(),
       ),
-    );
-  }
-}
-
-class _HomeBody extends StatelessWidget {
-  const _HomeBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        StatusSection(),
-        SizedBox(height: 8),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'Counters',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(height: 8),
-        SizedBox(height: 600, child: CountersList()),
-      ],
     );
   }
 }

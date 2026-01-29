@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_supabase_template/models/schema.dart';
+import 'package:flutter_supabase_template/config/database/schema.dart';
 import 'package:powersync/powersync.dart';
 import 'package:powersync/sqlite3_common.dart' as sqlite;
 import 'package:provider/provider.dart';
 
-import '../powersync.dart';
+import '../config/database/powersync.dart';
 
 /// Counter represents a result row of a query on "counters".
 ///
