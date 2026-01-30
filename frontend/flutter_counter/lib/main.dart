@@ -1,126 +1,124 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
-import 'package:powersync/powersync.dart';
-import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'app_config.dart'; 
 
-import './models/counter.dart';
-import './powersync.dart';
-import './widgets/status_app_bar.dart';
-import './widgets/status_section.dart';
-import './widgets/counters_list.dart';
-
-void main() async {
-  // Set up logging for debugging
-  Logger.root.level = Level.INFO;
-  Logger.root.onRecord.listen((record) {
-    if (kDebugMode) {
-      print(
-        '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}',
-      );
-
-      if (record.error != null) {
-        print(record.error);
-      }
-      if (record.stackTrace != null) {
-        print(record.stackTrace);
-      }
-    }
-  });
-
+Future<void> main() async {
+  // Make sure Flutter is ready before running async code
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database before starting the app
-  final database = await openDatabase();
+  // Connect to Supabase using values from app_config.dart
+  await Supabase.initialize(
+    url: AppConfig.supabaseUrl,
+    anonKey: AppConfig.supabaseAnonKey,
+  );
 
-  runApp(MyApp(database: database));
+  runApp(const MyApp());
 }
 
+// Root app widget
 class MyApp extends StatelessWidget {
-  final PowerSyncDatabase database;
-
-  const MyApp({super.key, required this.database});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Provider<PowerSyncDatabase>(
-      create: (_) => database,
-      dispose: (_, value) => value.close(),
-      child: MaterialApp(
-        title: 'PowerSync Counter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const CountersPage(),
-      ),
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const HomePage(),
     );
   }
 }
 
-/// Main page that displays the list of counters
-class CountersPage extends StatelessWidget {
-  const CountersPage({super.key});
+// Main page for spike prototype
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // Supabase client
+  final supabase = Supabase.instance.client;
+
+  // This starts the data visualization with the first row and then keeps adding one
+  int visible = 1;
+
+  // Holds rows we show in the table
+  List<Map<String, dynamic>> rows = [];
+
+  // Loads rows from the database
+  //From the earliest data to the latest
+  Future<void> load() async {
+    final data = await supabase
+        .from('sample_visualization')
+        .select('id, site, unit, analysis_year, taxon')
+        .order('id', ascending: true)
+        .limit(visible);
+
+    setState(() {
+      rows = List<Map<String, dynamic>>.from(data);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    load(); //LOADS The first row first and then the next ones in one whole table
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const StatusAppBar(title: Text('Counter Demo')),
-      body: const _HomeBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await context.createCounter();
-        },
-        tooltip: 'Add new counter',
-        child: const Icon(Icons.add),
-      ),
-      // Simple drawer menu
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
+            // We have 2 buttons
+            // - Insert Next Row: shows one more row from Supabase
+            // - Remove Last Row: Removes one row from the latest(last)
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    visible++;
+                    load();
+                  },
+                  child: const Text('Insert Next Row'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    if (visible > 1) visible--;
+                    load();
+                  },
+                  child: const Text('Remove Last Row'),
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Sign Out'),
-              onTap: () async {
-                Navigator.pop(context);
-                final db = context.read<PowerSyncDatabase>();
-                await logout(db);
-              },
+            const SizedBox(height: 16),
+
+            // DataTable to display the spike prototype data
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('ID')),
+                DataColumn(label: Text('Site')),
+                DataColumn(label: Text('Unit')),
+                DataColumn(label: Text('Year')),
+                DataColumn(label: Text('Taxon')),
+              ],
+              rows: rows
+                  .map((r) => DataRow(cells: [
+                        DataCell(Text(r['id'].toString())),
+                        DataCell(Text(r['site'])),
+                        DataCell(Text(r['unit'])),
+                        DataCell(Text(r['analysis_year'].toString())),
+                        DataCell(Text(r['taxon'])),
+                      ]))
+                  .toList(),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _HomeBody extends StatelessWidget {
-  const _HomeBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        StatusSection(),
-        SizedBox(height: 8),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'Counters',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(height: 8),
-        SizedBox(height: 600, child: CountersList()),
-      ],
     );
   }
 }
