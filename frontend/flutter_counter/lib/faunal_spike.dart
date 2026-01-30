@@ -10,7 +10,7 @@ Future<List<FaunalModel>> fetchData() async {
   final response = await supabase
     .from('faunal_data')
     .select()
-    .order('id');
+    .order('id', ascending: true);
 
   // Return raw rows as a list of maps
   return response
@@ -95,24 +95,48 @@ class _FaunalDataPage extends State<FaunalDataPage> {
                   );
                 }
 
-                // Build a table of faunal data
-                return ListView.builder(
-                  itemCount: faunalData.length,
-                  itemBuilder: (context, index) {
-                    final FaunalModel faunalModel = faunalData[index];
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: const [
+                      DataColumn(label: Text('Site')),
+                      DataColumn(label: Text('Unit')),
+                      DataColumn(label: Text('Year')),
+                      DataColumn(label: Text('Bone')),
+                      DataColumn(label: Text('Description')),
+                    ], 
+                    rows: faunalData.map((faunal) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text(faunal.site)),
+                          DataCell(Text(faunal.unit)),
+                          DataCell(Text(faunal.yearOfAnalysis.toString())),
+                          DataCell(Text(faunal.bone)),
+                          DataCell(Text(faunal.description ?? '')),
+                        ],
+                      );
+                  }).toList(),
+                ),
+              );
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Site: ${faunalModel.site}'),
-                        Text('Unit: ${faunalModel.unit}'),
-                        Text('YearOfAnalysis: ${faunalModel.yearOfAnalysis}'),
-                        Text('Bone: ${faunalModel.bone}'),
-                        Text('Description: ${faunalModel.description ?? ''}'),
-                      ],
-                    );
-                  }
-                );
+                // Build a table of faunal data
+                // return ListView.builder(
+                //   itemCount: faunalData.length,
+                //   itemBuilder: (context, index) {
+                //     final FaunalModel faunalModel = faunalData[index];
+
+                //     return Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text('Site: ${faunalModel.site}'),
+                //         Text('Unit: ${faunalModel.unit}'),
+                //         Text('YearOfAnalysis: ${faunalModel.yearOfAnalysis}'),
+                //         Text('Bone: ${faunalModel.bone}'),
+                //         Text('Description: ${faunalModel.description ?? ''}'),
+                //       ],
+                //     );
+                //   }
+                // );
               },
             ),
           ),
@@ -122,3 +146,4 @@ class _FaunalDataPage extends State<FaunalDataPage> {
     );
   }
 }
+
