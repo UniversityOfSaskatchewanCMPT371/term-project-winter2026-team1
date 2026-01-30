@@ -1,5 +1,5 @@
 class FaunalModel {
-  final String id;
+  final int id;
   final String site;
   final String unit;
   final int yearOfAnalysis;
@@ -24,16 +24,21 @@ FaunalModel({
      assert(bone.trim().isNotEmpty),
      assert(description == null || description.trim().isNotEmpty); 
 
-  
   // Converts a Supabase row into a faunal data
   factory FaunalModel.fromMap(Map<String, dynamic> map) {
+
+    final rawDescription = map['description'] as String?;
+
     return FaunalModel(
-      id: map['id'] as String, 
+      id: map['id'] as int, 
       site: map['site'] as String, 
       unit: map['unit'] as String, 
       yearOfAnalysis: map['year_of_analysis'] as int, 
       bone: map['bone'] as String,
-      description: map['description'] as String?
+      description: (rawDescription == null || rawDescription.trim().isEmpty) ? null : rawDescription,
     );
   }
 }
+
+
+
