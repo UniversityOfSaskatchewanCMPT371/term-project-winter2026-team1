@@ -10,6 +10,9 @@ import './widgets/status_app_bar.dart';
 import './widgets/status_section.dart';
 import './widgets/counters_list.dart';
 
+import './supabase.dart';
+import 'faunal_spike.dart';
+
 void main() async {
   // Set up logging for debugging
   Logger.root.level = Level.INFO;
@@ -30,10 +33,12 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database before starting the app
-  final database = await openDatabase();
+  await loadSupabase();
 
-  runApp(MyApp(database: database));
+  // Initialize database before starting the app
+  // final database = await openDatabase();
+
+  runApp(const SpikeApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -124,3 +129,4 @@ class _HomeBody extends StatelessWidget {
     );
   }
 }
+
