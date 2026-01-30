@@ -31,3 +31,22 @@ final class CounterPageLoadingFailure extends CounterPageState {
   @override
   List<Object?> get props => [errorMessage];
 }
+
+final class CounterPageIncrementAndUploadInProgress extends CounterPageState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class CounterPageIncrementAndUploadSuccess extends CounterPageState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class CounterPageIncrementAndUploadFailure extends CounterPageState {
+  final String errorMessage;
+
+  const CounterPageIncrementAndUploadFailure({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [errorMessage];
+}

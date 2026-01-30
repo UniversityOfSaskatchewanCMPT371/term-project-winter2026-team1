@@ -11,10 +11,10 @@ final class CounterPageLoadingStarted extends CounterPageEvent {
 
 final class CounterPageIncrementAndUploadStarted extends CounterPageEvent {
 
-  final int count;
+  final CounterEntity counterEntity;
 
-  const CounterPageIncrementAndUploadStarted({required this.count});
+  const CounterPageIncrementAndUploadStarted({required this.counterEntity});
 
   @override
-  List<Object?> get props => [count];
+  List<Object?> get props => [counterEntity];
 }

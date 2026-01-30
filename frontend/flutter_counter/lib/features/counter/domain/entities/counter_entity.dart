@@ -6,7 +6,7 @@ class CounterEntity {
   final int count;
 
   // The ID of the user who owns this counter.
-  final String? ownerId;
+  final int ownerId;
 
   // The creation timestamp.
   final DateTime createdAt;

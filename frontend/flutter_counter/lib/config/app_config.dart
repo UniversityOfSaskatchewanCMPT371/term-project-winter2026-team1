@@ -11,10 +11,8 @@ class AppConfig {
     return (kIsWeb || isApple) ? 'http://localhost' : 'http://10.0.2.2';
   }
 
-  static String get supabaseUrl => '$_host:54321';
+  static String get supabaseUrl => '$_host:8000';
 
   static const String supabaseAnonKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
-
-  static String get powersyncUrl => '$_host:8080';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzY5Nzk2OTk2LCJleHAiOjE5Mjc0NzY5OTZ9.tWcV_u7-NL8wTrmMS5irJ7JA7E23C37BOY8163wqYcY';
 }

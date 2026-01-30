@@ -16,14 +16,35 @@ class _CounterPageState extends State<CounterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: context.read<CounterPageBloc>().add(),
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: BlocBuilder<CounterPageBloc, CounterPageState>(
+        builder: (context, state) {
+          return FloatingActionButton(
+              onPressed: (state is CounterPageLoadingSuccess) ?
+                  () {
+                  context.read<CounterPageBloc>().add(
+                      CounterPageIncrementAndUploadStarted(counterEntity: state.counterEntity));
+                }
+              : null,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            );
+        },
+      ),
       body: BlocConsumer<CounterPageBloc, CounterPageState>(
         listener: (context, state) {
-
+          if (state case CounterPageIncrementAndUploadSuccess()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Increment and upload success'),
+                  backgroundColor: Colors.green,
+                ));
+          } else if (state case CounterPageIncrementAndUploadFailure()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Increment and upload failure'),
+                  backgroundColor: Colors.red,
+                ));
+          }
         },
         builder: (context, state) {
           if (state case CounterPageInitial()) {
@@ -46,7 +67,7 @@ class _CounterPageState extends State<CounterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '$state.counterEntity.count',
+                    'Current Count: ${state.counterEntity.count}',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
