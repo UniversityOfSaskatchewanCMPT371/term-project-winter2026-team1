@@ -32,6 +32,8 @@ void main() async {
   // Initialize before starting the app
   await initInjections();
 
+  await Future.delayed(Duration(seconds: 5));
+
   runApp(MyApp());
 }
 

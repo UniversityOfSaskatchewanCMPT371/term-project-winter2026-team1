@@ -158,6 +158,11 @@ const options = SyncOptions(syncImplementation: SyncClientImplementation.rust);
 
 Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase db) async {
   // Open the local database and initialize sync/auth integrations
+  // final PowerSyncDatabase db = PowerSyncDatabase(
+  //   schema: schema,
+  //   path: await getDatabasePath(),
+  //   logger: attachedLogger,
+  // );
   await db.initialize();
 
   await loadSupabase();
