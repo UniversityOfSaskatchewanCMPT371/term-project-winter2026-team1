@@ -1,39 +1,33 @@
 # Backend - Supabase Setup
 
-This directory contains the configuration to run Supabase locally using Docker.
+We will need to install the supabase cli to run supabase locally.
+Please refer to the [supabase cli docs](https://supabase.com/docs/guides/local-development/cli/getting-started) for more information.
 
-## Running Supabase
+## Requirements
+- [Docker](https://docs.docker.com/get-docker/)
+- [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started)
+- [Scoop for windows](https://scoop.sh/)
 
-1.  **Start the container**:
-    ```bash
-    docker compose up -d
-    ```
+### MacOS
+``` bash
+$ brew install supabase/tap/supabase
+```
 
-2.  **Start Supabase services**:
-    ```bash
-    docker compose exec ubuntu_container supabase start
-    ```
+### Windows
+You need to install scoop first via powershell
+```powershell
+$ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+$ Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+```
 
-    To stop services:
-    ```bash
-    docker compose exec ubuntu_container supabase stop
-    ```
+Then you can install supabase
+```powershell
+$ scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+$ scoop install supabase
+```
 
-## Port Mappings
 
-When Supabase is running, the following services are available on your host machine (`localhost`):
-
-| Service | Port | Description |
-| :--- | :--- | :--- |
-| **Studio** | `54323` | [Supabase Studio](http://localhost:54323) - Visual interface for managing your project (Tables, SQL, Auth, etc.) |
-| **API** | `54321` | [Rest API](http://localhost:54321) - Use this URL to connect your frontend apps. |
-| **Database** | `54322` | Direct PostgreSQL connection. Connection string: `postgresql://postgres:postgres@localhost:54322/postgres` |
-| **Inbucket** | `54324` | [Email Testing](http://localhost:54324) - View emails sent by Supabase Auth (e.g. magic links). |
-| **Analytics** | `54327` | Analytics server (Postgres backend). |
-| **DB Shadow** | `54320` | Internal shadow database for diffing. |
-
-### Why are these ports available on localhost?
-The Supabase CLI inside the `ubuntu_container` uses the host's Docker daemon (via `/var/run/docker.sock`). When it spawns the Supabase service containers, it publishes their ports directly to your host's network interface. This means you can access them as if you ran `supabase start` directly on your Mac.
-
-### Important Note on Configuration
-In `docker-compose.yml`, the `volumes` and `working_dir` use **absolute paths** to the project on your machine. This is required because the Supabase CLI inside the container needs to tell the Docker Daemon (running on the host) where to mount files from. If you move this project, you must update the paths in `docker-compose.yml`.
+## Generating migrations
+```bash
+$ supabase migration new <migration name>
+```

@@ -1,4 +1,4 @@
-# Frontend (Flutter) + Backend (PowerSync + Supabase)
+# Frontend (Flutter) + Backend (Supabase)
 
 ## Prerequisites
 You will need the following tools installed on your local machine:
@@ -7,19 +7,16 @@ You will need the following tools installed on your local machine:
 
 
 ### 1. Start backend locally
-This will start pur backend service (supabase + powersync) locally
+This will start pur backend service (supabase) locally assuming setup was already completed
 
 ```bash
-cd backend
-docker compose up -d --build
+$ cd backend
+$ supabase start
 ```
 
-### 2. Run the Flutter Counter Demo
+### 2. Run the search_cms app
 
 ```bash
-cd frontend/flutter_counter
-
-cp lib/app_config_template.dart lib/app_config.dart
-
-flutter run
+$ cd frontend/search_cms
+$ flutter run
 ```
