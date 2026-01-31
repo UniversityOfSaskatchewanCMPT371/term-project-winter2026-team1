@@ -1,0 +1,1 @@
+DAOs are Data Access Objects, they are used by drift to access the database
