@@ -65,25 +65,60 @@ void main() {
     expect(data.bone, 'bird');
     expect(data.description, 'bone');
   });
+
+  // Test 2(a) — Valid Data Construction (test postconditions)
+  test('Data is created with valid values', () {
+    final data = FaunalModel(
+      id: 1, 
+      site: 'DiRw-28', 
+      unit: 'N84SW1', 
+      yearOfAnalysis: 2017, 
+      bone: 'mammal',
+      description: 'large bone frags'
+    );
+
+    expect(data.id, 1);
+    expect(data.site, 'DiRw-28');
+    expect(data.unit, 'N84SW1');
+    expect(data.yearOfAnalysis, 2017);
+    expect(data.bone, 'mammal');
+    expect(data.description, 'large bone frags');
+  });
+
+  // Test 2(b) — Valid Data Construction (test postconditions)
+  test('Data is created with valid values', () {
+    final data = FaunalModel(
+      id: 2, 
+      site: 'DiRw-28', 
+      unit: 'N100SW2', 
+      yearOfAnalysis: 2017, 
+      bone: 'bird',
+      description: 'bone'
+    );
+
+    expect(data.id, 2);
+    expect(data.site, 'DiRw-28');
+    expect(data.unit, 'N100SW2');
+    expect(data.yearOfAnalysis, 2017);
+    expect(data.bone, 'bird');
+    expect(data.description, 'bone');
+  });
+
+  // Test 2(c) — Invariant Enforcement (test precondition)
+  test('Data creation fails when input fields are empty', () {
+    expect(
+      () => FaunalModel(
+        id: 1, 
+        site: '', 
+        unit: '', 
+        yearOfAnalysis: 0, 
+        bone: '',
+        description: '',
+      ),
+      throwsAssertionError,
+    );
+  });
+  
 }
-
- // Test 1 — Valid Data Construction
-  // test('Data is created with valid values', () {
-  //   final data = FaunalModel(
-  //     id: 1, 
-  //     site: 'DiRw-28', 
-  //     unit: 'N84SW1', 
-  //     yearOfAnalysis: 2017, 
-  //     bone: 'mammal',
-  //     description: 'large bone frags'
-  //   );
-
-  //   expect(data.id, 1);
-  //   expect(data.site, 'DiRw-28');
-  //   expect(data.unit, 'N84SW1');
-  //   expect(data.yearOfAnalysis, 2017);
-  //   expect(data.bone, 'mammal');
-  //   expect(data.description, 'large bone frags');
-  // });
 
 
