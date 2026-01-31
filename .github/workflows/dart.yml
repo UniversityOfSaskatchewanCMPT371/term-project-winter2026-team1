@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "alt-folder-structure" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "alt-folder-structure" ]
   workflow_dispatch:
     inputs:
       logLevel:
@@ -30,7 +30,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
 
