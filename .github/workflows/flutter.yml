@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter
+name: flutter
 
 on:
   push:
@@ -62,7 +62,7 @@ jobs:
 
       #There is an app config template that needs to be setup for users.
       - name: Setup App config file
-        run: cp /frontend/flutter_counter/lib/app_config_template.dart /frontend/flutter_counter/lib/app_config.dart .
+        run: cp lib/app_config_template.dart lib/app_config.dart
         working-directory: ./frontend/flutter_counter
       
       # Consider passing '--fatal-infos' for slightly stricter analysis.
