@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: Flutter
 
 on:
   push:
@@ -30,9 +30,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: ./frontend/flutter_counter
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +41,18 @@ jobs:
         with:
           channel: 'stable' # or: 'beta' or 'dev'
 
+      # Set flutter working-directory
+      - name: Set flutter workdir
+        run: flutter config --build-dir=./frontend/flutter_counter
+
+      # Initialize docker containers
+      - name: Docker initialization
+        run: docker compose -f ./backend/docker-compose.yml up --build -d
+
+      #There is an app config template that needs to be setup for users.
+      - name: Setup App config file
+        run: cp lib/app_config_template.dart lib/app_config.dart
+        
       # Verify testing is added
       - name: Flutter source add
         run: flutter pub add dev:test
