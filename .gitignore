@@ -7,3 +7,4 @@ env.local
 !.env.local.template
 !*.env.template
 supabase/signing_keys.json
+.DS_Store
