@@ -1,17 +1,16 @@
 # yaml-language-server: $schema=https://unpkg.com/@powersync/service-schema@latest/json-schema/powersync-config.json
-
 replication:
   connections:
     - type: postgresql
-      uri: !env PS_POSTGRESQL_URI
+      uri: "postgresql://postgres:postgres@host.docker.internal:54322/postgres"
       sslmode: disable
 
 storage:
   type: postgresql
-  uri: !env PS_POSTGRESQL_URI
+  uri: "postgresql://postgres:postgres@host.docker.internal:54322/postgres"
   sslmode: disable
 
-port: !env PS_PORT
+port: 8080
 
 sync_rules:
   content: |
@@ -21,7 +20,7 @@ sync_rules:
           - SELECT * FROM counters
 
 client_auth:
-  jwks_uri: !env PS_BACKEND_JWKS_URI
+  jwks_uri: "http://host.docker.internal:54321/auth/v1/.well-known/jwks.json"
   audience: ["powersync-dev", "powersync", "authenticated"]
 
 telemetry:
@@ -31,4 +30,4 @@ telemetry:
 
 api:
   tokens:
-    - !env PS_API_TOKEN
+    - "powersync-dev"
