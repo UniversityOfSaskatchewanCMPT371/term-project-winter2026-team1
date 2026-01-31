@@ -48,10 +48,6 @@ jobs:
       # Initialize docker containers
       - name: Docker initialization
         run: docker compose -f ./backend/docker-compose.yml up --build -d
-
-      #There is an app config template that needs to be setup for users.
-      - name: Setup App config file
-        run: cp lib/app_config_template.dart lib/app_config.dart
         
       # Verify testing is added
       - name: Flutter source add
@@ -60,9 +56,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
+      #There is an app config template that needs to be setup for users.
+      - name: Setup App config file
+        run: cp /frontend/flutter_counter/lib/app_config_template.dart /frontend/flutter_counter/lib/app_config.dart .
       
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
