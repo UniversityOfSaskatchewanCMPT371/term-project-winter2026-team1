@@ -51,3 +51,8 @@ $ supabase start
 ```bash
 $ supabase migration new <migration name>
 ```
+
+## Running Powersync
+```bash
+$ docker compose up --build -d
+```
