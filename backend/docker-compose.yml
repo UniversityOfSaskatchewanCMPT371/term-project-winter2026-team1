@@ -11,10 +11,10 @@ services:
     #   # supabase services will bind to host ports automatically via docker socket
     volumes:
       # ensure container path matches host path for sibling container volume mapping
-      - .:${PWD}
+      - .:/app
       # mount docker socket to allow supabase cli to spawn sibling containers
       - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: ${PWD}
+    working_dir: /app
   powersync:
     build: ./powersync/
     restart: unless-stopped
