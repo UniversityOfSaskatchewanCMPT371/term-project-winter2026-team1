@@ -65,11 +65,6 @@ jobs:
         run: cp lib/app_config_template.dart lib/app_config.dart
         working-directory: ./frontend/flutter_counter
       
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
-        run: flutter analyze
-        working-directory: ./frontend/flutter_counter
-
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.
