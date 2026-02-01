@@ -1,4 +1,4 @@
-# Frontend (Flutter) + Backend (PowerSync + Supabase)
+# SPIKE PROTOTYPE: Frontend (Flutter) + Backend (PowerSync + Supabase)
 
 ## Prerequisites
 You will need the following tools installed on your local machine:
