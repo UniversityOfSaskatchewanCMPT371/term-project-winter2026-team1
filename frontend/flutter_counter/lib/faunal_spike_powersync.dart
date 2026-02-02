@@ -53,7 +53,7 @@ Future<List<FaunalModelPowersync>> load() async {
   }
 
   Future<void> insert({
-    required int id,
+    required String id,
     required String site,
     required String unit,
     required int yearOfAnalysis,
@@ -138,7 +138,7 @@ Future<List<FaunalModelPowersync>> load() async {
                 }
 
                 // Generate a numeric client ID
-                final generatedId = DateTime.now().microsecondsSinceEpoch;
+                final generatedId = DateTime.now().microsecondsSinceEpoch.toString();
 
                 await insert(
                   id: generatedId,

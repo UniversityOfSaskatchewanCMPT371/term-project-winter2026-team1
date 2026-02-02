@@ -92,24 +92,19 @@ class FaunalSupabaseConnector extends PowerSyncBackendConnector {
 
     try {
       for (var op in transaction.crud) {
-        lastOp = op;
-
         final table = rest.from(op.table);
 
-        // By default PowerSync uses text IDs locally.
-        // The Supabase PK for id is bigint, so coerce to int for 'faunal_data'.
+        // Cast id for faunal_data BIGINT PK
         dynamic idValue = op.id;
         if (op.table == 'faunal_data') {
           if (idValue is String) {
             final parsed = int.tryParse(idValue);
-            if (parsed != null) {
-              idValue = parsed;
-            }
+            if (parsed != null) idValue = parsed;
           }
         }
 
         if (op.op == UpdateType.put) {
-          var data = Map<String, dynamic>.of(op.opData ?? {});
+          final data = Map<String, dynamic>.of(op.opData ?? {});
           data['id'] = idValue;
           await table.upsert(data);
         } else if (op.op == UpdateType.patch) {
