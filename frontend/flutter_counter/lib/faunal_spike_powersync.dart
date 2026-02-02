@@ -169,12 +169,15 @@ Future<List<FaunalModelPowersync>> load() async {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<FaunalModelPowersync>>(
-        // The future we want to resolve (fetching faunal data)
-        future: load(),
-        builder: (context, snapshot) {
 
-        // While waiting for the backend response
+      body: StreamBuilder<List<FaunalModelPowersync>>(
+        stream: db.watch('''
+          SELECT id, site, unit, year_of_analysis, bone, description
+          FROM faunal_data
+          ORDER by id ASC
+        ''').map((rows) => rows.map(FaunalModelPowersync.fromRow).toList(growable: false)),
+        builder: (context, snapshot) {
+          // While waiting for the backend response
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -222,8 +225,64 @@ Future<List<FaunalModelPowersync>> load() async {
             }).toList(),
           ),
         );
-      },
-      ),
+        },
+     ),
+
+      // body: FutureBuilder<List<FaunalModelPowersync>>(
+      //   // The future we want to resolve (fetching faunal data)
+      //   future: load(),
+      //   builder: (context, snapshot) {
+
+      //   // While waiting for the backend response
+      //   if (snapshot.connectionState == ConnectionState.waiting) {
+      //     return const Center(
+      //       child: CircularProgressIndicator(),
+      //     );
+      //   }
+
+      //   // If something went wrong
+      //   if (snapshot.hasError) {
+      //     return Center(
+      //       child: Text('Error: ${snapshot.error}'),
+      //     );
+      //   }
+
+      //   // Data successfully received
+      //   // If null, default to empty list
+      //   final faunalData = snapshot.data ?? [];
+
+      //   // If there are no data in the database
+      //   if (faunalData.isEmpty) {
+      //     return const Center(
+      //       child: Text('No data found'),
+      //     );
+      //   }
+        
+      //   return SingleChildScrollView(
+      //     scrollDirection: Axis.horizontal,
+      //     child: DataTable(
+      //       columns: const [
+      //         DataColumn(label: Text('Site')),
+      //         DataColumn(label: Text('Unit')),
+      //         DataColumn(label: Text('Year')),
+      //         DataColumn(label: Text('Bone')),
+      //         DataColumn(label: Text('Description')),
+      //       ], 
+      //       rows: faunalData.map((faunal) {
+      //         return DataRow(
+      //           cells: [
+      //             DataCell(Text(faunal.site)),
+      //             DataCell(Text(faunal.unit)),
+      //             DataCell(Text(faunal.yearOfAnalysis.toString())),
+      //             DataCell(Text(faunal.bone)),
+      //             DataCell(Text(faunal.description ?? '')),
+      //           ],
+      //         );
+      //       }).toList(),
+      //     ),
+      //   );
+      // },
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddDialog,
         child: const Icon(Icons.add),
@@ -231,4 +290,5 @@ Future<List<FaunalModelPowersync>> load() async {
     );
   }
 }
+
 
