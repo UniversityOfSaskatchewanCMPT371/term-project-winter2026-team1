@@ -1,11 +1,10 @@
 # Getting Started
 
-A demo Flutter app that demonstrates real-time counter functionality powered by a locally hosted Supabase backend and PowerSync for data synchronization.
+A clean architecture demo Flutter app that demonstrates counter functionality with a locally hosted Supabase backend.
 
 ## Prerequisites
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) installed
-- A PowerSync hosted backend set up (refer to [PowerSync documentation](https://docs.powersync.com/) for setup instructions)
 - Dart dependencies installed (run `flutter pub get`)
 
 ## Running the App
@@ -16,25 +15,28 @@ A demo Flutter app that demonstrates real-time counter functionality powered by 
 flutter pub get
 ```
 
-## 2. Configure PowerSync
-
-- Copy the template config file and rename it:
-
-```bash
-  cp lib/app_config_template.dart lib/app_config.dart
-```
-
-- Open `lib/app_config.dart` and insert your `powerSyncUrl` and `backendUrl`.
-
-## 3. Run the app
-
-To run the `web` build, ensure you have a `/web/sqlite3.wasm` file present. This WebAssembly file is required for SQLite functionality on the web.
-
-To download the required WASM file, run:
-```bash
- dart run powersync:setup_web --no-worker
-```
+## 2. Run the app
 
 ```bash
 flutter run
 ```
+
+
+# Explanation of Organization
+
+Clean architecture breaks the application into different features, with
+a presentation layer, a domain layer and a data layer for each individual feature.
+
+The flutter source files are in the lib folder.
+
+main.dart is the entry point for the app.
+
+config folder holds the database keys and inialization routines.
+utils folder holds the constants file, the main injection files and the result class template.
+
+In the counters feature folder, the important components are Bloc, usecases, repositories and APIs.
+
+It follows the sequence:  
+Bloc -> Usecases -> Repositories -> APIs
+
+Each component is cleanly separated, and can be swapped easily.
