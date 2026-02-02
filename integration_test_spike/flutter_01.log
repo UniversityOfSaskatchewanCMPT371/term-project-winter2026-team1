@@ -1,0 +1,94 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d chrome
+
+## exception
+
+SessionNotCreatedException: SessionNotCreatedException (500): session not created: This version of ChromeDriver only supports Chrome version 145
+Current browser version is 144.0.7559.110 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+```
+#0      parseW3cResponse (package:webdriver/src/handler/w3c/utils.dart:81:9)
+#1      W3cSessionHandler.parseCreateResponse (package:webdriver/src/handler/w3c/session.dart:19:21)
+#2      InferSessionHandler.parseCreateResponse (package:webdriver/src/handler/infer_handler.dart:106:34)
+#3      AsyncRequestClient.send (package:webdriver/src/common/request_client.dart:96:32)
+<asynchronous suspension>
+#4      createDriver (package:webdriver/async_core.dart:62:19)
+<asynchronous suspension>
+#5      WebDriverService.startTest (package:flutter_tools/src/drive/web_driver_service.dart:199:19)
+<asynchronous suspension>
+#6      DriveCommand.runCommand (package:flutter_tools/src/commands/drive.dart:398:30)
+<asynchronous suspension>
+#7      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1559:27)
+<asynchronous suspension>
+#8      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#9      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+<asynchronous suspension>
+#10     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:487:9)
+<asynchronous suspension>
+#11     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#12     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:422:5)
+<asynchronous suspension>
+#13     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:104:11)
+<asynchronous suspension>
+#14     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#15     main (package:flutter_tools/executable.dart:103:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[32m[✓][39m Flutter (Channel stable, 3.38.7, on macOS 15.6.1 24G90 darwin-arm64, locale en-CA) [571ms]
+    [32m•[39m Flutter version 3.38.7 on channel stable at /Users/jevertman/Developer/random/flutter
+    [32m•[39m Upstream repository https://github.com/flutter/flutter.git
+    [32m•[39m Framework revision 3b62efc2a3 (3 weeks ago), 2026-01-13 13:47:42 -0800
+    [32m•[39m Engine revision 78fc3012e4
+    [32m•[39m Dart version 3.10.7
+    [32m•[39m DevTools version 2.51.1
+    [32m•[39m Feature flags: enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop, enable-android, enable-ios, cli-animations, enable-native-assets, omit-legacy-version-file, enable-lldb-debugging
+
+[31m[✗][39m Android toolchain - develop for Android devices [546ms]
+    [31m✗[39m Unable to locate Android SDK.
+      Install Android Studio from: https://developer.android.com/studio/index.html
+      On first launch it will assist you in installing the Android SDK components.
+      (or visit https://flutter.dev/to/macos-android-setup for detailed instructions).
+      If the Android SDK has been installed to a custom location, please use
+      `flutter config --android-sdk` to update to that location.
+
+
+[33m[!][39m Xcode - develop for iOS and macOS (Xcode 26.2) [1,832ms]
+    [32m•[39m Xcode at /Applications/Xcode.app/Contents/Developer
+    [32m•[39m Build 17C52
+    [33m![39m iOS 26.2 Simulator not installed; this may be necessary for iOS and macOS development.
+      To download and install the platform, open Xcode, select Xcode > Settings > Components,
+      and click the GET button for the required platform.
+
+      For more information, please visit:
+        https://developer.apple.com/documentation/xcode/installing-additional-simulator-runtimes
+    [31m✗[39m CocoaPods not installed.
+        CocoaPods is a package manager for iOS or macOS platform code.
+        Without CocoaPods, plugins will not work on iOS or macOS.
+        For more info, see https://flutter.dev/to/platform-plugins
+      For installation instructions, see https://guides.cocoapods.org/using/getting-started.html#installation
+
+[32m[✓][39m Chrome - develop for the web [3ms]
+    [32m•[39m Chrome at /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+[32m[✓][39m Connected device (2 available) [5.9s]
+    [32m•[39m macOS (desktop) • macos  • darwin-arm64   • macOS 15.6.1 24G90 darwin-arm64
+    [32m•[39m Chrome (web)    • chrome • web-javascript • Google Chrome 144.0.7559.110
+    [33m![39m Error: Browsing on the local area network for iPhone 12 mini. Ensure the device is unlocked and attached with a cable or associated with the same local area network as this Mac.
+      The device must be opted into Developer Mode to connect wirelessly. (code -27)
+
+[32m[✓][39m Network resources [505ms]
+    [32m•[39m All expected network resources are available.
+
+[33m![39m Doctor found issues in 2 categories.
+```
