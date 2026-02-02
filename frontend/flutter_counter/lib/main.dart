@@ -12,6 +12,10 @@ import './widgets/counters_list.dart';
 
 import './supabase.dart';
 import 'faunal_spike.dart';
+import 'faunal_spike_powersync.dart';
+import 'powersync_faunal.dart';
+
+const bool usePowerSync = true; // Flip false
 
 void main() async {
   // Set up logging for debugging
@@ -38,7 +42,12 @@ void main() async {
   // Initialize database before starting the app
   // final database = await openDatabase();
 
-  runApp(const SpikeApp());
+  if (usePowerSync) {
+    final db = await openFaunalDatabase();
+    runApp(FaunalSpikePowerSync(database: db));
+  } else {
+    runApp(const SpikeApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -129,4 +138,7 @@ class _HomeBody extends StatelessWidget {
     );
   }
 }
+
+
+
 
