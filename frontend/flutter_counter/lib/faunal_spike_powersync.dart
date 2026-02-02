@@ -42,8 +42,8 @@ class FaunalPowerSyncPage extends StatefulWidget {
 class _FaunalPowerSyncPageState extends State<FaunalPowerSyncPage> {
   PowerSyncDatabase get db => FaunalPowerSyncPage.psDB!;
 
-  
-Future<List<FaunalModelPowersync>> load() async {
+  // Load data from PowerSync database
+  Future<List<FaunalModelPowersync>> load() async {
     final rows = await db.getAll('''
       SELECT id, site, unit, year_of_analysis, bone, description
       FROM faunal_data
@@ -52,6 +52,7 @@ Future<List<FaunalModelPowersync>> load() async {
     return rows.map(FaunalModelPowersync.fromRow).toList(growable: false);
   }
 
+  // Add data to PowerSync database
   Future<void> insert({
     required String id,
     required String site,
@@ -76,6 +77,7 @@ Future<List<FaunalModelPowersync>> load() async {
     );
   }
 
+  // Dialog box for adding data
   void _showAddDialog() {
     final siteController = TextEditingController();
     final unitController = TextEditingController();
@@ -170,6 +172,7 @@ Future<List<FaunalModelPowersync>> load() async {
         centerTitle: true,
       ),
 
+      // Use to StreamBuilder to read data and display on startup
       body: StreamBuilder<List<FaunalModelPowersync>>(
         stream: db.watch('''
           SELECT id, site, unit, year_of_analysis, bone, description
@@ -283,6 +286,8 @@ Future<List<FaunalModelPowersync>> load() async {
       //   );
       // },
       // ),
+
+      // + button on the bottom right to add data
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddDialog,
         child: const Icon(Icons.add),

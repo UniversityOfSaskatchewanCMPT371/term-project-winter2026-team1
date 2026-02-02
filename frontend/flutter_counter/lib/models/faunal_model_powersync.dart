@@ -21,8 +21,10 @@ class FaunalModelPowersync {
        assert(bone.trim().isNotEmpty),
        assert(description == null || description.trim().isNotEmpty);
 
+  // Read and convert data from a row in PowerSync db
   factory FaunalModelPowersync.fromRow(sqlite.Row row) {
     int asInt(dynamic v) => v is int ? v : int.parse(v.toString());
+    // ignore: prefer_null_aware_operators
     String? nullable(dynamic v) => v == null ? null : v.toString();
 
     return FaunalModelPowersync(
