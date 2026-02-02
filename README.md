@@ -21,6 +21,6 @@ $ docker compose up --build
 ### 2. Run the search_cms app
 
 ```bash
-$ cd frontend/search_cms
+$ cd frontend/flutter_counter
 $ flutter run
 ```
