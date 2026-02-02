@@ -1,0 +1,71 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter Lint Check
+
+on:
+  push:
+    branches: [ "alt-folder-structure" ]
+  pull_request:
+    branches: [ "alt-folder-structure" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: string
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or: 'beta' or 'dev'
+
+      # Set flutter working-directory
+      - name: Set flutter workdir
+        run: flutter config --build-dir=./
+        working-directory: ./frontend/flutter_counter
+
+      # Initialize docker containers
+      - name: Docker initialization
+        run: docker compose -f ./docker-compose.yml up --build -d
+        working-directory: ./backend/
+        
+      # Verify testing is added
+      - name: Flutter source add
+        run: flutter pub add dev:test
+        working-directory: ./frontend/flutter_counter
+        
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend/flutter_counter
+
+      #There is an app config template that needs to be setup for users.
+      - name: Setup App config file
+        run: cp lib/app_config_template.dart lib/app_config.dart
+        working-directory: ./frontend/flutter_counter
+      
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter analyze --fatal-infos
+        working-directory: ./frontend/flutter_counter
