@@ -14,6 +14,7 @@ void initCounterInjections() {
 }
 
 void registerCounterPage() {
+  // The getIt registration for increment and uploading use case
   getIt.registerFactory<CounterPageIncrementAndUploadApiImpl>(() =>
       CounterPageIncrementAndUploadApiImpl(supabaseClient: getIt<SupabaseClient>()));
   getIt.registerFactory<CounterPageIncrementAndUploadRepositoryImpl>(
@@ -22,6 +23,9 @@ void registerCounterPage() {
   getIt.registerFactory<CounterPageIncrementAndUploadUseCase>(() =>
       CounterPageIncrementAndUploadUseCase(repository: getIt<CounterPageIncrementAndUploadRepositoryImpl>()));
 
+
+
+  // The getIt registrations for loading use case
   getIt.registerFactory<CounterPageLoadingApiImpl>(() =>
     CounterPageLoadingApiImpl(supabaseClient: getIt<SupabaseClient>())
   );

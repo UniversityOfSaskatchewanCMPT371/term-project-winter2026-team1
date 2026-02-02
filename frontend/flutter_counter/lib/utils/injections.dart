@@ -4,11 +4,13 @@ import 'package:supabase_flutter/supabase_flutter.dart' show Supabase, SupabaseC
 
 import 'constants.dart';
 
+// The main injection
 Future<void> initInjections() async {
   await initDatabases();
   initCounterInjections();
 }
 
+// Initialize database
 Future<void> initDatabases() async {
   await loadSupabase();
   getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
