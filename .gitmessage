@@ -13,7 +13,7 @@
 
 # At the end: Include Co-authored-by for all contributors. 
 # Include at least one empty line before it. Format: 
-# Co-authored-by: name <user@users.noreply.github.com>
+# Co-authored-by: name
 # Best Practices (per Chris Beams)
 # 1. Separate subject from body with a blank line
 # 2. Limit the subject line to 50 characters
