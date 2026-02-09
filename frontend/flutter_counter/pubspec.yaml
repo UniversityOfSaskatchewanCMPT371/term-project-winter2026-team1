@@ -19,6 +19,8 @@ dependencies:
   flutter_bloc: ^9.1.1
   equatable: ^2.0.8
   sizer: ^3.1.3
+  powersync: ^1.17.0
+  go_router: ^17.1.0
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,7 @@ class AppConfig {
   }
 
   static String get supabaseUrl => '$_host:54321';
+  static String get powersyncUrl => '$_host:8080';
 
   static const String supabaseAnonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzY5Nzk2OTk2LCJleHAiOjE5Mjc0NzY5OTZ9.tWcV_u7-NL8wTrmMS5irJ7JA7E23C37BOY8163wqYcY';

@@ -1,7 +1,7 @@
-import 'package:flutter_supabase_template/config/database/supabase.dart';
+import 'package:flutter_supabase_template/config/database/powersync.dart';
+import 'package:flutter_supabase_template/config/database/schema.dart';
 import 'package:flutter_supabase_template/features/counter/counter_injections.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show Supabase, SupabaseClient;
-
+import 'package:powersync/powersync.dart';
 import 'constants.dart';
 
 // The main injection
@@ -12,6 +12,10 @@ Future<void> initInjections() async {
 
 // Initialize database
 Future<void> initDatabases() async {
-  await loadSupabase();
-  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
+  // Initialize database before starting the app
+  getIt.registerSingleton<PowerSyncDatabase>(PowerSyncDatabase(
+      schema: schema,
+      path: await getDatabasePath(),
+      logger: attachedLogger));
+  await openDatabase(getIt<PowerSyncDatabase>());
 }

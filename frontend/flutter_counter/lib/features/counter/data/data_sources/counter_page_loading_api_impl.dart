@@ -1,27 +1,24 @@
 import 'package:flutter_supabase_template/features/counter/data/data_sources/abstract_counter_page_loading_api.dart';
 import 'package:flutter_supabase_template/features/counter/data/models/counter_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:powersync/powersync.dart' show PowerSyncDatabase;
 
 class CounterPageLoadingApiImpl implements AbstractCounterPageLoadingApi {
 
-  final SupabaseClient _supabaseClient;
+  final PowerSyncDatabase _powerSyncDatabase;
 
-  CounterPageLoadingApiImpl({required SupabaseClient supabaseClient}) :
-        _supabaseClient = supabaseClient;
+  CounterPageLoadingApiImpl({required PowerSyncDatabase powerSyncDatabase}) : _powerSyncDatabase = powerSyncDatabase;
 
 
   @override
   Future<CounterModel> loadCounter() async {
     try {
-      final PostgrestList queryResult = await _supabaseClient
-          .from('counters')
-          .select();
+      final result = await _powerSyncDatabase.get('SELECT * FROM counters');
       CounterModel counterModel = CounterModel(
-        id: queryResult[0]['id'],
-        count: queryResult[0]['count'],
-        ownerId: queryResult[0]['owner_id'],
-        createdAt: DateTime.parse(queryResult[0]['created_at']).toLocal(),
-        modifiedAt: DateTime.parse(queryResult[0]['modified_at']).toLocal(),
+        id: result['id'],
+        count: result['count'],
+        ownerId: result['owner_id'],
+        createdAt: DateTime.parse(result['created_at']),
+        modifiedAt: DateTime.parse(result['modified_at']).toLocal(),
       );
       return counterModel;
     } catch (e) {

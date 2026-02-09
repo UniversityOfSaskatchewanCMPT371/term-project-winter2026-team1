@@ -7,7 +7,7 @@ import 'package:flutter_supabase_template/features/counter/domain/usecases/count
 import 'package:flutter_supabase_template/features/counter/domain/usecases/counter_page_use_cases.dart';
 import 'package:flutter_supabase_template/features/counter/presentation/bloc/counter_page_bloc.dart';
 import 'package:flutter_supabase_template/utils/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:powersync/powersync.dart';
 
 void initCounterInjections() {
   registerCounterPage();
@@ -16,7 +16,7 @@ void initCounterInjections() {
 void registerCounterPage() {
   // The getIt registration for increment and uploading use case
   getIt.registerFactory<CounterPageIncrementAndUploadApiImpl>(() =>
-      CounterPageIncrementAndUploadApiImpl(supabaseClient: getIt<SupabaseClient>()));
+      CounterPageIncrementAndUploadApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()));
   getIt.registerFactory<CounterPageIncrementAndUploadRepositoryImpl>(
           () => CounterPageIncrementAndUploadRepositoryImpl(
               api: getIt<CounterPageIncrementAndUploadApiImpl>()));
@@ -27,7 +27,7 @@ void registerCounterPage() {
 
   // The getIt registrations for loading use case
   getIt.registerFactory<CounterPageLoadingApiImpl>(() =>
-    CounterPageLoadingApiImpl(supabaseClient: getIt<SupabaseClient>())
+    CounterPageLoadingApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>())
   );
   getIt.registerFactory<CounterPageLoadingRepositoryImpl>(() =>
     CounterPageLoadingRepositoryImpl(api: getIt<CounterPageLoadingApiImpl>())
