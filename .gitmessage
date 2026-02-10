@@ -12,7 +12,7 @@
 # Signed-off-by: Your Name
 
 # At the end: Include Co-authored-by for all contributors. 
-# Include at least one empty line before it. Format: 
+# Remember blank line between AI disclosure and co-author. Format: 
 # Co-authored-by: name
 # Best Practices (per Chris Beams)
 # 1. Separate subject from body with a blank line
