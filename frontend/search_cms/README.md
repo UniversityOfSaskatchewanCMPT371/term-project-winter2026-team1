@@ -1,6 +1,6 @@
-# Getting Started
+# sEARCH CMS Frontend
 
-A clean architecture demo Flutter app that demonstrates counter functionality with a locally hosted Supabase backend.
+A clean architecture Flutter app with a locally hosted powersync and Supabase backend.
 
 ## Prerequisites
 
