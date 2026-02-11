@@ -1,12 +1,28 @@
-# Backend - Supabase Setup
+# Backend - Supabase & Powersync Setup
 
-This directory contains the configuration to run Supabase locally using Docker.
+This directory contains the configuration to run Supabase & Powersync locally using Docker.
+
+## Windows Setup (WSL 2)
+
+If you are on Windows, you likely need to use WSL 2 to avoid the path formatting issue (i.e. "too many colons").
+
+1.  **Ensure WSL is Installed**:
+    Open PowerShell as Administrator and run:
+    ```powershell
+    wsl --install
+    ```
+2.  **Configure Docker Desktop**:
+    - **Settings -> General**: Ensure "Use the WSL 2 based engine" is CHECKED.
+    - **Resources -> WSL Integration**: Ensure your directory (e.g. Ubuntu) is toggled ON.
+3.  **Open Project in WSL**:
+    - Open the "Ubuntu" app or type `wsl` in your terminal.
+    - Navigate to the project (i.e `/mnt/c/Users/your-user/Desktop/cmpt/term-project-winter2026-team1/`)
 
 ## Running Supabase
 
 1.  **Start the container**:
     ```bash
-    docker compose up -d
+    docker compose up --build -d
     ```
 
 2.  **Start Supabase services**:
@@ -32,8 +48,3 @@ When Supabase is running, the following services are available on your host mach
 | **Analytics** | `54327` | Analytics server (Postgres backend). |
 | **DB Shadow** | `54320` | Internal shadow database for diffing. |
 
-### Why are these ports available on localhost?
-The Supabase CLI inside the `ubuntu_container` uses the host's Docker daemon (via `/var/run/docker.sock`). When it spawns the Supabase service containers, it publishes their ports directly to your host's network interface. This means you can access them as if you ran `supabase start` directly on your Mac.
-
-### Important Note on Configuration
-In `docker-compose.yml`, the `volumes` and `working_dir` use **absolute paths** to the project on your machine. This is required because the Supabase CLI inside the container needs to tell the Docker Daemon (running on the host) where to mount files from. If you move this project, you must update the paths in `docker-compose.yml`.
