@@ -66,7 +66,5 @@ When Supabase is running, the following services are available on your host mach
 ```bash
 cd frontend/search_cms
 
-cp lib/app_config_template.dart lib/app_config.dart
-
 flutter run
 ```

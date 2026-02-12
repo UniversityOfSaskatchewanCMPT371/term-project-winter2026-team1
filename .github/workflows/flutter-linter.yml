@@ -59,13 +59,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         working-directory: ./frontend/search_cms
-
-      #There is an app config template that needs to be setup for users.
-      - name: Setup App config file
-        run: cp lib/app_config_template.dart lib/app_config.dart
-        working-directory: ./frontend/search_cms
       
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze --fatal-infos
         working-directory: ./frontend/search_cms
