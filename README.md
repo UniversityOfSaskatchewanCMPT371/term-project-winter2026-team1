@@ -53,7 +53,9 @@ The workflow:
 - Replace artifacts each run
 
 You can download latest binaries from:
+
 GitHub &rarr; Releases &rarr; Nightly
 
 To trigger manually:
+
 GitHub &rarr; Actions &rarr; Flutter Desktop Nightly &rarr; Run workflow
