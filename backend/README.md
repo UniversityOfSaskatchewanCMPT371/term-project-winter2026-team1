@@ -47,4 +47,3 @@ When Supabase is running, the following services are available on your host mach
 | **Inbucket** | `54324` | [Email Testing](http://localhost:54324) - View emails sent by Supabase Auth (e.g. magic links). |
 | **Analytics** | `54327` | Analytics server (Postgres backend). |
 | **DB Shadow** | `54320` | Internal shadow database for diffing. |
-
