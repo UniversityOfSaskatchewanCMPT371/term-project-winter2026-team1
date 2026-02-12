@@ -49,4 +49,5 @@ app.*.map.json
 .tool-versions
 
 # secrets
-app_config.dart
+# For convenience of local development. Uncomment before launch
+# app_config.dart
