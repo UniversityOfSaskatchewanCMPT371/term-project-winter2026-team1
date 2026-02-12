@@ -7,9 +7,9 @@ name: Flutter Lint Check
 
 on:
   push:
-    branches: [ "alt-folder-structure" ]
+    branches: [ "develop", "main" ]
   pull_request:
-    branches: [ "alt-folder-structure" ]
+    branches: [ "develop", "main" ]
   workflow_dispatch:
     inputs:
       logLevel:
