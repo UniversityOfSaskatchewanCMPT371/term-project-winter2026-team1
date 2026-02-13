@@ -22,7 +22,7 @@ If you are on Windows, you likely need to use WSL 2 to avoid the path formatting
 
 1.  **Start the container**:
     ```bash
-    docker compose up --build -d
+    docker compose up -d
     ```
 
 2.  **Start Supabase services**:
