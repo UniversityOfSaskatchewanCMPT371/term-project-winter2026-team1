@@ -1,0 +1,56 @@
+name: Flutter Lint Check
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: string
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version-file: pubspec.yaml
+
+      # Set flutter working-directory
+      - name: Set flutter workdir
+        run: flutter config --build-dir=./
+        working-directory: ./frontend/search_cms
+
+      # Initialize docker containers
+      - name: Docker initialization
+        run: docker compose -f ./docker-compose.yml up --build -d
+        working-directory: ./backend/
+        
+      # Verify testing is added
+      - name: Flutter source add
+        run: flutter pub add dev:test
+        working-directory: ./frontend/search_cms
+        
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend/search_cms
+      
+      - name: Analyze project source
+        run: flutter analyze --fatal-infos
+        working-directory: ./frontend/search_cms

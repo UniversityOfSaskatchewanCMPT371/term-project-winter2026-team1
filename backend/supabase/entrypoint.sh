@@ -29,7 +29,6 @@ cp ./supabase/backup-config.toml ./supabase/config.toml
 echo "Starting Supabase..."
 supabase start
 
-# wait indefinitely while keeping the script alive to receive signals
 # we use a loop with 'sleep' so signals can be trapped effectively
 while true; do
     sleep 1 & wait $!
