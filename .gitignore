@@ -7,3 +7,16 @@ env.local
 !.env.local.template
 !*.env.template
 supabase/signing_keys.json
+
+# miscellaneous files
+*.lock
+*.bin
+*.jar
+*.class
+*.log
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+*.DS_Store?
+Thumbs.db

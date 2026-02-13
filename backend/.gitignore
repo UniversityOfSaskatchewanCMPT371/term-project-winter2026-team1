@@ -1,0 +1,40 @@
+# System Files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!.env.example
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Docker / Supabase
+# ignore data volumes created by Supabase/Docker
+supabase/volumes/
+volumes/
+postgres-data/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# IDEs
+.vscode/
+.idea/
+
+# temp files
+*.temp
+*.log
+*.branches
