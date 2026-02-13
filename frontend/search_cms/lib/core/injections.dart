@@ -1,21 +1,29 @@
-import 'package:flutter_supabase_template/features/counter/counter_injections.dart';
+import 'package:flutter/foundation.dart';
 import 'package:powersync/powersync.dart';
+
 import 'database/powersync.dart';
 import 'database/schema.dart';
 import 'utils/constants.dart';
 
-// The main injection
+// Made a few changes here will modify later
 Future<void> initInjections() async {
   await initDatabases();
-  initCounterInjections();
 }
 
-// Initialize database
 Future<void> initDatabases() async {
-  // Initialize database before starting the app
-  getIt.registerSingleton<PowerSyncDatabase>(PowerSyncDatabase(
-      schema: schema,
-      path: await getDatabasePath(),
-      logger: attachedLogger));
+  if (kIsWeb) {
+    return;
+  }
+
+  if (!getIt.isRegistered<PowerSyncDatabase>()) {
+    getIt.registerSingleton<PowerSyncDatabase>(
+      PowerSyncDatabase(
+        schema: schema,
+        path: await getDatabasePath(),
+        logger: attachedLogger,
+      ),
+    );
+  }
+
   await openDatabase(getIt<PowerSyncDatabase>());
 }
