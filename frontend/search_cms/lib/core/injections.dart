@@ -1,4 +1,3 @@
-import 'package:flutter_supabase_template/features/counter/counter_injections.dart';
 import 'package:powersync/powersync.dart';
 import 'database/powersync.dart';
 import 'database/schema.dart';
@@ -7,7 +6,6 @@ import 'utils/constants.dart';
 // The main injection
 Future<void> initInjections() async {
   await initDatabases();
-  initCounterInjections();
 }
 
 // Initialize database
