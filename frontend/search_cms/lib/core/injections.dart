@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:powersync/powersync.dart';
+import 'package:search_cms/features/authentication/authentication_injections.dart';
 
 import 'database/powersync.dart';
 import 'database/schema.dart';
@@ -8,6 +9,7 @@ import 'utils/constants.dart';
 // Made a few changes here will modify later
 Future<void> initInjections() async {
   await initDatabases();
+  initAuthenticationInjections();
 }
 
 Future<void> initDatabases() async {
