@@ -16,10 +16,24 @@ class AuthenticationSignInRepositoryImpl implements AbstractAuthenticationSignIn
     try {
       UserModel? userModel = await api.signIn(email, password);
       if (userModel != null) {
+
+        final Role role;
+
+        switch (userModel.role) {
+          case 'admin':
+            role = Role.admin;
+          case 'researcher':
+            role = Role.researcher;
+          case 'viewer':
+            role = Role.viewer;
+          default:
+            role = Role.viewer;
+        }
+
         return authentication_sign_in_result_classes.Success(
             userEntity: UserEntity(
               id: userModel.id,
-              role: userModel.role,
+              role: role,
             )
         );
       } else {

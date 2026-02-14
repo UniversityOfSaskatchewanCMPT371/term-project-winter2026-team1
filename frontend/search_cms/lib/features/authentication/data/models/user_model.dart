@@ -1,8 +1,6 @@
-import '../../domain/entities/user_entity.dart';
-
 class UserModel {
   final String id;
-  final Role role;
+  final String role;
 
   UserModel({
     required this.id,
