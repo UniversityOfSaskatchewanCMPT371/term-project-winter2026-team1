@@ -5,10 +5,13 @@ import 'package:search_cms/features/authentication/domain/usecases/authenticatio
 import 'package:search_cms/features/authentication/domain/usecases/authentication_usecases.dart';
 
 void initAuthenticationInjections() {
+
+
+  getIt.registerFactory<AuthenticationSignInApiImpl>(() => AuthenticationSignInApiImpl());
   getIt.registerFactory<AuthenticationSignInRepositoryImpl>(() =>
       AuthenticationSignInRepositoryImpl(api: getIt<AuthenticationSignInApiImpl>()));
   getIt.registerFactory<AuthenticationSignInUsecase>(() =>
       AuthenticationSignInUsecase(repository: getIt<AuthenticationSignInRepositoryImpl>()));
-  getIt.registerFactory<AuthenticationUsecases>(() =>
+  getIt.registerLazySingleton<AuthenticationUsecases>(() =>
     AuthenticationUsecases(authenticationSignInUsecase: getIt<AuthenticationSignInUsecase>()));
 }

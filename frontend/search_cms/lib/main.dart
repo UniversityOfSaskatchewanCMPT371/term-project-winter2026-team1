@@ -1,24 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/core/utils/constants.dart';
 import 'package:sizer/sizer.dart';
-
 import 'config/routes/routes.dart';
 import 'core/injections.dart';
 
 void main() async {
-  Logger.root.level = Level.INFO;
-  Logger.root.onRecord.listen((record) {
-    if (kDebugMode) {
-      print('[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}');
-      if (record.error != null) {
-        print(record.error);
+
+  if (kReleaseMode) {
+    Logger.root.level = Level.OFF;
+  } else {
+    Logger.root.level = logLevel;
+    Logger.root.onRecord.listen((record) {
+      if (kDebugMode) {
+        print('[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}');
+        if (record.error != null) {
+          print(record.error);
+        }
+        if (record.stackTrace != null) {
+          print(record.stackTrace);
+        }
       }
-      if (record.stackTrace != null) {
-        print(record.stackTrace);
-      }
-    }
-  });
+    });
+  }
+
+
 
   WidgetsFlutterBinding.ensureInitialized();
 
