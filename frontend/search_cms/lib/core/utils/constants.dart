@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 
 // The getIt package shortcut
 final getIt = GetIt.instance;
+
+// Logger log level setting
+Level logLevel = Level.ALL;
 
 // ===== UI Tokens (Login / Global) taken from the Figma Make (Yousif)=====
 class AppColors {

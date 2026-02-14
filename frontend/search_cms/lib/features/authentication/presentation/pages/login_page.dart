@@ -1,9 +1,8 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:sizer/sizer.dart';
-
 import 'package:search_cms/core/utils/constants.dart';
 import '../bloc/login_cubit.dart';
 import '../bloc/login_state.dart';
@@ -16,6 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final log = Logger('LoginPage');
+
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
@@ -120,6 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   builder: (context, state) {
+
+                    log.info(state);
+
                     final isLoading = state is LoginLoading;
 
                     return Form(
