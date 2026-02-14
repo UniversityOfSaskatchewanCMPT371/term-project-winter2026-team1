@@ -19,6 +19,7 @@ flutter pub get
 
 Start the backend
 Supabase dashboard URL: http://localhost:54323/
+
 Create the user from the Supabase authentication dashboard
 
 Create the role table with the following command
