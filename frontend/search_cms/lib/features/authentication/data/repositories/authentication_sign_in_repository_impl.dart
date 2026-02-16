@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/authentication/data/data_sources/authentication_sign_in_api_impl.dart';
+import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import '../../../../core/utils/class_templates/result.dart';
@@ -10,7 +10,7 @@ import '../../domain/entities/authentication_sign_in_result_classes.dart' as aut
 
 class AuthenticationSignInRepositoryImpl implements AbstractAuthenticationSignInRepository {
 
-  final AuthenticationSignInApiImpl api;
+  final AbstractAuthenticationSignInApi api;
   final Logger? logger =
     logLevel != Level.OFF ? Logger('Authentication Sign In Repository') : null;
 
