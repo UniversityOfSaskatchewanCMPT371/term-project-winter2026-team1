@@ -91,7 +91,7 @@ jobs:
       # (Optional) quick checks to catch obvious issues
       - name: Analyze & unit tests
         run: |
-          flutter analyze
+          flutter analyze --fatal-infos
           flutter test --platform=vm
 
       - name: Build ${{ matrix.platform }}
@@ -104,6 +104,8 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           New-Item -ItemType Directory -Force -Path "$env:GITHUB_WORKSPACE\dist" | Out-Null
+
+          # The final output path will look something like: $GITHUB_WORKSPACE/dist/search_cms-windows-x64.zip
           Compress-Archive -Path "${{ matrix.out_dir }}\*" -DestinationPath "$env:GITHUB_WORKSPACE\dist\${{ matrix.artifact_name }}.zip" -Force
 
       - name: Archive (macOS .app -> .zip)
@@ -111,10 +113,16 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$GITHUB_WORKSPACE/dist"
+
+          # Flutter macOS builds output a .app bundle inside: build/macOS/Build/Products/Release/
+          # Since the app name may change, we dynamically locate the first .app directory in the release folder
           APP_PATH=$(ls -d ${{ matrix.out_dir }}/*.app | head -n 1 || true)
+
+          # If no .app bundle is found, fail the build and list directory contents to help with debugging
           if [ -z "${APP_PATH:-}" ]; then
             echo "No .app found in ${{ matrix.out_dir }}"; ls -la ${{ matrix.out_dir }}; exit 1
           fi
+          
           # ditto preserves extended attributes; better for .app bundling
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$GITHUB_WORKSPACE/dist/${{ matrix.artifact_name }}.zip"
 
