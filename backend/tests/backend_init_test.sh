@@ -33,3 +33,25 @@ wait_up() {
   done
   return 1
 }
+
+
+#cleanups and starts the current script
+
+cleanup() {
+
+ # stops the supabase with the compose stack included
+  compose exec -T "$svc" supabase stop || true
+  compose down -v || true
+
+  # deletes the supabase containers from the supabase start included 
+  # dockers names based on the supoabase and backend included
+	
+  name_field='{{.Names}}'
+  docker ps -a --format "$name_field" \
+    | grep supabase_ \
+    | grep _backend \
+    | xargs -r docker rm -f || true
+}
+trap cleanup EXIT
+
+
