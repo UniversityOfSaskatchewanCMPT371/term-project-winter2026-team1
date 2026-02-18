@@ -66,6 +66,23 @@ docker ps -a --format "$name_field" \
 #starts the backend containers using the following command using the ubuntu_wm and powersync together   
 compose up -d --build
 
+#Makes sure that supabase gets restarted at some point
+
+compose exec -T "$svc" supabase stop || true
+compose exec -T "$svc" supabase start
+
+#waits if all the and checks all the services down below if they can connect or not
+
+#services that are listed for the backend (github README.md)
+
+
+wait_up "http://127.0.0.1:54321"          # supabase gateway / API
+wait_up "http://127.0.0.1:54323"          # supabase studio
+wait_up "http://127.0.0.1:8080"           # powersync
+wait_up "http://127.0.0.1:54321/rest/v1"  # supabase REST
+
+echo "Everything was Successfull... Results: PASS"
+
 
 
 
