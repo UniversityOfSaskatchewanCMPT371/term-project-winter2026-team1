@@ -54,4 +54,18 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# shuts down anything already running (so we start clean AND fresh)
+compose down -v || true
+name_field='{{.Names}}'
+docker ps -a --format "$name_field" \
+  | grep supabase_ \
+  | grep _backend \
+  #reads the stanard input and executes the command
+  | xargs -r docker rm -f || true
+
+#starts the backend containers using the following command using the ubuntu_wm and powersync together   
+compose up -d --build
+
+
+
 
