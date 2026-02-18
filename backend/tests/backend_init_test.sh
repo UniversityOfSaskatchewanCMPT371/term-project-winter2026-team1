@@ -34,6 +34,12 @@ wait_up() {
   return 1
 }
 
+#if its fails therefore will echo Fail
+fail() {
+  echo "FAIL: $1"
+  exit 1
+}
+
 
 #cleanups and starts the current script
 
@@ -76,10 +82,10 @@ compose exec -T "$svc" supabase start
 #services that are listed for the backend (github README.md)
 
 
-wait_up "http://127.0.0.1:54321"          # supabase gateway / API
-wait_up "http://127.0.0.1:54323"          # supabase studio
-wait_up "http://127.0.0.1:8080"           # powersync
-wait_up "http://127.0.0.1:54321/rest/v1"  # supabase REST
+wait_up "http://127.0.0.1:54321" || fail "Supabase API not reachable"          # supabase gateway / API
+wait_up "http://127.0.0.1:54323" || fail "Supabase Studio not reachable"         # supabase studio
+wait_up "http://127.0.0.1:8080"  || fail "PowerSync not reachable"         # powersync
+wait_up "http://127.0.0.1:54321/rest/v1"  || fail "Supabase REST not reachable"  # supabase REST
 
 echo "Everything was Successfull... Results: PASS"
 
