@@ -14,4 +14,22 @@ tries=25
 sleep_s=5
 
 
+#docker compose command throgh the script
+#
+compose() {
+  docker compose -f "$file" "$@"
+}
 
+# waits until curl can connect to the URL (curl exit code 0 = success)
+wait_up() {
+  url="$1"
+  i=1
+  while [ $i -le $tries ]; do
+    if curl -s "$url" >/dev/null; then
+      return 0
+    fi
+    sleep "$sleep_s"
+    i=$((i+1))
+  done
+  return 1
+}
