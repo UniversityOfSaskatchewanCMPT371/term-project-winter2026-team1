@@ -2,11 +2,7 @@ name: 'Nightly Merge'
 
 on:
   schedule:
-<<<<<<< HEAD
-    - cron:  '0 0 * * *'
-=======
     - cron:  '0 18 * * *'
->>>>>>> 67ec139 (Added nightly merge job to workflows)
 
 jobs:
   nightly-merge:
@@ -23,13 +19,8 @@ jobs:
     - name: Nightly Merge
       uses: robotology/gh-action-nightly-merge@v1.5.2
       with:
-<<<<<<< HEAD
-        stable_branch: 'main'
-        development_branch: 'develop'
-=======
         stable_branch: 'develop'
         development_branch: 'main'
->>>>>>> 67ec139 (Added nightly merge job to workflows)
         allow_ff: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
