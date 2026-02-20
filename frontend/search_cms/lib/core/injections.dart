@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/features/authentication/authentication_injections.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'database/powersync.dart';
 import 'database/schema.dart';
 import 'utils/constants.dart';
