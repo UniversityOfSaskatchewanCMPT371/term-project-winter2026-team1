@@ -40,6 +40,19 @@ Create the role for the user
 flutter run
 ```
 
+## 3. Run Unit Tests
+
+1. Generate mocks:
+
+```bash
+flutter pub run build_runner build
+```
+
+2. Run the tests:
+
+```bash
+flutter test
+```
 
 # Explanation of Organization
 
