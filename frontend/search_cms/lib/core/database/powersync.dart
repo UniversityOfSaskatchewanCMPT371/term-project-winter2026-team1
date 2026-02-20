@@ -135,10 +135,10 @@ bool isLoggedIn() {
   return Supabase.instance.client.auth.currentSession?.accessToken != null;
 }
 
-Future<AuthResponse> signInAnonymously() async {
-  log.info('signInAnonymously invoked');
-  return await Supabase.instance.client.auth.signInAnonymously();
-}
+// Future<AuthResponse> signInAnonymously() async {
+//   log.info('signInAnonymously invoked');
+//   return await Supabase.instance.client.auth.signInAnonymously();
+// }
 
 /// id of the user currently logged in
 String? getUserId() {
@@ -175,9 +175,6 @@ Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) asyn
   if (isLoggedIn()) {
     // If the user is already logged in, connect immediately.
     // Otherwise, connect once logged in.
-    db.connect(connector: currentConnector, options: options);
-  } else {
-    await signInAnonymously();
     db.connect(connector: currentConnector, options: options);
   }
 

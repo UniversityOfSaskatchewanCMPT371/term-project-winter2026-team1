@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/features/authentication/authentication_injections.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'database/powersync.dart';
 import 'database/schema.dart';
@@ -13,10 +14,6 @@ Future<void> initInjections() async {
 }
 
 Future<void> initDatabases() async {
-  if (kIsWeb) {
-    return;
-  }
-
   if (!getIt.isRegistered<PowerSyncDatabase>()) {
     getIt.registerSingleton<PowerSyncDatabase>(
       PowerSyncDatabase(
@@ -26,6 +23,7 @@ Future<void> initDatabases() async {
       ),
     );
   }
+  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   await openDatabase(getIt<PowerSyncDatabase>());
 }

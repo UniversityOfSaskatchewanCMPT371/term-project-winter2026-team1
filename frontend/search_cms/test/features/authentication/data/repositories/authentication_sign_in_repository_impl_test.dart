@@ -11,27 +11,46 @@ import 'authentication_sign_in_repository_impl_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AbstractAuthenticationSignInApi>()])
 void main() {
-  test('Test the sign in function in AuthenticationSignInRepositoryImpl',
+  test('Test for the sign in function in AuthenticationSignInRepositoryImpl',
     () async {
-      final mockApi = MockAbstractAuthenticationSignInApi();
+      final MockAbstractAuthenticationSignInApi mockApi = MockAbstractAuthenticationSignInApi();
       when(mockApi.signIn('abc@abc.com', '123456')).thenAnswer(
         (_) async => UserModel(
-          id: 'random-id',
+          id: 'e0bc4427-2286-4773-ba74-c4491ba5f1be',
           role: 'viewer',
         ));
 
       AuthenticationSignInRepositoryImpl authenticationSignInRepositoryImpl =
         AuthenticationSignInRepositoryImpl(api: mockApi);
 
-      Result authResult = await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '123456');
+      // Test Case 1: This should log in successfully
+      final Result authResult1 = await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '123456');
 
-      expect(authResult.runtimeType,
+      expect(authResult1.runtimeType,
           authentication_sign_in_result_classes.Success);
-      if (authResult is authentication_sign_in_result_classes.Success) {
-        expect(authResult.userEntity.id, 'random-id');
-        expect(authResult.userEntity.role, Role.viewer);
+      if (authResult1 is authentication_sign_in_result_classes.Success) {
+        expect(authResult1.userEntity.id, 'e0bc4427-2286-4773-ba74-c4491ba5f1be');
+        expect(authResult1.userEntity.role, Role.viewer);
       } else {
         fail('Expect authResult to be authentication_sign_in_result_classes.Success, but not true');
+      }
+
+      // Test Case 2: This should fail due to password miss match
+      final Result authResult2 =
+        await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '1234567');
+      if (authResult2 is authentication_sign_in_result_classes.Failure) {
+        expect(authResult2.errorMessage, 'Login Failed');
+      } else {
+        fail('Expect authResult to be authentication_sign_in_result_classes.Failure, but not true');
+      }
+
+      // Test Case 3: This should fail due to non-exist credential
+      final Result authResult3 =
+        await authenticationSignInRepositoryImpl.signIn('admin@abc.com', 'verySecurePassword123456');
+      if (authResult3 is authentication_sign_in_result_classes.Failure) {
+        expect(authResult3.errorMessage, 'Login Failed');
+      } else {
+        fail('Expect authResult to be authentication_sign_in_result_classes.Failure, but not true');
       }
     }
   );

@@ -3,11 +3,13 @@ import 'package:search_cms/features/authentication/data/data_sources/authenticat
 import 'package:search_cms/features/authentication/data/repositories/authentication_sign_in_repository_impl.dart';
 import 'package:search_cms/features/authentication/domain/usecases/authentication_sign_in_usecase.dart';
 import 'package:search_cms/features/authentication/domain/usecases/authentication_usecases.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void initAuthenticationInjections() {
 
 
-  getIt.registerFactory<AuthenticationSignInApiImpl>(() => AuthenticationSignInApiImpl());
+  getIt.registerFactory<AuthenticationSignInApiImpl>(() =>
+      AuthenticationSignInApiImpl(supabaseClient: getIt<SupabaseClient>()));
   getIt.registerFactory<AuthenticationSignInRepositoryImpl>(() =>
       AuthenticationSignInRepositoryImpl(api: getIt<AuthenticationSignInApiImpl>()));
   getIt.registerFactory<AuthenticationSignInUsecase>(() =>

@@ -7,8 +7,11 @@ import 'abstract_authentication_sign_in_api.dart';
 // The api for signing in with Supabase through email and password
 class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
 
+  final SupabaseClient supabaseClient;
   final Logger? logger =
       logLevel != Level.OFF ? Logger('Authentication Sign In Api') : null;
+
+  AuthenticationSignInApiImpl({required this.supabaseClient});
 
   /*
     The api function for signing in with Supabase through email and password
@@ -22,7 +25,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
       assert(password.length >= 6 && password.length <= 72);
 
       final AuthResponse authResponse =
-        await Supabase.instance.client.auth.signInWithPassword(
+        await supabaseClient.auth.signInWithPassword(
           email: email,
           password: password,
       );
@@ -32,7 +35,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
       logger?.finest(session);
 
       if (session != null) {
-        PostgrestList queryResult = await Supabase.instance.client.
+        PostgrestList queryResult = await supabaseClient.
           from('role').select().eq('id', session.user.id);
 
         logger?.finest(queryResult);
