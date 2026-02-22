@@ -8,7 +8,7 @@ class AppConfig {
     final isApple =
         defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
-    return (kIsWeb || isApple) ? 'http://localhost' : 'http://10.0.2.2';
+    return (kIsWeb || isApple) ? 'http://localhost' : 'http://127.0.0.1';
   }
 
   static String get supabaseUrl => '$_host:54321';

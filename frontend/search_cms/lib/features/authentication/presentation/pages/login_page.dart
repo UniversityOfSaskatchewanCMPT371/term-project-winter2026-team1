@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (state is LoginSuccess) {
                       // No post-login route exists yet in routes.dart.
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Signed in successfully')),
+                        SnackBar(key: ValueKey("toast_successful_login"), content: Text('Signed in successfully')),
                       );
                     }
                   },
@@ -276,6 +276,7 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: controlHeight,
                             child: ElevatedButton(
+                              key: const ValueKey("accessSystemButton"),
                               onPressed: isLoading ? null : () => _onSubmit(context),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryBlue,
