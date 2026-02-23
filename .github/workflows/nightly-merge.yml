@@ -1,0 +1,26 @@
+name: 'Nightly Merge'
+
+on:
+  schedule:
+    - cron:  '0 6 * * *'
+
+jobs:
+  nightly-merge:
+
+    runs-on: ubuntu-latest # Just use githubs runner for this, no need for self hosted
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Full clone necessary for proper merge
+
+    # Uses a marketplace gh action that merges the develop to main, no need for testing yet.
+    - name: Nightly Merge
+      uses: robotology/gh-action-nightly-merge@v1.5.2
+      with:
+        stable_branch: 'develop'
+        development_branch: 'main'
+        allow_ff: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

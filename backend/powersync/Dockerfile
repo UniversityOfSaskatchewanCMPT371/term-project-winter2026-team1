@@ -1,4 +1,4 @@
-FROM journeyapps/powersync-service:latest
+FROM journeyapps/powersync-service:1.19.0
 
 # Copy configuration
 COPY powersync.yaml /etc/powersync/powersync.yaml
