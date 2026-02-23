@@ -8,7 +8,7 @@ class AuthenticationSignInUsecase {
   AuthenticationSignInUsecase({required this.repository});
 
   /*
-    The use case for signing in with email and password to Suapabase
+    The use case for signing in with email and password to Supabase
 
     @param email A String containing a valid email address
     @param password A String containing a password with a length not shorter than 6

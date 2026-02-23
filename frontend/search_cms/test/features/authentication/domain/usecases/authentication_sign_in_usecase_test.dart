@@ -9,6 +9,15 @@ import 'authentication_sign_in_usecase_test.mocks.dart';
 import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
     as authentication_sign_in_result_classes;
 
+/*
+  To use mocking, you need to run
+    flutter pub run build_runner build
+  after you define the mocks. This will generate the mocking files for you.
+
+  Mocking should be done on the interfaces (the Abstract classes).
+  Because this is the cleanest way to test without worrying about the details of
+  the implementations.
+ */
 @GenerateNiceMocks([MockSpec<AbstractAuthenticationSignInRepository>()])
 void main() {
   test(
@@ -16,6 +25,8 @@ void main() {
     () async {
       final MockAbstractAuthenticationSignInRepository mockRepository =
           MockAbstractAuthenticationSignInRepository();
+
+      // Define the response
       when(mockRepository.signIn('abc@abc.com', '123456')).thenAnswer(
         (_) async => authentication_sign_in_result_classes.Success(
           userEntity: UserEntity(

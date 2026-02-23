@@ -25,6 +25,11 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _obscurePassword = true;
 
+  /*
+    TextEditingController will cause memory leaks if not disposed.
+    So when the page is discarded, this method will be triggered, and dispose
+    the controllers
+   */
   @override
   void dispose() {
     _emailController.dispose();
@@ -87,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final double controlHeight = (6.h).clamp(44.0, AppDimens.controlHeight);
 
+    // BlocProvider creates the LoginCubit class
     return BlocProvider(
       create: (_) => LoginCubit(),
       child: Scaffold(

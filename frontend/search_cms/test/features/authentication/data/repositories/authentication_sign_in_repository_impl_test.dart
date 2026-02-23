@@ -9,11 +9,23 @@ import 'package:search_cms/features/authentication/domain/entities/authenticatio
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import 'authentication_sign_in_repository_impl_test.mocks.dart';
 
+/*
+  To use mocking, you need to run
+    flutter pub run build_runner build
+  after you define the mocks. This will generate the mocking files for you.
+
+  Mocking should be done on the interfaces (the Abstract classes).
+  Because this is the cleanest way to test without worrying about the details of
+  the implementations.
+ */
 @GenerateNiceMocks([MockSpec<AbstractAuthenticationSignInApi>()])
 void main() {
   test('Test for the sign in function in AuthenticationSignInRepositoryImpl',
     () async {
+
       final MockAbstractAuthenticationSignInApi mockApi = MockAbstractAuthenticationSignInApi();
+
+      // Define the response
       when(mockApi.signIn('abc@abc.com', '123456')).thenAnswer(
         (_) async => UserModel(
           id: 'e0bc4427-2286-4773-ba74-c4491ba5f1be',

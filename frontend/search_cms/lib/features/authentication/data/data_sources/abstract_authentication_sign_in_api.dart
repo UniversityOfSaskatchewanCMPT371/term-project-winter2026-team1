@@ -3,7 +3,7 @@ import 'package:search_cms/features/authentication/data/models/user_model.dart';
 abstract class AbstractAuthenticationSignInApi {
 
   /*
-    The api function for signing in with email and password to Suapabase
+    The api function for signing in with email and password to Supabase
 
     @param email A String containing a valid email address
     @param password A String containing a password with a length not shorter than 6
