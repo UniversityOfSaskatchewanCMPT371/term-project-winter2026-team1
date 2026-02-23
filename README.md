@@ -40,22 +40,3 @@ cd frontend/flutter_counter
 
 flutter run
 ```
-
----
-
-## Nightly Desktop Builds
-The project automatically builds desktop binaries (Windows, macOS, Linux) every night using GitHub Actions.
-
-The workflow:
-- Builds from `main` branch
--  Runs daily at 12 am SK time (06:00 UTC); can be adjusted as needed
-- Creates or updates a prerelease tagged `nightly`
-- Replace artifacts each run
-
-You can download latest binaries from:
-
-GitHub &rarr; Releases &rarr; Nightly
-
-To trigger manually:
-
-GitHub &rarr; Actions &rarr; Flutter Desktop Nightly &rarr; Run workflow
