@@ -56,6 +56,7 @@ void main() {
         expect(result1.userEntity.role, Role.viewer);
       } else {
         fail('Expect result1 to be authentication_sign_in_result_classes.Success, but not true');
+
       }
 
       // Test Case 2: This should fail due to password miss match
