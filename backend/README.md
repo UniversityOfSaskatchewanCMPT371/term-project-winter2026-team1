@@ -1,17 +1,4 @@
-# Frontend (Flutter) + Backend (PowerSync + Supabase)
-
-## Prerequisites
-You will need the following tools installed on your local machine:
-- [Docker](https://docs.docker.com/get-docker/)
-- [Flutter](https://flutter.dev/docs/get-started/install)
-
-
-## Backend - Supabase & Powersync Setup
-This will start pur backend service (supabase + powersync) locally
-
-```bash
-cd backend
-```
+# Backend - Supabase & Powersync Setup
 
 This directory contains the configuration to run Supabase & Powersync locally using Docker.
 
@@ -31,7 +18,7 @@ If you are on Windows, you likely need to use WSL 2 to avoid the path formatting
     - Open the "Ubuntu" app or type `wsl` in your terminal.
     - Navigate to the project (i.e `/mnt/c/Users/your-user/Desktop/cmpt/term-project-winter2026-team1/`)
 
-### Running Supabase
+## Running Supabase
 
 1.  **Start the container**:
     ```bash
@@ -48,7 +35,7 @@ If you are on Windows, you likely need to use WSL 2 to avoid the path formatting
     docker compose exec ubuntu_container supabase stop
     ```
 
-### Port Mappings
+## Port Mappings
 
 When Supabase is running, the following services are available on your host machine (`localhost`):
 
@@ -60,11 +47,3 @@ When Supabase is running, the following services are available on your host mach
 | **Inbucket** | `54324` | [Email Testing](http://localhost:54324) - View emails sent by Supabase Auth (e.g. magic links). |
 | **Analytics** | `54327` | Analytics server (Postgres backend). |
 | **DB Shadow** | `54320` | Internal shadow database for diffing. |
-
-## Run the Flutter App
-
-```bash
-cd frontend/search_cms
-
-flutter run
-```
