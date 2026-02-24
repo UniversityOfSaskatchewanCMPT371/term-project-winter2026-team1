@@ -33,30 +33,33 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   InputDecoration _inputDecoration({Widget? suffixIcon}) {
-    return InputDecoration(
-      filled: true,
-      fillColor: Colors.white,
-      isDense: true,
-      contentPadding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.6.h),
-      suffixIcon: suffixIcon,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
-        borderSide: const BorderSide(color: AppColors.inputBorder, width: 1),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
-        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
-        borderSide: const BorderSide(color: AppColors.danger, width: 1),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
-        borderSide: const BorderSide(color: AppColors.danger, width: 1.5),
-      ),
-    );
-  }
+  return InputDecoration(
+    filled: true,
+    fillColor: Colors.white,
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 1.6.h),
+
+    // fix for the previous size issue for different boxes
+    suffixIcon: suffixIcon ?? const SizedBox(width: 48),
+
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
+      borderSide: const BorderSide(color: AppColors.inputBorder, width: 1),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
+      borderSide: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
+      borderSide: const BorderSide(color: AppColors.danger, width: 1),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppDimens.fieldRadius),
+      borderSide: const BorderSide(color: AppColors.danger, width: 1.5),
+    ),
+  );
+}
 
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
