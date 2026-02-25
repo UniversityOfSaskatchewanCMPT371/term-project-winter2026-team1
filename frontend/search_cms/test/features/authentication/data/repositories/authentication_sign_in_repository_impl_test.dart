@@ -1,26 +1,21 @@
-/*
-Unit tests for AuthenticationSignInRepositoryImpl.
-
-The repository is responsible for translating data-layer models into domain entities
-and converting API outcomes into domain Results (Success/Failure).
-These tests validate role mapping, null handling, exception handling, and preconditions.
-*/
-
+/// Unit tests for AuthenticationSignInRepositoryImpl.
+///
+/// The repository is responsible for translating data-layer models into domain entities
+/// and converting API outcomes into domain Results (Success/Failure).
+/// These tests validate role mapping, null handling, exception handling, and preconditions.
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:mockito/mockito.dart';
-
 import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 import 'package:search_cms/features/authentication/data/repositories/authentication_sign_in_repository_impl.dart';
+import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
 as auth_results;
-import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
 void main() {
-  group('DATA-REPOSITORY-1-AuthenticationSignInRepositoryImpl', () {
+  group('AuthenticationSignInRepositoryImpl', () {
     // Verifies the repository returns Success and maps the role string to Role enum.
     test('returns Success and maps role correctly', () async {
       final api = MockAbstractAuthenticationSignInApi();
@@ -44,7 +39,7 @@ void main() {
     });
 
     // Verifies that a null user from the API returns Failure("Login Failed").
-    test('DATA-REPOSITORY-2-returns Failure when API returns null', () async {
+    test('returns Failure when API returns null', () async {
       final api = MockAbstractAuthenticationSignInApi();
       when(api.signIn('abc@abc.com', '123456')).thenAnswer((_) async => null);
 
@@ -60,7 +55,7 @@ void main() {
     });
 
     // Verifies that exceptions thrown by the API are caught and returned as Failure(errorMessage).
-    test('DATA-REPOSITORY-3-returns Failure when API throws', () async {
+    test('returns Failure when API throws', () async {
       final api = MockAbstractAuthenticationSignInApi();
       when(api.signIn('abc@abc.com', '123456')).thenThrow(Exception('boom'));
 
@@ -76,7 +71,7 @@ void main() {
     });
 
     // Verifies the repository returns Failure when password is shorter than 6 characters.
-    test('DATA-REPOSITORY-4-returns Failure when password length < 6', () async {
+    test('returns Failure when password length < 6', () async {
       final api = MockAbstractAuthenticationSignInApi();
       final repo = AuthenticationSignInRepositoryImpl(api: api);
 
@@ -87,7 +82,7 @@ void main() {
     });
 
     // Verifies the repository returns Failure when password is longer than 72 characters.
-    test('DATA-REPOSITORY-5-returns Failure when password length > 72', () async {
+    test('returns Failure when password length > 72', () async {
       final api = MockAbstractAuthenticationSignInApi();
       final repo = AuthenticationSignInRepositoryImpl(api: api);
 
