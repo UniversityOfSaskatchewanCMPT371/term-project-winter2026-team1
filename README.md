@@ -85,8 +85,11 @@ flutter pub get
 3. **Setup User and Role**:
 
     3.1. Once the app is running, head to the backend Supabase dashboard at: http://localhost:54323/
+   
     3.2. From the left sidebar, go to Authentication &rarr; Add user.
+   
     3.3. Create a new user with random email and password. Once done, you will be given an UID. Please copy this for step 3.6.
+   
     3.4. From the left sidebar, go to SQL Editor and then run this query to create the `role` table:
     ```
     create table public.role (
@@ -98,15 +101,15 @@ flutter pub get
     ) TABLESPACE pg_default;
     ```
     3.5. From the left sidebar, go to Table Editor &rarr; role &rarr; Insert &rarr; Insert row.
+   
     3.6. Add a new role by using the same ID from step 3.3 and input "viewer" in the role text box. Click Save to add it.
    
-
-5. **Run the app**:
+4. **Run the app**:
 ```bash
 flutter run
 ```
 
-6. **You can now use the app using the email and password you created in step 3.3.
+5. **You can now use the app using the email and password you created in step 3.3.**
    
 ---
 
