@@ -1,69 +1,97 @@
+/// Unit tests for AuthenticationSignInRepositoryImpl.
+///
+/// The repository is responsible for translating data-layer models into domain entities
+/// and converting API outcomes into domain Results (Success/Failure).
+/// These tests validate role mapping, null handling, exception handling, and preconditions.
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
-import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 import 'package:search_cms/features/authentication/data/repositories/authentication_sign_in_repository_impl.dart';
-import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart' as authentication_sign_in_result_classes;
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
-import 'authentication_sign_in_repository_impl_test.mocks.dart';
+import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
+as auth_results;
 
-/*
-  To use mocking, you need to run
-    flutter pub run build_runner build
-  after you define the mocks. This will generate the mocking files for you.
+import '../../mocks/authentication_mocks.mocks.dart';
 
-  Mocking should be done on the interfaces (the Abstract classes).
-  Because this is the cleanest way to test without worrying about the details of
-  the implementations.
- */
-@GenerateNiceMocks([MockSpec<AbstractAuthenticationSignInApi>()])
 void main() {
-  test('Test for the sign in function in AuthenticationSignInRepositoryImpl',
-    () async {
+  group('AuthenticationSignInRepositoryImpl', () {
+    // Verifies the repository returns Success and maps the role string to Role enum.
+    test('returns Success and maps role correctly', () async {
+      final api = MockAbstractAuthenticationSignInApi();
 
-      final MockAbstractAuthenticationSignInApi mockApi = MockAbstractAuthenticationSignInApi();
+      when(api.signIn('abc@abc.com', '123456')).thenAnswer(
+            (_) async => UserModel(id: 'u1', role: 'viewer'),
+      );
 
-      // Define the response
-      when(mockApi.signIn('abc@abc.com', '123456')).thenAnswer(
-        (_) async => UserModel(
-          id: 'e0bc4427-2286-4773-ba74-c4491ba5f1be',
-          role: 'viewer',
-        ));
+      final repo = AuthenticationSignInRepositoryImpl(api: api);
 
-      AuthenticationSignInRepositoryImpl authenticationSignInRepositoryImpl =
-        AuthenticationSignInRepositoryImpl(api: mockApi);
+      final Result result = await repo.signIn('abc@abc.com', '123456');
 
-      // Test Case 1: This should log in successfully
-      final Result authResult1 = await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '123456');
+      expect(result, isA<auth_results.Success>());
+      final success = result as auth_results.Success;
 
-      expect(authResult1.runtimeType,
-          authentication_sign_in_result_classes.Success);
-      if (authResult1 is authentication_sign_in_result_classes.Success) {
-        expect(authResult1.userEntity.id, 'e0bc4427-2286-4773-ba74-c4491ba5f1be');
-        expect(authResult1.userEntity.role, Role.viewer);
-      } else {
-        fail('Expect authResult to be authentication_sign_in_result_classes.Success, but not true');
-      }
+      expect(success.userEntity.id, 'u1');
+      expect(success.userEntity.role, Role.viewer);
 
-      // Test Case 2: This should fail due to password miss match
-      final Result authResult2 =
-        await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '1234567');
-      if (authResult2 is authentication_sign_in_result_classes.Failure) {
-        expect(authResult2.errorMessage, 'Login Failed');
-      } else {
-        fail('Expect authResult to be authentication_sign_in_result_classes.Failure, but not true');
-      }
+      verify(api.signIn('abc@abc.com', '123456')).called(1);
+      verifyNoMoreInteractions(api);
+    });
 
-      // Test Case 3: This should fail due to non-exist credential
-      final Result authResult3 =
-        await authenticationSignInRepositoryImpl.signIn('admin@abc.com', 'verySecurePassword123456');
-      if (authResult3 is authentication_sign_in_result_classes.Failure) {
-        expect(authResult3.errorMessage, 'Login Failed');
-      } else {
-        fail('Expect authResult to be authentication_sign_in_result_classes.Failure, but not true');
-      }
-    }
-  );
+    // Verifies that a null user from the API returns Failure("Login Failed").
+    test('returns Failure when API returns null', () async {
+      final api = MockAbstractAuthenticationSignInApi();
+      when(api.signIn('abc@abc.com', '123456')).thenAnswer((_) async => null);
+
+      final repo = AuthenticationSignInRepositoryImpl(api: api);
+
+      final Result result = await repo.signIn('abc@abc.com', '123456');
+
+      expect(result, isA<auth_results.Failure>());
+      expect((result as auth_results.Failure).errorMessage, 'Login Failed');
+
+      verify(api.signIn('abc@abc.com', '123456')).called(1);
+      verifyNoMoreInteractions(api);
+    });
+
+    // Verifies that exceptions thrown by the API are caught and returned as Failure(errorMessage).
+    test('returns Failure when API throws', () async {
+      final api = MockAbstractAuthenticationSignInApi();
+      when(api.signIn('abc@abc.com', '123456')).thenThrow(Exception('boom'));
+
+      final repo = AuthenticationSignInRepositoryImpl(api: api);
+
+      final Result result = await repo.signIn('abc@abc.com', '123456');
+
+      expect(result, isA<auth_results.Failure>());
+      expect((result as auth_results.Failure).errorMessage, contains('boom'));
+
+      verify(api.signIn('abc@abc.com', '123456')).called(1);
+      verifyNoMoreInteractions(api);
+    });
+
+    // Verifies the repository returns Failure when password is shorter than 6 characters.
+    test('returns Failure when password length < 6', () async {
+      final api = MockAbstractAuthenticationSignInApi();
+      final repo = AuthenticationSignInRepositoryImpl(api: api);
+
+      final result = await repo.signIn('abc@abc.com', '12345');
+
+      expect(result, isA<auth_results.Failure>());
+      verifyZeroInteractions(api);
+    });
+
+    // Verifies the repository returns Failure when password is longer than 72 characters.
+    test('returns Failure when password length > 72', () async {
+      final api = MockAbstractAuthenticationSignInApi();
+      final repo = AuthenticationSignInRepositoryImpl(api: api);
+
+      final longPassword = 'a' * 73;
+
+      final result = await repo.signIn('abc@abc.com', longPassword);
+
+      expect(result, isA<auth_results.Failure>());
+      verifyZeroInteractions(api);
+    });
+  });
 }
