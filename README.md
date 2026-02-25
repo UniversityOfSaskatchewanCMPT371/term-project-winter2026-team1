@@ -1,17 +1,52 @@
-# Team 1: sEARCH CMS/API
+# Team 1 - sEARCH CMS/API
 
-## Frontend (Flutter) + Backend (PowerSync + Supabase)
+## Team Members & Stakeholders
+
+### Team Members
+- Martin Thingvold (Project Manager)
+- Theo Buckley (Build Master)
+- Talha Hassan (Risk Manager)
+- Huayi Huang (Development Lead)
+- Matt Berry (Test Lead)
+- Sayem Khondaker (Developer/Tester)
+- Yousif Warda (Developer/Tester)
+- Jonathan Mutakura (Developer/Tester)
+- Mandeep Bawa (Developer/Tester)
+- Himanshu Goyal (Developer/Tester)
+- Jacob Evertman (Developer/Tester)
+- Tyler Chow (Developer/Tester)
+
+### Stakeholders
+- Bennett Lewis, MSc., Department of Computer Science, USask
+- Dr. Glenn Stuart, Associate Professor, Department of Anthropology, USask
+- Dr. Terrence Clark, Associate Professor Department of Anthropology, USask; Director of sARP (shíshálh Archaeological Research Project)
+- Dr. Tina Greenfield, Research Associate, McDonald Institute for Archaeological Research, and Assistant Professor, Mesopotamian Archaeology, University of Cambridge
+- shíshálh Nation of British Columbia
 
 ---
 
-## Prerequisites
+## About The Project: sARP/sEARCH
+sEARCH is part of a larger project known as sARP, a community-based collaboration of the University of Saskatchewan Department of Anthropology and the shìshàlh Nation of British Columbia. sARP has been investigating long-term resource use, status inequality, mortuary practices, settlement patterns, territoriality, and ritual within shíshálh lands. sEARCH aims to increase our knowledge of sustainability strategies in the shíshálh Nation lands by examining relationships between human food economy, diet, mobility, and environmental (plant/animal) management strategies from time immemorial through to the present.
+
+*Description provided by the stakeholders*
+
+---
+
+## Tech Stack 
+- Frontend: Flutter
+- Backend: PowerSync + Supabase
+- DevOps: Docker
+
+---
+
+## Installation
+
+### Prerequisites
 You will need the following tools installed on your local machine:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Flutter](https://flutter.dev/docs/get-started/install)
 
----
-
-## Backend - Supabase & PowerSync Setup
+### Backend - Supabase & PowerSync Setup
 This will start pur backend service (Supabase + PowerSync) locally
 
 ```bash
@@ -20,9 +55,7 @@ cd backend
 
 This directory contains the configuration to run Supabase & PowerSync locally using Docker.
 
----
-
-## Windows Setup (WSL 2)
+### Windows Setup (WSL 2)
 
 If you are on Windows, you likely need to use WSL 2 to avoid the path formatting issue (i.e. "too many colons").
 
@@ -68,9 +101,7 @@ When Supabase is running, the following services are available on your host mach
 | **Analytics** | `54327` | Analytics server (Postgres backend). |
 | **DB Shadow** | `54320` | Internal shadow database for diffing. |
 
----
-
-## Run the Flutter App
+### Run the Flutter App
 
 1. **Navigate to the frontend**:
 ```bash
@@ -110,10 +141,8 @@ flutter run
 ```
 
 5. **You can now use the app using the email and password you created in step 3.3.**
-   
----
 
-## Run Unit Tests
+### Run Unit Tests
 
 1. **Generate mocks**:
 ```bash
@@ -136,12 +165,7 @@ The flutter source files are in the lib folder.
 
 main.dart is the entry point for the app.
 
-config folder holds the database keys and inialization routines.
+config folder holds the database keys and initialization routines.
 utils folder holds the constants file, the main injection files and the result class template.
 
-In the counters feature folder, the important components are Bloc, usecases, repositories and APIs.
-
-It follows the sequence:  
-Bloc -> Usecases -> Repositories -> APIs
-
-Each component is cleanly separated, and can be swapped easily.
+For full info on the architecture, please see: [Architecture Guide Wiki](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-winter2026-team1/wiki/Architecture-Guide)
