@@ -174,3 +174,11 @@ config folder holds the database keys and initialization routines.
 utils folder holds the constants file, the main injection files and the result class template.
 
 For full info on the architecture, please see: [Architecture Guide Wiki](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-winter2026-team1/wiki/Architecture-Guide)
+
+---
+
+## License
+The project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/) - see the [LICENSE](LICENSE) file for details.
+
+
+
