@@ -6,13 +6,8 @@ services:
     restart: unless-stopped
     stop_grace_period: 1m
     network_mode: host
-    # ports:
-    #   - "8000:8000" # example port mapping for API if needed
-    #   # supabase services will bind to host ports automatically via docker socket
     volumes:
-      # ensure container path matches host path for sibling container volume mapping
       - .:${PWD}
-      # mount docker socket to allow supabase cli to spawn sibling containers
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: ${PWD}
   powersync:
