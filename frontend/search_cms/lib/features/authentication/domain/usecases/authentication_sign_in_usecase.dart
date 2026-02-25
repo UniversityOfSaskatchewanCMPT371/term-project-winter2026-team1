@@ -1,7 +1,9 @@
 import '../../../../core/utils/class_templates/result.dart';
 import '../repositories/abstract_authentication_sign_in_repository.dart';
 
-
+/*
+  The sign in use case for log in
+ */
 class AuthenticationSignInUsecase {
   final AbstractAuthenticationSignInRepository repository;
 

@@ -5,12 +5,22 @@ import 'database/powersync.dart';
 import 'database/schema.dart';
 import 'utils/constants.dart';
 
-// Made a few changes here will modify later
+/*
+  The overall application dependency injections setup.
+  Remember to add your new feature injections here.
+ */
 Future<void> initInjections() async {
   await initDatabases();
   initAuthenticationInjections();
 }
 
+/*
+  Register how the database should be constructed.
+  And finally init PowerSync, and PowerSync will init Supabase.
+
+  Postcondition: The getIt template for both databases are defined &&
+    Supabase and PowerSync are initialized.
+ */
 Future<void> initDatabases() async {
   if (!getIt.isRegistered<PowerSyncDatabase>()) {
     getIt.registerSingleton<PowerSyncDatabase>(

@@ -8,6 +8,10 @@ import 'core/injections.dart';
 
 void main() async {
 
+  /*
+    Log settings.
+    If we are in release mode, logger would be turned off.
+   */
   if (kReleaseMode) {
     Logger.root.level = Level.OFF;
   } else {
@@ -29,7 +33,7 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Made a few chnages here for creating the login page for now will change later
+  // The overall dependency injection.
   await initInjections();
 
   runApp(const MyApp());

@@ -39,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+
+  // This will create the input decorations for the email and password textboxes
   InputDecoration _inputDecoration({Widget? suffixIcon}) {
   return InputDecoration(
     filled: true,
@@ -68,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
   );
 }
 
+  // The submit function that will trigger the sign in in LoginCubit
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
 
@@ -77,6 +80,11 @@ class _LoginPageState extends State<LoginPage> {
         );
   }
 
+  /*
+    The widget building method.
+    This is the main place where your definitions of the widget should live.
+    It shouldn't have side effect other than building the widget.
+   */
   @override
   Widget build(BuildContext context) {
     // Using sizer as much as possible an also trying to  keep max width close to the prototype
