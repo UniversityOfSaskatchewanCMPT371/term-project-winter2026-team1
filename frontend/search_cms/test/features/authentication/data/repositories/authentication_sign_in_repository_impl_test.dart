@@ -1,21 +1,17 @@
-/*
-Unit tests for AuthenticationSignInRepositoryImpl.
-
-The repository is responsible for translating data-layer models into domain entities
-and converting API outcomes into domain Results (Success/Failure).
-These tests validate role mapping, null handling, exception handling, and preconditions.
-*/
-
+/// Unit tests for AuthenticationSignInRepositoryImpl.
+///
+/// The repository is responsible for translating data-layer models into domain entities
+/// and converting API outcomes into domain Results (Success/Failure).
+/// These tests validate role mapping, null handling, exception handling, and preconditions.
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:mockito/mockito.dart';
 
 import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 import 'package:search_cms/features/authentication/data/repositories/authentication_sign_in_repository_impl.dart';
+import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
 as auth_results;
-import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 

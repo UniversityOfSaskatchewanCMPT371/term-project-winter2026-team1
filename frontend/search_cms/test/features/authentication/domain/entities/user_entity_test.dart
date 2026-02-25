@@ -1,11 +1,8 @@
-/*
-Tests for UserEntity construction.
-
-UserEntity is a simple domain object used throughout the auth flow.
-These tests ensure the entity stores the expected values and that Role values
-are stable for downstream logic (repo mapping, UI behavior).
-*/
-
+/// Tests for UserEntity construction.
+///
+/// UserEntity is a simple domain object used throughout the auth flow.
+/// These tests ensure the entity stores the expected values and that Role values
+/// are stable for downstream logic (repo mapping, UI behavior).
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 

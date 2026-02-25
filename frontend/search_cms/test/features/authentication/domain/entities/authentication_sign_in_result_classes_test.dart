@@ -1,9 +1,6 @@
-/*
-Tests for authentication sign-in result classes.
-
-These tests ensure Success carries a UserEntity and Failure carries an error message.
-*/
-
+/// Tests for authentication sign-in result classes.
+///
+/// These tests ensure Success carries a UserEntity and Failure carries an error message.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart';

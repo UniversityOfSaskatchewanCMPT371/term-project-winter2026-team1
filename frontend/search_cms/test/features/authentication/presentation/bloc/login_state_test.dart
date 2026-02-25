@@ -1,10 +1,7 @@
-/*
-Tests for LoginState value equality.
-
-These tests verify that LoginState subclasses correctly implement Equatable-based
-equality. Bloc uses equality to decide whether a new state should trigger UI rebuilds.
-*/
-
+/// Tests for LoginState value equality.
+///
+/// These tests verify that LoginState subclasses correctly implement Equatable-based
+/// equality. Bloc uses equality to decide whether a new state should trigger UI rebuilds.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_state.dart';

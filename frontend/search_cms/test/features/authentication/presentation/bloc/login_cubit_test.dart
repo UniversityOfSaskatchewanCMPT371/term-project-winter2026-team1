@@ -1,10 +1,7 @@
-/*
-Unit tests for LoginCubit state transitions.
-
-These tests validate that LoginCubit emits the correct sequence of states
-for success, failure, unknown results, and thrown exceptions.
-*/
-
+/// Unit tests for LoginCubit state transitions.
+///
+/// These tests validate that LoginCubit emits the correct sequence of states
+/// for success, failure, unknown results, and thrown exceptions.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
@@ -17,7 +14,7 @@ import 'package:search_cms/features/authentication/presentation/bloc/login_state
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
-// A Result subtype used to simulate unexpected Result variants in tests.
+/// A Result subtype used to simulate unexpected Result variants in tests.
 class UnknownResult extends Result {}
 
 void main() {
