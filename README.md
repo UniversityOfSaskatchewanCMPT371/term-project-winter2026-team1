@@ -1,4 +1,8 @@
-# Frontend (Flutter) + Backend (PowerSync + Supabase)
+# Team 1: sEARCH CMS/API
+
+## Frontend (Flutter) + Backend (PowerSync + Supabase)
+
+---
 
 ## Prerequisites
 You will need the following tools installed on your local machine:
@@ -14,6 +18,8 @@ cd backend
 ```
 
 This directory contains the configuration to run Supabase & Powersync locally using Docker.
+
+---
 
 ## Windows Setup (WSL 2)
 
@@ -61,6 +67,8 @@ When Supabase is running, the following services are available on your host mach
 | **Analytics** | `54327` | Analytics server (Postgres backend). |
 | **DB Shadow** | `54320` | Internal shadow database for diffing. |
 
+---
+
 ## Run the Flutter App
 
 1. **Navigate to the frontend**:
@@ -94,8 +102,10 @@ create table public.role (
 ) TABLESPACE pg_default;
 ```
 5. From the left sidebar, go to Table Editor &rarr; role &rarr; Insert &rarr; Insert row.
-6. Add a new role by using the same ID from step 3 and input "viewer" in the role text box. Click Save to add it
+6. Add a new role by using the same ID from step 3 and input "viewer" in the role text box. Click Save to add it.
 7. Finally, you can now use the app with the same email and password created in step 3.
+
+---
 
 ## Run Unit Tests
 
@@ -109,7 +119,9 @@ create table public.role (
 flutter test
 ```
 
-## Explanation of Organization
+---
+
+## System Architecture
 
 Clean architecture breaks the application into different features, with
 a presentation layer, a domain layer and a data layer for each individual feature.
