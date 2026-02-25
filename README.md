@@ -82,30 +82,32 @@ cd frontend/search_cms
 flutter pub get
 ```
 
-3. **Run the app**:
+3. **Setup User and Role**:
+
+    3.1. Once the app is running, head to the backend Supabase dashboard at: http://localhost:54323/
+    3.2. From the left sidebar, go to Authentication &rarr; Add user.
+    3.3. Create a new user with random email and password. Once done, you will be given an UID. Please copy this for step 3.6.
+    3.4. From the left sidebar, go to SQL Editor and then run this query to create the `role` table:
+    ```
+    create table public.role (
+      id uuid not null,
+      created_at timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
+      role text not null,
+      constraint role_pkey primary key (id),
+      constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
+    ) TABLESPACE pg_default;
+    ```
+    3.5. From the left sidebar, go to Table Editor &rarr; role &rarr; Insert &rarr; Insert row.
+    3.6. Add a new role by using the same ID from step 3.3 and input "viewer" in the role text box. Click Save to add it.
+   
+
+5. **Run the app**:
 ```bash
 flutter run
 ```
 
-### Setup User and Role
-
-1. Once the app is running, head to the backend Supabase dashboard at: http://localhost:54323/
-2. From the left sidebar, go to Authentication &rarr; Add user.
-3. Create a new user with random email and password. Once done, you will be given an UID. Please copy this for step 6.
-4. From the left sidebar, go to SQL Editor and then run this query to create the `role` table:
-```
-create table public.role (
-  id uuid not null,
-  created_at timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
-  role text not null,
-  constraint role_pkey primary key (id),
-  constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
-) TABLESPACE pg_default;
-```
-5. From the left sidebar, go to Table Editor &rarr; role &rarr; Insert &rarr; Insert row.
-6. Add a new role by using the same ID from step 3 and input "viewer" in the role text box. Click Save to add it.
-7. Finally, you can now use the app with the same email and password created in step 3.
-
+6. **You can now use the app using the email and password you created in step 3.3.
+   
 ---
 
 ## Run Unit Tests
