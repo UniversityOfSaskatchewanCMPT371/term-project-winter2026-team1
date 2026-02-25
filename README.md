@@ -28,7 +28,12 @@
 ## About The Project: sARP/sEARCH
 sEARCH is part of a larger project known as sARP, a community-based collaboration of the University of Saskatchewan Department of Anthropology and the shìshàlh Nation of British Columbia. sARP has been investigating long-term resource use, status inequality, mortuary practices, settlement patterns, territoriality, and ritual within shíshálh lands. sEARCH aims to increase our knowledge of sustainability strategies in the shíshálh Nation lands by examining relationships between human food economy, diet, mobility, and environmental (plant/animal) management strategies from time immemorial through to the present.
 
-*Description provided by the stakeholders*
+(*Description provided by the stakeholders*).
+
+---
+
+## Project Development
+Team progress through each incremental deliverable can be found in the [wiki](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-winter2026-team1/wiki). The wiki also contains more important documentations of the project.
 
 ---
 
