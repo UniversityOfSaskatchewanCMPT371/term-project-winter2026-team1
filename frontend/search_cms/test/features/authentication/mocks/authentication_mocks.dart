@@ -1,27 +1,31 @@
-/// Centralized Mockito mocks for the Authentication feature.
+/// Centralized Mockito mocks used across Authentication feature tests.
 ///
-/// After adding/updating mocks, regenerate with:
-///   flutter pub run build_runner build --delete-conflicting-outputs
+/// Keeping mocks in one place avoids duplicate @GenerateMocks blocks per test file
+/// and makes build_runner output predictable and easy to regenerate.
 library authentication_mocks;
 
 import 'package:mockito/annotations.dart';
 import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
 import 'package:search_cms/features/authentication/domain/repositories/abstract_authentication_sign_in_repository.dart';
+import 'package:search_cms/features/authentication/domain/usecases/authentication_sign_in_usecase.dart';
+import 'package:search_cms/features/authentication/domain/usecases/authentication_usecases.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'authentication_mocks.mocks.dart';
-
 @GenerateNiceMocks([
-  // Clean-architecture interfaces
+  // Clean architecture interfaces / domain objects
   MockSpec<AbstractAuthenticationSignInApi>(),
   MockSpec<AbstractAuthenticationSignInRepository>(),
+  MockSpec<AuthenticationSignInUsecase>(),
+  MockSpec<AuthenticationUsecases>(),
 
-  // Supabase classes used by AuthenticationSignInApiImpl
+  // Supabase client + related types used by the API impl
   MockSpec<SupabaseClient>(),
   MockSpec<GoTrueClient>(),
   MockSpec<AuthResponse>(),
   MockSpec<Session>(),
   MockSpec<User>(),
+
+  // PostgREST builder chain
   MockSpec<SupabaseQueryBuilder>(),
   MockSpec<PostgrestFilterBuilder<PostgrestList>>(),
 ])
