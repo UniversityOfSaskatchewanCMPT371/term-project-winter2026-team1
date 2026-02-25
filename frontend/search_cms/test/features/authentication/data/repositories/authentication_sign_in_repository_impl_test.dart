@@ -12,15 +12,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'authentication_sign_in_repository_impl_test.mocks.dart';
 
 
-/**TODO:
- * figure out where logger outputs / where it should output
- * add the tests to the test plan
- * maybe add more tests
- * add activity to the log
- */
-
-
-
 /*
 To run write "flutter test" in the terminal (will run files with _test.dart in their name)
 
