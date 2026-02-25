@@ -2,12 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
+import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
+as authentication_sign_in_result_classes;
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
 import 'package:search_cms/features/authentication/domain/repositories/abstract_authentication_sign_in_repository.dart';
 import 'package:search_cms/features/authentication/domain/usecases/authentication_sign_in_usecase.dart';
+
 import 'authentication_sign_in_usecase_test.mocks.dart';
-import 'package:search_cms/features/authentication/domain/entities/authentication_sign_in_result_classes.dart'
-    as authentication_sign_in_result_classes;
 
 /*
   To use mocking, you need to run
