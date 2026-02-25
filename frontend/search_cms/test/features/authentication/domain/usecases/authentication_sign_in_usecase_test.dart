@@ -157,7 +157,7 @@ void main() {
       AuthenticationSignInUsecase authenticationSignInUsecase =
           AuthenticationSignInUsecase(repository: mockRepository);
 
-      // Test Case 1: edge case test for entering password of length 73, should give assertion error
+      // Test Case 7: edge case test for entering password of length 73, should give assertion error
       expect(
         () async => await authenticationSignInUsecase.call('abc@abc.com', 'a' * 73),
         throwsA(isA<AssertionError>()),
