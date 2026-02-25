@@ -1,10 +1,7 @@
-/*
-Tests for authentication dependency injection wiring.
-
-These tests verify that initAuthenticationInjections registers expected factories/singletons
-and that GetIt can resolve them.
-*/
-
+/// Tests for authentication dependency injection wiring.
+///
+/// These tests verify that initAuthenticationInjections registers expected factories/singletons
+/// and that GetIt can resolve them.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/authentication_injections.dart';
