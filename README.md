@@ -9,6 +9,7 @@ You will need the following tools installed on your local machine:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Flutter](https://flutter.dev/docs/get-started/install)
 
+---
 
 ## Backend - Supabase & PowerSync Setup
 This will start pur backend service (Supabase + PowerSync) locally
@@ -17,7 +18,7 @@ This will start pur backend service (Supabase + PowerSync) locally
 cd backend
 ```
 
-This directory contains the configuration to run Supabase & Powersync locally using Docker.
+This directory contains the configuration to run Supabase & PowerSync locally using Docker.
 
 ---
 
