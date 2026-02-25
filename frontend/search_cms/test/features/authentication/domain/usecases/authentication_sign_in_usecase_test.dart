@@ -78,4 +78,90 @@ void main() {
       }
     },
   );
+
+
+  /* 
+   *  following test cases are edge case unit tests based on the following assertion
+   *  assert(password.length >= 6 && password.length <= 72);
+   *  which exists in authentication_sign_in_usecase.dart
+  */
+  test(
+    'Test for entering a password of length 5, should give assertion error',
+    () async {
+      final MockAbstractAuthenticationSignInRepository mockRepository =
+          MockAbstractAuthenticationSignInRepository();
+
+      AuthenticationSignInUsecase authenticationSignInUsecase =
+          AuthenticationSignInUsecase(repository: mockRepository);
+      // Test Case 4: edge case test for entering password of length 5 should give an assertion error based
+      expect(
+        () async => await authenticationSignInUsecase.call('abc@abc.com', '12345'), throwsA(isA<AssertionError>()));
+    },
+  );
+
+  test(
+    'Test for entering a password of length 6, should not give error',
+    () async {
+      final MockAbstractAuthenticationSignInRepository mockRepository =
+          MockAbstractAuthenticationSignInRepository();
+
+      when(mockRepository.signIn('abc@abc.com', '123456')).thenAnswer(
+        (_) async => authentication_sign_in_result_classes.Success(
+          userEntity: UserEntity(
+            id: 'e0bc4427-2286-4773-ba74-c4491ba5f1be',
+            role: Role.viewer,
+          ),
+        ),
+      );
+
+      AuthenticationSignInUsecase authenticationSignInUsecase =
+          AuthenticationSignInUsecase(repository: mockRepository);
+
+      // Test Case 5: edge case test for entering a passwrod of length 6, should not give error
+      await authenticationSignInUsecase.call('abc@abc.com', '123456');
+    },
+  );
+
+  test(
+    'test for entering password of length 72, should not give assertion error',
+    () async {
+      final MockAbstractAuthenticationSignInRepository mockRepository =
+          MockAbstractAuthenticationSignInRepository();
+
+      final String seventyTwoCharPassword = 'a' * 72;
+
+      // Define the response
+      when(mockRepository.signIn('abc@abc.com', seventyTwoCharPassword)).thenAnswer(
+        (_) async => authentication_sign_in_result_classes.Success(
+          userEntity: UserEntity(
+            id: 'e0bc4427-2286-4773-ba74-c4491ba5f1be',
+            role: Role.viewer,
+          ),
+        ),
+      );
+
+      AuthenticationSignInUsecase authenticationSignInUsecase =
+          AuthenticationSignInUsecase(repository: mockRepository);
+
+      // Test Case 6: edge case test for entering password of length 72, should not give assertion error
+      await authenticationSignInUsecase.call('abc@abc.com', seventyTwoCharPassword);
+    },
+  );
+
+  test(
+    'test for entering password longer than 72, should throw assertion error',
+    () async {
+      final MockAbstractAuthenticationSignInRepository mockRepository =
+          MockAbstractAuthenticationSignInRepository();
+
+      AuthenticationSignInUsecase authenticationSignInUsecase =
+          AuthenticationSignInUsecase(repository: mockRepository);
+
+      // Test Case 1: edge case test for entering password of length 73, should give assertion error
+      expect(
+        () async => await authenticationSignInUsecase.call('abc@abc.com', 'a' * 73),
+        throwsA(isA<AssertionError>()),
+      );
+    },
+  );
 }
