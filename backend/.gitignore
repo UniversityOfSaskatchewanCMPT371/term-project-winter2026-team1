@@ -38,3 +38,5 @@ coverage/
 *.temp
 *.log
 *.branches
+signing_keys.json
+

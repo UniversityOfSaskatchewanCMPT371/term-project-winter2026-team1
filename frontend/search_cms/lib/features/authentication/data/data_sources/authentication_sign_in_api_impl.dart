@@ -73,8 +73,8 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
         );
 
         UserModel userModel = UserModel(
-          id: queryResult[0]['id'],
-          role: queryResult[0]['role']
+          id: queryResult[0]['id'] as String,
+          role: queryResult[0]['role'] as String,
         );
 
         _logger?.finer('Authentication sign in API end');

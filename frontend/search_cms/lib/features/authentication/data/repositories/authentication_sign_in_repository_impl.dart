@@ -3,10 +3,11 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 import 'package:search_cms/features/authentication/domain/entities/user_entity.dart';
+
 import '../../../../core/utils/class_templates/result.dart';
-import '../../domain/repositories/abstract_authentication_sign_in_repository.dart';
 import '../../domain/entities/authentication_sign_in_result_classes.dart'
-    as authentication_sign_in_result_classes;
+as authentication_sign_in_result_classes;
+import '../../domain/repositories/abstract_authentication_sign_in_repository.dart';
 
 /*
   The repository implementation for signing in with email and password to

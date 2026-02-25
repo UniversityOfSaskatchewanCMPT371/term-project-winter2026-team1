@@ -1,9 +1,11 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:sizer/sizer.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:sizer/sizer.dart';
+
 import '../bloc/login_cubit.dart';
 import '../bloc/login_state.dart';
 
@@ -289,7 +291,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryBlue,
                                 disabledBackgroundColor:
-                                    AppColors.primaryBlue.withOpacity(0.6),
+                                AppColors.primaryBlue.withValues(alpha: 0.6),
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius:

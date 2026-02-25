@@ -118,12 +118,14 @@ class SupabaseConnector extends PowerSyncBackendConnector {
         /// discard the (rest of the) transaction.
         ///
         /// Note that these errors typically indicate a bug in the application.
-        /// If protecting against data loss is important, save the failing records
-        /// elsewhere instead of discarding, and/or notify the user.
+        /// If protecting against data loss is important,
+        /// save the failing records elsewhere instead of discarding,
+        /// and/or notify the user.
         log.severe('Data upload error - discarding $lastOp', e);
         await transaction.complete();
       } else {
-        // Error may be retryable - e.g. network error or temporary server error.
+        // Error may be retryable -
+        // e.g. network error or temporary server error.
         // Throwing an error here causes this call to be retried after a delay.
         rethrow;
       }
@@ -157,6 +159,7 @@ Future<String> getDatabasePath() async {
 
 const options = SyncOptions(syncImplementation: SyncClientImplementation.rust);
 
+// ignore: lines_longer_than_80_chars
 Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) async {
   // Open the local database and initialize sync/auth integrations
   final PowerSyncDatabase db = PowerSyncDatabase(
