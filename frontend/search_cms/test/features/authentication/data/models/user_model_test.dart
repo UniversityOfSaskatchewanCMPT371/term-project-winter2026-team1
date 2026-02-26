@@ -9,7 +9,7 @@ import 'package:search_cms/features/authentication/data/models/user_model.dart';
 void main() {
   group('UserModel', () {
     // Verifies the constructor stores the provided id and role.
-    test('stores id and role', () {
+    test('USER-MODEL-1-stores id and role', () {
       final model = UserModel(id: 'u1', role: 'viewer');
 
       expect(model.id, 'u1');
@@ -17,7 +17,7 @@ void main() {
     });
 
     // Verifies the model can hold expected role strings (no validation in model).
-    test('supports known role strings', () {
+    test('USER-MODEL-2-supports known role strings', () {
       final viewer = UserModel(id: '1', role: 'viewer');
       final admin = UserModel(id: '2', role: 'admin');
       final researcher = UserModel(id: '3', role: 'researcher');

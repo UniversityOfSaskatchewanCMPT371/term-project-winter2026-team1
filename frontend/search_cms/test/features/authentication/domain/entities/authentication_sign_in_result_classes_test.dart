@@ -9,7 +9,7 @@ import 'package:search_cms/features/authentication/domain/entities/user_entity.d
 void main() {
   group('AuthenticationSignInResultClasses', () {
     // Verifies Success is a Result and stores a UserEntity payload.
-    test('Success stores userEntity', () {
+    test('DOMAIN-ENTITIES-1-Success stores userEntity', () {
       final user = UserEntity(id: '123', role: Role.viewer);
       final result = Success(userEntity: user);
 
@@ -18,7 +18,7 @@ void main() {
     });
 
     // Verifies Failure is a Result and stores an errorMessage payload.
-    test('Failure stores errorMessage', () {
+    test('DOMAIN-ENTITIES-2-Failure stores errorMessage', () {
       final result = Failure(errorMessage: 'Login Failed');
 
       expect(result, isA<Result>());

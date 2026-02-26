@@ -28,7 +28,7 @@ void main() {
     });
 
     // Verifies the cubit emits [LoginLoading, LoginSuccess] when sign-in succeeds.
-    test('emits loading then success on Success result', () async {
+    test('LOGIN-CUBIT-1-emits loading then success on Success result', () async {
       final mockUsecases = MockAuthenticationUsecases();
       final mockSignIn = MockAuthenticationSignInUsecase();
 
@@ -61,7 +61,7 @@ void main() {
     });
 
     // Verifies the cubit emits [LoginLoading, LoginFailure] when domain Failure is returned.
-    test('emits loading then failure on Failure result', () async {
+    test('LOGIN-CUBIT-2-emits loading then failure on Failure result', () async {
       final mockUsecases = MockAuthenticationUsecases();
       final mockSignIn = MockAuthenticationSignInUsecase();
 
@@ -91,7 +91,7 @@ void main() {
     });
 
     // Verifies the cubit emits an "unknown result" failure when Result type is unexpected.
-    test('emits unknown-result failure when result is not Success/Failure', () async {
+    test('LOGIN-CUBIT-3-emits unknown-result failure when result is not Success/Failure', () async {
       final mockUsecases = MockAuthenticationUsecases();
       final mockSignIn = MockAuthenticationSignInUsecase();
 
@@ -119,7 +119,7 @@ void main() {
     });
 
     // Verifies the cubit emits a failure message when the usecase throws.
-    test('emits failure when usecase throws', () async {
+    test('LOGIN-CUBIT-4-emits failure when usecase throws', () async {
       final mockUsecases = MockAuthenticationUsecases();
       final mockSignIn = MockAuthenticationSignInUsecase();
 
@@ -148,7 +148,7 @@ void main() {
     });
 
     // Verifies reset() returns the cubit to LoginInitial state.
-    test('reset emits LoginInitial', () async {
+    test('LOGIN-CUBIT-5-reset emits LoginInitial', () async {
       final cubit = LoginCubit();
 
       cubit.reset();

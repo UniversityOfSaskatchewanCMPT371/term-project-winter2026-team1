@@ -18,7 +18,7 @@ void main() {
 
   group('LoginPage', () {
     // Verifies the page renders the Email and Password fields and the submit button text.
-    testWidgets('renders email/password fields and submit button', (tester) async {
+    testWidgets('LOGIN-PAGE-1-renders email/password fields and submit button', (tester) async {
       await tester.pumpWidget(_wrap(const LoginPage()));
 
       expect(find.text('Email'), findsOneWidget);
@@ -27,7 +27,7 @@ void main() {
     });
 
     // Verifies submitting empty form shows validation errors.
-    testWidgets('shows validation errors when fields are empty', (tester) async {
+    testWidgets('LOGIN-PAGE-2-shows validation errors when fields are empty', (tester) async {
       await tester.pumpWidget(_wrap(const LoginPage()));
 
       await tester.tap(find.text('Access System'));
@@ -38,7 +38,7 @@ void main() {
     });
 
     // Verifies invalid email triggers email validation error.
-    testWidgets('shows validation error for invalid email', (tester) async {
+    testWidgets('LOGIN-PAGE-3-shows validation error for invalid email', (tester) async {
       await tester.pumpWidget(_wrap(const LoginPage()));
 
       await tester.enterText(find.byType(TextFormField).at(0), 'not-an-email');
@@ -51,7 +51,7 @@ void main() {
     });
 
     // Verifies short password triggers password length validation error.
-    testWidgets('shows validation error for short password', (tester) async {
+    testWidgets('LOGIN-PAGE-4-shows validation error for short password', (tester) async {
       await tester.pumpWidget(_wrap(const LoginPage()));
 
       await tester.enterText(find.byType(TextFormField).at(0), 'abc@abc.com');
