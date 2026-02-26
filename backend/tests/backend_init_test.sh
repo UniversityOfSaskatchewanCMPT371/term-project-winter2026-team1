@@ -72,7 +72,6 @@ docker ps -a --format "$name_field" \
 compose up -d --build
 
 #Makes sure that supabase gets restarted at some point
-
 compose exec -T "$svc" supabase stop || true
 compose exec -T "$svc" supabase start
 
