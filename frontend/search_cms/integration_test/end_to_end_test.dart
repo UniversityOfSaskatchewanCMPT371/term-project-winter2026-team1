@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:integration_test/integration_test.dart';
+import 'package:logging/logging.dart';
 import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/injections.dart';
+import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/main.dart';
 
 void main() async {
 
+  final Logger? _logger = 
+    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
+
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group('end-to-end test', () {
+  group('end-to-end-integration test', () {
 
     test("Attempt http ping to Supabase", () async {
     await expectLater(await pingSupabase(), true,
@@ -18,57 +23,67 @@ void main() async {
     await Future.delayed(Duration(seconds: 2));
 
   }, retry: 30);
+    testWidgets('Verify access system button exists', (
+      tester,
+    ) async {
+      // Load app widget.
+      await tester.pumpWidget(const MyApp());
 
-    // for each test widget have a comment
-    // pre and post
-    // does supabase need to be running ...,
-    // i am checking for ... so that the test passes
-    // Ex) Pre: email exists in database. 
-    // Post: Verfication that email and password are correct
-    // change print statements to logging
-    // look at things that will cause problems in this test (exceptions) 
-    // and log around it
+      // Verify the counter starts at 0.
+      expect(find.text('Email'), findsOneWidget);
+
+      // Finds the floating action button to tap on.
+      final fab = find.byKey(const ValueKey('accessSystemButton'));
+
+      // Emulate a tap on the floating action button.
+      await tester.tap(fab);
+
+      // Trigger a frame.
+      await tester.pumpAndSettle();
+
+      // Verify the counter increments by 1.
+    });
+    
     testWidgets('Verify login system functions', (
       tester,
     ) async {
       // Load app widget.
-
-      print("Running test");
+      _logger?.info("Running test");
+      
       await tester.pumpWidget(const MyApp());
+
       await initInjections();
 
       // Verify the counter starts at 0.
       // **this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      // change to find by Key
-      await tester.enterText((find.byType(TextField).first), 'pleasework@fortheloveofgod.ca');
+      // Finds the floating action button to tap on.
+      final fab = find.byKey(const ValueKey('accessSystemButton'));
+
+      await tester.enterText((find.byKey(Key("emailField"))), 'pleasework@fortheloveofgod.ca');
 
       await tester.pumpAndSettle();
 
-      // change to find by Key
-      await tester.enterText((find.byType(TextField).last), 'passwordypassword');
+      await tester.enterText((find.byKey(Key("passwordField"))), 'passwordypassword');
 
       await tester.pumpAndSettle();
+
+      await tester.tap(fab);
 
       // Trigger a frame.
-      final loginButton = find.text('Access System');
-      await tester.tap(loginButton);
       await tester.pumpAndSettle();
 
       final finder = find.byKey(Key("toast_successful_login"));
-      // print (finder) = finer
+      _logger?.finest(finder);
 
       if (!tester.any(finder)){
         fail("Could not find success toast");
       }
-      // change to info
-      print("Done running test");
+      _logger?.info("Done running test");
 
       // Verify the counter increments by 1.
     });
-
-
   });
 
   // END to END Test
@@ -83,24 +98,24 @@ void main() async {
     await Future.delayed(Duration(seconds: 5));
 
   }, retry: 30);
-
   // http.get
-
 } 
 
 Future<bool> pingSupabase() async {
+  final Logger? _logger = 
+    logLevel != Level.OFF ? Logger('PingSupabase') : null;
+
   try {
-    print("Before response");
+    _logger?.info("Sending ping to Supabase");
     final response = await http.get(Uri.parse('http://127.0.0.1:54321/auth/v1/health'), headers: {'apikey': AppConfig.supabaseAnonKey});
-    print("Finished response");
-    
-    print(response.statusCode);
+    _logger?.info("Finished response: ${response.statusCode}");
+
     if (response.statusCode == 400){
+      _logger?.warning("Supabase is not ready yet");
       return false;
     }
-
-
   } catch (e) {
+    _logger?.severe("Error pinging Supabase: $e");
     return false;
   }
   return true;

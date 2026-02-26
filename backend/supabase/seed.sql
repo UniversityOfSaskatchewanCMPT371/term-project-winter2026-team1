@@ -1,4 +1,5 @@
--- comment this code
+-- generic user input for the user role (table generated in the migration)
+-- generates a user using current timestamp and sets email with encrypted password
 INSERT INTO
     auth.users (
         instance_id,
