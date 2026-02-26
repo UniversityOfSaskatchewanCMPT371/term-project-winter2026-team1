@@ -29,7 +29,6 @@ linter:
   # producing the lint.
   rules:
     # linter rules specified in the style guide
-    - lines_longer_than_80_chars
     - curly_braces_in_flow_control_structures
     - camel_case_types
     - camel_case_extensions
