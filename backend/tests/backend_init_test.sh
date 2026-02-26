@@ -4,8 +4,6 @@ set -euo pipefail
 
 
 #Adding basic variables that follows the current files & names
-
-
 file="backend/docker-compose.yml"
 svc="ubuntu_vm"
 
