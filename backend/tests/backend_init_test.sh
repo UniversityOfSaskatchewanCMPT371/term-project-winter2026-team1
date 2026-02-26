@@ -79,8 +79,6 @@ compose exec -T "$svc" supabase start
 #waits if all the and checks all the services down below if they can connect or not
 
 #services that are listed for the backend (github README.md)
-
-
 wait_up "http://127.0.0.1:54321" || fail "Supabase API not reachable"          # supabase gateway / API
 wait_up "http://127.0.0.1:54323" || fail "Supabase Studio not reachable"         # supabase studio
 wait_up "http://127.0.0.1:8080"  || fail "PowerSync not reachable"         # powersync
