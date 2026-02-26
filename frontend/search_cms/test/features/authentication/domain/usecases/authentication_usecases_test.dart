@@ -10,7 +10,7 @@ import '../../mocks/authentication_mocks.mocks.dart';
 void main() {
   group('AuthenticationUsecases', () {
     // Verifies AuthenticationUsecases stores the provided AuthenticationSignInUsecase.
-    test('stores authenticationSignInUsecase', () {
+    test('DOMAIN-USECASE-1-stores authenticationSignInUsecase', () {
       final signIn = MockAuthenticationSignInUsecase();
       final usecases = AuthenticationUsecases(authenticationSignInUsecase: signIn);
 
