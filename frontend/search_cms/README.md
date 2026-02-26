@@ -1,6 +1,6 @@
 # sEARCH CMS Frontend
 
-A clean architecture Flutter app with a locally hosted powersync and Supabase backend.
+Authentication feature
 
 ## Prerequisites
 
@@ -17,10 +17,42 @@ flutter pub get
 
 ## 2. Run the app
 
+Start the backend
+Supabase dashboard URL: http://localhost:54323/
+
+Create the user from the Supabase authentication dashboard
+
+Create the role table with the following command
+
+```
+create table public.role (
+  id uuid not null,
+  created_at timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
+  role text not null,
+  constraint role_pkey primary key (id),
+  constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
+) TABLESPACE pg_default;
+```
+
+Create the role for the user
+
 ```bash
 flutter run
 ```
 
+## 3. Run Unit Tests
+
+1. Generate mocks:
+
+```bash
+flutter pub run build_runner build
+```
+
+2. Run the tests:
+
+```bash
+flutter test
+```
 
 # Explanation of Organization
 

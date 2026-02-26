@@ -24,24 +24,29 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable' 
-          flutter-version-file: pubspec.yaml
+          
+      - name: Start docker compose 
+        uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
+        with:
+          # Additional options to pass to `docker` command.
+          docker-up-flags: "--build"
+
+          # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
+          # Default: `./docker-compose.yml`
+          compose-file: ./backend/docker-compose.yml
 
       # Set flutter working-directory
       - name: Set flutter workdir
         run: flutter config --build-dir=./
         working-directory: ./frontend/search_cms
 
-      # Initialize docker containers
-      - name: Docker initialization
-        run: docker compose -f ./docker-compose.yml up --build -d
-        working-directory: ./backend/
-        
       # Verify testing is added
       - name: Flutter source add
         run: flutter pub add dev:test

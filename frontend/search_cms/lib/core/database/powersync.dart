@@ -118,12 +118,14 @@ class SupabaseConnector extends PowerSyncBackendConnector {
         /// discard the (rest of the) transaction.
         ///
         /// Note that these errors typically indicate a bug in the application.
-        /// If protecting against data loss is important, save the failing records
-        /// elsewhere instead of discarding, and/or notify the user.
+        /// If protecting against data loss is important,
+        /// save the failing records elsewhere instead of discarding,
+        /// and/or notify the user.
         log.severe('Data upload error - discarding $lastOp', e);
         await transaction.complete();
       } else {
-        // Error may be retryable - e.g. network error or temporary server error.
+        // Error may be retryable -
+        // e.g. network error or temporary server error.
         // Throwing an error here causes this call to be retried after a delay.
         rethrow;
       }
@@ -135,10 +137,10 @@ bool isLoggedIn() {
   return Supabase.instance.client.auth.currentSession?.accessToken != null;
 }
 
-Future<AuthResponse> signInAnonymously() async {
-  log.info('signInAnonymously invoked');
-  return await Supabase.instance.client.auth.signInAnonymously();
-}
+// Future<AuthResponse> signInAnonymously() async {
+//   log.info('signInAnonymously invoked');
+//   return await Supabase.instance.client.auth.signInAnonymously();
+// }
 
 /// id of the user currently logged in
 String? getUserId() {
@@ -157,6 +159,7 @@ Future<String> getDatabasePath() async {
 
 const options = SyncOptions(syncImplementation: SyncClientImplementation.rust);
 
+// ignore: lines_longer_than_80_chars
 Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) async {
   // Open the local database and initialize sync/auth integrations
   final PowerSyncDatabase db = PowerSyncDatabase(
@@ -175,9 +178,6 @@ Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) asyn
   if (isLoggedIn()) {
     // If the user is already logged in, connect immediately.
     // Otherwise, connect once logged in.
-    db.connect(connector: currentConnector, options: options);
-  } else {
-    await signInAnonymously();
     db.connect(connector: currentConnector, options: options);
   }
 
