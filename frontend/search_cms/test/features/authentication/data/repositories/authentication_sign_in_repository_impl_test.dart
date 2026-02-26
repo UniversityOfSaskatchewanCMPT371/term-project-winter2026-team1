@@ -123,7 +123,7 @@ void main() {
 
       // Test Case 4: This should fail due to failing an assertion about acceptable password lengths
       final Result authResult3 =
-        await authenticationSignInRepositoryImpl.signIn('admin@abc.com', '');
+        await authenticationSignInRepositoryImpl.signIn('abc@abc.com', '');
       if (authResult3 is! authentication_sign_in_result_classes.Failure) {
         fail('Expect authResult to be authentication_sign_in_result_classes.Failure, but not true');
       }
