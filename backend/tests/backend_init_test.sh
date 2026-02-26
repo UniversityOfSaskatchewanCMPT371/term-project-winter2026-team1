@@ -87,7 +87,3 @@ wait_up "http://127.0.0.1:8080"  || fail "PowerSync not reachable"         # pow
 wait_up "http://127.0.0.1:54321/rest/v1"  || fail "Supabase REST not reachable"  # supabase REST
 
 echo "Everything was Successfull... Results: PASS"
-
-
-
-
