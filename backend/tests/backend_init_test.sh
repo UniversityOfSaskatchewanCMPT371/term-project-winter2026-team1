@@ -76,7 +76,7 @@ compose up -d --build
 compose exec -T "$svc" supabase stop || true
 compose exec -T "$svc" supabase start
 
-#waits if all the and checks all the services down below if they can connect or not
+#waits and checks that all backedn services are in a connectable state
 
 #services that are listed for the backend (github README.md)
 wait_up "http://127.0.0.1:54321" || fail "Supabase API not reachable"          # supabase gateway / API
