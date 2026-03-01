@@ -22,5 +22,11 @@ final GoRouter router = GoRouter(
         return const LoginPage();
       },
     ),
+    GoRoute(
+      path: '/home',
+      builder: (BuildContext context, GoRouterState state) {
+        return const LoginPage();
+      },
+    ),
   ],
 );
