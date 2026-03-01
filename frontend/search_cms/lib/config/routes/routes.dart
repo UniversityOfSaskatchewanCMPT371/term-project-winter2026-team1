@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:search_cms/features/authentication/presentation/pages/home_page.dart';
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
 
 /*
@@ -25,7 +26,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginPage();
+        return const HomePage();
       },
     ),
   ],
