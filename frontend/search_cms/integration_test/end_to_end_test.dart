@@ -10,7 +10,7 @@ import 'package:search_cms/main.dart';
 
 void main() async {
 
-  final Logger? _logger = 
+  final Logger? logger = 
     logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -43,12 +43,12 @@ void main() async {
 
       // Verify the counter increments by 1.
     });
-    
+
     testWidgets('Verify login system functions', (
       tester,
     ) async {
       // Load app widget.
-      _logger?.info("Running test");
+      logger?.info("Running test");
       
       await tester.pumpWidget(const MyApp());
 
@@ -61,11 +61,13 @@ void main() async {
       // Finds the floating action button to tap on.
       final fab = find.byKey(const ValueKey('accessSystemButton'));
 
-      await tester.enterText((find.byKey(Key("emailField"))), 'pleasework@fortheloveofgod.ca');
+      await tester.enterText(
+        (find.byKey(Key("emailField"))), 'pleasework@fortheloveofgod.ca');
 
       await tester.pumpAndSettle();
 
-      await tester.enterText((find.byKey(Key("passwordField"))), 'passwordypassword');
+      await tester.enterText(
+        (find.byKey(Key("passwordField"))), 'passwordypassword');
 
       await tester.pumpAndSettle();
 
@@ -75,12 +77,12 @@ void main() async {
       await tester.pumpAndSettle();
 
       final finder = find.byKey(Key("toast_successful_login"));
-      _logger?.finest(finder);
+      logger?.finest(finder);
 
       if (!tester.any(finder)){
         fail("Could not find success toast");
       }
-      _logger?.info("Done running test");
+      logger?.info("Done running test");
 
       // Verify the counter increments by 1.
     });
@@ -102,20 +104,20 @@ void main() async {
 } 
 
 Future<bool> pingSupabase() async {
-  final Logger? _logger = 
+  final Logger? logger = 
     logLevel != Level.OFF ? Logger('PingSupabase') : null;
 
   try {
-    _logger?.info("Sending ping to Supabase");
+    logger?.info("Sending ping to Supabase");
     final response = await http.get(Uri.parse('http://127.0.0.1:54321/auth/v1/health'), headers: {'apikey': AppConfig.supabaseAnonKey});
-    _logger?.info("Finished response: ${response.statusCode}");
+    logger?.info("Finished response: ${response.statusCode}");
 
     if (response.statusCode == 400){
-      _logger?.warning("Supabase is not ready yet");
+      logger?.warning("Supabase is not ready yet");
       return false;
     }
   } catch (e) {
-    _logger?.severe("Error pinging Supabase: $e");
+    logger?.severe("Error pinging Supabase: $e");
     return false;
   }
   return true;
