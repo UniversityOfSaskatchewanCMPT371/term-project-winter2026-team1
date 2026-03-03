@@ -75,13 +75,15 @@ class _LoginPageState extends State<LoginPage> {
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
 
-    // place holder for successful login, should be replaced with actual navigation to the home page
-    router.go('/home');
+ 
 
     context.read<LoginCubit>().signIn(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+
+    // for presentation sake, should have this properly redirect after successful auth
+    router.go('/dashboard/home');
     
   }
 
