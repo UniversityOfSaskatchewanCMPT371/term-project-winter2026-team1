@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:sizer/sizer.dart';
+
 
 class DashboardLayout extends StatelessWidget {
   final Widget child;
@@ -22,7 +24,7 @@ class DashboardLayout extends StatelessWidget {
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
-      width: 250,
+      width: 10.w,
       backgroundColor: AppColors.mainText,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
@@ -35,9 +37,9 @@ class DashboardLayout extends StatelessWidget {
 
             // Logo
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 style: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 8.dp,
                   height: 1.1,
                   letterSpacing: 1.0,
                 ),
@@ -62,7 +64,7 @@ class DashboardLayout extends StatelessWidget {
           ),
 
           // Dashboard navigation items
-          const Divider(color: AppColors.mutedText, height: 1),
+          Divider(color: AppColors.mutedText, height: 1.h),
           _buildDrawerItem(
             context,
             icon: Icons.home,
