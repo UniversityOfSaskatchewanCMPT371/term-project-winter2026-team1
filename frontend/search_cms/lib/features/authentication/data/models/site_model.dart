@@ -40,7 +40,7 @@ class SiteModel {
 
   factory SiteModel.fromRow(sqlite.Row row) {
 
-    // Dynamically read rows from PowerSync first (skip type checking)
+    // Extract raw dynamic values from PowerSync row
     final dynamic idRaw = row['id'];
     final dynamic nameRaw = row['name'];
     final dynamic bordenRaw = row['borden'];
@@ -57,7 +57,7 @@ class SiteModel {
       throw FormatException('Missing required column(s)');
     }
 
-    // Convert raw data from PowerSync rows
+    // Convert raw values from PowerSync rows
     final String id = idRaw.toString();
     final String name = nameRaw.toString().trim();
     final String borden = bordenRaw.toString().trim();
