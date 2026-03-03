@@ -5,6 +5,14 @@ import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layou
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 
+/*
+The route settings for the application.
+  Remember to define your routes here when you add new pages.
+  This is navigator 2.0.
+  Calls to navigator 1.0 are tolerated by the system but they shouldn't be
+  used as they can cause unexpected bugs.
+*/
+
 final GoRouter router = GoRouter(
   initialLocation: '/login',
   routes: <RouteBase>[
