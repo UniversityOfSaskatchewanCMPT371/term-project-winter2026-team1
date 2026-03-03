@@ -31,5 +31,5 @@ class SiteEntity {
   : assert(id.length > 0),
     assert(name.length > 0),
     assert(borden.length > 0),
-    assert(borden.length < 8);
+    assert(borden.length <= 8);
 }
