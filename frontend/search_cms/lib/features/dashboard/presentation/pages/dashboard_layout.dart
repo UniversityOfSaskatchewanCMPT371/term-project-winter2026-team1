@@ -32,6 +32,8 @@ class DashboardLayout extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(24.0),
+
+            // Logo
             child: RichText(
               text: const TextSpan(
                 style: TextStyle(
@@ -58,6 +60,8 @@ class DashboardLayout extends StatelessWidget {
               ),
             ),
           ),
+
+          // Dashboard navigation items
           const Divider(color: AppColors.mutedText, height: 1),
           _buildDrawerItem(
             context,

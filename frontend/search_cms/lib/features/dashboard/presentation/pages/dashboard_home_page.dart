@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:search_cms/core/utils/constants.dart';
 
+
+/// Main dashboard home page, showed by defualt after logging in
+/// Contains title card, search entry point, and data display widgets
 class DashboardHomePage extends StatelessWidget {
   const DashboardHomePage({super.key});
 
@@ -17,17 +20,14 @@ class DashboardHomePage extends StatelessWidget {
           ),
           children: const [
             TextSpan(
-              text: 's',
+              text: 'Home',
               style: TextStyle(
                 color: AppColors.primaryBlue,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w300,
               ),
-            ),
-            TextSpan(
-              text: 'EARCH',
-              style: TextStyle(fontWeight: FontWeight.w300),
-            ),
+            )
           ],
+          // TODO: Add more widgets here
         ),
       ),
     );
