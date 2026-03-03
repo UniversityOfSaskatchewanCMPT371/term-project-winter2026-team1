@@ -20,7 +20,7 @@ void main() async {
     await expectLater(await pingSupabase(), true,
     ).timeout(Duration(seconds: 2));
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future<void>.delayed(Duration(seconds: 2));
 
   }, retry: 30);
     testWidgets('Verify access system button exists', (
@@ -97,7 +97,7 @@ void main() async {
     await expectLater(await pingSupabase(), true,
     ).timeout(Duration(seconds: 10));
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future<void>.delayed(Duration(seconds: 5));
 
   }, retry: 30);
   // http.get
