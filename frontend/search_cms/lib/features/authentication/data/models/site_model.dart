@@ -2,18 +2,28 @@ import 'package:powersync/sqlite3_common.dart' as sqlite;
 import 'package:search_cms/features/authentication/domain/entities/site_entity.dart';
 
 /*
-  Data-layer model responsible for mapping PowerSync SQLite row 
-  into SiteEntity domain objects. 
+  Data-layer model responsible for mapping PowerSync SQLite row. 
 */
 
-class SiteModel extends SiteEntity{
+class SiteModel {
+  final String id;
+  final String name;
+  final String borden;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
   const SiteModel({
-    required super.id,
-    required super.name,
-    required super.borden,
-    required super.createdAt,
-    required super.updatedAt,
+    required this.id,
+    required this.name,
+    required this.borden,
+    required this.createdAt,
+    required this.updatedAt,
   });
+
+  // Map SiteEntity instead of inheriting it to prevent coupling and proper seperation
+  SiteEntity toEntity() {
+    return SiteEntity(id: id, name: name, borden: borden, createdAt: createdAt, updatedAt: updatedAt);
+  }
 
   /*
     Creates a SiteModel from a PowerSync SQLite row.
@@ -23,9 +33,9 @@ class SiteModel extends SiteEntity{
 
     Postconditions:
     - Returns a SiteModel
-    - Ensures all domain invariants are satisfied
+    - Ensures invariants are satisfied before creating the model
 
-    Throws a formatException if required columns are missing.
+    Throws a FormatException if required columns are missing.
   */
 
   factory SiteModel.fromRow(sqlite.Row row) {
