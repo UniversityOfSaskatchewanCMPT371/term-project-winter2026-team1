@@ -35,7 +35,32 @@ class _HomePageState extends State<HomePage> {
       create: (_) => HomeCubit(),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(),
+        body: Center(
+          // Placeholder for homepage content to verify routing
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 48.0,
+                height: 1.1,
+                color: AppColors.mainText,
+                letterSpacing: 1.0,
+              ),
+              children: const [
+                TextSpan(
+                  text: 's',
+                  style: TextStyle(
+                    color: AppColors.primaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextSpan(
+                  text: 'EARCH',
+                  style: TextStyle(fontWeight: FontWeight.w300),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
