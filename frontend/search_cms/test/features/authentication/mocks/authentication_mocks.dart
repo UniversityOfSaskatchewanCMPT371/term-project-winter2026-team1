@@ -1,9 +1,12 @@
-/// Centralized Mockito mocks used across Authentication feature tests.
-///
-/// Keeping mocks in one place avoids duplicate @GenerateMocks blocks per test file
-/// and makes build_runner output predictable and easy to regenerate.
-/// To regenerate mocks : flutter pub run build_runner build --delete-conflicting-outputs
-library authentication_mocks;
+// ignore_for_file: unused_element
+
+/*
+Centralized Mockito mocks used across Authentication feature tests.
+
+Keeping mocks in one place avoids duplicate @GenerateMocks blocks per test file
+and makes build_runner output predictable and easy to regenerate.
+To regenerate mocks : flutter pub run build_runner build --delete-conflicting-outputs
+*/
 
 import 'package:mockito/annotations.dart';
 import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
