@@ -1,7 +1,12 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:sizer/sizer.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
+
+import '../bloc/home_cubit.dart';
+import '../bloc/home_state.dart';
 
 /// Class for the search / advanced search toggle buttons, which will be used in the dashboard home page
 /// I really expect that this should be in a different file lol
@@ -48,21 +53,18 @@ class _SearchToggleState extends State<SearchToggle> {
 }
 
 
-class DashboardHomePage extends StatefulWidget {
-  const DashboardHomePage({super.key});
-
-  @override
-  State<DashboardHomePage> createState() => _DashboardHomePageState();
-}
 /// Main dashboard home page, showed by defualt after logging in
 /// Contains title card, search entry point, and data display widgets
-class _DashboardHomePageState extends State<DashboardHomePage> {
-  int _selectedSearch = 0; // 0 = Search, 1 = Advanced Search
-  Set<String> _selectedColumns = {}; // Set to hold selected columns for filtering
+class DashboardHomePage extends StatelessWidget {
+  const DashboardHomePage({super.key});
+  // int _selectedSearch = 0; // 0 = Search, 1 = Advanced Search
+  // Set<String> _selectedColumns = {}; // Set to hold selected columns for filtering
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+   return BlocProvider(
+    create: (_) => HomeCubit(),
+    child: Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -122,7 +124,8 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
 
         DataTable()
       ],
-    );
+    )
+   );
   }
 }
 
