@@ -67,9 +67,12 @@ class DashboardHomePage extends StatelessWidget {
                 SearchToggle(onSelectionChanged: (index) {
                   context.read<HomeCubit>().updateSearchToggle(index);
                 },),
-                FilterColumnsDropdown(onSelectionChanged: (columns) {
-                  context.read<HomeCubit>().updateSelectedColumns(columns);
-                },)
+                FilterColumnsDropdown(
+                  selectedColumns: state.selectedColumns,
+                  onSelectionChanged: (columns) {
+                    context.read<HomeCubit>().updateSelectedColumns(columns);
+                  },
+                )
               ]
             ),
 
@@ -148,7 +151,7 @@ class BasicSearchBar extends StatelessWidget {
             hintText: "Search...",
             border: OutlineInputBorder(),
           ),
-          //onSubmitted: context.read<DashboardBloc>().add(SearchSubmitted(query));
+          //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
         ),
       ],
     );
@@ -158,8 +161,14 @@ class BasicSearchBar extends StatelessWidget {
 /// Class for the filter columns dropdown, which will be used in the dashboard home page
 /// Itself contains the button and drop down menu
 class FilterColumnsDropdown extends StatefulWidget {
+  final Set<String> selectedColumns;
   final ValueChanged<Set<String>> onSelectionChanged;
-  const FilterColumnsDropdown({super.key, required this.onSelectionChanged});
+  
+  const FilterColumnsDropdown({
+    super.key,
+    required this.selectedColumns,
+    required this.onSelectionChanged
+  });
 
   @override
   State<FilterColumnsDropdown> createState() => _FilterColumnsDropdownState();
@@ -167,14 +176,12 @@ class FilterColumnsDropdown extends StatefulWidget {
 class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
   bool isDropdownOpen = false;  // Track dropdown state
   
-  Set<String> selected = {};  // Set to hold selected items
-
   @override
   Widget build(BuildContext context) {
     return Column(
         children: [
           OutlinedButton(
-            child: Text('Filter Columns'),
+            child: const Text('Filter Columns'),
             onPressed: () => setState(() => isDropdownOpen = !isDropdownOpen),
               // Toggle dropdown visibility
           ),
@@ -183,7 +190,7 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  // Close button to hide dropdown, positioned at the top right of the dropdown
+                  // Close button to hide dropdown at the top right of the dropdown
                   child: IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () => setState(() => isDropdownOpen = false),
@@ -193,7 +200,7 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: DropdownButtonFormField(
-                    onChanged: (x) {},  // This is required but not used
+                    onChanged: (x) {},  // required but not used
                     // All possible items in the dropdown go here:
                     items: ['Site', 'Unit', 'Level'].map((e) {
                       return DropdownMenuItem(
@@ -204,16 +211,12 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
                               children: [
                                 // Checkbox to select/deselect items
                                 Checkbox(
-                                  value: selected.contains(e),
+                                  value: widget.selectedColumns.contains(e),
                                   onChanged: (isSelected) {
-                                    if (isSelected == true) {
-                                      selected.add(e);  // Add item if selected
-                                    } else {
-                                      selected.remove(e);  // Remove item if deselected
-                                    }
-                                    _setState(() {});  // Update checkbox state
-                                    setState(() {});   
-                                    widget.onSelectionChanged(Set.from(selected));  // Notify parent of selection change
+                                    // Update the selected columns set and notify parent widget
+                                    final updated = Set<String>.from(widget.selectedColumns);
+                                    isSelected == true ? updated.add(e) : updated.remove(e);
+                                    widget.onSelectionChanged(updated);
                                   },
                                 ),
                                 SizedBox(width: 10),  // Add space between checkbox and text
