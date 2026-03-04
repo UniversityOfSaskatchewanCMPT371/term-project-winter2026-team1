@@ -6,6 +6,15 @@ CREATE TABLE area (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now() -- For admin editing purposes
 );
 
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE area ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on area"
+ON area
+FOR SELECT
+TO authenticated
+USING (true);
+
 -- An intermediate table for Site and Area as per the ER diagram 
 CREATE TABLE site_area (
     site_id UUID NOT NULL,
@@ -14,6 +23,15 @@ CREATE TABLE site_area (
     FOREIGN KEY (site_id) REFERENCES site(id) ON DELETE CASCADE,
     FOREIGN KEY (area_id) REFERENCES area(id) ON DELETE CASCADE
 );
+
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE site_area ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on site_area"
+ON site_area
+FOR SELECT
+TO authenticated
+USING (true);
 
 -- A Unit in a Site. Defined as the measured area where excavation takes place. A Site can have multiple units
 CREATE TABLE unit (
@@ -30,6 +48,15 @@ CREATE TABLE unit (
     FOREIGN KEY (site_id) REFERENCES site(id) ON DELETE CASCADE
     -- FOREIGN KEY (excavation_id) REFERENCES excavation(id) ON DELETE CASCADE
 );
+
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE unit ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on unit"
+ON unit
+FOR SELECT
+TO authenticated
+USING (true);
 
 -- A Level in a Unit. Defined as the vertical unit of control, typically 10 cm thick. A Unit can have multiple levels
 CREATE TABLE level (
@@ -52,3 +79,16 @@ CREATE TABLE level (
     level_int SMALLINT,
     CONSTRAINT level_check CHECK (up_limit <= low_limit)
 );
+
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE level ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on level"
+ON level
+FOR SELECT
+TO authenticated
+USING (true);
+
+
+
+

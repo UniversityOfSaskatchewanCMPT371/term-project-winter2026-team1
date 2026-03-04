@@ -17,4 +17,13 @@ CREATE TABLE site (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now() -- For admin editing purposes
 );
 
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE site ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on site"
+ON site
+FOR SELECT
+TO authenticated
+USING (true);
+
 
