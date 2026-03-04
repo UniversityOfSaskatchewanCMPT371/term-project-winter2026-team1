@@ -16,6 +16,14 @@ void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('end-to-end-integration test', () {
 
+    /*
+    Preconditions:
+    - Supabase instance must be running locally
+    - Supabase health endpoint must be reachable: 127.0.0.1:54321
+
+    Postconditions:
+    - Confirms backend authentication system is up and running
+    */
     test("Attempt http ping to Supabase", (
     ) async {
       logger?.info("Attempting to ping Supabase");
@@ -30,6 +38,15 @@ void main() async {
 
       await Future<void>.delayed(Duration(seconds: 2));
   }, retry: 30);
+
+    /*
+    Preconditions:
+    - MyApp widget must load successfully
+    - LoginPage must render with correct fields
+
+    Postconditions:
+    - Button exists and is tappable
+    */
     testWidgets('Verify access system button exists', (
       tester,
     ) async {
@@ -58,6 +75,18 @@ void main() async {
       logger?.info("Done running test");
     });
 
+    /*
+    Preconditions:
+    - Supabase backend must be running
+    - Database contains user with:
+      email: pleasework@fortheloveofgod.ca
+      password: passwordypassword
+    - public.role table exists
+
+    Postconditions:
+    - SnackBar with key "toast_successful_login" is appears
+    - Authentication system is verified to be working end to end
+    */
     testWidgets('Verify login system functions', (
       tester,
     ) async {
