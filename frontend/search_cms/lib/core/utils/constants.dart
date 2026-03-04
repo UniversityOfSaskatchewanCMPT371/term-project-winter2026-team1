@@ -9,6 +9,7 @@ final getIt = GetIt.instance;
 Level logLevel = Level.ALL;
 
 // ===== UI Tokens (Login / Global) taken from the Figma Make (Yousif)=====
+// Color constants
 class AppColors {
   static const background = Color(0xFFF9FAFB); // gray-50
   static const cardBorder = Color(0xFFE5E7EB); // gray-200
