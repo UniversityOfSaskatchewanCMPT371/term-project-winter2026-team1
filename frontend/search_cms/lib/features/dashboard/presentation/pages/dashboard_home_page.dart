@@ -206,7 +206,7 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
                       return DropdownMenuItem(
                         value: e,
                         child: StatefulBuilder(
-                          builder: (context, _setState) {
+                          builder: (context, setState) {
                             return Row(
                               children: [
                                 // Checkbox to select/deselect items
