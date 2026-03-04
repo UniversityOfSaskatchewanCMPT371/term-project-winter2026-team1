@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:sizer/sizer.dart';
+import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 /// Class for the search / advanced search toggle buttons, which will be used in the dashboard home page
 /// I really expect that this should be in a different file lol
@@ -114,6 +115,12 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
           const BasicSearchBar()
         else
           const BasicSearchBar() // TODO: replace with call to const AdvancedSearchPanel(),
+      
+
+        ,const SizedBox(height: 20), // Add some spacing between the search bar and the data table
+
+
+        DataTable()
       ],
     );
   }
@@ -173,7 +180,7 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
                     onPressed: () => setState(() => isDropdownOpen = false),
                   ),
                 ),
-                
+
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: DropdownButtonFormField(
@@ -214,5 +221,40 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
             )
           ],
       );
+    }
+  }
+
+
+  /// Data table widget, which will be used to display search results in the dashboard home page
+  class DataTable extends StatelessWidget {
+    const DataTable({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+      return Container(
+        color: Colors.grey[200],
+        child: Center(
+          child: TableView.builder(
+            columnCount: 4,
+            rowCount: 10,
+            columnBuilder: buildTableSpan,
+            rowBuilder: buildTableSpan,
+
+            // TODO: placeholder - need to figure out how to render data from the backend here
+            cellBuilder:(BuildContext context, TableVicinity vicinity) {
+              return TableViewCell(
+                child: Center(
+                  child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
+                ),
+              );
+            },
+          ),
+        )
+      );
+    }
+
+    TableSpan buildTableSpan(int index){
+      // add row/col level decorations here
+      return TableSpan(extent: FixedTableSpanExtent(50));
     }
   }
