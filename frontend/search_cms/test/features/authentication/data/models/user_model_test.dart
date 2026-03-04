@@ -1,8 +1,11 @@
-/// Unit tests for UserModel.
-///
-/// UserModel is a simple data-layer object that holds authenticated user data.
-/// These tests ensure the constructor continues to store fields correctly,
-/// preventing accidental breaking changes during refactors.
+/*
+Unit tests for UserModel.
+
+UserModel is a simple data-layer object that holds authenticated user data.
+These tests ensure the constructor continues to store fields correctly,
+preventing accidental breaking changes during refactors.
+*/
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/features/authentication/data/models/user_model.dart';
 
