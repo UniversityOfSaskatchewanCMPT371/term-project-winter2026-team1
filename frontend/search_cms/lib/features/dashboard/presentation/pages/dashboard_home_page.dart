@@ -5,8 +5,9 @@ import 'package:sizer/sizer.dart';
 /// Class for the search / advanced search toggle buttons, which will be used in the dashboard home page
 /// I really expect that this should be in a different file lol
 class SearchToggle extends StatefulWidget {
-  const SearchToggle({super.key});
-
+  final ValueChanged<int> onSelectionChanged;
+  const SearchToggle({super.key, required this.onSelectionChanged});
+  
   @override
   State<SearchToggle> createState() => _SearchToggleState();
 }
@@ -23,6 +24,7 @@ class _SearchToggleState extends State<SearchToggle> {
           for (int i = 0; i < _selected.length; i++) {
             _selected[i] = i == index;
           }
+          widget.onSelectionChanged(index);
         });
       },
       borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -45,10 +47,16 @@ class _SearchToggleState extends State<SearchToggle> {
 }
 
 
+class DashboardHomePage extends StatefulWidget {
+  const DashboardHomePage({super.key});
+
+  @override
+  State<DashboardHomePage> createState() => _DashboardHomePageState();
+}
 /// Main dashboard home page, showed by defualt after logging in
 /// Contains title card, search entry point, and data display widgets
-class DashboardHomePage extends StatelessWidget {
-  const DashboardHomePage({super.key});
+class _DashboardHomePageState extends State<DashboardHomePage> {
+  int _selectedSearch = 0; // 0 = Search, 1 = Advanced Search
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +94,23 @@ class DashboardHomePage extends StatelessWidget {
           thickness: 5,
           indent: 5,
           endIndent: 5,
-          color: Color.fromARGB(255, 122, 122, 122),
+          color: Color.fromARGB(255, 110, 110, 110),
         ),
 
         // Search / Advanced Search Toggle
-        SearchToggle(),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SearchToggle(onSelectionChanged: (index) {
+              setState(() => _selectedSearch = index);
+            },),
+            // TODO: Filter button here
+          ]
+        ),
+
+        // if (_selectedSearch == 0)
+        //   const BasicSearchBar()
+        // else
+        //   const AdvancedSearchPanel(),
       ],
     );
   }
