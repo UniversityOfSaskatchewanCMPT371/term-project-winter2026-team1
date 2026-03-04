@@ -10,26 +10,25 @@
 
   Invariants:
   - id must be a non-empty UUID string
-  - name must be non-empty
+  - name can be non-empty or empty
   - borden must be non-empty and <= 8 characters
 */
 
 class SiteEntity {
   final String id;
-  final String name;
+  final String name; // empty or non-empty
   final String borden;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  const SiteEntity({
+  SiteEntity({
     required this.id,
     required this.name,
     required this.borden,
     required this.createdAt,
     required this.updatedAt,
   }) 
-  : assert(id.length > 0),
-    assert(name.length > 0),
-    assert(borden.length > 0),
+  : assert(id.isNotEmpty),
+    assert(borden.trim().isNotEmpty),
     assert(borden.length <= 8);
 }
