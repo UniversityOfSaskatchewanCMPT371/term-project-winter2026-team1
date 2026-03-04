@@ -956,14 +956,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.7"
-  testreport:
-    dependency: transitive
+  two_dimensional_scrollables:
+    dependency: "direct main"
     description:
-      name: testreport
-      sha256: d9b9af11e591d15724f63324b7957e6b36c04cca293147db7761064bbf363b0d
+      name: two_dimensional_scrollables
+      sha256: e9397ae372839aecb3135d246bff5cce5e738604c9afd03d65d06c7a246ae958
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "0.3.8"
   typed_data:
     dependency: transitive
     description:
