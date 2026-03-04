@@ -10,6 +10,7 @@ class DashboardHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Does this need to be Scaffold?
     return Column(
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,7 +26,7 @@ class DashboardHomePage extends StatelessWidget {
               )
             ),
           ),
-          // Last updated text, should be dynamic in the future
+          // Last updated text, should be dynamic in the future (or NUKED lol)
           Text.rich(
             TextSpan(
               text: 'Last Updated: 2024-06-01',
@@ -35,7 +36,14 @@ class DashboardHomePage extends StatelessWidget {
                 fontWeight: FontWeight.w300,
               ),
             )
-          )
+          ),
+          const Divider(
+            height: 5,
+            thickness: 5,
+            indent: 5,
+            endIndent: 5,
+            color: Color.fromARGB(255, 122, 122, 122),
+          ),
           ]
         ),
       ],
