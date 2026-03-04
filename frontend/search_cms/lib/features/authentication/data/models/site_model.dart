@@ -7,12 +7,12 @@ import 'package:search_cms/features/authentication/domain/entities/site_entity.d
 
 class SiteModel {
   final String id;
-  final String name;
+  final String? name; // Name can be empty or non-empty
   final String borden;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  const SiteModel({
+  SiteModel({
     required this.id,
     required this.name,
     required this.borden,
@@ -22,7 +22,13 @@ class SiteModel {
 
   // Map SiteEntity instead of inheriting it to prevent coupling and proper seperation
   SiteEntity toEntity() {
-    return SiteEntity(id: id, name: name, borden: borden, createdAt: createdAt, updatedAt: updatedAt);
+    return SiteEntity(
+      id: id, 
+      name: name ?? '', 
+      borden: borden, 
+      createdAt: createdAt, 
+      updatedAt: updatedAt
+      );
   }
 
   /*
@@ -50,7 +56,6 @@ class SiteModel {
     // Check if anything is null. If so, throw an exception
     if (
       idRaw == null ||
-      nameRaw == null ||
       bordenRaw == null ||
       createdRaw == null ||
       updatedRaw == null) {
@@ -59,14 +64,22 @@ class SiteModel {
 
     // Convert raw values from PowerSync rows
     final String id = idRaw.toString();
-    final String name = nameRaw.toString().trim();
+
+    final String? name;
+
+    // If name is not empty, then trim it; otherwise, make it null
+    if(nameRaw != null) {
+      name =nameRaw.toString().trim();
+    } else {
+      name = null;
+    }
+
     final String borden = bordenRaw.toString().trim();
 
     final DateTime createdAt = DateTime.parse(createdRaw.toString());
     final DateTime updatedAt = DateTime.parse(updatedRaw.toString());
 
     assert(id.isNotEmpty, 'Site ID cannot be empty');
-    assert(name.isNotEmpty, 'Site name cannot be empty');
     assert(borden.isNotEmpty, 'Borden code cannot be empty');
     assert(borden.length <= 8, 'Borden code should not be more than 8 characters');
 
@@ -79,6 +92,3 @@ class SiteModel {
     );
   }
 }
-
-
-
