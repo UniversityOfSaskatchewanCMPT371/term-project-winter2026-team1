@@ -107,10 +107,10 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
           ]
         ),
 
-        //if (_selectedSearch == 0)
-        //   const BasicSearchBar()
-        // else
-        //   const AdvancedSearchPanel(),
+        if (_selectedSearch == 0)
+          const BasicSearchBar()
+        else
+          const BasicSearchBar() // TODO: replace with call to const AdvancedSearchPanel(),
       ],
     );
   }
