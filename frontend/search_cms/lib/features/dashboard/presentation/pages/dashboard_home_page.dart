@@ -57,6 +57,7 @@ class DashboardHomePage extends StatefulWidget {
 /// Contains title card, search entry point, and data display widgets
 class _DashboardHomePageState extends State<DashboardHomePage> {
   int _selectedSearch = 0; // 0 = Search, 1 = Advanced Search
+  Set<String> _selectedColumns = {}; // Set to hold selected columns for filtering
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,9 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
             SearchToggle(onSelectionChanged: (index) {
               setState(() => _selectedSearch = index);
             },),
-            // TODO: Filter button here
+            FilterColumnsDropdown(onSelectionChanged: (columns) {
+              setState(() => _selectedColumns = columns);
+            },)
           ]
         ),
 
@@ -135,3 +138,68 @@ class BasicSearchBar extends StatelessWidget {
     );
   }
 }
+
+/// Class for the filter columns dropdown, which will be used in the dashboard home page
+/// Itself contains the button and drop down menu
+class FilterColumnsDropdown extends StatefulWidget {
+  final ValueChanged<Set<String>> onSelectionChanged;
+  const FilterColumnsDropdown({super.key, required this.onSelectionChanged});
+
+  @override
+  State<FilterColumnsDropdown> createState() => _FilterColumnsDropdownState();
+}
+class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
+  bool isDropdownOpen = false;  // Track dropdown state
+  
+  Set<String> selected = {};  // Set to hold selected items
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: [
+          OutlinedButton(
+            child: Text('Filter Columns'),
+            onPressed: () => setState(() => isDropdownOpen = !isDropdownOpen),
+              // Toggle dropdown visibility
+          ),
+          if (isDropdownOpen)
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: DropdownButtonFormField(
+                onChanged: (x) {},  // This is required but not used in this custom implementation
+                // All possible items in the dropdown go here:
+                items: ['Site', 'Unit', 'Level'].map((e) {
+                  return DropdownMenuItem(
+                    value: e,
+                    child: StatefulBuilder(
+                      builder: (context, _setState) {
+                        return Row(
+                          children: [
+                            // Checkbox to select/deselect items
+                            Checkbox(
+                              value: selected.contains(e),
+                              onChanged: (isSelected) {
+                                if (isSelected == true) {
+                                  selected.add(e);  // Add item if selected
+                                } else {
+                                  selected.remove(e);  // Remove item if deselected
+                                }
+                                _setState(() {});  // Update checkbox state
+                                setState(() {});   
+                                widget.onSelectionChanged(Set.from(selected));  // Notify parent of selection change
+                              },
+                            ),
+                            SizedBox(width: 10),  // Add space between checkbox and text
+                            Text(e),  // Display item label
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+      );
+    }
+  }
