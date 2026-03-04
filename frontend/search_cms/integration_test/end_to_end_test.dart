@@ -16,75 +16,95 @@ void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('end-to-end-integration test', () {
 
-    test("Attempt http ping to Supabase", () async {
-    await expectLater(await pingSupabase(), true,
-    ).timeout(Duration(seconds: 2));
+    test("Attempt http ping to Supabase", (
+    ) async {
+      logger?.info("Attempting to ping Supabase");
 
-    await Future<void>.delayed(Duration(seconds: 2));
+      final result = await pingSupabase();
+      logger?.info("Ping result: $result");
 
+      // ** this works as an assertion
+      // if result != true this will throw a timeout which will cause retry
+      await expectLater(result, true,
+      ).timeout(Duration(seconds: 2));
+
+      await Future<void>.delayed(Duration(seconds: 2));
   }, retry: 30);
     testWidgets('Verify access system button exists', (
       tester,
     ) async {
-      // Load app widget.
+      logger?.info("Running access system button existence test");
+      // Load app widget
       await tester.pumpWidget(const MyApp());
 
-      // Verify the counter starts at 0.
+      // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      // Finds the floating action button to tap on.
+      // Finds the floating action button to tap on
       final fab = find.byKey(const ValueKey('accessSystemButton'));
 
-      // Emulate a tap on the floating action button.
+      logger?.info("Looking for access system button");
+
+      // ** this works as an assertion
+      expect(fab, findsOneWidget);
+
+      logger?.info("Tapping access system button");
+      // Emulate a tap on the floating action button
       await tester.tap(fab);
 
-      // Trigger a frame.
+      // Trigger a frame
       await tester.pumpAndSettle();
 
-      // Verify the counter increments by 1.
+      logger?.info("Done running test");
     });
 
     testWidgets('Verify login system functions', (
       tester,
     ) async {
-      // Load app widget.
-      logger?.info("Running test");
+      // Load app widget
+      logger?.info("Running login system integration test");
       
       await tester.pumpWidget(const MyApp());
 
       await initInjections();
 
-      // Verify the counter starts at 0.
-      // **this works as an assertion
+      // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      // Finds the floating action button to tap on.
-      final fab = find.byKey(const ValueKey('accessSystemButton'));
-
+      logger?.info("Entering email");
       await tester.enterText(
         (find.byKey(Key("emailField"))), 'pleasework@fortheloveofgod.ca');
 
       await tester.pumpAndSettle();
 
+      logger?.info("Entering password");
       await tester.enterText(
         (find.byKey(Key("passwordField"))), 'passwordypassword');
 
       await tester.pumpAndSettle();
 
+      // Finds the floating action button to tap on
+      final fab = find.byKey(const ValueKey('accessSystemButton'));
+      // ** this works as an assertion
+      expect(fab, findsOneWidget);
+
+      logger?.info("Tapping login button");
+
       await tester.tap(fab);
 
-      // Trigger a frame.
+      // Trigger a frame
       await tester.pumpAndSettle();
 
+      // Finds the succesful login toast
       final finder = find.byKey(Key("toast_successful_login"));
       logger?.finest(finder);
 
       if (!tester.any(finder)){
+        logger?.severe("Login failed; possible backend issue");
         fail("Could not find success toast");
       }
-      logger?.info("Done running test");
 
-      // Verify the counter increments by 1.
+      logger?.info("Done running test");
     });
   });
 
@@ -100,7 +120,6 @@ void main() async {
     await Future<void>.delayed(Duration(seconds: 5));
 
   }, retry: 30);
-  // http.get
 } 
 
 Future<bool> pingSupabase() async {
