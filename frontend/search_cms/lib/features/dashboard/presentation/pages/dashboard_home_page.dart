@@ -107,10 +107,30 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
           ]
         ),
 
-        // if (_selectedSearch == 0)
+        //if (_selectedSearch == 0)
         //   const BasicSearchBar()
         // else
         //   const AdvancedSearchPanel(),
+      ],
+    );
+  }
+}
+
+
+class BasicSearchBar extends StatelessWidget {
+  const BasicSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        TextField(
+          decoration: const InputDecoration(
+            hintText: "Search...",
+            border: OutlineInputBorder(),
+          ),
+          //onSubmitted: context.read<DashboardBloc>().add(SearchSubmitted(query));
+        ),
       ],
     );
   }
