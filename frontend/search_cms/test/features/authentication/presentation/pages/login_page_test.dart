@@ -1,14 +1,17 @@
-/// Widget tests for LoginPage form behavior.
-///
-/// These tests verify that the login UI renders expected fields and that
-/// built-in validation prevents submission when input is invalid.
+/*
+Widget tests for LoginPage form behavior.
+
+These tests verify that the login UI renders expected fields and that
+built-in validation prevents submission when input is invalid.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  Widget _wrap(Widget child) {
+  Widget wrap(Widget child) {
     return Sizer(
       builder: (_, __, ___) {
         return MaterialApp(home: child);
@@ -18,8 +21,8 @@ void main() {
 
   group('LoginPage', () {
     // Verifies the page renders the Email and Password fields and the submit button text.
-    testWidgets('renders email/password fields and submit button', (tester) async {
-      await tester.pumpWidget(_wrap(const LoginPage()));
+    testWidgets('LOGIN-PAGE-1-renders email/password fields and submit button', (tester) async {
+      await tester.pumpWidget(wrap(const LoginPage()));
 
       expect(find.text('Email'), findsOneWidget);
       expect(find.text('Password'), findsOneWidget);
@@ -27,8 +30,8 @@ void main() {
     });
 
     // Verifies submitting empty form shows validation errors.
-    testWidgets('shows validation errors when fields are empty', (tester) async {
-      await tester.pumpWidget(_wrap(const LoginPage()));
+    testWidgets('LOGIN-PAGE-2-shows validation errors when fields are empty', (tester) async {
+      await tester.pumpWidget(wrap(const LoginPage()));
 
       await tester.tap(find.text('Access System'));
       await tester.pumpAndSettle();
@@ -38,8 +41,8 @@ void main() {
     });
 
     // Verifies invalid email triggers email validation error.
-    testWidgets('shows validation error for invalid email', (tester) async {
-      await tester.pumpWidget(_wrap(const LoginPage()));
+    testWidgets('LOGIN-PAGE-3-shows validation error for invalid email', (tester) async {
+      await tester.pumpWidget(wrap(const LoginPage()));
 
       await tester.enterText(find.byType(TextFormField).at(0), 'not-an-email');
       await tester.enterText(find.byType(TextFormField).at(1), '123456');
@@ -51,8 +54,8 @@ void main() {
     });
 
     // Verifies short password triggers password length validation error.
-    testWidgets('shows validation error for short password', (tester) async {
-      await tester.pumpWidget(_wrap(const LoginPage()));
+    testWidgets('LOGIN-PAGE-4-shows validation error for short password', (tester) async {
+      await tester.pumpWidget(wrap(const LoginPage()));
 
       await tester.enterText(find.byType(TextFormField).at(0), 'abc@abc.com');
       await tester.enterText(find.byType(TextFormField).at(1), '12345');

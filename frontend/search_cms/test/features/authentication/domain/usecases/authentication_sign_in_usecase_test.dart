@@ -1,6 +1,9 @@
-/// Unit tests for AuthenticationSignInUsecase.
-///
-/// These tests ensure the usecase enforces its preconditions and delegates to the repository.
+/*
+Unit tests for AuthenticationSignInUsecase.
+
+These tests ensure the usecase enforces its preconditions and delegates to the repository.
+*/
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';

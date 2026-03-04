@@ -1,8 +1,10 @@
-/// Unit tests for AuthenticationSignInApiImpl.
-///
-/// Confirms API layer:
-/// - authenticates via auth.signInWithPassword
-/// - fetches role from `role` table
+/* Unit tests for AuthenticationSignInApiImpl.
+
+Confirms API layer:
+- authenticates via auth.signInWithPassword
+- fetches role from `role` table
+*/
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -13,7 +15,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
-/// A Future-like PostgrestFilterBuilder fake
+// A Future-like PostgrestFilterBuilder fake
 class RoleFilterBuilderFake extends Fake
     implements PostgrestFilterBuilder<List<Map<String, dynamic>>> {
   RoleFilterBuilderFake(this.rows);

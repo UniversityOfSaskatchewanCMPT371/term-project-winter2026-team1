@@ -5,7 +5,7 @@ Centralized Mockito mocks used across Authentication feature tests.
 
 Keeping mocks in one place avoids duplicate @GenerateMocks blocks per test file
 and makes build_runner output predictable and easy to regenerate.
-To regenerate mocks : dart run build_runner build --delete-conflicting-outputs
+To regenerate mocks : flutter pub run build_runner build --delete-conflicting-outputs
 */
 
 import 'package:mockito/annotations.dart';
