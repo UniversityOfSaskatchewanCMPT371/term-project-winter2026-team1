@@ -9,6 +9,8 @@ create table public.role (
   constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
 ) TABLESPACE pg_default;
 
+-- site entity table
+-- each site is uniquely identified by a 8 character borden
 CREATE TABLE site (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT DEFAULT '', -- Can be empty

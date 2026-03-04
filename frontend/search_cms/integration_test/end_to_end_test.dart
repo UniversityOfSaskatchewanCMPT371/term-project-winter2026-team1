@@ -8,6 +8,12 @@ import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/main.dart';
 
+/*
+- Integration test suite for authentication system and backend connectivity
+- Validates end-to-end workflow of the application, backend availability, 
+    UI rendering, successful user login
+- Operates against running local supabase instance
+*/
 void main() async {
 
   final Logger? logger = 
@@ -151,12 +157,29 @@ void main() async {
   }, retry: 30);
 } 
 
+/*
+Helper function to ping the Supabase health endpoint
+
+Preconditions:
+- Supabase health endpoint must be reachable: 127.0.0.1:54321
+- Authentication service must expose endpoint: /auth/v1/health
+- AppConfig.supabaseAnonKey contains valid API key
+
+Postconditions:
+- Returns true if Supabase responds and is ready
+- Returns false if:
+    service is not ready,
+    request fails due to network or server error,
+    exception occurs during HTTP request
+*/
 Future<bool> pingSupabase() async {
   final Logger? logger = 
     logLevel != Level.OFF ? Logger('PingSupabase') : null;
 
   try {
     logger?.info("Sending ping to Supabase");
+    // Sends get request to local Supabase authentication health endpoint
+    // apikey header checks request using the supbase anon key
     final response = await http.get(Uri.parse('http://127.0.0.1:54321/auth/v1/health'), headers: {'apikey': AppConfig.supabaseAnonKey});
     logger?.info("Finished response: ${response.statusCode}");
 
