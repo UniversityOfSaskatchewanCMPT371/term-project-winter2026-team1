@@ -163,42 +163,55 @@ class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
               // Toggle dropdown visibility
           ),
           if (isDropdownOpen)
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: DropdownButtonFormField(
-                onChanged: (x) {},  // This is required but not used in this custom implementation
-                // All possible items in the dropdown go here:
-                items: ['Site', 'Unit', 'Level'].map((e) {
-                  return DropdownMenuItem(
-                    value: e,
-                    child: StatefulBuilder(
-                      builder: (context, _setState) {
-                        return Row(
-                          children: [
-                            // Checkbox to select/deselect items
-                            Checkbox(
-                              value: selected.contains(e),
-                              onChanged: (isSelected) {
-                                if (isSelected == true) {
-                                  selected.add(e);  // Add item if selected
-                                } else {
-                                  selected.remove(e);  // Remove item if deselected
-                                }
-                                _setState(() {});  // Update checkbox state
-                                setState(() {});   
-                                widget.onSelectionChanged(Set.from(selected));  // Notify parent of selection change
-                              },
-                            ),
-                            SizedBox(width: 10),  // Add space between checkbox and text
-                            Text(e),  // Display item label
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
+            Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  // Close button to hide dropdown, positioned at the top right of the dropdown
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(() => isDropdownOpen = false),
+                  ),
+                ),
+                
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: DropdownButtonFormField(
+                    onChanged: (x) {},  // This is required but not used
+                    // All possible items in the dropdown go here:
+                    items: ['Site', 'Unit', 'Level'].map((e) {
+                      return DropdownMenuItem(
+                        value: e,
+                        child: StatefulBuilder(
+                          builder: (context, _setState) {
+                            return Row(
+                              children: [
+                                // Checkbox to select/deselect items
+                                Checkbox(
+                                  value: selected.contains(e),
+                                  onChanged: (isSelected) {
+                                    if (isSelected == true) {
+                                      selected.add(e);  // Add item if selected
+                                    } else {
+                                      selected.remove(e);  // Remove item if deselected
+                                    }
+                                    _setState(() {});  // Update checkbox state
+                                    setState(() {});   
+                                    widget.onSelectionChanged(Set.from(selected));  // Notify parent of selection change
+                                  },
+                                ),
+                                SizedBox(width: 10),  // Add space between checkbox and text
+                                Text(e),  // Display item label
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ]
+            )
           ],
       );
     }
