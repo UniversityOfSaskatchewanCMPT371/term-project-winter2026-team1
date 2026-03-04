@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 
-sealed class DashboardState extends Equatable {
-  const DashboardState();
+sealed class HomeState extends Equatable {
+  const HomeState();
 
   @override
   List<Object?> get props => [];
 }
 
-class DashboardInitial extends DashboardState {
-  const DashboardInitial();
+class HomeInitial extends HomeState {
+  const HomeInitial();
 }
 
 // UI state holder
-class DashboardLoaded extends DashboardState {
+class HomeLoaded extends HomeState {
   final int selectedSearch;
   final Set<String> selectedColumns;
 
-  const DashboardLoaded({
+  const HomeLoaded({
     this.selectedSearch = 0,  // 0 for basic search, 1 for advanced search
     this.selectedColumns = const {}, // default to empty set, can be updated with selected columns for filtering
   });
