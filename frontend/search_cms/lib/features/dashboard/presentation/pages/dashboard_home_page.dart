@@ -94,7 +94,7 @@ class DashboardHomePage extends StatelessWidget {
 
                   const Expanded(child: BasicSearchBar()),
 
-                  Spacer(), // Push the filter columns dropdown to the right edge
+                  SizedBox(width: 35.w),
 
                   FilterColumnsDropdown(
                     selectedColumns: state.selectedColumns,
@@ -111,9 +111,9 @@ class DashboardHomePage extends StatelessWidget {
                 children: [
                   SizedBox(width: 1.w),
 
-                  const BasicSearchBar(), // TODO Replace with advanced search widget when implemented
+                  const Expanded(child: AdvancedSearchBar()), // TODO Replace with advanced search widget when implemented
 
-                  Spacer(), // Push the filter columns dropdown to the right edge
+                  SizedBox(width: 35.w),
 
                   FilterColumnsDropdown(
                     selectedColumns: state.selectedColumns,
@@ -178,7 +178,10 @@ class _SearchToggleState extends State<SearchToggle> {
         minWidth: 80.0,
       ),
       isSelected: _selected,
-      children: [Text("Search"), Text("Advanced Search")],
+      children: [
+        SizedBox(width: 80, child: Center(child: Text("Search"))),
+        SizedBox(width: 140, child: Center(child: Text("Advanced Search"))),
+      ],
     );
   }
 }
@@ -196,6 +199,22 @@ class BasicSearchBar extends StatelessWidget {
       ),
     //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
     );
+  }
+}
+
+// TODO: Placeholder
+class AdvancedSearchBar extends StatelessWidget {
+  const AdvancedSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+        decoration: const InputDecoration(
+          hintText: "Advanced Search...",
+          border: OutlineInputBorder(),
+        ),
+        //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
+      );
   }
 }
 
