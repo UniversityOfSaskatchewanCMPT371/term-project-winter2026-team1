@@ -20,11 +20,14 @@ class DashboardHomePage extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         // Show loading indicator until cubit emits DashboardLoaded
+        
         if (state is! HomeLoaded) {
           return const Center(child: CircularProgressIndicator());
         }
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -84,8 +87,10 @@ class DashboardHomePage extends StatelessWidget {
 
             ,const SizedBox(height: 20), // Add some spacing between the search bar and the data table
 
-
-            DataTable()
+            // Data table takes up remaining area
+            Expanded(child:
+              DataTable()
+            )
           ],
         );
       }
@@ -146,13 +151,15 @@ class BasicSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TextField(
-          decoration: const InputDecoration(
-            hintText: "Search...",
-            border: OutlineInputBorder(),
-          ),
+        Expanded(
+          child: TextField(
+            decoration: const InputDecoration(
+              hintText: "Search...",
+              border: OutlineInputBorder(),
+            ),
           //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
-        ),
+          )
+        )
       ],
     );
   }
