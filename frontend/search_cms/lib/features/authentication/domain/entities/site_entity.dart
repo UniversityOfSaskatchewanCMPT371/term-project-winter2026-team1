@@ -3,7 +3,7 @@
 
   A Site represents the top-level in the system and is identified by:
   - id: UUID string
-  - name: Site name
+  - name: Site name (can be empty)
   - borden: Unique archaeological code
   - createdAt: Timestamp of creation
   - updatedAt: Timestamp of last modification
