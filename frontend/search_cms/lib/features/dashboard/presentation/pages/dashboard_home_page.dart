@@ -29,61 +29,99 @@ class DashboardHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                
+              SizedBox(width: 1.w), // Add some spacing between the left edge and the title card
+
               // Home title card
               Text.rich(
                 TextSpan(
                   text: 'Home',
                   style: TextStyle(
-                    fontSize: 8.sp,
-                    color: const Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 7.sp,
+                    color: AppColors.mainText,
                     fontWeight: FontWeight.w300,
                   )
                 ),
               ),
+
+              const Spacer(), // Push the last updated text to the right edge of the row
               // Last updated text, should be dynamic in the future (or NUKED lol)
               Text.rich(
                 TextSpan(
                   text: 'Last Updated: 2024-06-01',
                   style: TextStyle(
-                    fontSize: 6.sp,
-                    color: AppColors.primaryBlue,
+                    fontSize: 3.sp,
+                    color: AppColors.mutedText,
                     fontWeight: FontWeight.w300,
                   ),
                 )
-              )
+              ),
+              
+              SizedBox(width: 1.w)  
+              
               ]
             ),
 
             const Divider(
-              height: 5,
-              thickness: 5,
+              height: 2,
+              thickness: 2,
               indent: 5,
               endIndent: 5,
-              color: Color.fromARGB(255, 110, 110, 110),
+              color: AppColors.inputBorder,
             ),
 
-            // Search / Advanced Search Toggle
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            SizedBox(height: 2.h),
+
+                        // Search / Advanced Search Toggle
+            Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
                 SearchToggle(onSelectionChanged: (index) {
                   context.read<HomeCubit>().updateSearchToggle(index);
                 },),
-                FilterColumnsDropdown(
-                  selectedColumns: state.selectedColumns,
-                  onSelectionChanged: (columns) {
-                    context.read<HomeCubit>().updateSelectedColumns(columns);
-                  },
-                )
               ]
             ),
 
+            // Search Bar and Filter Columns Dropdown
             if (state.selectedSearch == 0)
-              const BasicSearchBar()
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 1.w),
+
+                  const BasicSearchBar(),
+
+                  Spacer(), // Push the filter columns dropdown to the right edge
+
+                  FilterColumnsDropdown(
+                    selectedColumns: state.selectedColumns,
+                    onSelectionChanged: (columns) {
+                      context.read<HomeCubit>().updateSelectedColumns(columns);
+                    },
+                  ),
+                  
+                  SizedBox(width: 1.w),
+            ],)
+              
             else
-              const BasicSearchBar() // TODO: replace with call to const AdvancedSearchPanel(),
-          
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 1.w),
+
+                  const BasicSearchBar(), // TODO Replace with advanced search widget when implemented
+
+                  Spacer(), // Push the filter columns dropdown to the right edge
+
+                  FilterColumnsDropdown(
+                    selectedColumns: state.selectedColumns,
+                    onSelectionChanged: (columns) {
+                      context.read<HomeCubit>().updateSelectedColumns(columns);
+                    },
+                  ),
+                  
+                  SizedBox(width: 1.w),
+                ])
 
             ,const SizedBox(height: 20), // Add some spacing between the search bar and the data table
 
