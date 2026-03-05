@@ -15,7 +15,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
-// A Future-like PostgrestFilterBuilder fake
+// Supabase query builders are "awaitable" objects.
+// Since `eq()` returns a builder (not a Future), we create this Fake builder
+// that supports chaining and becomes awaitable by implementing `then()`.
 class RoleFilterBuilderFake extends Fake
     implements PostgrestFilterBuilder<List<Map<String, dynamic>>> {
   RoleFilterBuilderFake(this.rows);
