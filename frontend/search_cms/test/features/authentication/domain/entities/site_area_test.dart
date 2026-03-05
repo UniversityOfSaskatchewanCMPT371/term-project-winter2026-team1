@@ -3,8 +3,8 @@ import 'package:search_cms/features/authentication/data/models/site_area_model.d
 import 'package:search_cms/features/authentication/domain/entities/site_area_entity.dart';
 
 void main() {
-  // tests site_area_entity
-  // general case
+  // Tests site_area_entity
+  // General case
   test('create entity with valid inputs', () {
     final entity = SiteAreaEntity(
       siteId: 'abcd12345',
@@ -15,7 +15,7 @@ void main() {
     expect(entity.areaId, '12345abcd');
   });
 
-  // test assertions from site_area_entity.dart
+  // Test assertions from site_area_entity.dart
   test('will throw AssertionError if siteId is empty', () {
     expect(() => SiteAreaEntity(siteId: '', areaId: '12345abcd'),
       throwsA(isA<AssertionError>()));
@@ -26,8 +26,8 @@ void main() {
       throwsA(isA<AssertionError>()));
   });
 
-  // tests site_area_model
-  // general test case
+  // Tests site_area_model
+  // General test case
   test('create SiteAreaModel with valid inputs', () {
     final model = SiteAreaModel(
       siteId: 'abcd12345',
@@ -38,7 +38,7 @@ void main() {
     expect(model.areaId, '12345abcd');
   });
 
-  // tests toEntity() function
+  // Tests toEntity() function
   test('toEntity() should return SiteAreaEntity with same values it had before conversion', () {
     final model = SiteAreaModel(
       siteId: 'abcd12345',

@@ -16,7 +16,7 @@
 
 class SiteEntity {
   final String id;
-  final String name; // empty or non-empty
+  final String name; // Empty or non-empty
   final String borden;
   final DateTime createdAt;
   final DateTime updatedAt;

@@ -8,7 +8,7 @@ void main() {
 
 
   // AreaEntity tests
-  // general test case
+  // General test case
   test('create entity wiht valid inputs', () {
     final entity = AreaEntity(
       id: 'abcd12345',
@@ -24,7 +24,7 @@ void main() {
 
   });
 
-  // test the assertions in area_entity.dart
+  // Test the assertions in area_entity.dart
   test('will throw AssertionError if id is empty', () {
     expect(() => AreaEntity(id: '', name: 'some place', createdAt: now, updatedAt: now),
       throwsA(isA<AssertionError>()));
@@ -35,10 +35,10 @@ void main() {
       throwsA(isA<AssertionError>()));
   });
 
-  // we could later seperate these groups of tests (model and entity) into different dirs/files 
+  // We could later seperate these groups of tests (model and entity) into different dirs/files 
 
   // AreaModel tests 
-  // general test case
+  // General test case
   test('create model with valid inputs', () {
     final model = AreaModel(
       id: 'abcd12345',
@@ -53,7 +53,7 @@ void main() {
     expect(model.createdAt, now);
   });
 
-  // test the toEntity() function 
+  // Test the toEntity() function 
   test('toEntity() should return AreaEntity with same values it had before conversion', () {
     final model = AreaModel(
       id: 'abcd12345',
@@ -61,7 +61,7 @@ void main() {
       createdAt: now,
       updatedAt: now,
     );
-    // convert the model object to an entity
+    // Convert the model object to an entity
     final entity = model.toEntity();
 
     expect(entity.id, model.id);
@@ -81,5 +81,5 @@ void main() {
     expect(model.toEntity(), isA<AreaEntity>());
   });
 
-  // test team could create a mocking test for the fromRow() function 
+  // Test team could create a mocking test for the fromRow() function 
 }
