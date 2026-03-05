@@ -4,6 +4,8 @@ import './home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(const HomeInitial());
 
+  void init() => emit(const HomeLoaded());
+
   // Update the selected search type (basic or advanced)
   void updateSearchToggle(int index) {
     final current = state as HomeLoaded;
