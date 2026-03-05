@@ -1,8 +1,10 @@
-/// Unit tests for AuthenticationSignInApiImpl.
-///
-/// Confirms API layer:
-/// - authenticates via auth.signInWithPassword
-/// - fetches role from `role` table
+/* Unit tests for AuthenticationSignInApiImpl.
+
+Confirms API layer:
+- authenticates via auth.signInWithPassword
+- fetches role from `role` table
+*/
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -13,7 +15,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
-/// A Future-like PostgrestFilterBuilder fake
+// Supabase query builders are "awaitable" objects.
+// Since `eq()` returns a builder (not a Future), we create this Fake builder
+// that supports chaining and becomes awaitable by implementing `then()`.
 class RoleFilterBuilderFake extends Fake
     implements PostgrestFilterBuilder<List<Map<String, dynamic>>> {
   RoleFilterBuilderFake(this.rows);
@@ -41,7 +45,7 @@ class RoleFilterBuilderFake extends Fake
 
 void main() {
   group('AuthenticationSignInApiImpl', () {
-    test('returns UserModel when session exists and role query is valid', () async {
+    test('DATA-SOURCE-1-returns UserModel when session exists and role query is valid', () async {
       final client = MockSupabaseClient();
       final auth = MockGoTrueClient();
       final authResponse = MockAuthResponse();
@@ -80,7 +84,7 @@ void main() {
       verify(queryBuilder.select(any)).called(1);
     });
 
-    test('returns null when session is null', () async {
+    test('DATA-SOURCE-2-returns null when session is null', () async {
       final client = MockSupabaseClient();
       final auth = MockGoTrueClient();
       final authResponse = MockAuthResponse();
@@ -100,7 +104,7 @@ void main() {
       verifyNever(client.from(any));
     });
 
-    test('rethrows when Supabase throws', () async {
+    test('DATA-SOURCE-3-rethrows when Supabase throws', () async {
       final client = MockSupabaseClient();
       final auth = MockGoTrueClient();
 
@@ -116,7 +120,7 @@ void main() {
       );
     });
 
-    test('asserts when password length is invalid', () async {
+    test('DATA-SOURCE-4-asserts when password length is invalid', () async {
       final client = MockSupabaseClient();
       final api = AuthenticationSignInApiImpl(supabaseClient: client);
 
