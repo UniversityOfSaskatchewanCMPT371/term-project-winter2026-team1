@@ -84,13 +84,15 @@ class DashboardHomePage extends StatelessWidget {
               ]
             ),
 
+            SizedBox(height: 2.h),
+
             // Search Bar and Filter Columns Dropdown
             if (state.selectedSearch == 0)
               Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(width: 1.w),
 
-                  const BasicSearchBar(),
+                  const Expanded(child: BasicSearchBar()),
 
                   Spacer(), // Push the filter columns dropdown to the right edge
 
@@ -187,18 +189,12 @@ class BasicSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            decoration: const InputDecoration(
-              hintText: "Search...",
-              border: OutlineInputBorder(),
-            ),
-          //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
-          )
-        )
-      ],
+    return TextField(
+      decoration: const InputDecoration(
+        hintText: "Search...",
+        border: OutlineInputBorder(),
+      ),
+    //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
     );
   }
 }
