@@ -1,0 +1,79 @@
+name: Flutter Integration Test
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        required: true
+        default: 'staging'
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' 
+      
+      - uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: latest
+          install-dependencies: true
+
+      - name: Start docker compose 
+        uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
+        with:
+          # Additional options to pass to `docker` command.
+          docker-up-flags: "--build"
+
+          # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
+          # Default: `./docker-compose.yml`
+          compose-file: ./backend/docker-compose.yml
+
+      #initialize the linux environment
+      - name: setup linux flutter platform
+        run: flutter create --platforms=linux .
+        working-directory: ./frontend/search_cms
+      # Set flutter working-directory
+    
+      # Verify testing is added
+      - name: Flutter source add
+        run: flutter pub add dev:test
+        working-directory: ./frontend/search_cms
+        
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend/search_cms
+
+
+      # Install xvfb and all it's dependencies
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb x11-xserver-utils
+          sudo apt-get install -y cmake ninja-build clang libgtk-3-dev
+        
+      # runa headless xvfb to initiate flutter integration tests
+      - name: Run headless test
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: flutter test integration_test
+          working-directory: ./frontend/search_cms
+        env:
+          API_BASE_URL: http://localhost:8080
+      # Run integration tests in headless Chrom

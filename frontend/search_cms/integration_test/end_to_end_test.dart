@@ -42,8 +42,8 @@ void main() async {
       await expectLater(result, true,
       ).timeout(Duration(seconds: 2));
 
-      await Future<void>.delayed(Duration(seconds: 2));
-  }, retry: 30);
+      await Future<void>.delayed(Duration(seconds: 5));
+  }, retry: 480);
 
     /*
     Preconditions:
