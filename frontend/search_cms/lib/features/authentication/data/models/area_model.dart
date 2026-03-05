@@ -17,7 +17,11 @@ class AreaModel {
     required this.updatedAt,
   });
 
-  // map area entity
+  /* 
+  / converts the model into an AreaEntity
+  / replaces the need to inherit from AreaEntity becuase we don't want
+  / the domain layer (AreaEntity) and the data layer (AreaModel) to be coupled
+  */
   AreaEntity toEntity() {
     return AreaEntity(
       id: id,
@@ -60,10 +64,11 @@ class AreaModel {
     final DateTime createdAt = DateTime.parse(createdRaw.toString());
     final DateTime updatedAt = DateTime.parse(updatedRaw.toString());
 
-    // assertions
+    // assertions for double check
     assert(id.isNotEmpty, 'Area ID cannot be empty');
     assert(name.isNotEmpty, 'Area name cannot be empty');
 
+    // create and return AreaModel
     return AreaModel(
       id: id,
       name: name,
