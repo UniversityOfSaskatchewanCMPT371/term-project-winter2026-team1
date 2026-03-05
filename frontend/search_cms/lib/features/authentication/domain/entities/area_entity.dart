@@ -25,6 +25,8 @@ class AreaEntity {
     required this.createdAt,
     required this.updatedAt,
   })
+  // the assertions run before the constructor body when created
+  // throws assertionError on fail
   : assert(id.isNotEmpty),
     assert(name.trim().isNotEmpty);
 }
