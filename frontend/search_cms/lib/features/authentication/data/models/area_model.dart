@@ -18,9 +18,9 @@ class AreaModel {
   });
 
   /* 
-  / converts the model into an AreaEntity
-  / replaces the need to inherit from AreaEntity becuase we don't want
-  / the domain layer (AreaEntity) and the data layer (AreaModel) to be coupled
+  / Converts the model into an AreaEntity
+  / Replaces the need to inherit from AreaEntity becuase we don't want
+  / The domain layer (AreaEntity) and the data layer (AreaModel) to be coupled
   */
   AreaEntity toEntity() {
     return AreaEntity(
@@ -50,7 +50,7 @@ class AreaModel {
     final dynamic createdRaw = row['created_at'];
     final dynamic updatedRaw = row['updated_at'];
 
-    // check if anything is null if so, throw exception
+    // Check if anything is null if so, throw exception
     if (idRaw == null ||
       nameRaw == null ||
       createdRaw == null ||
@@ -58,17 +58,17 @@ class AreaModel {
         throw FormatException('Missing required column');
       }
     
-    // convert raw values from PowerSync rows
+    // Convert raw values from PowerSync rows
     final String id = idRaw.toString();
     final String name = nameRaw.toString().trim();
     final DateTime createdAt = DateTime.parse(createdRaw.toString());
     final DateTime updatedAt = DateTime.parse(updatedRaw.toString());
 
-    // assertions for double check
+    // Assertions for double check
     assert(id.isNotEmpty, 'Area ID cannot be empty');
     assert(name.isNotEmpty, 'Area name cannot be empty');
 
-    // create and return AreaModel
+    // Create and return AreaModel
     return AreaModel(
       id: id,
       name: name,

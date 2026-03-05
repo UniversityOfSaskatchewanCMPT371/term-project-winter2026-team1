@@ -19,8 +19,8 @@ class SiteAreaEntity {
     required this.siteId,
     required this.areaId,
   })
-  // the assertions run before the constructor body when created
-  // throws AssertionError on fail
+  // The assertions run before the constructor body when created
+  // Throws AssertionError on fail
   : assert(siteId.isNotEmpty),
     assert(areaId.isNotEmpty);
 }

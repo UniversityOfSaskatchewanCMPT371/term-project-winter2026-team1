@@ -40,12 +40,12 @@ class SiteAreaModel {
     final dynamic siteIdRaw = row['site_id'];
     final dynamic areaIdRaw = row['area_id'];
 
-    // check if anything is null. If so, throw an exception
+    // Check if anything is null. If so, throw an exception
     if (siteIdRaw == null || areaIdRaw == null) {
       throw FormatException('Missing required column(s)');
     }
 
-    // convert raw values from PowerSync rows
+    // Convert raw values from PowerSync rows
     final String siteId = siteIdRaw.toString();
     final String areaId = areaIdRaw.toString();
 
