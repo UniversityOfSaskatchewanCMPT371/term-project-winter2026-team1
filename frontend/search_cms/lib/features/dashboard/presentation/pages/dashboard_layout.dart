@@ -94,7 +94,7 @@ class DashboardLayout extends StatelessWidget {
       onTap: () => context.go(path),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        color: isSelected ? AppColors.primaryBlue.withOpacity(0.1) : null,
+        color: isSelected ? AppColors.primaryBlue.withValues(alpha: 0.1) : null,
         child: Row(
           children: [
             Icon(
