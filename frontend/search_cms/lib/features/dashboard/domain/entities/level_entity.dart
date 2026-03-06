@@ -25,7 +25,7 @@
 class LevelEntity {
   final String id;
   final String unitId;
-  final String? parentId; // Empty or non-empty
+  final String? parentId; // Null or non-empty
   final String name;
   final int upLimit;
   final int lowLimit;
