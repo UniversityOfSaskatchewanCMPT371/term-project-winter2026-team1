@@ -23,6 +23,9 @@ on:
         type: string
 
 jobs:
+  permissions:
+    checks: write
+    pull-requests: write
   build:
     runs-on: ubuntu-latest
     steps:
@@ -56,6 +59,28 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
       
-      - name: Run tests
-        run: flutter test
+      - name: Set Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_EN
+
+      - name: Generate test_report file
+        run: mkdir test-results
+
+      - name: Run tests 
+        run: flutter test --machine > test-results/flutter_report_${{ env.TIMESTAMP }}.json
         working-directory: ./frontend/search_cms
+
+
+      # Upload out flutter test to the artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: flutter_report_${{ env.TIMESTAMP }}
+          path: flutter_report_${{ env.TIMESTAMP }}.json
+      
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
+        if: (!cancelled())
+        with:
+          files: |
+            test-results/flutter_report_${{ env.TIMESTAMP }}.json
