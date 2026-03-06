@@ -5,14 +5,25 @@ import './data_table_state.dart';
 class DataTableCubit extends Cubit<DataTableState> {
   DataTableCubit() : super(const DataTableInitial());
 
-  void init() => emit(DataTableLoaded());
+  // TODO: replace this
+  // Generate a 10 row x 4 col table
+  final List<String> columns = List.generate(4, (i) => 'Column $i');
+  final List<List<String>> rows = List.generate(
+    10, (rowIndex) => List.generate(
+      4, (colIndex) => 'R$rowIndex C$colIndex',
+    ),
+  );
+  void init() => emit(DataTableLoaded(rows: rows, columns: columns));
 
   // Initial function to render display table with a dump of all data
   // Pre-conditions: Home page being rendered for the first time
   // Post-conditions: Table displays all available data
   // This might be very slow if the fetch takes a long time and data is big
   void initialFetch() {
-
+    // emit(DataTableLoading());
+    // await for data to return from call to API
+    // Get rows and cols from query
+    // emit(DataTableLoaded(rows, cols));
   }
 
   // Update the display of the table without making a new query
@@ -27,7 +38,10 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Pre-conditions: query is non-empty
   // If result is empty, an appropriate message will be shown
   void basicFetch(String query) {
-
+    // emit(DataTableLoading());
+    // await for data to return from call to API
+    // Get rows and cols from query
+    // emit(DataTableLoaded(rows, cols));
   }
 
   // query database for an advanced search
