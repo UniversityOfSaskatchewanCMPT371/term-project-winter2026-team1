@@ -9,7 +9,7 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Generate a 10 row x 4 col table
   final Set<String> sampleColumns = {"Title", "Site", "Unit", "Level"};
   final List<List<String>> sampleRows = List.generate(
-    10, (rowIndex) => List.generate(
+    15, (rowIndex) => List.generate(
       4, (colIndex) => 'R$rowIndex C$colIndex',
     ),
   );
