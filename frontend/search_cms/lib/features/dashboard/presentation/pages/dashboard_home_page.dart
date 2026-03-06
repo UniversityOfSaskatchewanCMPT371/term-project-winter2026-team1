@@ -7,6 +7,10 @@ import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 import '../bloc/home_cubit.dart';
 import '../bloc/home_state.dart';
 
+import 'data_table.dart';
+import '../bloc/data_table_cubit.dart';
+import '../bloc/data_table_state.dart';
+
 
 /// Main dashboard home page, showed by defualt after logging in
 /// Contains title card, search entry point, and data display widgets
@@ -130,8 +134,11 @@ class DashboardHomePage extends StatelessWidget {
             ,const SizedBox(height: 20),
 
             // Data table takes up remaining area
-            Expanded(child:
-              DataTable()
+            Expanded(
+              child: BlocProvider(
+                create: (_) => DataTableCubit()..initialFetch(),
+                child: const DataTableWidget(),
+              ),
             )
           ],
         );
@@ -348,46 +355,46 @@ class FilterColumnsPopup extends StatelessWidget {
   // Then we can replace the query with a Circular loading wheel while
   // long queries are loading in, show complete table on success and
   // show an error message on DB fail, empty search yield, etc.
-  class DataTable extends StatelessWidget {
-    const DataTable({super.key});
+  // class DataTable extends StatelessWidget {
+  //   const DataTable({super.key});
 
-    @override
-    Widget build(BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: TableView.builder(
-          columnCount: 4,
-          rowCount: 10,
-          columnBuilder: (index) => buildColumnSpan(index, context),
-          rowBuilder: buildRowSpan,
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Padding(
+  //       padding: const EdgeInsets.all(5.0),
+  //       child: TableView.builder(
+  //         columnCount: 4,
+  //         rowCount: 10,
+  //         columnBuilder: (index) => buildColumnSpan(index, context),
+  //         rowBuilder: buildRowSpan,
 
-          // TODO: placeholder - need to figure out how to render data from the backend here
-          cellBuilder:(BuildContext context, TableVicinity vicinity) {
-            return TableViewCell(
-              child: Container(
-                decoration: BoxDecoration(
-                  // TODO: fix the overlap
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1,
-                  )
-                ),
-                child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
-              ),
-            );
-          },
-        ),
-      );
-    }
+  //         // TODO: placeholder - need to figure out how to render data from the backend here
+  //         cellBuilder:(BuildContext context, TableVicinity vicinity) {
+  //           return TableViewCell(
+  //             child: Container(
+  //               decoration: BoxDecoration(
+  //                 // TODO: fix the overlap
+  //                 border: Border.all(
+  //                   color: Colors.black,
+  //                   width: 1,
+  //                 )
+  //               ),
+  //               child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   }
 
-    TableSpan buildRowSpan(int index){
-      // add row level decorations here
-      return TableSpan(extent: FixedTableSpanExtent(50));
-    }
+  //   TableSpan buildRowSpan(int index){
+  //     // add row level decorations here
+  //     return TableSpan(extent: FixedTableSpanExtent(50));
+  //   }
 
-    TableSpan buildColumnSpan(int index, BuildContext context){
-      // add col level decorations here
-      // TODO: replace 4 with dynamic column count based on search results, and adjust the extent accordingly
-      return TableSpan(extent: FractionalTableSpanExtent(1 / 4),);
-    }
-  }
+  //   TableSpan buildColumnSpan(int index, BuildContext context){
+  //     // add col level decorations here
+  //     // TODO: replace 4 with dynamic column count based on search results, and adjust the extent accordingly
+  //     return TableSpan(extent: FractionalTableSpanExtent(1 / 4),);
+  //   }
+  // }
