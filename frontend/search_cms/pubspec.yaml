@@ -23,13 +23,13 @@ dependencies:
   go_router: ^17.1.0
   bloc: ^9.2.0
   http: ^1.6.0
+  junitreport: 2.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
   mockito: ^5.6.3
   build_runner: ^2.11.1
