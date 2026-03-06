@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:search_cms/features/authentication/data/models/site_model.dart';
-import 'package:search_cms/features/authentication/domain/entities/site_entity.dart';
+import 'package:search_cms/features/dashboard/data/models/site_model.dart';
+import 'package:search_cms/features/dashboard/domain/entities/site_entity.dart';
 
 void main() {
 

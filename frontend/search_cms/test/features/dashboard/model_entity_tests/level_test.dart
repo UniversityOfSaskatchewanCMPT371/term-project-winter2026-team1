@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:search_cms/features/authentication/data/models/level_model.dart';
-import 'package:search_cms/features/authentication/domain/entities/level_entity.dart';
+import 'package:search_cms/features/dashboard/data/models/level_model.dart';
+import 'package:search_cms/features/dashboard/domain/entities/level_entity.dart';
 
 void main() {
 

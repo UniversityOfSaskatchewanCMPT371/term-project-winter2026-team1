@@ -1,5 +1,5 @@
 import 'package:powersync/sqlite3_common.dart' as sqlite;
-import 'package:search_cms/features/authentication/domain/entities/site_area_entity.dart';
+import 'package:search_cms/features/dashboard/domain/entities/site_area_entity.dart';
 
 /*
   Data-layer model responsible for mapping PowerSync SQLite row.
