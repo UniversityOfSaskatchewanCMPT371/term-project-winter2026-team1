@@ -13,7 +13,9 @@ class HomeInitial extends HomeState {
 
 // UI state holder
 class HomeLoaded extends HomeState {
+  // decides which toggle is displayed
   final int selectedSearch;
+  // set of selected columns for display purposes on pop-up
   final Set<String> selectedColumns;
 
   const HomeLoaded({

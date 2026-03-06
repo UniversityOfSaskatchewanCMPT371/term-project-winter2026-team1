@@ -16,6 +16,8 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   // Update the selected columns for filtering
+  // Only alteres the display of the pop-up
+  // A call to the DataTable's cubit is also required
   void updateSelectedColumns(Set<String> columns) {
     final current = state as HomeLoaded;
     emit(HomeLoaded(
