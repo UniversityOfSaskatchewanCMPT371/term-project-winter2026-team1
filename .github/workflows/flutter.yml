@@ -70,6 +70,8 @@ jobs:
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: 'frontend/search_cms/test-results/flutter_report_${{ env.TIMESTAMP }}.xml'
+          include_passed: True
+          fail_on_failure: True
       # Upload out flutter test to the artifacts
       - uses: actions/upload-artifact@v4
         with:
@@ -77,6 +79,5 @@ jobs:
           # Optional. Default is 'artifact'
           name: flutter_report_${{ env.TIMESTAMP }}
           path: frontend/search_cms/test-results/flutter_report_${{ env.TIMESTAMP }}.xml
-          include_passed: True
-          fail_on_failure: True
+          
       
