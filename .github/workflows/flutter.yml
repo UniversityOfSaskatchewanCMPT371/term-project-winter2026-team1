@@ -66,11 +66,11 @@ jobs:
           # Name of the artifact to upload.
           # Optional. Default is 'artifact'
           name: flutter_report_${{ env.TIMESTAMP }}
-          path: flutter_report_${{ env.TIMESTAMP }}.json
+          path: frontend/search_cms/test-results/flutter_report_${{ env.TIMESTAMP }}.json
       
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/linux@v2
         if: (!cancelled())
         with:
           files: |
-            test-results/flutter_report_${{ env.TIMESTAMP }}.json
+            frontend/search_cms/test-results/flutter_report_${{ env.TIMESTAMP }}.json
