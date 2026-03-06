@@ -77,4 +77,6 @@ jobs:
           # Optional. Default is 'artifact'
           name: flutter_report_${{ env.TIMESTAMP }}
           path: frontend/search_cms/test-results/flutter_report_${{ env.TIMESTAMP }}.xml
+          include_passed: True
+          fail_on_failure: True
       
