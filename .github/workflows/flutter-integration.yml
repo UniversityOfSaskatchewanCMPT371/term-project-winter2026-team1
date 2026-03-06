@@ -81,7 +81,9 @@ jobs:
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
-          run: bash -c "flutter test integration_test -d linux --machine | tojunit --output test-results/flutter_report_int_test_${{ env.TIMESTAMP }}.xml"
+          run: |
+           bash -c "mkdir -p test-results"
+           bash -c "flutter test integration_test -d linux --machine | tojunit --output test-results/flutter_report_int_test_${{ env.TIMESTAMP }}.xml"
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080
