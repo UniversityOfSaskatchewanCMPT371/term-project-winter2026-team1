@@ -54,17 +54,15 @@ jobs:
       - name: Set Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
       
-      # Junit report convert flutter's json test report to jUnit
       - name: Flutter add junitreport
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
 
-      
-      # Runs Flutter unit tests and generated machine json to make a report artifact
-      - name: Run Fluutter Unit tests 
+
+      - name: Run tests 
         run: | 
           mkdir -p test-results
-          flutter test --machine | tojunit --output test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml
+          flutter test --machine | tojunit --output test-results/flutter_report_${{ env.TIMESTAMP }}.xml
         working-directory: ./frontend/search_cms
 
       # Upload out flutter test to the artifacts
