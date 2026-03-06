@@ -9,8 +9,8 @@ import '../bloc/data_table_state.dart';
 
 
 /// Data table widget, which will be used to display search results in the dashboard home page
-  class DataTable extends StatelessWidget {
-    const DataTable({super.key});
+  class DataTableWidget extends StatelessWidget {
+    const DataTableWidget({super.key});
 
     @override
     Widget build(BuildContext context) {
