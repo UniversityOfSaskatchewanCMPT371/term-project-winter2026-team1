@@ -1,5 +1,6 @@
 CREATE PUBLICATION powersync FOR ALL TABLES;
 
+-- roles for user login
 create table public.role (
   id uuid not null,
   created_at timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
