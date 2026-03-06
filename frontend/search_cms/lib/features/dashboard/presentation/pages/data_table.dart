@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:search_cms/core/utils/constants.dart';
-import 'package:sizer/sizer.dart';
+// import 'package:search_cms/core/utils/constants.dart';
+// import 'package:sizer/sizer.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 import '../bloc/data_table_cubit.dart';
@@ -20,9 +20,9 @@ import '../bloc/data_table_state.dart';
             DataTableInitial() => const SizedBox.shrink(),
             DataTableLoading() => const Center(child: CircularProgressIndicator()),
             DataTableLoaded() => TableView.builder(
-              columnCount: 4,
-              rowCount: 10,
-              columnBuilder: (index) => buildColumnSpan(index, context),
+              columnCount: state.columns.length,
+              rowCount: state.rows.length,
+              columnBuilder: (index) => buildColumnSpan(index, state.columns.length, context),
               rowBuilder: buildRowSpan,
 
               // TODO: placeholder - need to figure out how to render data from the backend here
@@ -52,9 +52,9 @@ import '../bloc/data_table_state.dart';
       return TableSpan(extent: FixedTableSpanExtent(50));
     }
 
-    TableSpan buildColumnSpan(int index, BuildContext context){
+    TableSpan buildColumnSpan(int index, int cols, BuildContext context){
       // add col level decorations here
       // TODO: replace 4 with dynamic column count based on search results, and adjust the extent accordingly
-      return TableSpan(extent: FractionalTableSpanExtent(1 / 4),);
+      return TableSpan(extent: FractionalTableSpanExtent(1 / cols),);
     }
   }
