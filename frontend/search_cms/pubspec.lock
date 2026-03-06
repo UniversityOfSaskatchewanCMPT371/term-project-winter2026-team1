@@ -359,6 +359,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.0"
   io:
     dependency: transitive
     description:
@@ -375,6 +383,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.10.0"
+  junitreport:
+    dependency: "direct main"
+    description:
+      name: junitreport
+      sha256: "139a457f5d91e82744df09d04f272d23b6a81c8ef9b8b3bd1cd2e1768460fbeb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   jwt_decode:
     dependency: transitive
     description:
@@ -543,6 +559,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: cb3798bef7fc021ac45b308f4b51208a152792445cce0448c9a4ba5879dd8750
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
   platform:
     dependency: transitive
     description:
@@ -868,6 +892,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.7"
+  testreport:
+    dependency: transitive
+    description:
+      name: testreport
+      sha256: d9b9af11e591d15724f63324b7957e6b36c04cca293147db7761064bbf363b0d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -1012,6 +1044,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "80d494c09849dc3f899d227a78c30c5b949b985ededf884cb3f3bcd39f4b447a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.1"
   yaml:
     dependency: transitive
     description:
