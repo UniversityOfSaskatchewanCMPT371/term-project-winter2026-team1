@@ -35,16 +35,6 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable' 
-          
-      - name: Start docker compose 
-        uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
-        with:
-          # Additional options to pass to `docker` command.
-          docker-up-flags: "--build"
-
-          # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
-          # Default: `./docker-compose.yml`
-          compose-file: ./backend/docker-compose.yml
 
       # Set flutter working-directory
       - name: Set flutter workdir
@@ -61,7 +51,7 @@ jobs:
         working-directory: ./frontend/search_cms
       
       - name: Set Timestamp
-        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_EN
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
 
       - name: Generate test_report file
         run: mkdir test-results
