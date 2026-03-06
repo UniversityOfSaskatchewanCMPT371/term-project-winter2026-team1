@@ -118,7 +118,7 @@ class LevelModel {
     assert(id.isNotEmpty, 'ID cannot be empty');
     assert(unitId.isNotEmpty, 'Unit ID cannot be empty');
     assert(name.isNotEmpty, 'Name cannot be empty');
-    assert(upLimit <= lowLimit, 'up_limit <= low_limit');
+    assert(upLimit <= lowLimit, 'Up limit must be lower than low limit');
 
     return LevelModel(
       id: id,
