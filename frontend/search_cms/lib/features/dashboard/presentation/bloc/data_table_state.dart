@@ -8,23 +8,35 @@ sealed class DataTableState extends Equatable {
 }
 
 class DataTableInitial extends DataTableState {
+  // called on first mount
   const DataTableInitial();
 }
 
-// UI state holder
+class DataTableLoading extends DataTableState {
+  // intermidiate state while queries are being run
+  const DataTableLoading();
+}
+
+// Loaded state
+// Contains info for rendering the table
 class DataTableLoaded extends DataTableState {
-  final int selectedSearch;
-  final Set<String> selectedColumns;
+  final List<List<String>> rows; // placeholder, inner list should be data type
+  final List<String> columns;   // headers
 
   const DataTableLoaded({
-    this.selectedSearch = 0,  // 0 for basic search, 1 for advanced search
-    this.selectedColumns = const {}, // default to empty set, can be updated with selected columns for filtering
+    required this.rows,
+    required this.columns,
   });
 
   @override
-  List<Object?> get props => [selectedSearch, selectedColumns];
+  List<Object?> get props => [rows, columns];
 }
 
-class DataTableLoading extends DataTableState {
-  
+class DataTableError extends DataTableState {
+  final String message;
+
+  const DataTableError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
