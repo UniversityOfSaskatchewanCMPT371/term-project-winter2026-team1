@@ -8,7 +8,7 @@ sealed class DataTableState extends Equatable {
 }
 
 class DataTableInitial extends DataTableState {
-  // called on first mount
+  // called on first mount?
   const DataTableInitial();
 }
 

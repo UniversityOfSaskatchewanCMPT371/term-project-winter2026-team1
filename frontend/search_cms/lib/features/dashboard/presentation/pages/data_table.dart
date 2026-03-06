@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:search_cms/core/utils/constants.dart';
-// import 'package:sizer/sizer.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 import '../bloc/data_table_cubit.dart';
@@ -17,7 +15,7 @@ import '../bloc/data_table_state.dart';
       return BlocBuilder<DataTableCubit, DataTableState>(
         builder: (context, state) {
           return switch (state) {
-            DataTableInitial() => const SizedBox.shrink(),
+            DataTableInitial() => const SizedBox.shrink(), // I dont think this would ever actually happen 
             DataTableLoading() => const Center(child: CircularProgressIndicator()),
             DataTableLoaded() => TableView.builder(
               columnCount: state.columns.length,
