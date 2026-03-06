@@ -7,13 +7,13 @@ class DataTableCubit extends Cubit<DataTableState> {
 
   // TODO: replace this
   // Generate a 10 row x 4 col table
-  final List<String> columns = List.generate(4, (i) => 'Column $i');
-  final List<List<String>> rows = List.generate(
+  final Set<String> sampleColumns = {"Title", "Site", "Unit", "Level"};
+  final List<List<String>> sampleRows = List.generate(
     10, (rowIndex) => List.generate(
       4, (colIndex) => 'R$rowIndex C$colIndex',
     ),
   );
-  void init() => emit(DataTableLoaded(rows: rows, columns: columns));
+  void init() => emit(DataTableLoaded(rows: sampleRows, columns: sampleColumns));
   // This should make a call to initial fetch, but only the first
   // that the table gets displayed
 
@@ -24,6 +24,8 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Post-conditions: Table displays all available data
   // This might be very slow if the fetch takes a long time and data is big
   void initialFetch() {
+    // placeholder
+    emit(DataTableLoaded(rows: sampleRows, columns: sampleColumns));
     // emit(DataTableLoading());
     // await for data to return from call to API
     // Get rows and cols from query
@@ -34,9 +36,11 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Update the display of the table without making a new query
   // Called when filtered columns changes
   // Pre-conditions: Data table already has data being displayed
+  // r is the existing rows from what was currently displayed
+  // newCols is a new set of columns to display
   // Post-conditions: Table will display the given columns
-  void updateColumns(Set<String> cols) {
-    
+  void updateColumns(List<List<String>> r, Set<String> newCols) {
+    emit(DataTableLoaded(rows: r, columns: newCols));
     // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
 
