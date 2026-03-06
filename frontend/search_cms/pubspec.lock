@@ -384,7 +384,7 @@ packages:
     source: hosted
     version: "4.10.0"
   junitreport:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: junitreport
       sha256: "139a457f5d91e82744df09d04f272d23b6a81c8ef9b8b3bd1cd2e1768460fbeb"
