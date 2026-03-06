@@ -15,8 +15,11 @@ import '../bloc/data_table_state.dart';
       return BlocBuilder<DataTableCubit, DataTableState>(
         builder: (context, state) {
           return switch (state) {
-            DataTableInitial() => const SizedBox.shrink(), // I dont think this would ever actually happen 
+            // Initial state is not reachable with current set-up in home page,
+            // But i've left this here in case we move away from having pre-loaded data
+            DataTableInitial() => const Center(child: Text("Welcome to the sEARCH home page")),
             DataTableLoading() => const Center(child: CircularProgressIndicator()),
+
             DataTableLoaded() => TableView.builder(
               columnCount: state.columns.length,
               rowCount: state.rows.length,
@@ -39,6 +42,7 @@ import '../bloc/data_table_state.dart';
                 );
               },
             ),
+
             DataTableError() => Center(child: Text(state.message))
           };
         }
@@ -52,7 +56,6 @@ import '../bloc/data_table_state.dart';
 
     TableSpan buildColumnSpan(int index, int cols, BuildContext context){
       // add col level decorations here
-      // TODO: replace 4 with dynamic column count based on search results, and adjust the extent accordingly
       return TableSpan(extent: FractionalTableSpanExtent(1 / cols),);
     }
   }
