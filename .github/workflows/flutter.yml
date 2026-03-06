@@ -54,8 +54,9 @@ jobs:
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
 
       - name: Run tests 
-        run: mkdir -p test-results
-        run: flutter test --machine > test-results/flutter_report_${{ env.TIMESTAMP }}.json
+        run: | 
+          mkdir -p test-results
+          flutter test --machine > test-results/flutter_report_${{ env.TIMESTAMP }}.json
         working-directory: ./frontend/search_cms
 
 
