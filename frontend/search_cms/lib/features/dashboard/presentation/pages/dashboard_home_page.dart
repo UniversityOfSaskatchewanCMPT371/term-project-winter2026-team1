@@ -140,10 +140,13 @@ class DashboardHomePage extends StatelessWidget {
 
             // Data table takes up remaining area
             Expanded(
-              child: BlocProvider(
-                create: (_) => DataTableCubit()..initialFetch(),
-                child: const DataTableWidget(),
-              ),
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(2.5.h),
+                child: BlocProvider(
+                    create: (_) => DataTableCubit()..initialFetch(),
+                    child: const DataTableWidget(),
+                  ),
+                ) 
             )
           ],
         );
