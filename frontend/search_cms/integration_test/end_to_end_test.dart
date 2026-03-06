@@ -34,16 +34,25 @@ void main() async {
     ) async {
       logger?.info("Attempting to ping Supabase");
 
-      final result = await pingSupabase();
-      logger?.info("Ping result: $result");
+      int attempts = 0;
+      const int maxAttempts = 100;
+      bool ready = false;
+      while (!ready && attempts < maxAttempts){
+        ready = await pingSupabase();
+        logger?.info("Ping result: $ready");
+        if (ready == false){
+          attempts ++;
+          logger?.info("""Supabase not ready retrying in
+          10 seconds ($attempts/$maxAttempts)""");
+          await Future<void>.delayed(const Duration(seconds: 5));
+        }
+      }
 
       // ** this works as an assertion
       // if result != true this will throw a timeout which will cause retry
-      await expectLater(result, true,
-      ).timeout(Duration(seconds: 2));
+      expect(ready, true, reason:"Could not ping Supabase");
 
-      await Future<void>.delayed(Duration(seconds: 5));
-  }, retry: 480);
+  }, timeout: const Timeout(Duration(minutes: 15)));
 
     /*
     Preconditions:
