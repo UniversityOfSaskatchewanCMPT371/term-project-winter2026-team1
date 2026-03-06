@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
-import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layout.dart';
-import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
+import 'package:search_cms/features/dashboard/presentation/bloc/home_cubit.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layout.dart';
 
 /*
 The route settings for the application.
@@ -33,7 +35,11 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/dashboard/home',
-          builder: (context, state) => const DashboardHomePage(),
+          builder: (context, state) => BlocProvider(
+            create: (_) => HomeCubit()..init(),
+            child: const DashboardHomePage()
+          )
+          
         ),
         GoRoute(
           path: '/dashboard/add',
