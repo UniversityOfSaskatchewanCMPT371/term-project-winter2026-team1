@@ -79,8 +79,6 @@ class LevelModel {
     if (idRaw == null ||
         unitIdRaw == null ||
         nameRaw == null ||
-        upLimitRaw == null ||
-        lowLimitRaw == null ||
         createdRaw == null ||
         updatedRaw == null) {
       throw FormatException('Missing required column(s)');
@@ -91,17 +89,30 @@ class LevelModel {
     final String unitId = unitIdRaw.toString();
     final String? parentId = parentIdRaw?.toString();
     final String name = nameRaw.toString().trim();
-    final int upLimit = int.parse(upLimitRaw.toString());
-    final int lowLimit = int.parse(lowLimitRaw.toString());
     final DateTime createdAt = DateTime.parse(createdRaw.toString());
     final DateTime updatedAt = DateTime.parse(updatedRaw.toString());
     final String? levelChar = levelCharRaw?.toString();
+
     // Needs to be a seperate check since its optional, need to manually set to null if not used
     final int? levelInt;
     if (levelIntRaw != null) {
       levelInt = int.parse(levelIntRaw.toString());
     } else {
       levelInt = null;
+    }
+    // default upLimit and lowLimit to 0 if null in the db from what the schema says
+    final int upLimit;
+    if (upLimitRaw != null) {
+      upLimit = int.parse(upLimitRaw.toString());
+    } else {
+      upLimit = 0;
+    }
+
+    final int lowLimit;
+    if (lowLimitRaw != null) {
+      lowLimit = int.parse(lowLimitRaw.toString());
+    } else {
+      lowLimit = 0;
     }
 
     assert(id.isNotEmpty, 'ID cannot be empty');
