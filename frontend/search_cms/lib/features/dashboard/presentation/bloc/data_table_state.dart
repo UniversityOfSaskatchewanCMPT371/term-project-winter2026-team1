@@ -25,7 +25,7 @@ class DataTableLoading extends DataTableState {
 // Emitted after queries are successful
 class DataTableLoaded extends DataTableState {
   final List<List<String>> rows; // placeholder, inner list should be data type
-  final List<String> columns;   // headers
+  final Set<String> columns;   // headers
 
   const DataTableLoaded({
     required this.rows,
