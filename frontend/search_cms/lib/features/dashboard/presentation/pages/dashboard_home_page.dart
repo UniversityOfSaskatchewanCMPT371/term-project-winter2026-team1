@@ -12,15 +12,13 @@ import '../bloc/home_state.dart';
 /// Contains title card, search entry point, and data display widgets
 class DashboardHomePage extends StatelessWidget {
   const DashboardHomePage({super.key});
-  // int _selectedSearch = 0; // 0 = Search, 1 = Advanced Search
-  // Set<String> _selectedColumns = {}; // Set to hold selected columns for filtering
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         // Show loading indicator until cubit emits DashboardLoaded
-        
+        // Will never happen but exists if we ever want to async load the page
         if (state is! HomeLoaded) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -32,7 +30,8 @@ class DashboardHomePage extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 
-              SizedBox(width: 1.w), // Add some spacing between the left edge and the title card
+              // SizedBox is just empty spaced used to layout other widget, add margins, etc.  
+              SizedBox(width: 1.w),
 
               // Home title card
               Text.rich(
@@ -47,7 +46,7 @@ class DashboardHomePage extends StatelessWidget {
               ),
 
               const Spacer(), // Push the last updated text to the right edge of the row
-              // Last updated text, should be dynamic in the future (or NUKED lol)
+              // TODO: Last updated text, should be dynamic in the future (or NUKED lol)
               Text.rich(
                 TextSpan(
                   text: 'Last Updated: 2024-06-01',
@@ -64,6 +63,7 @@ class DashboardHomePage extends StatelessWidget {
               ]
             ),
 
+            // Horizontal bar
             const Divider(
               height: 2,
               thickness: 2,
@@ -74,7 +74,7 @@ class DashboardHomePage extends StatelessWidget {
 
             SizedBox(height: 2.h),
 
-                        // Search / Advanced Search Toggle
+            // Search / Advanced Search Toggle
             Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
@@ -87,6 +87,7 @@ class DashboardHomePage extends StatelessWidget {
             SizedBox(height: 2.h),
 
             // Search Bar and Filter Columns Dropdown
+            // Basic search case
             if (state.selectedSearch == 0)
               Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -96,7 +97,7 @@ class DashboardHomePage extends StatelessWidget {
 
                   SizedBox(width: 35.w),
 
-                  FilterColumnsDropdown(
+                  FilterColumnsPopup(
                     selectedColumns: state.selectedColumns,
                     onSelectionChanged: (columns) {
                       context.read<HomeCubit>().updateSelectedColumns(columns);
@@ -107,15 +108,16 @@ class DashboardHomePage extends StatelessWidget {
             ],)
               
             else
+            // Advanced search
               Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(width: 1.w),
 
-                  const Expanded(child: AdvancedSearchBar()), // TODO Replace with advanced search widget when implemented
+                  const Expanded(child: AdvancedSearchBar()), // TODO implement real advanced search
 
                   SizedBox(width: 35.w),
 
-                  FilterColumnsDropdown(
+                  FilterColumnsPopup(
                     selectedColumns: state.selectedColumns,
                     onSelectionChanged: (columns) {
                       context.read<HomeCubit>().updateSelectedColumns(columns);
@@ -125,7 +127,7 @@ class DashboardHomePage extends StatelessWidget {
                   SizedBox(width: 1.w),
                 ])
 
-            ,const SizedBox(height: 20), // Add some spacing between the search bar and the data table
+            ,const SizedBox(height: 20),
 
             // Data table takes up remaining area
             Expanded(child:
@@ -140,7 +142,7 @@ class DashboardHomePage extends StatelessWidget {
 
 
 /// Class for the search / advanced search toggle buttons, which will be used in the dashboard home page
-/// I really expect that this should be in a different file lol
+/// Should the other classes be in a different file? Maybe.
 class SearchToggle extends StatefulWidget {
   final ValueChanged<int> onSelectionChanged;
   const SearchToggle({super.key, required this.onSelectionChanged});
@@ -157,7 +159,7 @@ class _SearchToggleState extends State<SearchToggle> {
       direction: Axis.horizontal,
       onPressed: (int index) {
         setState(() {
-          // The button that is tapped is set to true, and the others to false.
+          // Enable tapped and disable the other
           for (int i = 0; i < _selected.length; i++) {
             _selected[i] = i == index;
           }
@@ -165,7 +167,7 @@ class _SearchToggleState extends State<SearchToggle> {
         });
       },
       borderRadius: const BorderRadius.all(Radius.circular(12)),
-      
+      // terminology for style labels is quite confusing
       selectedBorderColor: Colors.black,
       borderColor: Colors.black,
       borderWidth: 1,
@@ -174,6 +176,7 @@ class _SearchToggleState extends State<SearchToggle> {
       color: Colors.grey[850],      // unselected text colour
 
       constraints: const BoxConstraints(
+        // TODO: probably make the toggle a little shorter
         minHeight: 40.0,
         minWidth: 80.0,
       ),
@@ -186,7 +189,8 @@ class _SearchToggleState extends State<SearchToggle> {
   }
 }
 
-
+/// Basic Search Bar
+/// Currently just a text input
 class BasicSearchBar extends StatelessWidget {
   const BasicSearchBar({super.key});
 
@@ -203,6 +207,7 @@ class BasicSearchBar extends StatelessWidget {
 }
 
 // TODO: Placeholder
+// Just changes text from Basic, will replace with Advanced layout later
 class AdvancedSearchBar extends StatelessWidget {
   const AdvancedSearchBar({super.key});
 
@@ -218,18 +223,19 @@ class AdvancedSearchBar extends StatelessWidget {
   }
 }
 
-/// Class for the filter columns dropdown, which will be used in the dashboard home page
-/// Itself contains the button and drop down menu
-class FilterColumnsDropdown extends StatelessWidget {
+/// Class for the filter columns popup, which will be used in the dashboard home page
+/// Itself contains the button that triggers the popup
+class FilterColumnsPopup extends StatelessWidget {
   final Set<String> selectedColumns;
   final ValueChanged<Set<String>> onSelectionChanged;
   
-  const FilterColumnsDropdown({
+  const FilterColumnsPopup({
     super.key,
     required this.selectedColumns,
     required this.onSelectionChanged
   });
 
+  // Command to open popup window from the outer button
   void _openDialog(BuildContext context) {
     // Pending selections to be saved if user hits 'appply'
     // discarded if user hits 'X' or closes the dialog
@@ -277,6 +283,7 @@ class FilterColumnsDropdown extends StatelessWidget {
                         // Checkbox list
                         Expanded(
                           child: ListView(
+                            // Add more possible columns here:
                             children: ['Title', 'Site', 'Unit', 'Level'].map((e) {
                               return CheckboxListTile(
                                 title: Text(e),
@@ -328,6 +335,7 @@ class FilterColumnsDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
+      // Attach filter columns menu to filter cols button
       onPressed: () => _openDialog(context),
       child: const Text('Filter Columns'),
     );
@@ -336,6 +344,10 @@ class FilterColumnsDropdown extends StatelessWidget {
 
 
   /// Data table widget, which will be used to display search results in the dashboard home page
+  // TODO: This should be it's own class that manages it's own state
+  // Then we can replace the query with a Circular loading wheel while
+  // long queries are loading in, show complete table on success and
+  // show an error message on DB fail, empty search yield, etc.
   class DataTable extends StatelessWidget {
     const DataTable({super.key});
 
