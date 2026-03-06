@@ -237,7 +237,7 @@ class FilterColumnsDropdown extends StatelessWidget {
 
     showGeneralDialog(
         context: context,
-        barrierDismissible: true,       // clicking outside closes without applying
+        barrierDismissible: true,       // clicking outside closes without applying changes
         barrierLabel: 'Filter Columns', // required when barrierDismissible is true
         barrierColor: Colors.black54,   // darkened background overlay
         transitionDuration: const Duration(milliseconds: 200),
@@ -278,7 +278,7 @@ class FilterColumnsDropdown extends StatelessWidget {
                         Expanded(
                           child: ListView(
                             children: ['Title', 'Site', 'Unit', 'Level'].map((e) {
-                              return CheckboxListTitle(
+                              return CheckboxListTile(
                                 title: Text(e),
                                 value: pending.contains(e),
                                 onChanged: (isSelected) {
