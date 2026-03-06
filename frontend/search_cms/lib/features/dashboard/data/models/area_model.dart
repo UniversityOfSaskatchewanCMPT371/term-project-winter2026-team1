@@ -18,9 +18,9 @@ class AreaModel {
   });
 
   /* 
-  / Converts the model into an AreaEntity
-  / Replaces the need to inherit from AreaEntity becuase we don't want
-  / The domain layer (AreaEntity) and the data layer (AreaModel) to be coupled
+    Converts the model into an AreaEntity
+    Replaces the need to inherit from AreaEntity becuase we don't want
+    The domain layer (AreaEntity) and the data layer (AreaModel) to be coupled
   */
   AreaEntity toEntity() {
     return AreaEntity(
