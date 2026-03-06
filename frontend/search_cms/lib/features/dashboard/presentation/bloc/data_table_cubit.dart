@@ -29,16 +29,22 @@ class DataTableCubit extends Cubit<DataTableState> {
     // emit(DataTableLoading());
     // await for data to return from call to API
     // Get rows and cols from query
+    // Should be as simple as formatting the result into the set of Columns
+    // and a list of list of rows. then just cast all the data to a string if not already
     // emit(DataTableLoaded(rows, cols));
     // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
 
   // Update the display of the table without making a new query
-  // Called when filtered columns changes
-  // Pre-conditions: Data table already has data being displayed
+  // Called when filtered columns changes. Should be able to handle both data already being
+  // displayed and automatically reload table and no data being displayed, in which case
+  // we can simple store the column set
+  //
+  // Pre-conditions: None
   // r is the existing rows from what was currently displayed
   // newCols is a new set of columns to display
-  // Post-conditions: Table will display the given columns
+  // Post-conditions: Stored set of columns will be updated. If state == DataTableLoaded
+  //    then trigger table reload
   void updateColumns(List<List<String>> r, Set<String> newCols) {
     emit(DataTableLoaded(rows: r, columns: newCols));
     // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
@@ -51,6 +57,8 @@ class DataTableCubit extends Cubit<DataTableState> {
     // emit(DataTableLoading());
     // await for data to return from call to API
     // Get rows and cols from query
+    // Should be as simple as formatting the result into the set of Columns
+    // and a list of list of rows. then just cast all the data to a string if not already
     // emit(DataTableLoaded(rows, cols));
     // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
