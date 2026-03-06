@@ -14,8 +14,12 @@ class DataTableCubit extends Cubit<DataTableState> {
     ),
   );
   void init() => emit(DataTableLoaded(rows: rows, columns: columns));
+  // This should make a call to initial fetch, but only the first
+  // that the table gets displayed
+
 
   // Initial function to render display table with a dump of all data
+  // Should only be called by init()
   // Pre-conditions: Home page being rendered for the first time
   // Post-conditions: Table displays all available data
   // This might be very slow if the fetch takes a long time and data is big
