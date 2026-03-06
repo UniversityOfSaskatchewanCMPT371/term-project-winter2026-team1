@@ -26,8 +26,3 @@ class HomeLoaded extends HomeState {
   @override
   List<Object?> get props => [selectedSearch, selectedColumns];
 }
-
-// TODO: add more states for loading, success, failure of search results
-// class DashboardSearchLoading extends DashboardState { ... }
-// class DashboardSearchSuccess extends DashboardState { ... }
-// class DashboardSearchFailure extends DashboardState { ... }
