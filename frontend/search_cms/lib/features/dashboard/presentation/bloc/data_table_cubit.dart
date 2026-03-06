@@ -28,6 +28,7 @@ class DataTableCubit extends Cubit<DataTableState> {
     // await for data to return from call to API
     // Get rows and cols from query
     // emit(DataTableLoaded(rows, cols));
+    // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
 
   // Update the display of the table without making a new query
@@ -36,6 +37,7 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Post-conditions: Table will display the given columns
   void updateColumns(Set<String> cols) {
     
+    // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
 
   // Query database for basic search
@@ -46,6 +48,7 @@ class DataTableCubit extends Cubit<DataTableState> {
     // await for data to return from call to API
     // Get rows and cols from query
     // emit(DataTableLoaded(rows, cols));
+    // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
   }
 
   // query database for an advanced search
