@@ -9,39 +9,41 @@ import '../bloc/data_table_state.dart';
 
 
 /// Data table widget, which will be used to display search results in the dashboard home page
-  // TODO: This should be it's own class that manages it's own state
-  // Then we can replace the query with a Circular loading wheel while
-  // long queries are loading in, show complete table on success and
-  // show an error message on DB fail, empty search yield, etc.
   class DataTable extends StatelessWidget {
     const DataTable({super.key});
 
     @override
     Widget build(BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: TableView.builder(
-          columnCount: 4,
-          rowCount: 10,
-          columnBuilder: (index) => buildColumnSpan(index, context),
-          rowBuilder: buildRowSpan,
+      return BlocBuilder<DataTableCubit, DataTableState>(
+        builder: (context, state) {
+          return switch (state) {
+            DataTableInitial() => const SizedBox.shrink(),
+            DataTableLoading() => const Center(child: CircularProgressIndicator()),
+            DataTableLoaded() => TableView.builder(
+              columnCount: 4,
+              rowCount: 10,
+              columnBuilder: (index) => buildColumnSpan(index, context),
+              rowBuilder: buildRowSpan,
 
-          // TODO: placeholder - need to figure out how to render data from the backend here
-          cellBuilder:(BuildContext context, TableVicinity vicinity) {
-            return TableViewCell(
-              child: Container(
-                decoration: BoxDecoration(
-                  // TODO: fix the overlap
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1,
-                  )
-                ),
-                child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
-              ),
-            );
-          },
-        ),
+              // TODO: placeholder - need to figure out how to render data from the backend here
+              cellBuilder:(BuildContext context, TableVicinity vicinity) {
+                return TableViewCell(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      // TODO: fix the overlap
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1,
+                      )
+                    ),
+                    child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
+                  ),
+                );
+              },
+            ),
+            DataTableError() => Center(child: Text(state.message))
+          };
+        }
       );
     }
 
