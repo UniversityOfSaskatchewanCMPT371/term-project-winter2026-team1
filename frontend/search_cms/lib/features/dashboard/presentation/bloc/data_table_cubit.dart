@@ -5,7 +5,7 @@ import './data_table_state.dart';
 class DataTableCubit extends Cubit<DataTableState> {
   DataTableCubit() : super(const DataTableInitial());
 
-  void init() => emit(const DataTableLoaded());
+  void init() => emit(DataTableLoaded());
 
   // Initial function to render display table with a dump of all data
   // Pre-conditions: Home page being rendered for the first time
