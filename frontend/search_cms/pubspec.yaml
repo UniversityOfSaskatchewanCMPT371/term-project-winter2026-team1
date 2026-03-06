@@ -23,7 +23,6 @@ dependencies:
   go_router: ^17.1.0
   bloc: ^9.2.0
   http: ^1.6.0
-  junitreport: 2.0.2
 
 dev_dependencies:
   flutter_test:

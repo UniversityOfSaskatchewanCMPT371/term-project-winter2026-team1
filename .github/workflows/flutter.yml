@@ -52,6 +52,12 @@ jobs:
       
       - name: Set Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+      
+
+      - name: Flutter add junitreport
+        run: flutter pub global activate junitreport
+        working-directory: ./frontend/search_cms
+
 
       - name: Run tests 
         run: | 
