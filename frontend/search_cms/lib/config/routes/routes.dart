@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
-import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layout.dart';
-import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layout.dart';
 
 /*
 The route settings for the application.
