@@ -101,7 +101,11 @@ class DashboardHomePage extends StatelessWidget {
                   FilterColumnsPopup(
                     selectedColumns: state.selectedColumns,
                     onSelectionChanged: (columns) {
+                      // Update UI State
                       context.read<HomeCubit>().updateSelectedColumns(columns);
+                
+                      // Trigger data table refresh
+                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
                     },
                   ),
                   
@@ -121,7 +125,11 @@ class DashboardHomePage extends StatelessWidget {
                   FilterColumnsPopup(
                     selectedColumns: state.selectedColumns,
                     onSelectionChanged: (columns) {
+                      // Update UI State
                       context.read<HomeCubit>().updateSelectedColumns(columns);
+                
+                      // Trigger data table refresh
+                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
                     },
                   ),
                   
@@ -205,7 +213,7 @@ class BasicSearchBar extends StatelessWidget {
         hintText: "Search...",
         border: OutlineInputBorder(),
       ),
-    //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
+    //onSubmitted: context.read<DataTableCubit>().add(basicFetch(query));
     );
   }
 }
@@ -222,7 +230,7 @@ class AdvancedSearchBar extends StatelessWidget {
           hintText: "Advanced Search...",
           border: OutlineInputBorder(),
         ),
-        //onSubmitted: context.read<HomeCubit>().add(SearchSubmitted(query));
+        //onSubmitted: context.read<DataTableCubit>().add(advancedFetch(query));
       );
   }
 }
