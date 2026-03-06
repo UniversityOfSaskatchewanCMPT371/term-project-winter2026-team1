@@ -220,7 +220,7 @@ class AdvancedSearchBar extends StatelessWidget {
 
 /// Class for the filter columns dropdown, which will be used in the dashboard home page
 /// Itself contains the button and drop down menu
-class FilterColumnsDropdown extends StatefulWidget {
+class FilterColumnsDropdown extends StatelessWidget {
   final Set<String> selectedColumns;
   final ValueChanged<Set<String>> onSelectionChanged;
   
@@ -230,71 +230,109 @@ class FilterColumnsDropdown extends StatefulWidget {
     required this.onSelectionChanged
   });
 
-  @override
-  State<FilterColumnsDropdown> createState() => _FilterColumnsDropdownState();
-}
-class _FilterColumnsDropdownState extends State<FilterColumnsDropdown> {
-  bool isDropdownOpen = false;  // Track dropdown state
-  
+  void _openDialog(BuildContext context) {
+    // Pending selections to be saved if user hits 'appply'
+    // discarded if user hits 'X' or closes the dialog
+    Set<String> pending = Set.from(selectedColumns);
+
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,       // clicking outside closes without applying
+        barrierLabel: 'Filter Columns', // required when barrierDismissible is true
+        barrierColor: Colors.black54,   // darkened background overlay
+        transitionDuration: const Duration(milliseconds: 200),
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Center(
+          child: SizedBox(
+            width: 80.w,
+            height: 80.h,
+            child: Material(
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: StatefulBuilder(
+                  builder: (context, setDialogState) {
+                    return Column(
+                      children: [
+                        // Header row with upper left close button
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () => Navigator.of(context).pop(), // close without applying
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Filter Columns',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+
+                        const Divider(),
+
+                        // Checkbox list
+                        Expanded(
+                          child: ListView(
+                            children: ['Title', 'Site', 'Unit', 'Level'].map((e) {
+                              return CheckboxListTitle(
+                                title: Text(e),
+                                value: pending.contains(e),
+                                onChanged: (isSelected) {
+                                  setDialogState(() {
+                                    isSelected == true
+                                        ? pending.add(e)
+                                        : pending.remove(e);
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          )
+                        ),
+
+                        const Divider(),
+
+                        // Apply button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // sync changes to bloc
+                                onSelectionChanged(Set.from(pending));
+                                // close window
+                                Navigator.of(context).pop();
+                              },
+                              style: const ButtonStyle(
+                                // why I have to write it like this I have no idea
+                                backgroundColor: WidgetStatePropertyAll<Color>(AppColors.primaryBlue),
+                              ),
+                              child: const Text('Apply'),
+                            )
+                          ]
+                        )
+                      ]
+                    );
+                  }
+                )
+              )
+            )
+          ),
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          OutlinedButton(
-            child: const Text('Filter Columns'),
-            onPressed: () => setState(() => isDropdownOpen = !isDropdownOpen),
-              // Toggle dropdown visibility
-          ),
-          if (isDropdownOpen)
-            Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  // Close button to hide dropdown at the top right of the dropdown
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => setState(() => isDropdownOpen = false),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: DropdownButtonFormField(
-                    onChanged: (x) {},  // required but not used
-                    // All possible items in the dropdown go here:
-                    items: ['Site', 'Unit', 'Level'].map((e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: StatefulBuilder(
-                          builder: (context, setState) {
-                            return Row(
-                              children: [
-                                // Checkbox to select/deselect items
-                                Checkbox(
-                                  value: widget.selectedColumns.contains(e),
-                                  onChanged: (isSelected) {
-                                    // Update the selected columns set and notify parent widget
-                                    final updated = Set<String>.from(widget.selectedColumns);
-                                    isSelected == true ? updated.add(e) : updated.remove(e);
-                                    widget.onSelectionChanged(updated);
-                                  },
-                                ),
-                                SizedBox(width: 10),  // Add space between checkbox and text
-                                Text(e),  // Display item label
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ]
-            )
-          ],
-      );
-    }
+    return OutlinedButton(
+      onPressed: () => _openDialog(context),
+      child: const Text('Filter Columns'),
+    );
   }
+}
 
 
   /// Data table widget, which will be used to display search results in the dashboard home page
