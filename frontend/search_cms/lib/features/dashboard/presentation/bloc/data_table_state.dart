@@ -7,11 +7,14 @@ sealed class DataTableState extends Equatable {
   List<Object?> get props => [];
 }
 
+// Not reachable with current set-up but exists in case we 
+// decide to move away from having data dump by default on load
 class DataTableInitial extends DataTableState {
-  // called on first mount?
   const DataTableInitial();
 }
 
+// Intermidiate state that shows a loading icon on home page
+// Should be emitted before making a change to the table
 class DataTableLoading extends DataTableState {
   // intermidiate state while queries are being run
   const DataTableLoading();
@@ -19,6 +22,7 @@ class DataTableLoading extends DataTableState {
 
 // Loaded state
 // Contains info for rendering the table
+// Emitted after queries are successful
 class DataTableLoaded extends DataTableState {
   final List<List<String>> rows; // placeholder, inner list should be data type
   final List<String> columns;   // headers
@@ -32,6 +36,7 @@ class DataTableLoaded extends DataTableState {
   List<Object?> get props => [rows, columns];
 }
 
+// Display any error message
 class DataTableError extends DataTableState {
   final String message;
 
