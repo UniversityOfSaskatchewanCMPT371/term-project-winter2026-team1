@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:search_cms/features/authentication/data/models/area_model.dart';
-import 'package:search_cms/features/authentication/domain/entities/area_entity.dart';
-
+import 'package:search_cms/features/dashboard/data/models/area_model.dart';
+import 'package:search_cms/features/dashboard/domain/entities/area_entity.dart';
 void main() {
 
   final DateTime now = DateTime.now();
