@@ -1,60 +1,60 @@
-import 'package:search_cms/features/dashboard/data/models/area_model.dart';
-import 'package:search_cms/features/dashboard/data/models/level_model.dart';
-import 'package:search_cms/features/dashboard/data/models/site_area_model.dart';
-import 'package:search_cms/features/dashboard/data/models/site_model.dart';
-import 'package:search_cms/features/dashboard/data/models/unit_model.dart';
+import '../entities/area_entity.dart';
+import '../entities/level_entity.dart';
+import '../entities/site_area_entity.dart';
+import '../entities/site_entity.dart';
+import '../entities/unit_entity.dart';
 
-abstract class AbstractDashboardCrudDataSource {
+abstract class AbstractDashboardRepository {
   // READ operations
   /*
     Retrieves all Site records from the database
 
-    @return A list containing all SiteModel objects currently stored
+    @return A list containing all SiteEntity objects currently stored
       if no sites exist an empty list is returned
 
     Preconditions: database connection must be available
   */
-  Future<List<SiteModel>> getAllSites();
+  Future<List<SiteEntity>> getAllSites();
 
   /*
     Retrieves all Area records from the database
 
-    @return A list containing all AreaModel objects currently stored
+    @return A list containing all AreaEntity objects currently stored
       if no areas exist an empty list is returned
 
     Preconditions: database connection must be available
   */
-  Future<List<AreaModel>> getAllAreas();
+  Future<List<AreaEntity>> getAllAreas();
 
   /*
     Retrieves all SiteArea relationship records
 
-    @return A list containing all SiteAreaModel objects currently stored
+    @return A list containing all SiteAreaEntity objects currently stored
       if no site areas exist an empty list is returned
 
     Preconditions: database connection must be available
   */
-  Future<List<SiteAreaModel>> getAllSiteAreas();
+  Future<List<SiteAreaEntity>> getAllSiteAreas();
 
   /*
     Retrieves all Unit records from the database
 
-    @return A list containing all UnitModel objects currently stored
+    @return A list containing all UnitEntity objects currently stored
       if no units exist an empty list is returned
 
     Preconditions: database connection must be available
   */
-  Future<List<UnitModel>> getAllUnits();
+  Future<List<UnitEntity>> getAllUnits();
 
   /*
     Retrieves all Level records from the database
 
-    @return A list containing all LevelModel objects currently stored, 
+    @return A list containing all LevelEntity objects currently stored, 
       if no levels exist an empty list is returned
 
     Preconditions: database connection must be available
   */
-  Future<List<LevelModel>> getAllLevels();
+  Future<List<LevelEntity>> getAllLevels();
 
 
   // CREATE operations
