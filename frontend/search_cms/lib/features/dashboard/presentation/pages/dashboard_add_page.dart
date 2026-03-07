@@ -116,7 +116,6 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
             key: Key(saveButtonKey),
             onPressed: (){saveButtonClicked(title);}, //Function ran when the button is pressed
 
-
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(90, 40),
               backgroundColor: const Color(0xFF1f40b0),
