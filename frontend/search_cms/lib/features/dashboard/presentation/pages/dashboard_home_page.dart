@@ -9,7 +9,7 @@ import '../bloc/home_state.dart';
 import 'data_table.dart';
 
 
-/// Main dashboard home page, showed by defualt after logging in
+/// Main dashboard home page, showed by default after logging in
 /// Contains title card, search entry point, and data display widgets
 class DashboardHomePage extends StatelessWidget {
   const DashboardHomePage({super.key});

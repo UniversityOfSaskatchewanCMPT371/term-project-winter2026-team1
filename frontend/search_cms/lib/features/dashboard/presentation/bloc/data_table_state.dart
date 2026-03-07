@@ -13,10 +13,10 @@ class DataTableInitial extends DataTableState {
   const DataTableInitial();
 }
 
-// Intermidiate state that shows a loading icon on home page
+// Intermediate state that shows a loading icon on home page
 // Should be emitted before making a change to the table
 class DataTableLoading extends DataTableState {
-  // intermidiate state while queries are being run
+  // intermediate state while queries are being run
   const DataTableLoading();
 }
 
