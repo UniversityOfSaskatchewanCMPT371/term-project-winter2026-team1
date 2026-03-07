@@ -61,61 +61,68 @@ abstract class AbstractDashboardCrudDataSource {
   /*
     Creates a new Site record in the database
 
-    @param site A SiteModel object representing the site to create
+    @param borden A non-empty borden string with a maximum length of 8 characters
+    @param name An optional name for the site
 
-    Preconditions: site.id is a valid UUID, site.borden is not empty and site.borden.length <= 8, 
-      database connection must be available
+    Preconditions: borden is not empty and borden.length <= 8, database connection must be available
 
     Postconditions: new site record is inserted into database
   */
-  Future<void> createSite(SiteModel site);
+  Future<void> createSite({String borden, String? name});
 
   /*
     Creates a new Area record in the database
 
-    @param area A AreaModel object representing the area to create
+    @param name A non-empty name string for the area
 
-    Preconditions: area.id is a valid UUID, area.name is not empty, 
-      database connection must be available
+    Preconditions: name is not empty, database connection must be available
 
     Postconditions: new area record is inserted into the database
   */
-  Future<void> createArea(AreaModel area);
+  Future<void> createArea({String name});
 
   /*
     Creates a new SiteArea record in the database (relationship between a site and an area)
 
-    @param siteArea A SiteAreaModel object containing the site_id and area_id
+    @param siteId A reference to an existing site
+    @param areaId A reference to an existing area
 
-    Preconditions: siteArea.siteId is a reference to a existing site,
-      siteArea.areaId is a reference to a existing area, database connection must be available
+    Preconditions: siteId is a valid UUID reference to an existing site, 
+      areaId is a valid UUID reference to an existing area, database connection must be available
 
     Postconditions: new site-area record is inserted into the database
   */
-  Future<void> createSiteArea(SiteAreaModel siteArea);
+  Future<void> createSiteArea({String siteId, String areaId});
 
   /*
     Creates a new Unit record in the database
 
-    @param unit A UnitModel object representing the unit to create
+    @param siteId A reference to an existing site
+    @param name A non-empty name string for the unit
 
-    Preconditions: unit.id is a valid UUID, unit.siteId is a reference to a existing site,
-      unit.name is not empty, database connection must be available
+    Preconditions: siteId is a valid UUID reference to an existing site, name is not empty,
+      database connection must be available
 
     Postconditions: new unit record is inserted into the database
   */
-  Future<void> createUnit(UnitModel unit);
+  Future<void> createUnit({String siteId, String name});
 
   /*
     Creates a new Level record in the database
 
-    @param level A LevelModel object representing the level to create
+    @param unitId A reference to an existing unit
+    @param name A non-empty name string for the level
+    @param upLimit An integer representing the upper depth limit in cm
+    @param lowLimit An integer representing the lower depth limit in cm
+    @param parentId An optional reference to an existing level which is the level's parent
+    @param levelChar An optional string representing some other archeological data
+    @param levelInt An optional integer representing some other archeological data
 
-    Preconditions: level.upLimit <= level.lowLimit, level.id is a valid UUID,
-      level.unitId is a reference to a existing unit, level.name is not empty, 
-      database connection must be available
+    Preconditions: upLimit <= lowLimit, unitId is a valid UUID reference to an existing unit, 
+      name is not empty, database connection must be available
 
     Postconditions: new level record is inserted into the database
   */
-  Future<void> createLevel(LevelModel level);
+  Future<void> createLevel({String unitId, String name, int upLimit, int lowLimit, 
+    String? parentId, String? levelChar, int? levelInt});
 }
