@@ -7,6 +7,7 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 
+
 void saveButtonClicked(String title){
   AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title];
   //TODO when business logic is implemented or when I can talk to them
@@ -65,7 +66,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
 
   AddDataPageEntries(title, newKeys, saveButtonKey);
 
-  double widgetWidth = 200;
+  double widgetWidth = 250;
 
   return Container(
     width: widgetWidth,
@@ -115,7 +116,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           //save button
           ElevatedButton(
             key: Key(saveButtonKey),
-            onPressed: (){saveButtonClicked(title);}, 
+            onPressed: (){saveButtonClicked(title);}, //Function ran when the button is pressed
 
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(90, 40),
@@ -169,8 +170,9 @@ class DashboardAddPage extends StatelessWidget { //TODO: potentially change type
               */
               createAddDataWidget("Site", ["name", "borden"]),
               createAddDataWidget("Area", ["name"]),
-              createAddDataWidget("Unit", ["name", "site id"]),
-              createAddDataWidget("Level", ["name", "unit id", "parent id", "upper limit", "lower limit"]),
+              createAddDataWidget("Unit", ["name", "site name"]),
+              createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
+              
 
 
 
