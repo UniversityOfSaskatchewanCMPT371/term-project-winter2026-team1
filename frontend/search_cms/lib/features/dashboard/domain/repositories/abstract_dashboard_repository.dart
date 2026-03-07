@@ -68,7 +68,7 @@ abstract class AbstractDashboardRepository {
 
     Postconditions: new site record is inserted into database
   */
-  Future<void> createSite({String borden, String? name});
+  Future<void> createSite({required String borden, String? name});
 
   /*
     Creates a new Area record in the database
@@ -79,7 +79,7 @@ abstract class AbstractDashboardRepository {
 
     Postconditions: new area record is inserted into the database
   */
-  Future<void> createArea({String name});
+  Future<void> createArea({required String name});
 
   /*
     Creates a new SiteArea record in the database (relationship between a site and an area)
@@ -92,7 +92,7 @@ abstract class AbstractDashboardRepository {
 
     Postconditions: new site-area record is inserted into the database
   */
-  Future<void> createSiteArea({String siteId, String areaId});
+  Future<void> createSiteArea({required String siteId, required String areaId});
 
   /*
     Creates a new Unit record in the database
@@ -105,7 +105,7 @@ abstract class AbstractDashboardRepository {
 
     Postconditions: new unit record is inserted into the database
   */
-  Future<void> createUnit({String siteId, String name});
+  Future<void> createUnit({required String siteId, required String name});
 
   /*
     Creates a new Level record in the database
@@ -123,6 +123,12 @@ abstract class AbstractDashboardRepository {
 
     Postconditions: new level record is inserted into the database
   */
-  Future<void> createLevel({String unitId, String name, int upLimit, int lowLimit, 
-    String? parentId, String? levelChar, int? levelInt});
+  Future<void> createLevel({
+    required String unitId, 
+    required String name, 
+    required int upLimit, 
+    required int lowLimit, 
+    String? parentId, 
+    String? levelChar, 
+    int? levelInt});
 }
