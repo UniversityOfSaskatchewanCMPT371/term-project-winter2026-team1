@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:search_cms/core/utils/constants.dart';
 
 
+import 'package:flutter_test/flutter_test.dart';
 
 void saveButtonClicked(String title){
   AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title];
   //implement when business logic is planned or when I can talk to them
 
 }
+
 
 /*
 Will be used to store the keys for for the text fields of widgets created by
@@ -60,7 +64,6 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
   AddDataPageEntries(title, newKeys, saveButtonKey);
-
   double widgetWidth = 250;
 
   return Container(
@@ -113,6 +116,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
             key: Key(saveButtonKey),
             onPressed: (){saveButtonClicked(title);}, //Function ran when the button is pressed
 
+
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(90, 40),
               backgroundColor: const Color(0xFF1f40b0),
@@ -138,8 +142,6 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   );
 
 }
-
-
 
 
 class DashboardAddPage extends StatelessWidget { 
@@ -168,8 +170,6 @@ class DashboardAddPage extends StatelessWidget {
               createAddDataWidget("Unit", ["name", "site name"]),
               createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
               
-
-
 
             ]
           ),
