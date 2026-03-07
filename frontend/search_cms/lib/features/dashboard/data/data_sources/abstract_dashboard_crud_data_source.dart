@@ -55,4 +55,67 @@ abstract class AbstractDashboardCrudDataSource {
     Preconditions: database connection must be available
   */
   Future<List<LevelModel>> getAllLevels();
+
+
+  // CREATE operations
+  /*
+    Creates a new Site record in the database
+
+    @param site A SiteModel object representing the site to create
+
+    Preconditions: site.id is a valid UUID, site.borden is not empty and site.borden.length <= 8, 
+      database connection must be available
+
+    Postconditions: new site record is inserted into database
+  */
+  Future<void> createSite(SiteModel site);
+
+  /*
+    Creates a new Area record in the database
+
+    @param area A AreaModel object representing the area to create
+
+    Preconditions: area.id is a valid UUID, area.name is not empty, 
+      database connection must be available
+
+    Postconditions: new area record is inserted into the database
+  */
+  Future<void> createArea(AreaModel area);
+
+  /*
+    Creates a new SiteArea record in the database (relationship between a site and an area)
+
+    @param siteArea A SiteAreaModel object containing the site_id and area_id
+
+    Preconditions: siteArea.siteId is a reference to a existing site,
+      siteArea.areaId is a reference to a existing area, database connection must be available
+
+    Postconditions: new site-area record is inserted into the database
+  */
+  Future<void> createSiteArea(SiteAreaModel siteArea);
+
+  /*
+    Creates a new Unit record in the database
+
+    @param unit A UnitModel object representing the unit to create
+
+    Preconditions: unit.id is a valid UUID, unit.siteId is a reference to a existing site,
+      unit.name is not empty, database connection must be available
+
+    Postconditions: new unit record is inserted into the database
+  */
+  Future<void> createUnit(UnitModel unit);
+
+  /*
+    Creates a new Level record in the database
+
+    @param level A LevelModel object representing the level to create
+
+    Preconditions: level.upLimit <= level.lowLimit, level.id is a valid UUID,
+      level.unitId is a reference to a existing unit, level.name is not empty, 
+      database connection must be available
+
+    Postconditions: new level record is inserted into the database
+  */
+  Future<void> createLevel(LevelModel level);
 }
