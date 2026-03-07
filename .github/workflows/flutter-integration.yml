@@ -21,6 +21,10 @@ on:
         default: 'staging'
         type: string
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest

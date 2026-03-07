@@ -43,7 +43,7 @@ void main() async {
         if (ready == false){
           attempts ++;
           logger?.info("""Supabase not ready retrying in
-          10 seconds ($attempts/$maxAttempts)""");
+          5 seconds ($attempts/$maxAttempts)""");
           await Future<void>.delayed(const Duration(seconds: 5));
         }
       }
