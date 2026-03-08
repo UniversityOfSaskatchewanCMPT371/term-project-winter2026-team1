@@ -13,6 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: develop # Point to develop as the start of the checkout, it defaults to main
         fetch-depth: 0 # Full clone necessary for proper merge
 
     # Add versioning
@@ -31,4 +32,5 @@ jobs:
         body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
         commit-message: 'Automated nightly merge v${{ env.DATE_VER }}'
         delete-branch: false
+
   
