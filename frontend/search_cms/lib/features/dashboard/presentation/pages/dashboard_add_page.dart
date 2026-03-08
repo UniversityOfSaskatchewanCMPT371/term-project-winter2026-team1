@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void saveButtonClicked(String title){
   AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title];
-  //TODO when business logic is implemented or when I can talk to them
+  //implement when business logic is planned or when I can talk to them
 
 }
 
@@ -147,7 +147,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
 
 
 
-class DashboardAddPage extends StatelessWidget { //TODO: potentially change type
+class DashboardAddPage extends StatelessWidget { 
   const DashboardAddPage({super.key});
 
 
