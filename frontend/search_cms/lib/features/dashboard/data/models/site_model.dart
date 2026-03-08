@@ -20,7 +20,7 @@ class SiteModel {
     required this.updatedAt,
   });
 
-  // Map SiteEntity instead of inheriting it to prevent coupling and proper seperation
+  // Map SiteEntity instead of inheriting it to prevent coupling and proper separation
   SiteEntity toEntity() {
     return SiteEntity(
       id: id, 
