@@ -17,7 +17,11 @@ sync_rules:
     bucket_definitions:
       global:
         data:
-          - SELECT * FROM counters
+          - SELECT * FROM site
+          - SELECT * FROM area
+          - SELECT * FROM site_area
+          - SELECT * FROM unit
+          - SELECT * FROM level
 
 client_auth:
   jwks_uri: "http://host.docker.internal:54321/auth/v1/.well-known/jwks.json"
