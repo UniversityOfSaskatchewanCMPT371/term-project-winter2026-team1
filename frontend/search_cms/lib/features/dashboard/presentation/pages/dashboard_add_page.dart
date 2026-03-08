@@ -7,7 +7,7 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void saveButtonClicked(String title){
-  AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title];
+  //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   //implement when business logic is planned or when I can talk to them
 
 }
@@ -29,7 +29,7 @@ class AddDataPageEntries{
   List<String> textFieldKeys = [];
   String saveButtonKey = ""; //to allow testers to press the button
 
-  AddDataPageEntries(this.title, List<String> this.textFieldKeys, this.saveButtonKey){
+  AddDataPageEntries(this.title, this.textFieldKeys, this.saveButtonKey){
     dataEntries[title] = this;
   }
 }
@@ -51,7 +51,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   List<String> newKeys = [];
   
   for (int index = 0; index < textFieldNames.length; index++){
-    String keyName = title + "-" + textFieldNames[index];
+    String keyName = "$title-${textFieldNames[index]}";
 
     //apparently these asserts cause problems if the page is reloaded
     // assert(find.byKey(Key(keyName)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $keyName");
@@ -155,8 +155,8 @@ class DashboardAddPage extends StatelessWidget {
         backgroundColor: AppColors.background,
         title: const Text('Add Data'),
       ),
-      body:  Container(
-        child: SingleChildScrollView(
+      body:  
+        SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Wrap(
             direction: Axis.horizontal,
@@ -174,8 +174,8 @@ class DashboardAddPage extends StatelessWidget {
           ),
         )
         
-      ),
     );
+    
   }
 }
 
