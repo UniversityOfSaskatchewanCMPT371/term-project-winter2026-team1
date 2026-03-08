@@ -17,7 +17,6 @@ void saveButtonClicked(String title){
   
 }
 
-
 /*
 Will be used to store the keys for for the text fields of widgets created by
 createAddDataWidget.
