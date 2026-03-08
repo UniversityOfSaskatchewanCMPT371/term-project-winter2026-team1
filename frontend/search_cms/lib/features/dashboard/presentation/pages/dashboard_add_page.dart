@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:logging/logging.dart';
 
+
+final Logger? _logger =
+      logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
 void saveButtonClicked(String title){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   //implement when business logic is planned or when I can talk to them
 
+  _logger?.info("save button was clicked for $title widget");
+
+  
 }
 
 /*
