@@ -8,7 +8,7 @@ final Logger? _logger =
 
 void saveButtonClicked(String title){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
-  //implement when business logic is planned or when I can talk to them
+  // implement when business logic is planned or when I can talk to them
 
   _logger?.info("save button was clicked for $title widget");
 
@@ -24,12 +24,12 @@ will need to be converted to later.
 class AddDataPageEntries{
 
   // so business logic can get relevent keys using the title
-  static Map <String, AddDataPageEntries> dataEntries = {}; //maps title to the instance of this class that will store the relevent keys
+  static Map <String, AddDataPageEntries> dataEntries = {}; // maps title to the instance of this class that will store the relevent keys
 
   String title; 
 
   List<String> textFieldKeys = [];
-  String saveButtonKey = ""; //to allow testers to press the button
+  String saveButtonKey = ""; // to allow testers to press the button
 
   AddDataPageEntries(this.title, this.textFieldKeys, this.saveButtonKey){
     dataEntries[title] = this;
@@ -55,14 +55,14 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   for (int index = 0; index < textFieldNames.length; index++){
     String keyName = "$title-${textFieldNames[index]}";
 
-    //apparently these asserts cause problems if the page is reloaded
+    // apparently these asserts cause problems if the page is reloaded
     // assert(find.byKey(Key(keyName)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $keyName");
     newKeys.add(keyName);
   }
 
   String saveButtonKey = "$title-saveButton";
 
-  //apparently these asserts cause problems if the page is reloaded
+  // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
   AddDataPageEntries(title, newKeys, saveButtonKey);
@@ -76,7 +76,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
         
         
         children: [
-          //title of table
+          // title of table
           Container( 
             width:widgetWidth,
             color: Color(0xFF1f40b0),
@@ -92,8 +92,12 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           ),
 
 
-          //text fields
+          // text fields
           ...textFieldNames.map((name) {
+            /*
+              map returns an iterable (kind of like a list) the ... pulls the items out.
+              So it goes from [widget, widget] to widget, widget
+            */
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
 
@@ -113,10 +117,10 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           }),
 
 
-          //save button
+          // save button
           ElevatedButton(
             key: Key(saveButtonKey),
-            onPressed: (){saveButtonClicked(title);}, //Function ran when the button is pressed
+            onPressed: (){saveButtonClicked(title);}, // Function ran when the button is pressed
 
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(90, 40),
@@ -163,7 +167,8 @@ class DashboardAddPage extends StatelessWidget {
           child: Wrap(
             direction: Axis.horizontal,
             children: [ 
-              /*this is where you will add the columns and text fields for adding
+              /*
+              this is where you will add the columns and text fields for adding
               data to the database
               */
               createAddDataWidget("Site", ["name", "borden"]),
