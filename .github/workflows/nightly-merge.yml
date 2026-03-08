@@ -13,6 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: develop # Point to develop as the start of the checkout, it defaults to main
         fetch-depth: 0 # Full clone necessary for proper merge
 
     # Add versioning
