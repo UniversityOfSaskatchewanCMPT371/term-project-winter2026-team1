@@ -1,0 +1,111 @@
+name: Flutter Integration Test
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        required: true
+        default: 'staging'
+        type: string
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' 
+      
+      - uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: latest
+          install-dependencies: true
+
+      - name: Start docker compose 
+        uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
+        with:
+          # Additional options to pass to `docker` command.
+          docker-up-flags: "--build"
+
+          # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
+          # Default: `./docker-compose.yml`
+          compose-file: ./backend/docker-compose.yml
+
+      #initialize the linux environment
+      - name: setup linux flutter platform
+        run: flutter create --platforms=linux .
+        working-directory: ./frontend/search_cms
+      # Set flutter working-directory
+    
+      # Verify testing is added
+      - name: Flutter source add
+        run: flutter pub add dev:test
+        working-directory: ./frontend/search_cms
+        
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend/search_cms
+
+
+      # Install xvfb and all it's dependencies
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb x11-xserver-utils
+          sudo apt-get install -y cmake ninja-build clang libgtk-3-dev
+
+      - name: Set Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+      
+
+      # Adding junitreport to convert json test result to jUnit.
+      - name: Flutter add junitreport
+        run: flutter pub global activate junitreport
+        working-directory: ./frontend/search_cms
+        
+      # runa headless xvfb to initiate flutter integration tests
+      - name: Run headless test
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: |
+           bash -c "mkdir -p test-results"
+           bash -c "flutter test integration_test -d linux --machine | tojunit --output test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml"
+          working-directory: ./frontend/search_cms
+        env:
+          API_BASE_URL: http://localhost:8080
+      # Run integration tests in headless Chrom
+
+      # Upload out flutter test to the artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: flutter_int_test_report_${{ env.TIMESTAMP }}
+          path: frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml
+
+      # Upload Test reports to the pull request.
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: 'frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml'
+          include_passed: True
+          fail_on_failure: True
