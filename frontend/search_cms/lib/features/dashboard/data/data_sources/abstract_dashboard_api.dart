@@ -5,7 +5,6 @@ import '../models/site_model.dart';
 import '../models/unit_model.dart';
 
 abstract class AbstractDashboardApi {
-  // READ operations
   /*
     Retrieves all Site records from the database
 
@@ -56,8 +55,6 @@ abstract class AbstractDashboardApi {
   */
   Future<List<LevelModel>> getAllLevels();
 
-
-  // CREATE operations
   /*
     Creates a new Site record in the database
 
@@ -130,5 +127,6 @@ abstract class AbstractDashboardApi {
     required int lowLimit, 
     String? parentId, 
     String? levelChar, 
-    int? levelInt});
+    int? levelInt
+  });
 }
