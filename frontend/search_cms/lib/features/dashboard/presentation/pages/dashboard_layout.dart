@@ -23,63 +23,74 @@ class DashboardLayout extends StatelessWidget {
   }
 
   Widget _buildDrawer(BuildContext context) {
-    return Drawer(
+    return Container(
       width: 10.w,
-      backgroundColor: AppColors.mainText,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-      ),
+      color: AppColors.mainText,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(24.0),
 
-            // Logo
-            child: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 8.dp,
-                  height: 1.1,
-                  letterSpacing: 1.0,
+        
+          Drawer(
+          width: 10.w,
+          backgroundColor: AppColors.mainText,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+
+                // Logo
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.1,
+                      letterSpacing: 1.0,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 's',
+                        style: TextStyle(
+                          color: AppColors.primaryBlue,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'EARCH',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    text: 's',
-                    style: TextStyle(
-                      color: AppColors.primaryBlue,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'EARCH',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ),
 
-          // Dashboard navigation items
-          // Buttons for home and add page, see routes.dart for widget mounting location
-          Divider(color: AppColors.mutedText, height: 1.h),
-          _buildDrawerItem(
-            context,
-            icon: Icons.home,
-            label: 'Home',
-            path: '/dashboard/home',
+              // Dashboard navigation items
+              // Buttons for home and add page, see routes.dart for widget mounting location
+              Divider(color: AppColors.mutedText, height: 1),
+              _buildDrawerItem(
+                context,
+                icon: Icons.home,
+                label: 'Home',
+                path: '/dashboard/home',
+              ),
+              _buildDrawerItem(
+                context,
+                icon: Icons.add,
+                label: 'Add',
+                path: '/dashboard/add',
+              ),
+            ],
           ),
-          _buildDrawerItem(
-            context,
-            icon: Icons.add,
-            label: 'Add',
-            path: '/dashboard/add',
-          ),
-        ],
-      ),
+        )
+      ]
+      )
     );
   }
 
