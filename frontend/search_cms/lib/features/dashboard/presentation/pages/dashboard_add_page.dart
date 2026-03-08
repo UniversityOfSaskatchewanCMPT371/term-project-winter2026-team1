@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:search_cms/core/utils/constants.dart';
 
 
-
 void saveButtonClicked(String title){
   AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title];
   //implement when business logic is planned or when I can talk to them
