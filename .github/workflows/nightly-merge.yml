@@ -15,12 +15,20 @@ jobs:
       with:
         fetch-depth: 0 # Full clone necessary for proper merge
 
+    # Add versioning
+    - name: Set Version String
+      id: version
+      run: echo "DATE_VER=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
     # Uses a marketplace gh action that merges the develop to main, no need for testing yet.
-    - name: Nightly Merge
-      uses: robotology/gh-action-nightly-merge@v1.5.2
+    # This action creates a PR instead of doing a direct push
+    - name: Create Pull Request to Main
+      uses: peter-evans/create-pull-request@v6
       with:
-        stable_branch: 'develop'
-        development_branch: 'main'
-        allow_ff: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: nightly-merge-v${{ env.DATE_VER }}
+        base: main
+        title: 'Nightly Merge: v${{ env.DATE_VER }}'
+        body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
+        commit-message: 'Automated nightly merge v${{ env.DATE_VER }}'
+        delete-branch: false
+  

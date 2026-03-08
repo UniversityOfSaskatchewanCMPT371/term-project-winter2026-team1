@@ -22,6 +22,10 @@ on:
         default: 'staging'
         type: string
 
+permissions:
+    checks: write
+    pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,16 +35,6 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable' 
-          
-      - name: Start docker compose 
-        uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
-        with:
-          # Additional options to pass to `docker` command.
-          docker-up-flags: "--build"
-
-          # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
-          # Default: `./docker-compose.yml`
-          compose-file: ./backend/docker-compose.yml
 
       # Set flutter working-directory
       - name: Set flutter workdir
@@ -56,6 +50,36 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
       
-      - name: Run tests
-        run: flutter test
+      - name: Set Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+      
+      # Junit report convert flutter's json test report to jUnit
+      - name: Flutter add junitreport
+        run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
+
+
+      - name: Run tests 
+        run: | 
+          mkdir -p test-results
+          flutter test --machine | tojunit --output test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml
+        working-directory: ./frontend/search_cms
+
+      # Upload out flutter test to the artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: flutter_test_report_${{ env.TIMESTAMP }}
+          path: frontend/search_cms/test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: 'frontend/search_cms/test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml'
+          include_passed: True
+          fail_on_failure: True
+      
+          
+      
