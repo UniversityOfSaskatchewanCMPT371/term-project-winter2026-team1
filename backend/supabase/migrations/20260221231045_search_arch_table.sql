@@ -9,6 +9,7 @@ create table public.role (
   constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
 ) TABLESPACE pg_default;
 
+-- A Site represents the top-level in the system
 CREATE TABLE site (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT DEFAULT '', -- Can be empty
@@ -16,5 +17,14 @@ CREATE TABLE site (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now() -- For admin editing purposes
 );
+
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE site ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on site"
+ON site
+FOR SELECT
+TO authenticated
+USING (true);
 
 
