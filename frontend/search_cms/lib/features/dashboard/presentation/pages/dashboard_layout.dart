@@ -64,6 +64,7 @@ class DashboardLayout extends StatelessWidget {
           ),
 
           // Dashboard navigation items
+          // Buttons for home and add page, see routes.dart for widget mounting location
           Divider(color: AppColors.mutedText, height: 1.h),
           _buildDrawerItem(
             context,
@@ -84,15 +85,21 @@ class DashboardLayout extends StatelessWidget {
 
   Widget _buildDrawerItem(
     BuildContext context, {
+    // Every drawer item is a button containing a label, icon and a path to route to
     required IconData icon,
     required String label,
     required String path,
   }) {
+    // Gets the current path from the router and compares it to the path of each DrawerItem
+    // Then we can conditionally apply styles in the following section to each item
+    // depending on if they are selected or not
     final isSelected = GoRouterState.of(context).uri.path == path;
 
     return InkWell(
+      // send route on button press
       onTap: () => context.go(path),
       child: Container(
+        // Styling for the entire drawer
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         color: isSelected ? AppColors.primaryBlue.withValues(alpha: 0.1) : null,
         child: Row(
