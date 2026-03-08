@@ -32,5 +32,4 @@ jobs:
         body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
         commit-message: 'Automated nightly merge v${{ env.DATE_VER }}'
         delete-branch: false
-
   
