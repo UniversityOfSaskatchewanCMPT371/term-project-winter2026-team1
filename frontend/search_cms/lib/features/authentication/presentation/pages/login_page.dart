@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/config/routes/routes.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:sizer/sizer.dart';
 
@@ -74,6 +75,8 @@ class _LoginPageState extends State<LoginPage> {
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
 
+ 
+
     context.read<LoginCubit>().signIn(
           email: _emailController.text.trim(),
           password: _passwordController.text,
@@ -139,6 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                         SnackBar(key: ValueKey("toast_successful_login"), 
                         content: Text('Signed in successfully')),
                       );
+
+                      // Route to home page
+                      router.go('/dashboard/home');
                     }
                   },
                   builder: (context, state) {

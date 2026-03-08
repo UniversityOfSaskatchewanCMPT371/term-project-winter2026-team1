@@ -59,4 +59,5 @@ void main() {
 
     expect(model.toEntity(), isA<SiteAreaEntity>());
   });
+  // TODO: add tests using mocked sqlite.Row for fromRow()
 }

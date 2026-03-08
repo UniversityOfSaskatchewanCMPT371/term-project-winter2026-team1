@@ -58,7 +58,7 @@ void main() {
     expect(model.id, 'abcd12345');
     expect(model.name, 'some place');
     expect(model.createdAt, now);
-    expect(model.createdAt, now);
+    expect(model.updatedAt, now);
   });
 
   // Test the toEntity() function 
