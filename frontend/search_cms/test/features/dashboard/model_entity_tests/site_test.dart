@@ -118,5 +118,5 @@ void main() {
     expect(model.toEntity(), isA<SiteEntity>());
   });
 
-  // Test team could create a mocking test for the fromRow() function
+  // TODO: add tests using mocked sqlite.Row for fromRow()
 }

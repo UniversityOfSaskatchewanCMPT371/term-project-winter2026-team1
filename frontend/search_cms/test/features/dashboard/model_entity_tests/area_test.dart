@@ -49,7 +49,7 @@ void main() {
     expect(model.id, 'abcd12345');
     expect(model.name, 'some place');
     expect(model.createdAt, now);
-    expect(model.createdAt, now);
+    expect(model.updatedAt, now);
   });
 
   // Test the toEntity() function 
@@ -79,6 +79,5 @@ void main() {
 
     expect(model.toEntity(), isA<AreaEntity>());
   });
-
-  // Test team could create a mocking test for the fromRow() function 
+  // TODO: add tests using mocked sqlite.Row for fromRow()
 }
