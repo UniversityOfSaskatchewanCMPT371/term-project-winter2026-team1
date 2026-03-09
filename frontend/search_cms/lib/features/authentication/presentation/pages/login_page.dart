@@ -81,10 +81,6 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
-
-    // for presentation sake, should have this properly redirect after successful auth
-    router.go('/dashboard/home');
-    
   }
 
   /*
@@ -146,6 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                         SnackBar(key: ValueKey("toast_successful_login"), 
                         content: Text('Signed in successfully')),
                       );
+
+                      // Route to home page
+                      router.go('/dashboard/home');
                     }
                   },
                   builder: (context, state) {
