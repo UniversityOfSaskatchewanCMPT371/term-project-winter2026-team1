@@ -9,7 +9,7 @@ import '../bloc/home_state.dart';
 import 'data_table.dart';
 
 
-/// Main dashboard home page, showed by defualt after logging in
+/// Main dashboard home page, showed by default after logging in
 /// Contains title card, search entry point, and data display widgets
 class DashboardHomePage extends StatelessWidget {
   const DashboardHomePage({super.key});
@@ -166,6 +166,8 @@ class SearchToggle extends StatefulWidget {
   State<SearchToggle> createState() => _SearchToggleState();
 }
 class _SearchToggleState extends State<SearchToggle> {
+  // Internal state to tell widget which side of toggle is selected
+  // This is a common use pattern for the ToggleButtons widget
   final List<bool> _selected = [true, false];
 
   @override
@@ -174,10 +176,13 @@ class _SearchToggleState extends State<SearchToggle> {
       direction: Axis.horizontal,
       onPressed: (int index) {
         setState(() {
-          // Enable tapped and disable the other
+          // Compare each of _selected with the index that was pressed
+          // This effectively enables the side that was pressed and disables the other
+          // ie. [true, false] -> [false, true] and vice-versa
           for (int i = 0; i < _selected.length; i++) {
             _selected[i] = i == index;
           }
+          // pass selection up to parent for search bar rendering
           widget.onSelectionChanged(index);
         });
       },
@@ -198,6 +203,7 @@ class _SearchToggleState extends State<SearchToggle> {
       isSelected: _selected,
       children: [
         SizedBox(width: 80, child: Center(child: Text("Search"))),
+        // more space for larger text width
         SizedBox(width: 140, child: Center(child: Text("Advanced Search"))),
       ],
     );

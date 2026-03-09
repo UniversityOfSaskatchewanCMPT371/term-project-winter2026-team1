@@ -8,8 +8,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   // Update the selected search type (basic or advanced)
   void updateSearchToggle(int index) {
+    // cast state to HomeLoaded to preserve a copy of columns
+    // since this method is only called from with the toggle,
+    // state will always be Loaded so the case is safe
     final current = state as HomeLoaded;
     emit(HomeLoaded(
+      // emit new state with modified index and the same columns
       selectedSearch: index,
       selectedColumns: current.selectedColumns,
     ));
