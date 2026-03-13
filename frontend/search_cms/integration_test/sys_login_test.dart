@@ -48,8 +48,22 @@ Widget wrapWithRouter(GoRouter router) {
     builder: (_, __, ___) => MaterialApp.router(
       routerConfig: router,
     )
-  )
+  );
 }
+
+// Helper function that fills out the form fields with provided credentials and submits
+Future<void> fillAndSubmit(
+  WidgetTester tester, {
+    required String email,
+    required String password,
+  }) async {
+
+    await tester.enterText(find.byKey(const ValueKey('emailField')), email);
+    await tester.enterText(find.byKey(const ValueKey('passwordField')), password);
+    await tester.tap(find.byKey(const ValueKey('accessSystemButton')));
+    // Extend settle timeout to account for real network latency
+    await tester.pumpAndSettle(const Duration(seconds: 10));
+  }
 
 void main() {
   Widget wrap(Widget child) {
