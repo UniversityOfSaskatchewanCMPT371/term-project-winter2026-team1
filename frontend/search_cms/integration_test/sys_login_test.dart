@@ -21,6 +21,35 @@ const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 const String _badEmail = 'iamanevildoerandthisismyemail@totallyrealemail.com';
 const String _badPassword = 'dorwssap9000';
 
+// Build a copy of the real router for use in this test suite
+// Mirrors all the real routes but does not build the actual home page
+// This test only goes as far as checking the route of the page is switched to
+// '/dashboard/home' and does not test and of the actual rendering of the home page
+GoRouter _buildTestRouter() {
+return GoRouter(
+  initialLocation: '/login',
+  routes: [
+    GoRoute(
+      path: '/login',
+      builder: (_, __) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/dashboard/home',
+      builder: (_, __) => const Scaffold(
+        body: Center(child: Text("Dashboard Home"))),
+    )
+    ],
+  );
+}
+
+// Wrap the router with a Sizer for LoginPage responsive layouts
+Widget wrapWithRouter(GoRouter router) {
+  return Sizer(
+    builder: (_, __, ___) => MaterialApp.router(
+      routerConfig: router,
+    )
+  )
+}
 
 void main() {
   Widget wrap(Widget child) {
