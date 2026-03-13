@@ -9,8 +9,9 @@ import '../test/features/authentication/presentation/pages/login_page_testcases.
 
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_page_cubit.dart';
-import 'package:search_cms/features/authentication/presentation/bloc/login_page_state.dart';
+import '../../features/authentication/presentation/bloc/login_page_state.dart';
 
+// Constant inputs
 // Test Credentials for success case
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
 const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
@@ -20,6 +21,8 @@ const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 // Bad credentials to intentionally fail login
 const String _badEmail = 'iamanevildoerandthisismyemail@totallyrealemail.com';
 const String _badPassword = 'dorwssap9000';
+
+// Helper functions
 
 // Build a copy of the real router for use in this test suite
 // Mirrors all the real routes but does not build the actual home page
@@ -65,7 +68,30 @@ Future<void> fillAndSubmit(
     await tester.pumpAndSettle(const Duration(seconds: 10));
   }
 
+// Start test
+
 void main() {
+
+  setUpAll(() async {
+    // Initialize Supabase for the test suite
+    try {
+      await Supabase.initialize(
+        url: _supabaseUrl,
+        anonKey: _supabaseAnonKey);
+    } catch (_) {
+      // Supabase is already initialized so we can move on
+      // TODO verify this behaviour with Theo
+    }
+  });
+
+  tearDown(() async {
+    // Sign out after each test for a clean authentication slate
+    await Supabase.instance.client.auth.signOut();
+  });
+
+
+  // Runs all widget tests to verify page rendering
+  // Also handles cases of invalid inputs to the text entry fiels
   Widget wrap(Widget child) {
     return Sizer(
       builder: (_, __, ___) {
@@ -73,11 +99,9 @@ void main() {
       },
     );
   }
-
-  // Runs all widget tests to verify page rendering
-  // Also handles cases of invalid inputs to the text entry fiels
   runLoginPageTestCases(() => wrap(const LoginPage()));
 
+  // System tests
   group('Test login system', () {
       
   });
