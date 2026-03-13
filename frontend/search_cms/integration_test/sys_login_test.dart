@@ -107,6 +107,8 @@ void main() {
       testWidgets(
         'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
       (WidgetTester tester) async {
+
+        // Use helpers to build login page
         final router = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(router));
         await tester.pumpAndSettle();
@@ -116,10 +118,10 @@ void main() {
 
         // Get LoginPage cubit from widget tree
         final cubit = tester.element(find.byType(LoginPage)).read<LoginCubit>();
-        // Assert that state is an error
+        // Current state should now be an error from invalid login
         expect(cubit.state, isA<LoginFailure>());
        
-        // Assert error message from Supabase is rendered in the snackbar
+        // Assert error message from backend call is rendered in the snackbar
         final failureState = cubit.state as LoginFailure;
         expect(find.text(failureState.message), findsOneWidget);
  
@@ -158,11 +160,9 @@ void main() {
           findsOneWidget,
         );
  
-        // Assert: router navigated to dashboard — LoginPage is gone
+        // Assert router navigated to dashboard — LoginPage is gone
         expect(find.text('Dashboard Home'), findsOneWidget);
         expect(find.byType(LoginPage), findsNothing);
       });
   });
 }
-
-//final path = GoRouterState.of(context).uri.path;
