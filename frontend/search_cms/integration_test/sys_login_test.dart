@@ -128,7 +128,7 @@ void main() {
 
         // Get LoginPage cubit from widget tree
         final cubit = tester.element(find.byType(LoginPage)).read<LoginCubit>();
-        // Current state should now be an error from invalid login
+        // Check current state, should be an error from invalid login
         expect(cubit.state, isA<LoginFailure>());
        
         // Assert error message from backend call is rendered in the snackbar
