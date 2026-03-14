@@ -7,55 +7,97 @@ import '../bloc/data_table_state.dart';
 
 
 /// Data table widget, which will be used to display search results in the dashboard home page
-  class DataTableWidget extends StatelessWidget {
-    const DataTableWidget({super.key});
+class DataTableWidget extends StatelessWidget {
+  const DataTableWidget({super.key});
 
-    @override
-    Widget build(BuildContext context) {
-      return BlocBuilder<DataTableCubit, DataTableState>(
-        builder: (context, state) {
-          return switch (state) {
-            // Initial state is not reachable with current set-up in home page,
-            // But i've left this here in case we move away from having pre-loaded data
-            DataTableInitial() => const Center(child: Text("Welcome to the sEARCH home page")),
-            DataTableLoading() => const Center(child: CircularProgressIndicator()),
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DataTableCubit, DataTableState>(
+      builder: (context, state) {
+        return switch (state) {
 
-            DataTableLoaded() => TableView.builder(
-              columnCount: state.columns.length,
-              rowCount: state.rows.length,
-              columnBuilder: (index) => buildColumnSpan(index, state.columns.length, context),
-              rowBuilder: buildRowSpan,
+          // Initial state
+          DataTableInitial() =>
+            const Center(child: Text("Welcome to the sEARCH home page")),
 
-              // TODO: placeholder - need to figure out how to render data from the backend here
-              cellBuilder:(BuildContext context, TableVicinity vicinity) {
-                return TableViewCell(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      // TODO: fix the overlap
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1,
-                      )
-                    ),
-                    child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
-                  ),
-                );
-              },
-            ),
+          // Loading indicator
+          DataTableLoading() =>
+            const Center(child: CircularProgressIndicator()),
 
-            DataTableError() => Center(child: Text(state.message))
-          };
-        }
-      );
-    }
+          // Loaded table
+          DataTableLoaded() =>
+            state.rows.isEmpty
+              ? const Center(child: Text("No results found"))
+              : _buildTable(state),
 
-    TableSpan buildRowSpan(int index){
-      // add row level decorations here
-      return TableSpan(extent: FixedTableSpanExtent(50));
-    }
-
-    TableSpan buildColumnSpan(int index, int cols, BuildContext context){
-      // add col level decorations here
-      return TableSpan(extent: FractionalTableSpanExtent(1 / cols),);
-    }
+          // Error message
+          DataTableError() =>
+            Center(child: Text(state.message)),
+        };
+      },
+    );
   }
+
+
+  Widget _buildTable(DataTableLoaded state) {
+
+    final columns = state.columns.toList();
+
+    return TableView.builder(
+      columnCount: columns.length,
+      rowCount: state.rows.length + 1, // +1 for header row
+
+      columnBuilder: (index) =>
+        buildColumnSpan(index, columns.length),
+
+      rowBuilder: buildRowSpan,
+
+      cellBuilder: (BuildContext context, TableVicinity vicinity) {
+
+        final isHeader = vicinity.row == 0;
+
+        final cellText = isHeader
+            ? columns[vicinity.column]
+            : state.rows[vicinity.row - 1][vicinity.column];
+
+        return TableViewCell(
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: isHeader ? Colors.grey.shade300 : Colors.white,
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
+              ),
+            ),
+            child: Text(
+              cellText,
+              style: TextStyle(
+                fontWeight:
+                    isHeader ? FontWeight.w600 : FontWeight.w400,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  TableSpan buildRowSpan(int index) {
+    return const TableSpan(
+      extent: FixedTableSpanExtent(50),
+    );
+  }
+
+
+  TableSpan buildColumnSpan(int index, int cols) {
+    return TableSpan(
+      extent: FractionalTableSpanExtent(1 / cols),
+    );
+  }
+}
