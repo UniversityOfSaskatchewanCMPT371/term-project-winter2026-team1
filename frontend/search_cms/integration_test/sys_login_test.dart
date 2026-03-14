@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
+import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_cubit.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_state.dart';
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
@@ -71,13 +73,19 @@ Future<void> fillAndSubmit(
 
 void main() {
 
+  final Logger? logger = 
+    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
+
+
   setUpAll(() async {
     // Initialize Supabase for the test suite
     try {
+      logger?.info('Verifying Supabase is initialized');
       await Supabase.initialize(
         url: _supabaseUrl,
         anonKey: _supabaseAnonKey);
     } catch (_) {
+      logger?.warning('Supabase already running');
       // Supabase is already initialized so we can move on
       // TODO verify this behaviour with Theo
     }
@@ -108,12 +116,14 @@ void main() {
       'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
       (WidgetTester tester) async {
 
+        logger?.info('Running login failure case');
         // Use helpers to build login page
         final router = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(router));
         await tester.pumpAndSettle();
 
         // Submit rejected credentials
+        logger?.info('Submitting bad credentials');
         await fillAndSubmit(tester, email: _badEmail, password: _badPassword);
 
         // Get LoginPage cubit from widget tree
@@ -132,6 +142,8 @@ void main() {
         // Assert state returned to LoginInitial, error no longer visible
         expect(cubit.state, isA<LoginInitial>());
         expect(find.text(failureState.message), findsNothing);
+
+        logger?.info('Login failure test case finished');
        });
   });
 
@@ -141,6 +153,7 @@ void main() {
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
       (WidgetTester tester) async {
 
+        logger?.info('Running login success case');
         // Ensure fields were filled from CI
         assert(
           _testEmail.isNotEmpty && _testPassword.isNotEmpty,
@@ -152,6 +165,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Submit form with valid entries
+        logger?.info('submitting good credentials');
         await fillAndSubmit(tester, email: _testEmail, password: _testPassword);
 
         // Assert success toast was shown by the BlocConsumer listener
@@ -163,6 +177,8 @@ void main() {
         // Assert router navigated to dashboard — LoginPage is gone
         expect(find.text('Dashboard Home'), findsOneWidget);
         expect(find.byType(LoginPage), findsNothing);
+
+        logger?.info('Login success test case finished');
       });
   });
 }
