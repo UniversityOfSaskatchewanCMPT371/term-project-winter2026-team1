@@ -1,38 +1,45 @@
 import 'package:bloc/bloc.dart';
+
+import '../../data/data_sources/abstract_dashboard_api.dart';
 import './data_table_state.dart';
 
 // Manager for functions of the data table
 class DataTableCubit extends Cubit<DataTableState> {
-  DataTableCubit() : super(const DataTableInitial());
+  final AbstractDashboardApi dashboardApi;
 
-  // TODO: replace this
-  // Generate a 10 row x 4 col table
-  final Set<String> sampleColumns = {"Title", "Site", "Unit", "Level"};
-  final List<List<String>> sampleRows = List.generate(
-    15, (rowIndex) => List.generate(
-      4, (colIndex) => 'R$rowIndex C$colIndex',
-    ),
-  );
-  void init() => emit(DataTableLoaded(rows: sampleRows, columns: sampleColumns));
+  DataTableCubit({
+    required this.dashboardApi,
+  }) : super(const DataTableInitial());
+
+  final Set<String> defaultColumns = {
+    'Title',
+    'Site',
+    'Unit',
+    'Level',
+  };
+
   // This should make a call to initial fetch, but only the first
   // that the table gets displayed
-
+  Future<void> init() async => initialFetch();
 
   // Initial function to render display table with a dump of all data
   // Should only be called by init()
   // Pre-conditions: Home page being rendered for the first time
   // Post-conditions: Table displays all available data
   // This might be very slow if the fetch takes a long time and data is big
-  void initialFetch() {
-    // placeholder
-    emit(DataTableLoaded(rows: sampleRows, columns: sampleColumns));
-    // emit(DataTableLoading());
-    // await for data to return from call to API
-    // Get rows and cols from query
-    // Should be as simple as formatting the result into the set of Columns
-    // and a list of list of rows. then just cast all the data to a string if not already
-    // emit(DataTableLoaded(rows, cols));
-    // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
+  Future<void> initialFetch() async {
+    emit(const DataTableLoading());
+
+    try {
+      final List<List<String>> rows = await dashboardApi.basicSearch('');
+
+      emit(DataTableLoaded(
+        rows: rows,
+        columns: defaultColumns,
+      ));
+    } catch (e) {
+      emit(DataTableError('Failed to load dashboard data: $e'));
+    }
   }
 
   // Update the display of the table without making a new query
@@ -53,14 +60,21 @@ class DataTableCubit extends Cubit<DataTableState> {
   // Query database for basic search
   // Pre-conditions: query is non-empty
   // If result is empty, an appropriate message will be shown
-  void basicFetch(String query) {
-    // emit(DataTableLoading());
-    // await for data to return from call to API
-    // Get rows and cols from query
-    // Should be as simple as formatting the result into the set of Columns
-    // and a list of list of rows. then just cast all the data to a string if not already
-    // emit(DataTableLoaded(rows, cols));
-    // If any failure occurs (connection, no results found, etc.) emit DataTableError with message
+  Future<void> basicFetch(String query) async {
+    final String normalizedQuery = query.trim();
+
+    emit(const DataTableLoading());
+
+    try {
+      final List<List<String>> rows = await dashboardApi.basicSearch(normalizedQuery);
+
+      emit(DataTableLoaded(
+        rows: rows,
+        columns: defaultColumns,
+      ));
+    } catch (e) {
+      emit(DataTableError('Basic search failed: $e'));
+    }
   }
 
   // query database for an advanced search

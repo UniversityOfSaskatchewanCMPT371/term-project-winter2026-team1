@@ -48,12 +48,22 @@ abstract class AbstractDashboardApi {
   /*
     Retrieves all Level records from the database
 
-    @return A list containing all LevelModel objects currently stored, 
+    @return A list containing all LevelModel objects currently stored,
       if no levels exist an empty list is returned
 
     Preconditions: database connection must be available
   */
   Future<List<LevelModel>> getAllLevels();
+
+  /*
+    Performs a basic search across the currently implemented dashboard tables.
+
+    The returned rows are already formatted for the dashboard table in the order:
+    [Title, Site, Unit, Level]
+
+    Preconditions: database connection must be available
+  */
+  Future<List<List<String>>> basicSearch(String query);
 
   /*
     Creates a new Site record in the database
@@ -84,7 +94,7 @@ abstract class AbstractDashboardApi {
     @param siteId A reference to an existing site
     @param areaId A reference to an existing area
 
-    Preconditions: siteId is a valid UUID reference to an existing site, 
+    Preconditions: siteId is a valid UUID reference to an existing site,
       areaId is a valid UUID reference to an existing area, database connection must be available
 
     Postconditions: new site-area record is inserted into the database
@@ -115,18 +125,18 @@ abstract class AbstractDashboardApi {
     @param levelChar An optional string representing some other archeological data
     @param levelInt An optional integer representing some other archeological data
 
-    Preconditions: upLimit <= lowLimit, unitId is a valid UUID reference to an existing unit, 
+    Preconditions: upLimit <= lowLimit, unitId is a valid UUID reference to an existing unit,
       name is not empty, database connection must be available
 
     Postconditions: new level record is inserted into the database
   */
   Future<void> createLevel({
-    required String unitId, 
-    required String name, 
-    required int upLimit, 
-    required int lowLimit, 
-    String? parentId, 
-    String? levelChar, 
-    int? levelInt
+    required String unitId,
+    required String name,
+    required int upLimit,
+    required int lowLimit,
+    String? parentId,
+    String? levelChar,
+    int? levelInt,
   });
 }
