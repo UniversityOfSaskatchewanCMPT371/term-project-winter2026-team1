@@ -1,15 +1,15 @@
 import 'package:powersync/powersync.dart';
 
 import '../../../../core/database/schema.dart';
-import 'abstract_dashboard_api.dart';
 import '../models/area_model.dart';
 import '../models/level_model.dart';
 import '../models/site_area_model.dart';
 import '../models/site_model.dart';
 import '../models/unit_model.dart';
+import 'abstract_dashboard_api.dart';
 
 /*
-  The api implementation for the dashboard feature
+  The API implementation for the dashboard feature
 */
 // (TODO) implement these functions
 class DashboardApiImpl implements AbstractDashboardApi {
