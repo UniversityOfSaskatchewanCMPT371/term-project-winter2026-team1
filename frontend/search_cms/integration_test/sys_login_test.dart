@@ -18,7 +18,7 @@ const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL');
 const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
 // Bad credentials to intentionally fail login
-const String _badEmail = 'iamanevildoerandthisismyemail@totallyrealemail.com';
+const String _badEmail = 'i_am_an_evildoer_and_this_is_my_email@totally_real_email.com';
 const String _badPassword = 'dorwssap9000';
 
 // Helper functions
@@ -105,7 +105,7 @@ void main() {
   // Failure case
   group('Login Failure Case', () {
       testWidgets(
-        'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
+      'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
       (WidgetTester tester) async {
 
         // Use helpers to build login page
