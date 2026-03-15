@@ -23,6 +23,8 @@ Future<void> initInjections() async {
   initDashboardInjections();
   initSiteInjections();
   initAreaInjections();
+  // Register dashboard injections
+  initDashboardInjections();
 }
 
 /*
