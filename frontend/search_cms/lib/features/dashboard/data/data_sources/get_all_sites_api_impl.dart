@@ -1,3 +1,4 @@
+// ignore_for_file: directives_ordering
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
