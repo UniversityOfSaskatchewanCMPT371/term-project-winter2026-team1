@@ -67,7 +67,6 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
 
-
       # Install xvfb (headless display) and all it's dependencies
       - name: Install xvfb
         run: |
@@ -79,7 +78,6 @@ jobs:
       - name: Set Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
       
-
       # Adding junitreport to convert json test result to jUnit.
       - name: Flutter add junitreport
         run: flutter pub global activate junitreport
