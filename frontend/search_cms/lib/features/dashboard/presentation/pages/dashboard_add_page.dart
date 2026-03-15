@@ -73,9 +73,13 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
 
   return Container(
     width: widgetWidth,
+<<<<<<< HEAD
     //Changed the padding size for edge
     padding: const EdgeInsets.all(25),
     //Added a decoration box that seperates each section
+=======
+    padding: const EdgeInsets.all(18),
+>>>>>>> a230e12 (changed the style and layout)
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(14),
@@ -94,17 +98,23 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           ),
         ),
 
+<<<<<<< HEAD
         //Aligns with each Box Section and signifies it to its own unique part
+=======
+>>>>>>> a230e12 (changed the style and layout)
         const SizedBox(height: 12),
         const Divider(height: 1, color: Color(0xFFD9DEE8)),
         const SizedBox(height: 16),
 
         // text fields
         ...textFieldNames.map((name) {
+<<<<<<< HEAD
             /*
               map returns an iterable (kind of like a list) the ... pulls the items out.
               So it goes from [widget, widget] to widget, widget
             */
+=======
+>>>>>>> a230e12 (changed the style and layout)
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -131,18 +141,30 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                     fillColor: const Color(0xFFF8FAFC),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
+<<<<<<< HEAD
                       vertical: 16,
+=======
+                      vertical: 14,
+>>>>>>> a230e12 (changed the style and layout)
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
+<<<<<<< HEAD
                         color: Color(0xFFC7D0DD),
+=======
+                        color: Color(0xFFD0D7E2),
+>>>>>>> a230e12 (changed the style and layout)
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
+<<<<<<< HEAD
                         color: Color(0xFFC7D0DD),
+=======
+                        color: Color(0xFFD0D7E2),
+>>>>>>> a230e12 (changed the style and layout)
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -191,9 +213,15 @@ class DashboardAddPage extends StatelessWidget {
               this is where you will add the columns and text fields for adding
               data to the database
               */
+<<<<<<< HEAD
               createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
               createAddDataWidget("Unit", ["Name", "Site Name"]),
               createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+=======
+              createAddDataWidget("Site", ["name", "borden"]),
+              createAddDataWidget("Unit", ["name", "site name"]),
+              createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
+>>>>>>> a230e12 (changed the style and layout)
               
 
             ]
