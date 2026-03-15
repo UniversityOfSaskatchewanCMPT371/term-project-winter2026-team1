@@ -1,23 +1,47 @@
-import '../entities/site_entity.dart';
-import '../repositories/abstract_dashboard_repository.dart';
+import 'package:logging/logging.dart';
+import 'package:powersync/powersync.dart';
+import 'package:search_cms/core/utils/class_templates/result.dart';
+import 'package:search_cms/core/utils/constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../repositories/abstract_get_all_sites_repository.dart';
 
 /*
   The use case for getting all Sites
 */
 class GetAllSitesUseCase {
-  final AbstractDashboardRepository repository;
+  final AbstractGetAllSitesRepository _repository;
+  final Logger _logger = Logger('Get all sites use case');
 
-  GetAllSitesUseCase(this.repository);
+  GetAllSitesUseCase({required AbstractGetAllSitesRepository repository})
+    : _repository = repository;
 
   /*
     Retrieves all Sites in the system
 
-    @return A list containing all SiteEntity objects currently stored
-      if no sites exist an empty list is returned
+    @return A Success if the fetch is successful, containing the list of site
+      entities or Failure containing the errorMessage otherwise
 
-    Preconditions: None
+    Preconditions:
+      (1) PowerSync database is initialized
+      (2) The user must be authenticated
   */
-  Future<List<SiteEntity>> call() {
-    return repository.getAllSites();
+  Future<Result> call() async {
+
+    _logger.finer('Get all sites use case start');
+
+    /*
+       Check if the PowerSync database has error, if not, we see it as
+       initialized.
+       */
+    assert(getIt<PowerSyncDatabase>().currentStatus.anyError == null);
+    // Check if the user is authenticated
+    assert(getIt<SupabaseClient>().auth.currentSession != null);
+
+    // Call the repository to get all sites
+    Result result = await _repository.getAllSites();
+
+    _logger.finer('Get all sites use case end');
+
+    return result;
   }
 }
