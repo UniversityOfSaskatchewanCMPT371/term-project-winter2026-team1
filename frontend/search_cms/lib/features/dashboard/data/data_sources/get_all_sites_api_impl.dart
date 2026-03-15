@@ -30,7 +30,8 @@ class GetAllSitesApiImpl implements AbstractGetAllSitesApi {
   @override
   Future<List<SiteModel>> getAllSites() async {
     try {
-      _logger.finer('Get all sites API start');
+      _logger.finer('Get all sites API: Retrieving all sites from PowerSync '
+          'Database start');
 
       /*
        Check if the PowerSync database has error, if not, we see it as
@@ -54,7 +55,8 @@ class GetAllSitesApiImpl implements AbstractGetAllSitesApi {
         listOfSiteModel.add(siteModel);
       }
 
-      _logger.finer('Get all sites API end');
+      _logger.finer('Get all sites API: Retrieving all sites from PowerSync '
+          'Database end');
 
       return listOfSiteModel;
     } catch (e) {
