@@ -1,5 +1,7 @@
 import 'package:powersync/powersync.dart';
+import 'package:search_cms/features/area/area_injections.dart';
 import 'package:search_cms/features/authentication/authentication_injections.dart';
+import 'package:search_cms/features/site/site_injections.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'database/powersync.dart';
 import 'database/schema.dart';
@@ -12,6 +14,8 @@ import 'utils/constants.dart';
 Future<void> initInjections() async {
   await initDatabases();
   initAuthenticationInjections();
+  initSiteInjections();
+  initAreaInjections();
 }
 
 /*
