@@ -131,7 +131,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                     fillColor: const Color(0xFFF8FAFC),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
-                      vertical: 14,
+                      vertical: 30,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -178,16 +178,21 @@ class DashboardAddPage extends StatelessWidget {
       body:  
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
+          //Added a outer padding that sits close to the edges
+          padding: const EdgeInsets.all(20),
           child: Wrap(
             direction: Axis.horizontal,
+            //Added the right amount of spacing between each section
+            spacing: 18,
+            runSpacing: 18,
             children: [ 
               /*
               this is where you will add the columns and text fields for adding
               data to the database
               */
-              createAddDataWidget("Site Information", ["name", "borden", "Area"]),
-              createAddDataWidget("Unit", ["name", "site name"]),
-              createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
+              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
+              createAddDataWidget("Unit", ["Name", "Site Name"]),
+              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
               
 
             ]
