@@ -73,7 +73,9 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
 
   return Container(
     width: widgetWidth,
-    padding: const EdgeInsets.all(18),
+    //Changed the padding size for edge
+    padding: const EdgeInsets.all(25),
+    //Added a decoration box that seperates each section
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(14),
@@ -92,12 +94,17 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           ),
         ),
 
+        //Aligns with each Box Section and signifies it to its own unique part
         const SizedBox(height: 12),
         const Divider(height: 1, color: Color(0xFFD9DEE8)),
         const SizedBox(height: 16),
 
         // text fields
         ...textFieldNames.map((name) {
+            /*
+              map returns an iterable (kind of like a list) the ... pulls the items out.
+              So it goes from [widget, widget] to widget, widget
+            */
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -178,7 +185,7 @@ class DashboardAddPage extends StatelessWidget {
               this is where you will add the columns and text fields for adding
               data to the database
               */
-              createAddDataWidget("Site", ["name", "borden"]),
+              createAddDataWidget("Site Information", ["name", "borden", "Area"]),
               createAddDataWidget("Unit", ["name", "site name"]),
               createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
               
