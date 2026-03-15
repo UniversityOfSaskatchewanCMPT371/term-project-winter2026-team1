@@ -131,18 +131,18 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                     fillColor: const Color(0xFFF8FAFC),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
-                      vertical: 30,
+                      vertical: 16,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFD0D7E2),
+                        color: Color(0xFFC7D0DD),
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFD0D7E2),
+                        color: Color(0xFFC7D0DD),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
