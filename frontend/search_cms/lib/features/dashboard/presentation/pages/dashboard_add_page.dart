@@ -69,61 +69,92 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
   AddDataPageEntries(title, newKeys);
-  double widgetWidth = 250;
+  double widgetWidth = 360;
 
   return Container(
     width: widgetWidth,
-    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-
-      child: Column(
-        
-        
-        children: [
-          // title of table
-          Container( 
-            width:widgetWidth,
-            color: Color(0xFF1f40b0),
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30
-              ),
-            ),
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: const Color(0xFFD9DEE8)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // section title
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF111827),
           ),
+        ),
 
+        const SizedBox(height: 12),
+        const Divider(height: 1, color: Color(0xFFD9DEE8)),
+        const SizedBox(height: 16),
 
-          // text fields
-          ...textFieldNames.map((name) {
-            /*
-              map returns an iterable (kind of like a list) the ... pulls the items out.
-              So it goes from [widget, widget] to widget, widget
-            */
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-
-              child: TextField(
-                key: Key("$title-$name"),
-                maxLines: null,
-                style: TextStyle(
-                  fontSize: 20,
+        // text fields
+        ...textFieldNames.map((name) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF111827),
+                  ),
                 ),
-                decoration: InputDecoration(
-                  hintText: name,
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 8),
+                TextField(
+                  key: Key("$title-$name"),
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Enter $name",
+                    filled: true,
+                    fillColor: const Color(0xFFF8FAFC),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFD0D7E2),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFD0D7E2),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF1F40B0),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              
-              );
-          }),
-
-        ],
-      ),
+              ],
+            ),
+          );
+        }),
+      ],
+    ),
   );
 }
-
 
 class DashboardAddPage extends StatelessWidget { 
   const DashboardAddPage({super.key});
@@ -148,7 +179,6 @@ class DashboardAddPage extends StatelessWidget {
               data to the database
               */
               createAddDataWidget("Site", ["name", "borden"]),
-              createAddDataWidget("Area", ["name"]),
               createAddDataWidget("Unit", ["name", "site name"]),
               createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
               
