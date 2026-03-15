@@ -85,7 +85,6 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
               map returns an iterable (kind of like a list) the ... pulls the items out.
               So it goes from [widget, widget] to widget, widget
             */
-
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -131,13 +130,13 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
                     fillColor: AppColors.addDataFieldFill,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
-                      vertical: 14,
+                      vertical: 16,
                     ),
 
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFD0D7E2),
+                        color: Color(0xFFC7D0DD),
                       ),
                     ),
 
@@ -145,7 +144,7 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFD0D7E2),
+                        color: Color(0xFFC7D0DD),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -256,10 +255,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               this is where you will add the columns and text fields for adding
               data to the database
               */
+              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
+              createAddDataWidget("Unit", ["Name", "Site Name"]),
+              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+              
 
-              createAddDataWidget("Site", ["name", "borden"]),
-              createAddDataWidget("Unit", ["name", "site name"]),
-              createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
             ]
           ),
         )
