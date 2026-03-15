@@ -6,13 +6,16 @@ import 'package:search_cms/core/utils/constants.dart';
 final Logger? _logger =
       logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
-void saveButtonClicked(String title){
+
+// Its not going to be used right now since we are removing the section for the save button
+// We will use this function laterwards when the save widget button comes back  
+ void saveButtonClicked(String title){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   // implement when business logic is planned or when I can talk to them
 
   _logger?.info("save button was clicked for $title widget");
 
-  
+
 }
 
 /*
@@ -29,9 +32,9 @@ class AddDataPageEntries{
   String title; 
 
   List<String> textFieldKeys = [];
-  String saveButtonKey = ""; // to allow testers to press the button
+  // String saveButtonKey = ""; // to allow testers to press the button (will be used later when the "Save" button will be implemented..)
 
-  AddDataPageEntries(this.title, this.textFieldKeys, this.saveButtonKey){
+  AddDataPageEntries(this.title, this.textFieldKeys){
     dataEntries[title] = this;
   }
 }
@@ -60,12 +63,12 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
     newKeys.add(keyName);
   }
 
-  String saveButtonKey = "$title-saveButton";
+  //String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
-  AddDataPageEntries(title, newKeys, saveButtonKey);
+  AddDataPageEntries(title, newKeys);
   double widgetWidth = 250;
 
   return Container(
@@ -116,36 +119,9 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
               );
           }),
 
-
-          // save button
-          ElevatedButton(
-            key: Key(saveButtonKey),
-            onPressed: (){saveButtonClicked(title);}, // Function ran when the button is pressed
-
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(90, 40),
-              backgroundColor: const Color(0xFF1f40b0),
-              foregroundColor: Colors.white,
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              
-            ),
-
-            child: Text(
-              "Save",
-              style: TextStyle(
-                fontSize: 25,
-              )
-            ),
-          ),
-
         ],
       ),
-    
   );
-
 }
 
 
