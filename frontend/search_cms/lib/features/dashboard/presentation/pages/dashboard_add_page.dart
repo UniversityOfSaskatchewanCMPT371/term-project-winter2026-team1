@@ -170,9 +170,10 @@ class DashboardAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFFF3F4F6),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: const Color(0xFFF3F4F6),
+        elevation: 0,
         title: const Text('Add Data'),
       ),
       body:  
