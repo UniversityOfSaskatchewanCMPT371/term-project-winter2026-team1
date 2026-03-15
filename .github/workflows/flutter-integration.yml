@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   build:
+    # Runs of ubuntu latest, this means the display driver does not test mac or windows
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +35,7 @@ jobs:
         with:
           channel: 'stable' 
       
+      # Aid in dependency chain, this will use install-dependencies to cover issues
       - uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: latest
