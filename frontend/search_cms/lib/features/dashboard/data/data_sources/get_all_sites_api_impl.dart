@@ -1,10 +1,9 @@
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
-import 'package:search_cms/core/utils/constants.dart';
-import 'abstract_get_all_sites_api.dart';
-import 'package:search_cms/features/dashboard/data/models/site_model.dart';
-import 'package:sqlite3/src/result_set.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/data/models/site_model.dart';
+import 'abstract_get_all_sites_api.dart';
 
 /*
   The PowerSync API implementation for retrieving all sites
@@ -41,7 +40,7 @@ class GetAllSitesApiImpl implements AbstractGetAllSitesApi {
       assert(getIt<SupabaseClient>().auth.currentSession != null);
 
       // Query the site table
-      final ResultSet result = await _powerSyncDatabase.getAll(
+      final result = await _powerSyncDatabase.getAll(
         'SELECT * FROM site');
 
       _logger.finest(result);
