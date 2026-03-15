@@ -27,8 +27,12 @@ class GetAllSitesUseCase {
   */
   Future<Result> call() async {
 
+<<<<<<< HEAD
     _logger.finer('Get all sites use case: Retrieving all sites from '
         'PowerSync Database start');
+=======
+    _logger.finer('Get all sites use case start');
+>>>>>>> 1d4141e (Get all sites use case is complete.)
 
     /*
        Check if the PowerSync database has error, if not, we see it as
@@ -41,8 +45,12 @@ class GetAllSitesUseCase {
     // Call the repository to get all sites
     Result result = await _repository.getAllSites();
 
+<<<<<<< HEAD
     _logger.finer('Get all sites use case: Retrieving all sites from '
         'PowerSync Database end');
+=======
+    _logger.finer('Get all sites use case end');
+>>>>>>> 1d4141e (Get all sites use case is complete.)
 
     return result;
   }
