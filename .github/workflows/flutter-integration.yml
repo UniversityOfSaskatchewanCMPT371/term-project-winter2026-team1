@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   build:
+    # Runs on ubuntu latest, this means the display driver does not test mac or windows
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +35,7 @@ jobs:
         with:
           channel: 'stable' 
       
+      # Aid in dependency chain, this will use install-dependencies to cover issues
       - uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: latest
@@ -49,7 +51,7 @@ jobs:
           # Default: `./docker-compose.yml`
           compose-file: ./backend/docker-compose.yml
 
-      #initialize the linux environment
+      # Initialize the linux environment
       - name: setup linux flutter platform
         run: flutter create --platforms=linux .
         working-directory: ./frontend/search_cms
@@ -59,23 +61,23 @@ jobs:
       - name: Flutter source add
         run: flutter pub add dev:test
         working-directory: ./frontend/search_cms
-        
+      
+      # Install pub dependencies from main flutter directory 'search_cms'
       - name: Install dependencies
         run: flutter pub get
         working-directory: ./frontend/search_cms
 
-
-      # Install xvfb and all it's dependencies
+      # Install xvfb (headless display) and all it's dependencies
       - name: Install xvfb
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb x11-xserver-utils
           sudo apt-get install -y cmake ninja-build clang libgtk-3-dev
-
+      
+      # Initializes timestamp for the artifact files being generated
       - name: Set Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
       
-
       # Adding junitreport to convert json test result to jUnit.
       - name: Flutter add junitreport
         run: flutter pub global activate junitreport
