@@ -20,28 +20,6 @@ final Logger? _logger =
 
 
 }
-
-/*
-Will be used to store the keys for for the text fields of widgets created by
-createAddDataWidget.
-If needed, can be modified to store information about what type a text field
-will need to be converted to later.
-*/
-class AddDataPageEntries{
-
-  // so business logic can get relevent keys using the title
-  static Map <String, AddDataPageEntries> dataEntries = {}; // maps title to the instance of this class that will store the relevent keys
-
-  String title; 
-
-  List<String> textFieldKeys = [];
-  // String saveButtonKey = ""; // to allow testers to press the button (will be used later when the "Save" button will be implemented..)
-
-  AddDataPageEntries(this.title, this.textFieldKeys){
-    dataEntries[title] = this;
-  }
-}
-
 /*
  * Creates the widgets for adding data to the database
  * preconditions: unique title and text field names such that
@@ -55,7 +33,7 @@ class AddDataPageEntries{
  *      an instance of AddDataPageEntries
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
-Widget createAddDataWidget(String title, List<String> textFieldNames){
+Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
   List<String> newKeys = [];
   
   for (int index = 0; index < textFieldNames.length; index++){
