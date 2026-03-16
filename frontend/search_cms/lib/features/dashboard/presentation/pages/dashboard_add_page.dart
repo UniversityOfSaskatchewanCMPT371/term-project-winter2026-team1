@@ -34,7 +34,7 @@ final Logger? _logger =
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
 Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
-  List<String> newKeys = [];
+  //List<String> newKeys = []; --- Will it be used when the save button will be implemented
   //String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
@@ -95,6 +95,10 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   style: const TextStyle(
                     fontSize: 16,
                   ),
+                  onChanged: (value) {
+                    context.read<AddDataCubit>().updateFieldValue(title, name, value);
+                    _logger?.info("$title-$name");
+                  },
                   decoration: InputDecoration(
                     hintText: "Enter $name",
                     filled: true,
@@ -133,47 +137,45 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
   );
 }
 
-class DashboardAddPage extends StatelessWidget { 
+class DashboardAddPage extends StatelessWidget {
   const DashboardAddPage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F4F6),
-        elevation: 0,
-        title: const Text('Add Data'),
+    return BlocProvider(
+      create: (context) => AddDataCubit()..init(),
+      child: BlocBuilder<AddDataCubit, AddDataState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: const Color(0xFFF3F4F6),
+            appBar: AppBar(
+              backgroundColor: const Color(0xFFF3F4F6),
+              elevation: 0,
+              title: const Text('Add Data'),
+            ),
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              //Added a outer padding that sits close to the edges
+              padding: const EdgeInsets.all(20),
+              child: Wrap(
+                direction: Axis.horizontal,
+                //Added the right amount of spacing between each section
+                spacing: 18,
+                runSpacing: 18,
+                children: [
+                  /*
+                  this is where you will add the columns and text fields for adding
+                  data to the database
+                  */
+                  createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
+                  createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
+                  createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+                ],
+              ),
+            ),
+          );
+        },
       ),
-      body:  
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          //Added a outer padding that sits close to the edges
-          padding: const EdgeInsets.all(20),
-          child: Wrap(
-            direction: Axis.horizontal,
-            //Added the right amount of spacing between each section
-            spacing: 18,
-            runSpacing: 18,
-            children: [ 
-              /*
-              this is where you will add the columns and text fields for adding
-              data to the database
-              */
-              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
-              createAddDataWidget("Unit", ["Name", "Site Name"]),
-              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
-              
-
-            ]
-          ),
-        )
-        
     );
-    
   }
 }
-
-
-
