@@ -14,7 +14,6 @@ class AddDataInitial extends AddDataState {
 }
 
 // Adding a loading state for the add data page
-// The page is in a loading state
 class AddDataLoading extends AddDataState {
   const AddDataLoading();
 }
@@ -34,3 +33,4 @@ class AddDataLoaded extends AddDataState {
   @override
   List<Object> get props => [fieldValues];
 }
+
