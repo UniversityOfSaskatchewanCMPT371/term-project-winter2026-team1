@@ -17,15 +17,20 @@ class AddDataCubit extends Cubit<AddDataState> {
   void updateFieldValue(String sectionTitle, String fieldName, String value) {
 
     // places the store field names and their typed values within the different sections
-    Map<String, String> updateFieldValues = {};
+    Map<String, String> updatedFieldValues = {};
 
     // This makes sure that if the add data page is already loaded, it keeps the old field values
     //No field values are being deleted
     if (state is AddDataLoaded) {
       AddDataLoaded current = state as AddDataLoaded;
-      updateFieldValues = Map<String,String>.from(current.fieldValues);
+      updatedFieldValues = Map<String,String>.from(current.fieldValues);
+
     }
+    updatedFieldValues['$sectionTitle-$fieldName'] = value;
 
-
-
+    //emit new state to the add data loaded values
+    emit(AddDataLoaded(
+      fieldValues: updatedFieldValues,
+    ));
   }
+}
