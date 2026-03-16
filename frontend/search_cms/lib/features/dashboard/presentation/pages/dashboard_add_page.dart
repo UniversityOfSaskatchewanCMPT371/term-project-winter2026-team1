@@ -35,10 +35,21 @@ final Logger? _logger =
  */
 Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
   List<String> newKeys = [];
+  
+  for (int index = 0; index < textFieldNames.length; index++){
+    String keyName = "$title-${textFieldNames[index]}";
+
+    // apparently these asserts cause problems if the page is reloaded
+    // assert(find.byKey(Key(keyName)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $keyName");
+    newKeys.add(keyName);
+  }
+
   //String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
+
+  AddDataPageEntries(title, newKeys);
   double widgetWidth = 360;
 
   return Container(
