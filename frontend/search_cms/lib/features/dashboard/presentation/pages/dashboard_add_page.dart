@@ -132,7 +132,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                   },
 
                   //The validator receives the text that user has entered
-                  //Adds a textFormField with validation
+                  //Adds a textFormField with validation logic
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter $name";
