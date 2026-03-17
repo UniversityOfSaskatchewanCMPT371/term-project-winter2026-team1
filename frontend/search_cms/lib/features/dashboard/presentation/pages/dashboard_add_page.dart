@@ -45,7 +45,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
   return Container(
     width: widgetWidth,
     //Changed the padding size for edge
-    padding: const EdgeInsets.all(2.w),
+    padding: EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
       color: Colors.white,
@@ -58,7 +58,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
         // section title
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Color(0xFF111827),
@@ -83,7 +83,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF111827),
@@ -93,7 +93,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                 TextField(
                   key: Key("$title-$name"),
                   maxLines: 1,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10.5.sp,
                   ),
                   onChanged: (value) {
@@ -157,7 +157,7 @@ class DashboardAddPage extends StatelessWidget {
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
-              padding: const EdgeInsets.all(2.w),
+              padding: EdgeInsets.all(2.w),
               child: Wrap(
                 direction: Axis.horizontal,
                 //Added the right amount of spacing between each section
