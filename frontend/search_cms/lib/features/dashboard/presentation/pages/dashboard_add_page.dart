@@ -75,7 +75,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   return Container(
     width: widgetWidth,
     //Changed the padding size for edge
-    padding: const EdgeInsets.all(2.w),
+    padding: EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
       color: AppColors.addDataCard,
@@ -88,7 +88,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
         // section title
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.mainText,
@@ -113,7 +113,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.mainText,
@@ -123,7 +123,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                 TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10.5.sp,
                   ),
                   onChanged: (value) {
@@ -213,7 +213,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
-              padding: const EdgeInsets.all(2.w),
+              padding: EdgeInsets.all(2.w),
               child: Wrap(
                 direction: Axis.horizontal,
                 //Added the right amount of spacing between each section
