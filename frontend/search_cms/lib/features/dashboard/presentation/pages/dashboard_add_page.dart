@@ -102,7 +102,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   },
 
                   //The validator receives the text that user has entered
-                  //Adds a textFormField with validation logic
+                  //Adds a textFormField with validation
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter $name";
@@ -201,9 +201,10 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 ],
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 }
