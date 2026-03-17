@@ -6,13 +6,16 @@ import 'package:search_cms/core/utils/constants.dart';
 final Logger? _logger =
       logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
-void saveButtonClicked(String title){
+
+// Its not going to be used right now since we are removing the section for the save button
+// We will use this function laterwards when the save widget button comes back  
+ void saveButtonClicked(String title){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   // implement when business logic is planned or when I can talk to them
 
   _logger?.info("save button was clicked for $title widget");
 
-  
+
 }
 
 /*
@@ -29,9 +32,9 @@ class AddDataPageEntries{
   String title; 
 
   List<String> textFieldKeys = [];
-  String saveButtonKey = ""; // to allow testers to press the button
+  // String saveButtonKey = ""; // to allow testers to press the button (will be used later when the "Save" button will be implemented..)
 
-  AddDataPageEntries(this.title, this.textFieldKeys, this.saveButtonKey){
+  AddDataPageEntries(this.title, this.textFieldKeys){
     dataEntries[title] = this;
   }
 }
@@ -60,94 +63,105 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
     newKeys.add(keyName);
   }
 
-  String saveButtonKey = "$title-saveButton";
+  //String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
-  AddDataPageEntries(title, newKeys, saveButtonKey);
-  double widgetWidth = 250;
+  AddDataPageEntries(title, newKeys);
+  double widgetWidth = 360;
 
   return Container(
     width: widgetWidth,
-    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-
-      child: Column(
-        
-        
-        children: [
-          // title of table
-          Container( 
-            width:widgetWidth,
-            color: Color(0xFF1f40b0),
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30
-              ),
-            ),
+    //Changed the padding size for edge
+    padding: const EdgeInsets.all(25),
+    //Added a decoration box that seperates each section
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: const Color(0xFFD9DEE8)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // section title
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF111827),
           ),
+        ),
 
+        //Aligns with each Box Section and signifies it to its own unique part
+        const SizedBox(height: 12),
+        const Divider(height: 1, color: Color(0xFFD9DEE8)),
+        const SizedBox(height: 16),
 
-          // text fields
-          ...textFieldNames.map((name) {
+        // text fields
+        ...textFieldNames.map((name) {
             /*
               map returns an iterable (kind of like a list) the ... pulls the items out.
               So it goes from [widget, widget] to widget, widget
             */
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-
-              child: TextField(
-                key: Key("$title-$name"),
-                maxLines: null,
-                style: TextStyle(
-                  fontSize: 20,
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF111827),
+                  ),
                 ),
-                decoration: InputDecoration(
-                  hintText: name,
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 8),
+                TextField(
+                  key: Key("$title-$name"),
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Enter $name",
+                    filled: true,
+                    fillColor: const Color(0xFFF8FAFC),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFC7D0DD),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFC7D0DD),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF1F40B0),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              
-              );
-          }),
-
-
-          // save button
-          ElevatedButton(
-            key: Key(saveButtonKey),
-            onPressed: (){saveButtonClicked(title);}, // Function ran when the button is pressed
-
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(90, 40),
-              backgroundColor: const Color(0xFF1f40b0),
-              foregroundColor: Colors.white,
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              
+              ],
             ),
-
-            child: Text(
-              "Save",
-              style: TextStyle(
-                fontSize: 25,
-              )
-            ),
-          ),
-
-        ],
-      ),
-    
+          );
+        }),
+      ],
+    ),
   );
-
 }
-
 
 class DashboardAddPage extends StatelessWidget { 
   const DashboardAddPage({super.key});
@@ -156,25 +170,30 @@ class DashboardAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFFF3F4F6),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: const Color(0xFFF3F4F6),
+        elevation: 0,
         title: const Text('Add Data'),
       ),
       body:  
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
+          //Added a outer padding that sits close to the edges
+          padding: const EdgeInsets.all(20),
           child: Wrap(
             direction: Axis.horizontal,
+            //Added the right amount of spacing between each section
+            spacing: 18,
+            runSpacing: 18,
             children: [ 
               /*
               this is where you will add the columns and text fields for adding
               data to the database
               */
-              createAddDataWidget("Site", ["name", "borden"]),
-              createAddDataWidget("Area", ["name"]),
-              createAddDataWidget("Unit", ["name", "site name"]),
-              createAddDataWidget("Level", ["name", "unit name", "parent name", "upper limit", "lower limit"]),
+              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
+              createAddDataWidget("Unit", ["Name", "Site Name"]),
+              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
               
 
             ]
