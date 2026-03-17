@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/constants.dart';
-<<<<<<< HEAD
-=======
 import '../bloc/add_data_cubit.dart';
 import '../bloc/add_data_state.dart';
 import 'package:sizer/sizer.dart';
->>>>>>> 35f5621 (added the sizer implementation for the layout)
 
 
 final Logger? _logger =
@@ -80,7 +77,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   return Container(
     width: widgetWidth,
     //Changed the padding size for edge
-    padding: EdgeInsets.all(2.w),
+    padding: const EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
       color: Colors.white,
@@ -93,7 +90,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
         // section title
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Color(0xFF111827),
@@ -118,7 +115,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF111827),
@@ -128,7 +125,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                 TextField(
                   key: Key("$title-$name"),
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10.5.sp,
                   ),
                   decoration: InputDecoration(
@@ -175,14 +172,6 @@ class DashboardAddPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F4F6),
-        elevation: 0,
-        title: const Text('Add Data'),
-=======
     return BlocProvider(
       create: (context) => AddDataCubit()..init(),
       child: BlocBuilder<AddDataCubit, AddDataState>(
@@ -197,7 +186,7 @@ class DashboardAddPage extends StatelessWidget {
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
-              padding: EdgeInsets.all(2.w),
+              padding: const EdgeInsets.all(2.w),
               child: Wrap(
                 direction: Axis.horizontal,
                 //Added the right amount of spacing between each section
@@ -216,7 +205,6 @@ class DashboardAddPage extends StatelessWidget {
             ),
           );
         },
->>>>>>> 35f5621 (added the sizer implementation for the layout)
       ),
       body:  
         SingleChildScrollView(
