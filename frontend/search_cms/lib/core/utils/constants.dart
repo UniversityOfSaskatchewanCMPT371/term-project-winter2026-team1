@@ -21,7 +21,15 @@ class AppColors {
   static const mutedText = Color(0xFF6B7280); // gray-500
   static const mainText = Color(0xFF111827); // gray-900
 
-  static const danger = Color(0xFFEF4444);
+  // === UI Token for the Add Data page
+   static const addDataBackground = Color(0xFFF3F4F6); // gray-100
+   static const addDataCard = Colors.white; // white
+   static const addDataCardBorder = Color(0xFFD9DEE8); // gray border
+   static const addDataFieldFill = Color(0xFFF8FAFC);
+   static const addDataFieldBorder = Color(0xFFC7D0DD); // cool color of gray-300
+   static const addDataFieldFocus = Color(0xFF1F40B0); // blue - 800
+
+   static const danger = Color(0xFFEF4444);
 }
 
 class AppDimens {
