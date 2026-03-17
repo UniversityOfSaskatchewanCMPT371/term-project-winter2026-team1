@@ -69,3 +69,11 @@ INSERT INTO level
 (id, unit_id, parent_id, name, up_limit, low_limit, created_at, updated_at, level_char, level_int) 
 VALUES
 ('77777777-7777-7777-7777-777777777777', '55555555-5555-5555-5555-555555555555', NULL, 'Level 1', 0, 0, now(), now(), NULL, 0);
+
+INSERT INTO assemblage(id, level_id, name, created_at, updated_at) VALUES
+('88888888-8888-8888-888888888888', '77777777-7777-7777-7777-777777777777', 'Level 1 Faunal Assemblage', now(), now());
+
+INSERT INTO artifact_faunal
+(id, assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements, created_at, updated_at)
+VALUES
+('99999999-9999-9999-999999999999', '88888888-8888-8888-888888888888', 4, 3, 2, '', 1, 1, 1, now(), now());
