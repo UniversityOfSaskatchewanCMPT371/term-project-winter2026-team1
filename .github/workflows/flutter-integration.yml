@@ -94,6 +94,8 @@ jobs:
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_SYSLOG_USER_PASSWORD }}
       # Run integration tests in headless Chrom
 
       # Upload out flutter test to the artifacts
