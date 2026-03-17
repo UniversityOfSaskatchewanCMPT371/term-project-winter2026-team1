@@ -177,7 +177,8 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   );
 }
 
-class DashboardAddPage extends StatelessWidget { 
+// Define a custom Form widget
+class DashboardAddPage extends StatefulWidget {
   const DashboardAddPage({super.key});
 
   @override
