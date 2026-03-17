@@ -134,7 +134,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                   },
 
                   //The validator receives the text that user has entered
-                  //Adds a textFormField with validation logic
+                  //Adds a textFormField with validation
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter $name";
@@ -232,37 +232,10 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 ],
               ),
             ),
-          );
-        },
-      ),
-      body:  
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          //Added a outer padding that sits close to the edges
-          padding: const EdgeInsets.all(20),
-          child: Wrap(
-            direction: Axis.horizontal,
-            //Added the right amount of spacing between each section
-            spacing: 18,
-            runSpacing: 18,
-            children: [ 
-              /*
-              this is where you will add the columns and text fields for adding
-              data to the database
-              */
-              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
-              createAddDataWidget("Unit", ["Name", "Site Name"]),
-              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
-              
-
-            ]
           ),
-        )
-        
-    );
-    
-  }
+        );
+      },
+    ),
+  );
 }
-
-
-
+}
