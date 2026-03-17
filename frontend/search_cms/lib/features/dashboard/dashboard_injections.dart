@@ -1,6 +1,5 @@
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
-<<<<<<< HEAD
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_levels_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
@@ -14,12 +13,6 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usec
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
-=======
-import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
-import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
->>>>>>> 1d4141e (Get all sites use case is complete.)
 
 /*
   This defines how getIt should construct the classes for us
@@ -28,7 +21,6 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usec
   getIt<ClassName>() are defined
  */
 void initDashboardInjections() {
-<<<<<<< HEAD
   _registerGetAllSitesUseCase();
   _registerGetAllAreasUseCase();
   _registerGetAllUnitsUseCase();
@@ -106,8 +98,6 @@ void _registerGetAllAreasUseCase() {
  Register all the necessary dependency injections for the get all sites use case
  */
 void _registerGetAllSitesUseCase() {
-=======
->>>>>>> 1d4141e (Get all sites use case is complete.)
   // Register the GetAllSitesApiImpl
   getIt.registerFactory<GetAllSitesApiImpl>(
     () => GetAllSitesApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
@@ -122,12 +112,4 @@ void _registerGetAllSitesUseCase() {
   getIt.registerFactory<GetAllSitesUseCase>(
     () => GetAllSitesUseCase(repository: getIt<GetAllSitesRepositoryImpl>()),
   );
-<<<<<<< HEAD
-=======
-
-  // The dashboard use case collection
-  getIt.registerFactory<DashboardUsecases>(
-    () => DashboardUsecases(getAllSitesUseCase: getIt<GetAllSitesUseCase>()),
-  );
->>>>>>> 1d4141e (Get all sites use case is complete.)
 }

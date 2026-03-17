@@ -32,12 +32,8 @@ class GetAllSitesRepositoryImpl implements AbstractGetAllSitesRepository {
   @override
   Future<Result> getAllSites() async {
     try {
-<<<<<<< HEAD
       _logger.finer('Get all sites repository: Retrieving all sites from '
           'PowerSync Database start');
-=======
-      _logger.finer('Get all sites repository start');
->>>>>>> 1d4141e (Get all sites use case is complete.)
 
       /*
        Check if the PowerSync database has error, if not, we see it as
@@ -58,12 +54,8 @@ class GetAllSitesRepositoryImpl implements AbstractGetAllSitesRepository {
         listOfSiteEntity.add(siteEntity);
       }
 
-<<<<<<< HEAD
       _logger.finer('Get all sites repository: Retrieving all sites from '
           'PowerSync Database end');
-=======
-      _logger.finer('Get all sites repository end');
->>>>>>> 1d4141e (Get all sites use case is complete.)
 
       return get_all_sites_result_classes.Success(
         listOfSiteEntity: listOfSiteEntity,
