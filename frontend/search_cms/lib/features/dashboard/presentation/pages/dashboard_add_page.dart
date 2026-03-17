@@ -90,7 +90,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextField(
+                TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
                   style: TextStyle(
@@ -99,6 +99,15 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   onChanged: (value) {
                     context.read<AddDataCubit>().updateFieldValue(title, name, value);
                     _logger?.info("$title-$name");
+                  },
+
+                  //The validator receives the text that user has entered
+                  //Adds a textFormField with validation logic
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter $name";
+                    }
+                    return null;
                   },
                   decoration: InputDecoration(
                     hintText: "Enter $name",
@@ -153,7 +162,6 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 
   // Creates the global key that identifies the Form widget
   // by allowing also the validation of the form in the same form
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -169,7 +177,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               elevation: 0,
               title: const Text('Add Data'),
             ),
-            body: SingleChildScrollView(
+          
+          //Build a form widget using the _formKey created above
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
               padding: EdgeInsets.all(2.w),
