@@ -9,6 +9,15 @@ CREATE TABLE assemblage (
     FOREIGN KEY (level_id) REFERENCES level(id) ON DELETE CASCADE
 );
 
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE assemblage ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on assemblage"
+ON assemblage
+FOR SELECT
+TO authenticated
+USING (true);
+
 -- An Artifact in an Assemblage
 CREATE TABLE artifact_faunal (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -37,3 +46,14 @@ CREATE TABLE artifact_faunal (
             OR (porosity > 0) AND (porosity <= 5)
         )
 );
+
+-- Enable RLS policy. For now, allow all authenticated users to read data
+ALTER TABLE artifact_faunal ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read on artifact_faunal"
+ON artifact_faunal
+FOR SELECT
+TO authenticated
+USING (true);
+
+
