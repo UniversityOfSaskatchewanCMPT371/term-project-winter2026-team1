@@ -138,8 +138,23 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
   );
 }
 
-class DashboardAddPage extends StatelessWidget {
+// Define a custom Form widget
+class DashboardAddPage extends StatefulWidget {
   const DashboardAddPage({super.key});
+
+  @override
+  State<DashboardAddPage> createState() => DashboardAddPageState();
+
+}
+
+// Define a corresponding State class
+// This class holds the data related to the form
+class DashboardAddPageState extends State<DashboardAddPage> {
+
+  // Creates the global key that identifies the Form widget
+  // by allowing also the validation of the form in the same form
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
