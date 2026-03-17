@@ -28,7 +28,7 @@ const schema = Schema([
   ]),
   
   Table('level', [
-    Column.text('unit_id'), // A unit can have multiple levels.
+    Column.text('unit_id'), // A unit can have multiple levels
     Column.text('parent_id'), //The top-most level in a unit can't have a parent
     Column.text('name'), // The name of a level
     Column.integer('up_limit'), // Depth in cm
@@ -38,6 +38,27 @@ const schema = Schema([
     Column.text('level_char'), // Some other arch data
     Column.integer('level_int'), // Some other arch data
   ]),
+
+  Table('assemblage', [
+    Column.text('level_id'), // A level can have multiple assemblages
+    Column.text('name'), // The name of an assemblage. This can be empty by default
+    Column.text('created_at'), // When an assemblage was created
+    Column.text('updated_at'), // When was data last updated
+  ]),
+
+  Table('artifact_faunal', [
+    Column.text('assemblage_id'), // An assemblage can have multiple artifacts
+    Column.integer('porosity'), // The porosity of an artifact. Must be between 1-5
+    Column.real('size_upper'), // Upper size of an artifact in mm/cm
+    Column.real('size_lower'), // Lower size of an artifact in mm/cm
+    Column.text('comment'), // Any additional comments about an artifact. This can be empty
+    Column.integer('pre_excav_frags'), // Pre-excavation fragments
+    Column.integer('post_excav_frags'), // Post-excavation fragments
+    Column.integer('elements'), // Number of elements in an artifact. This will be set to 1 be default
+    Column.text('created_at'), // When an artifact was created
+    Column.text('updated_at'), // When was data last updated
+  ]),
 ]);
+
 
 
