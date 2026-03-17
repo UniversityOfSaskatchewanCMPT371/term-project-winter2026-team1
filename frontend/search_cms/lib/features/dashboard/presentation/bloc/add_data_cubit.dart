@@ -28,7 +28,7 @@ class AddDataCubit extends Cubit<AddDataState> {
     }
     updatedFieldValues['$sectionTitle-$fieldName'] = value;
 
-    //emit new state to the add data loaded values
+    //emit the new state to the add data loaded values
     emit(AddDataLoaded(
       fieldValues: updatedFieldValues,
     ));

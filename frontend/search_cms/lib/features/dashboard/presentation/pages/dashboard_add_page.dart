@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import '../bloc/add_data_cubit.dart';
 import '../bloc/add_data_state.dart';
+import 'package:sizer/sizer.dart';
 
 
 final Logger? _logger =
@@ -44,7 +45,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
   return Container(
     width: widgetWidth,
     //Changed the padding size for edge
-    padding: const EdgeInsets.all(25),
+    padding: const EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
       color: Colors.white,
@@ -58,7 +59,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
         Text(
           title,
           style: const TextStyle(
-            fontSize: 28,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Color(0xFF111827),
           ),
@@ -83,7 +84,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF111827),
                   ),
@@ -93,7 +94,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   key: Key("$title-$name"),
                   maxLines: 1,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 10.5.sp,
                   ),
                   onChanged: (value) {
                     context.read<AddDataCubit>().updateFieldValue(title, name, value);
@@ -156,12 +157,12 @@ class DashboardAddPage extends StatelessWidget {
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(2.w),
               child: Wrap(
                 direction: Axis.horizontal,
                 //Added the right amount of spacing between each section
-                spacing: 18,
-                runSpacing: 18,
+                spacing: 1.5.w,
+                runSpacing: 1.5.h,
                 children: [
                   /*
                   this is where you will add the columns and text fields for adding
