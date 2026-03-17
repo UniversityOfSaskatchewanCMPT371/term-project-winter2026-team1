@@ -17,8 +17,6 @@ final Logger? _logger =
   // implement when business logic is planned or when I can talk to them
 
   _logger?.info("save button was clicked for $title widget");
-
-
 }
 
 /*
@@ -80,9 +78,9 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
     padding: const EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: AppColors.addDataCard,
       borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: const Color(0xFFD9DEE8)),
+      border: Border.all(color: AppColors.addDataCardBorder),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,13 +91,13 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
           style: const TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111827),
+            color: AppColors.mainText,
           ),
         ),
 
         //Aligns with each Box Section and signifies it to its own unique part
         const SizedBox(height: 12),
-        const Divider(height: 1, color: Color(0xFFD9DEE8)),
+        const Divider(height: 1, color: AppColors.addDataCardBorder),
         const SizedBox(height: 16),
 
         // text fields
@@ -118,7 +116,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                   style: const TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF111827),
+                    color: AppColors.mainText,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -144,7 +142,7 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                   decoration: InputDecoration(
                     hintText: "Enter $name",
                     filled: true,
-                    fillColor: const Color(0xFFF8FAFC),
+                    fillColor: AppColors.addDataFieldFill,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
                       vertical: 16,
@@ -152,19 +150,19 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFF1F40B0),
+                        color: AppColors.addDataFieldBorder,
                         width: 1.5,
                       ),
                     ),
@@ -202,9 +200,9 @@ class DashboardAddPageState extends State<DashboardAddPage> {
       child: BlocBuilder<AddDataCubit, AddDataState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: const Color(0xFFF3F4F6),
+            backgroundColor: AppColors.addDataBackground,
             appBar: AppBar(
-              backgroundColor: const Color(0xFFF3F4F6),
+              backgroundColor: AppColors.addDataBackground,
               elevation: 0,
               title: const Text('Add Data'),
             ),
