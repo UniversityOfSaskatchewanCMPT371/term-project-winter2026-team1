@@ -1,9 +1,13 @@
 name: 'Nightly Merge'
 
 on:
-  schedule:
-    - cron:  '0 6 * * *'
-
+  #schedule:
+    #- cron:  '0 6 * * *'
+  push:
+    branches: [ "develop", "main", "bug/nightly-merge-pr" ]
+  pull_request:
+    branches: [ "develop", "main", "bug/nightly-merge-pr" ]
+    
 jobs:
   nightly-merge:
 
