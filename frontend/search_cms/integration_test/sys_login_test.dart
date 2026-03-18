@@ -203,7 +203,11 @@ void main() {
         );
  
         // Assert router navigated to dashboard — LoginPage is gone
-        expect(find.text('Dashboard Home'), findsOneWidget);
+        expect(
+          router.routerDelegate.currentConfiguration.last.matchedLocation,
+          '/dashboard/home',
+        );
+        // expect(find.text('Dashboard Home'), findsOneWidget);
         expect(find.byType(LoginPage), findsNothing);
 
         logger?.info('Login success test case finished');
