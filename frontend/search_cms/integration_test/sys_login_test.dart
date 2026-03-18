@@ -123,12 +123,13 @@ void main() {
       (WidgetTester tester) async {
 
         logger?.info('Running login failure case');
+
+        await initInjections();
+
         // Use helpers to build login page
         final router = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(router));
         await tester.pumpAndSettle();
-
-        await initInjections();
 
         // Submit rejected credentials
         logger?.info('Submitting bad credentials');
@@ -160,6 +161,8 @@ void main() {
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
       (WidgetTester tester) async {
+
+        await initInjections();
 
         logger?.info('Running login success case');
         // Ensure fields were filled from CI
