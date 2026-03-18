@@ -18,9 +18,10 @@ import '../test/features/authentication/presentation/pages/login_page_testcases.
 
 // Constant inputs
 // Test Credentials for success case
+const String _testEnv = String.fromEnvironment('TEST_SECRET', defaultValue: 'FAIL AHHHHHH');
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
 const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
-const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: 'http://localhost:8080');
 //const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
 // Bad credentials to intentionally fail login
@@ -76,6 +77,7 @@ Future<void> fillAndSubmit(
 // Start test
 
 void main() {
+  print(_testEnv);
 
   final Logger? logger = 
     logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
