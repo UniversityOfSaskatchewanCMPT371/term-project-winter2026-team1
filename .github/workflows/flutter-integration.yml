@@ -67,6 +67,7 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
 
+      # runs a ping on supabase every 5 seconds until passes
       - name: Ensure Supabase is ready before running tests
         run: |
           echo "Waiting for Supabase on port 54321..."
@@ -81,6 +82,7 @@ jobs:
           echo "ERROR: Supabase failed to start within 150 seconds"
           exit 1
 
+      # for testing / sanity checks
       - name: Ensure containers are running
         run: docker ps -a
 
@@ -115,7 +117,6 @@ jobs:
           # Login credentials for sys_login_test.dart
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_SYSLOG_USER_PASSWORD }}
-          #SUPABASE_URL: http://localhost:8080
           TEST_SECRET: ${{ secrets.TEST_SECRET }}
       # Run integration tests in headless Chrom
 
@@ -125,13 +126,13 @@ jobs:
           # Name of the artifact to upload.
           # Optional. Default is 'artifact'
           name: flutter_int_test_report_${{ env.TIMESTAMP }}
-          path: frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml
+          path: frontend/search_cms/test-results/*.xml
 
       # Upload Test reports to the pull request.
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: success() || failure() # always run even if the previous step fails
         with:
-          report_paths: 'frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml'
+          report_paths: 'frontend/search_cms/test-results/*.xml'
           include_passed: True
           fail_on_failure: True
