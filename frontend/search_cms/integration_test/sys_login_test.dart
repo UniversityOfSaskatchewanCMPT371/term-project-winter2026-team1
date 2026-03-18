@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/config/routes/routes.dart';
 import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
@@ -13,7 +14,6 @@ import 'package:search_cms/features/authentication/presentation/bloc/login_state
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
 import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:search_cms/config/routes/routes.dart';
 
 import '../test/features/authentication/presentation/pages/login_page_testcases.dart';
 
