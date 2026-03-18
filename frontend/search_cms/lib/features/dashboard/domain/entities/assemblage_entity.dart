@@ -28,7 +28,12 @@ class AssemblageEntity {
     required this.createdAt,
     required this.updatedAt,
   })
+  // The assertions run before the constructor body when created
+  // Throws AssertionError on fail
   : assert(id.isNotEmpty),
     assert(levelId.isNotEmpty);
 }
+
+
+
 
