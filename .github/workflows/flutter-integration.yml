@@ -99,6 +99,7 @@ jobs:
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_SYSLOG_USER_PASSWORD }}
           SUPABASE_URL: http://localhost:8080
+          TEST_SECRET: ${{ secret.TEST_SECRET }}
       # Run integration tests in headless Chrom
 
       # Upload out flutter test to the artifacts
