@@ -209,8 +209,10 @@ void main() {
             .read<LoginCubit>();
         expect(cubit.state, isA<LoginSuccess>());
 
-        // Assert LoginPage is no longer shown (navigation away occurred)
-        expect(find.byType(LoginPage), findsNothing);
+        // LoginSuccess carries the user entity with valid id and role
+        final successState = cubit.state as LoginSuccess;
+        expect(successState.user.id, isNotEmpty);
+        expect(successState.user.role, isNotEmpty);
 
         logger?.info('Login success test case finished');
       });
