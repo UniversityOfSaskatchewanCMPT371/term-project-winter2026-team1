@@ -67,6 +67,23 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
 
+      - name: Ensure Supabase is ready before running tests
+        run: |
+          echo "Waiting for Supabase on port 54321..."
+          for i in $(seq 1 30); do
+            if curl -s http://127.0.0.1:54321/auth/v1/health > /dev/null 2>&1; then
+              echo "Supabase is ready after $i attempts"
+              exit 0
+            fi
+            echo "Attempt $i/30 - not ready, waiting 5s..."
+            sleep 5
+          done
+          echo "ERROR: Supabase failed to start within 150 seconds"
+          exit 1
+
+      - name: Ensure containers are running
+        run: docker ps -a
+
       # Install xvfb (headless display) and all it's dependencies
       - name: Install xvfb
         run: |
@@ -83,11 +100,6 @@ jobs:
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
 
-      - name: Debug secret presence (remove after confirming)
-        run: |
-          echo "Email set: ${{ secrets.TEST_EMAIL != '' }}"
-          echo "Password set: ${{ secrets.TEST_SYSLOG_USER_PASSWORD != '' }}"
-        
       # runa headless xvfb to initiate flutter integration tests
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
