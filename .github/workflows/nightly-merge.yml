@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         ref: develop # Point to develop as the start of the checkout, it defaults to main
         fetch-depth: 0 # Full clone necessary for proper merge
@@ -23,7 +23,7 @@ jobs:
     # Uses a marketplace gh action that merges the develop to main, no need for testing yet.
     # This action creates a PR instead of doing a direct push
     - name: Create Pull Request to Main
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: nightly-merge-v${{ env.DATE_VER }}
