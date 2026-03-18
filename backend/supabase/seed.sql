@@ -119,3 +119,9 @@ INSERT INTO
             '',
             ''
     );
+-- Seed test user into role table
+INSERT INTO public.role (id, role)
+VALUES (
+    'c9013501-e1db-4bf8-aca2-572ffc0b4e20',
+    'viewer'
+) ON CONFLICT (id) DO NOTHING;  -- guard if seed runs more than once
