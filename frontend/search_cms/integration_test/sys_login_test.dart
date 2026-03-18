@@ -120,7 +120,7 @@ void main() {
   }
   runLoginPageTestCases(() => wrap(const LoginPage()));
 
-  // System tests
+  /*--------- System tests ---------*/
 
   // Failure case
   /* Preconditions:
@@ -160,7 +160,7 @@ void main() {
 
         // Dismiss the snackbar explicitly before asserting it's gone
         final scaffoldMessenger = ScaffoldMessenger.of(
-          tester.element(find.byType(MaterialApp))
+          tester.element(find.byType(Scaffold).first)
         );
         scaffoldMessenger.clearSnackBars();
         await tester.pumpAndSettle();
@@ -173,7 +173,7 @@ void main() {
        });
   });
 
-  // Success case
+  /*----- Success case ----*/
   group('Login Success Case', () {
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
