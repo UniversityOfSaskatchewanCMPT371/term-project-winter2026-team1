@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_cubit.dart';
@@ -19,7 +21,7 @@ import '../test/features/authentication/presentation/pages/login_page_testcases.
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
 const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
 const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+//const String _supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
 // Bad credentials to intentionally fail login
 const String _badEmail = 'i_am_an_evildoer_and_this_is_my_email@totally_real_email.com';
@@ -81,9 +83,11 @@ void main() {
 
   setUpAll(() async {
 
-      // Reset GetIt before registering to avoid double registration
-    // across test runs in the same process
+    // Reset GetIt before registering to avoid double registration
+    // across each of the test runs
     await GetIt.instance.reset();
+
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
     await initInjections();
     // Initialize Supabase for the test suite
@@ -91,7 +95,7 @@ void main() {
       logger?.info('Verifying Supabase is initialized');
       await Supabase.initialize(
         url: _supabaseUrl,
-        anonKey: _supabaseAnonKey);
+        anonKey: AppConfig.supabaseAnonKey);
     } catch (_) {
       logger?.warning('Supabase already running');
       // Supabase is already initialized so we can move on
