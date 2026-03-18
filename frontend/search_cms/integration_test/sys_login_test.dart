@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/injections.dart';
@@ -79,6 +80,12 @@ void main() {
 
 
   setUpAll(() async {
+
+      // Reset GetIt before registering to avoid double registration
+    // across test runs in the same process
+    await GetIt.instance.reset();
+
+    await initInjections();
     // Initialize Supabase for the test suite
     try {
       logger?.info('Verifying Supabase is initialized');
@@ -124,8 +131,6 @@ void main() {
 
         logger?.info('Running login failure case');
 
-        await initInjections();
-
         // Use helpers to build login page
         final router = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(router));
@@ -147,6 +152,13 @@ void main() {
         // Trigger reset
         cubit.reset();
         await tester.pumpAndSettle();
+
+        // Dismiss the snackbar explicitly before asserting it's gone
+        final scaffoldMessenger = ScaffoldMessenger.of(
+          tester.element(find.byType(MaterialApp))
+        );
+        scaffoldMessenger.clearSnackBars();
+        await tester.pumpAndSettle();
  
         // Assert state returned to LoginInitial, error no longer visible
         expect(cubit.state, isA<LoginInitial>());
@@ -161,8 +173,6 @@ void main() {
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
       (WidgetTester tester) async {
-
-        await initInjections();
 
         logger?.info('Running login success case');
         // Ensure fields were filled from CI
