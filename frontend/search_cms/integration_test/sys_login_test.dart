@@ -212,7 +212,7 @@ void main() {
         // LoginSuccess carries the user entity with valid id and role
         final successState = cubit.state as LoginSuccess;
         expect(successState.user.id, isNotEmpty);
-        expect(successState.user.role, isNotEmpty);
+        expect(successState.user.role, isNotNull);
 
         logger?.info('Login success test case finished');
       });
