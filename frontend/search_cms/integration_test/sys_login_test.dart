@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_cubit.dart';
 import 'package:search_cms/features/authentication/presentation/bloc/login_state.dart';
@@ -87,7 +88,6 @@ void main() {
     } catch (_) {
       logger?.warning('Supabase already running');
       // Supabase is already initialized so we can move on
-      // TODO verify this behaviour with Theo
     }
   });
 
@@ -111,6 +111,12 @@ void main() {
   // System tests
 
   // Failure case
+  /* Preconditions:
+   * Supabase backend must be running
+   * 
+   * Post conditions:
+   * Errors are properly handle and system fails gracefully
+   */
   group('Login Failure Case', () {
       testWidgets(
       'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
@@ -122,12 +128,14 @@ void main() {
         await tester.pumpWidget(wrapWithRouter(router));
         await tester.pumpAndSettle();
 
+        await initInjections();
+
         // Submit rejected credentials
         logger?.info('Submitting bad credentials');
         await fillAndSubmit(tester, email: _badEmail, password: _badPassword);
 
         // Get LoginPage cubit from widget tree
-        final cubit = tester.element(find.byType(LoginPage)).read<LoginCubit>();
+        final cubit = tester.element(find.byType(BlocConsumer<LoginCubit, LoginState>)).read<LoginCubit>();
         // Check current state, should be an error from invalid login
         expect(cubit.state, isA<LoginFailure>());
        
