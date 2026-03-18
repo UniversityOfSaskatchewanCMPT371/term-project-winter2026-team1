@@ -77,11 +77,10 @@ Future<void> fillAndSubmit(
 // Start test
 
 void main() {
-  print(_testEnv);
 
   final Logger? logger = 
     logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
-
+  logger?.warning(_testEnv);
 
   setUpAll(() async {
 
