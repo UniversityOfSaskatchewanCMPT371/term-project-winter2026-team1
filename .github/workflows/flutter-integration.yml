@@ -117,7 +117,6 @@ jobs:
           # Login credentials for sys_login_test.dart
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_SYSLOG_USER_PASSWORD }}
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
       # Run integration tests in headless Chrom
 
       # Upload out flutter test to the artifacts
