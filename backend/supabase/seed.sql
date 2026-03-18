@@ -79,6 +79,7 @@ VALUES
 ('99999999-9999-9999-9999-999999999999', '88888888-8888-8888-8888-888888888888', 4, 3, 2, '', 1, 1, 1, now(), now());
 
 -- Test credentials for login_sys_test
+-- Creates test credentials for sys_login_test.dart
 INSERT INTO
     auth.users (
         instance_id,
