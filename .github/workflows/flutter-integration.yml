@@ -82,6 +82,11 @@ jobs:
       - name: Flutter add junitreport
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
+
+      - name: Debug secret presence (remove after confirming)
+        run: |
+          echo "Email set: ${{ secrets.TEST_EMAIL != '' }}"
+          echo "Password set: ${{ secrets.TEST_SYSLOG_USER_PASSWORD != '' }}"
         
       # runa headless xvfb to initiate flutter integration tests
       - name: Run headless test
