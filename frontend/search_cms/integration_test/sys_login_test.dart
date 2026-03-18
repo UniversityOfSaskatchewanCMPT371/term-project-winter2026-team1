@@ -13,6 +13,7 @@ import 'package:search_cms/features/authentication/presentation/bloc/login_state
 import 'package:search_cms/features/authentication/presentation/pages/login_page.dart';
 import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:search_cms/config/routes/routes.dart';
 
 import '../test/features/authentication/presentation/pages/login_page_testcases.dart';
 
@@ -137,8 +138,8 @@ void main() {
         logger?.info('Running login failure case');
 
         // Use helpers to build login page
-        final router = _buildTestRouter();
-        await tester.pumpWidget(wrapWithRouter(router));
+        final testRouter = _buildTestRouter();
+        await tester.pumpWidget(wrapWithRouter(testRouter));
         await tester.pumpAndSettle();
 
         // Submit rejected credentials
@@ -188,8 +189,9 @@ void main() {
           'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define. '
         );
 
-        final router = _buildTestRouter();
-        await tester.pumpWidget(wrapWithRouter(router));
+        // test router used for building
+        final testRouter = _buildTestRouter();
+        await tester.pumpWidget(wrapWithRouter(testRouter));
         await tester.pumpAndSettle();
 
         // Submit form with valid entries
@@ -203,6 +205,7 @@ void main() {
         );
  
         // Assert router navigated to dashboard — LoginPage is gone
+        // LoginPage calls the real router, so we need to check the real route not the test
         expect(
           router.routerDelegate.currentConfiguration.last.matchedLocation,
           '/dashboard/home',
