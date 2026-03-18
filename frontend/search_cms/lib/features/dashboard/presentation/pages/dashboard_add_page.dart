@@ -13,12 +13,20 @@ final Logger? _logger =
 
 // Its not going to be used right now since we are removing the section for the save button
 // We will use this function laterwards when the save widget button comes back  
- void saveButtonClicked(String title){
+ void saveButtonClicked(){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   // implement when business logic is planned or when I can talk to them
 
-  _logger?.info("save button was clicked for $title widget");
+  _logger?.info("save button was clicked on the add data page");
+ } 
+
+void resetButtonClicked() {
+  _logger?.info("reset button was clicked on the add data page");
 }
+
+
+
+
 /*
  * Creates the widgets for adding data to the database
  * preconditions: unique title and text field names such that
@@ -161,6 +169,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   // Creates the global key that identifies the Form widget
   // by allowing also the validation of the form in the same form
   final _formKey = GlobalKey<FormState>();
+
+  //
 
   @override
   Widget build(BuildContext context) {
