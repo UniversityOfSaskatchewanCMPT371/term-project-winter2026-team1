@@ -26,8 +26,8 @@ CREATE TABLE artifact_faunal (
     size_upper REAL,
     size_lower REAL,
     comment TEXT,
-    pre_excav_frags INTEGER NOT NULL,
-    post_excav_frags INTEGER NOT NULL,
+    pre_excav_frags INTEGER NOT NULL DEFAULT 1,
+    post_excav_frags INTEGER NOT NULL DEFAULT 1,
     elements INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(), -- For admin editing purposes 
