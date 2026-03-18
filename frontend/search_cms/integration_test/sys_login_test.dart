@@ -173,7 +173,9 @@ void main() {
        });
   });
 
-  /*----- Success case ----*/
+  /*----- Success case ----
+   * Requires - Environment variables are properly loaded from pipeline
+  */
   group('Login Success Case', () {
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
