@@ -13,10 +13,6 @@ class SiteInsertApiImpl implements AbstractSiteInsertApi {
   /*
     The logger class we use to do logging.
     The question mark means it can be null.
-    The reason is the logger can potentially leak information to hackers,
-    so we set the project logging level to OFF so the logger is not constructed.
-    The code before will check if logger is built and chooses not to log if
-    there is no logger.
    */
   final Logger? _logger =
       logLevel != Level.OFF ? Logger('Site Insert Api') : null;
