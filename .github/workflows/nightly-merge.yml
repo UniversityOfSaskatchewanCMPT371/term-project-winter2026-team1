@@ -16,30 +16,34 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Full clone necessary for proper merge
+    - name: Install github cli
+      run: sudo apt install -y gh
 
+    - name: Authenticate github
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      
     # Add versioning
     - name: Set Version String
       id: version
-      run: echo "DATE_VER=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      run: echo "DATE_VER=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+
+    - name: Create branch name
+      id: vars
+      run: echo "BRANCH=nightly-merge-v${{ steps.version.outputs.DATE_VER }}" >> $GITHUB_OUTPUT
 
     # reset develop off of main to highlight commit changes between them
     - name: Prepare changes for PR
       run: |
-        BRANCH_NAME="nightly-merge-v$DATE_VER"
         git checkout develop
         git pull origin develop
-        git checkout -b "$BRANCH_NAME"
-        git push origin "$BRANCH_NAME"
+        git checkout -b "${{ steps.vars.outputs.BRANCH }}"
+        git push origin "${{ steps.vars.outputs.BRANCH }}"
     # Uses a marketplace gh action that merges the develop to main
     # This action creates a PR instead of doing a direct push
     - name: Create Pull Request to Main
-      uses: peter-evans/create-pull-request@v6
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        base: main
-        branch: nightly-merge-v${{ env.DATE_VER }}
-        title: 'Nightly Merge: v${{ env.DATE_VER }}'
-        body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
-        commit-message: 'Automated nightly merge v${{ env.DATE_VER }}'
-        delete-branch: false
-  
+      run: |
+        gh pr create \
+          --title "Nightly Merge: ${{ steps.vars.outputs.DATE_VER }}" \
+          --body "Automated nightly merge for version ${{ steps.vars.outputs.DATE_VER }}. This PR will auto-merge once all status checks pass." \
+          --base main \
+          --head "${{ steps.vars.outputs.BRANCH }}"  
