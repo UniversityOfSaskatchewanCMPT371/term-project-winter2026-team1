@@ -7,8 +7,8 @@ abstract class AbstractGetAllUnitsRepository {
   /*
     Retrieves all Units in the system
 
-    @return A list containing all UnitEntity objects currently stored
-      if no units exist an empty list is returned
+    @return A Success if the fetch is successful, containing the list of unit
+      entities or Failure containing the errorMessage otherwise
 
     Preconditions:
       (1) PowerSync database is initialized
