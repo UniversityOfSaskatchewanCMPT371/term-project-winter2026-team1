@@ -3,6 +3,14 @@ import 'package:logging/logging.dart';
 
 void renderPagesTest(Logger logger) {
   group("Page Rendering Tests", () {
+    /*
+      Preconditions:
+      - MyApp widget must load successfully
+      - LoginPage must render with correct fields
+
+      Postconditions:
+      - Button exists and is tappable
+    */
     testWidgets("Access system button exists", (
       tester,
     ) async {
