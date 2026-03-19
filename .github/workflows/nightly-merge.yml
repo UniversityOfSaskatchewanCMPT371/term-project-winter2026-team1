@@ -36,7 +36,7 @@ jobs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: nigthly-merge-v${{ env.DATE_VER }}
+        branch: nightly-merge-v${{ env.DATE_VER }}
         base: main
         title: 'Nightly Merge: v${{ env.DATE_VER }}'
         body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
