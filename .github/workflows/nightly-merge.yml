@@ -15,8 +15,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: UniversityOfSaskatchewanCMPT371/term-project-winter2026-team1
-        ref: develop # Point to develop as the start of the checkout, it defaults to main
         fetch-depth: 0 # Full clone necessary for proper merge
 
     # Add versioning
@@ -27,14 +25,18 @@ jobs:
     # reset develop off of main to highlight commit changes between them
     - name: Prepare changes for PR
       run: |
-        git fetch origin main:main
+        BRANCH_NAME="nightly-merge-v$DATE_VER"
+        git checkout develop
+        git pull origin develop
+        git checkout -b "$BRANCH_NAME"
+        git push origin "$BRANCH_NAME"
     # Uses a marketplace gh action that merges the develop to main
     # This action creates a PR instead of doing a direct push
     - name: Create Pull Request to Main
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: nightly-merge-v${{ env.DATE_VER }}
+        head: nigthly-merge-${{ env.DATE_VER }}
         base: main
         title: 'Nightly Merge: v${{ env.DATE_VER }}'
         body: 'Automated nightly merge for version ${{ env.DATE_VER }}. This PR will auto-merge once all status checks pass.'
