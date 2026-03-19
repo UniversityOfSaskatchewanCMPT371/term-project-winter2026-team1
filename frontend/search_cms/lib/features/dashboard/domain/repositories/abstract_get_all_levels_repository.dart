@@ -8,8 +8,8 @@ abstract class AbstractGetAllLevelsRepository {
   /*
     Retrieves all Levels in the system
 
-    @return A list containing all LevelEntity objects currently stored,
-      if no levels exist an empty list is returned
+    @return A Success if the fetch is successful, containing the list of level
+      entities or Failure containing the errorMessage otherwise
 
     Preconditions:
       (1) PowerSync database is initialized
