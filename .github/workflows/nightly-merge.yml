@@ -1,12 +1,8 @@
 name: 'Nightly Merge'
 
 on:
-  #schedule:
-    #- cron:  '0 6 * * *'
-  push:
-    branches: [ "develop", "main", "bug/nightly-merge-pr" ]
-  pull_request:
-    branches: [ "develop", "main", "bug/nightly-merge-pr" ]
+  schedule:
+    - cron:  '0 6 * * *'
     
 jobs:
   nightly-merge:
@@ -26,6 +22,7 @@ jobs:
       id: version
       run: echo "DATE_VER=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
 
+    # reset develop off of main to highlight commit changes between them
     - name: Prepare changes for PR
       run: |
         git fetch origin main:main
