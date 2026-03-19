@@ -14,13 +14,44 @@ import java.net.URL;
 import java.time.Duration;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class LoginTest {
 
+// NOTE partial use of AI below
+public class LoginTest {
+    /**
+     * 
+     * This class is the initialization of file LoginTest
+     * This functions off Junit and will fire off all
+     * associated tests with the @Test underneath it's methods
+     * 
+     * It has both a @BeforeAll and @AfterAll
+     * 
+     * Pre-conditions:
+     * (1) Appium is running on local machine
+     * (2) NovaWindows is installed with appium
+     * (3) Local ip 127.0.0.1 is availabe with port 4723
+     * 
+     *  
+     */
     private WindowsDriver driver;
     private Process appProcess;
 
     @BeforeAll
     public void setup() throws Exception {
+
+        /**
+         * 
+         * This is the setup function that initializes
+         * the connection with appium
+         * It has both a @BeforeAll and @AfterAll
+         * 
+         * Pre-conditions:
+         * (1) Appium is running on local machine
+         * (2) NovaWindows is installed with appium
+         * (3) Local ip 127.0.0.1 is availabe with port 4723
+         * (4) flutter's exe is built and exists in the release file
+         * 
+         *  
+         */
 
         // Working directory and application path
         String workingDir = "C:\\repo\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
@@ -44,7 +75,7 @@ public class LoginTest {
                 rootOptions
         );
 
-        // Find the Flutter window (UPDATED for Appium 9)
+        // Find the Flutter window 
         WebElement appWindow = rootDriver.findElement(AppiumBy.name("flutter_supabase_template"));
 
         String hwnd = appWindow.getAttribute("NativeWindowHandle");
@@ -52,37 +83,29 @@ public class LoginTest {
 
         rootDriver.quit();
 
-        // Attach directly to the app by HWND
+        // Attach directly to the app by the windows hwnd hex[]
         WindowsOptions appOptions = new WindowsOptions();
         appOptions.setCapability("appTopLevelWindow", hwndHex);
         appOptions.setCapability("automationName", "NovaWindows");
 
+
+        // Initialise the windows driver that the test will use
         driver = new WindowsDriver(
-                new URL("http://192.168.0.210:4723/"),
+                new URL("http://127.0.0.1:4723"),
                 appOptions
         );
 
-        // Updated for Selenium 4
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        // Wait for process to start up
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
+
+// END OF Partial AI Usage
 
     @Test
     public void testLoginFunctionality() {
-        // Locate UI elements (UPDATED for Appium 9)
+        //Basic Skeleton, Tests go here
+
         Actions actions = new Actions(driver);
-        actions.click().perform();
-        // Use the wait driver to slow it down.
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
-
-        WebElement emailField = driver.findElement(AppiumBy.name("email_textbox"));
-
-        actions.sendKeys("test_user_123");
-        actions.perform();
-
-        // Example: click login if needed
-        // WebElement loginButton = driver.findElement(AppiumBy.name("Access System"));
-        // loginButton.click();
     }
 
     @AfterAll
