@@ -153,7 +153,6 @@ public class LoginTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         Thread.sleep(20000);
 
-        System.out.println("theo can't use vim");
 
     }
 
