@@ -3,7 +3,8 @@ name: 'Nightly Merge'
 on:
   schedule:
     - cron:  '0 6 * * *'
-
+  push:
+    branches: ["bug/nightly-merge-pr"]
       
 jobs:
   nightly-merge:
@@ -42,7 +43,7 @@ jobs:
     - name: Create Pull Request to Main
       run: |
         gh pr create \
-          --title "Nightly Merge: ${{ steps.vars.outputs.DATE_VER }}" \
-          --body "Automated nightly merge for version ${{ steps.vars.outputs.DATE_VER }}. This PR will auto-merge once all status checks pass." \
+          --title "Nightly Merge: ${{ steps.version.outputs.DATE_VER }}" \
+          --body "Automated nightly merge for version ${{ steps.version.outputs.DATE_VER }}. This PR will auto-merge once all status checks pass." \
           --base main \
           --head "${{ steps.vars.outputs.BRANCH }}"  
