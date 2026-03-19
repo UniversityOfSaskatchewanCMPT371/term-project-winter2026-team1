@@ -1,9 +1,11 @@
 name: 'Nightly Merge'
 
 on:
-  schedule:
-    - cron:  '0 6 * * *'
-    
+  #schedule:
+    #- cron:  '0 6 * * *'
+  push:
+    branches: [ "develop", "main", "bug/nightly-merge-pr" ]
+      
 jobs:
   nightly-merge:
 
@@ -26,7 +28,6 @@ jobs:
     - name: Prepare changes for PR
       run: |
         git fetch origin main:main
-        git reset --soft main
     # Uses a marketplace gh action that merges the develop to main
     # This action creates a PR instead of doing a direct push
     - name: Create Pull Request to Main
