@@ -45,8 +45,8 @@ jobs:
         uses: hoverkraft-tech/compose-action@4894d2492015c1774ee5a13a95b1072093087ec3 # v2.5.0
         with:
           # Additional options to pass to `docker` command.
-          docker-up-flags: "--build"
-
+          up-flags: "--build"
+          
           # Path to compose file(s). It can be a list of files. It can be absolute or relative to the current working directory (cwd).
           # Default: `./docker-compose.yml`
           compose-file: ./backend/docker-compose.yml
