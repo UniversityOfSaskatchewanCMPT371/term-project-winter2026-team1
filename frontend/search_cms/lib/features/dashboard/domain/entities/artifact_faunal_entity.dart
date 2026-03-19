@@ -57,8 +57,8 @@ class ArtifactFaunalEntity {
     assert(assemblageId.isNotEmpty),
     assert(porosity == null || (porosity > 0 && porosity <= 5)),
     assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower),
-    assert(preExcavFrags >= 0),
-    assert(postExcavFrags >= 0),
-    assert(elements >= 0);
+    assert(preExcavFrags > 0),
+    assert(postExcavFrags > 0),
+    assert(elements > 0);
 }
 
