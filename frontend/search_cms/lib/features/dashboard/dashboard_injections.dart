@@ -1,8 +1,11 @@
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 
 /*
@@ -12,6 +15,42 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usec
   getIt<ClassName>() are defined
  */
 void initDashboardInjections() {
+  _registerGetAllSitesUseCase();
+  _registerGetAllAreasUseCase();
+
+  // The dashboard use case collection
+  getIt.registerFactory<DashboardUsecases>(
+    () => DashboardUsecases(
+      getAllSitesUseCase: getIt<GetAllSitesUseCase>(),
+      getAllAreasUseCase: getIt<GetAllAreasUseCase>(),
+    ),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the get all areas use case
+ */
+void _registerGetAllAreasUseCase() {
+  // Register the GetAllAreasApiImpl
+  getIt.registerFactory<GetAllAreasApiImpl>(
+    () => GetAllAreasApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+
+  // Register the GetAllAreasRepositoryImpl
+  getIt.registerFactory<GetAllAreasRepositoryImpl>(
+    () => GetAllAreasRepositoryImpl(api: getIt<GetAllAreasApiImpl>()),
+  );
+
+  // Register the GetAllAreasUseCase
+  getIt.registerFactory<GetAllAreasUseCase>(
+    () => GetAllAreasUseCase(repository: getIt<GetAllAreasRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the get all sites use case
+ */
+void _registerGetAllSitesUseCase() {
   // Register the GetAllSitesApiImpl
   getIt.registerFactory<GetAllSitesApiImpl>(
     () => GetAllSitesApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
@@ -25,10 +64,5 @@ void initDashboardInjections() {
   // Register the GetAllSitesUseCase
   getIt.registerFactory<GetAllSitesUseCase>(
     () => GetAllSitesUseCase(repository: getIt<GetAllSitesRepositoryImpl>()),
-  );
-
-  // The dashboard use case collection
-  getIt.registerFactory<DashboardUsecases>(
-    () => DashboardUsecases(getAllSitesUseCase: getIt<GetAllSitesUseCase>()),
   );
 }
