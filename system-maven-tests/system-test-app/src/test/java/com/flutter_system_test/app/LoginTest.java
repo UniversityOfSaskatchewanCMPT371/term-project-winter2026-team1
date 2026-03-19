@@ -54,7 +54,7 @@ public class LoginTest {
          */
 
         // Working directory and application path
-        String workingDir = "C:\\repo\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
+        String workingDir = "C:\\471\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
         String appPath = workingDir + "\\flutter_supabase_template.exe";
 
         // Launch the application using ProcessBuilder
@@ -91,21 +91,70 @@ public class LoginTest {
 
         // Initialise the windows driver that the test will use
         driver = new WindowsDriver(
-                new URL("http://127.0.0.1:4723"),
+                new URL("http://127.0.0.1:4723/"),
                 appOptions
         );
 
-        // Wait for process to start up
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        // Updated for Selenium 4
     }
 
 // END OF Partial AI Usage
 
     @Test
-    public void testLoginFunctionality() {
-        //Basic Skeleton, Tests go here
-
+    public void testLoginFunctionality() throws InterruptedException {
+        // Locate UI elements (UPDATED for Appium 9)
         Actions actions = new Actions(driver);
+        actions.click().perform();
+        // Use the wait driver to slow it down.
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+
+
+        WebElement emailField = driver.findElement(AppiumBy.name("email_textbox"));
+        // WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.name("email_textbox")));
+
+        
+        actions.moveToElement(emailField).click().perform();
+
+        // Give Windows a tiny fraction of a second to register the UI focus shift
+        Thread.sleep(200);
+
+        actions.sendKeys("pleasework@fortheloveofgod.ca").perform();
+        
+        // WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.name("Access System")));
+        // actions.moveToElement(loginButton).click().perform();
+
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
+
+        // Example: click login if needed
+        // WebElement loginButton = driver.findElement(AppiumBy.name("Access System"));
+        // loginButton.click();
+
+
+        // Testing Password
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+
+
+        WebElement passwordField = driver.findElement(AppiumBy.name("password_textbox"));
+        // WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.name("email_textbox")));
+
+        
+        actions.moveToElement(passwordField).click().perform();
+
+        // Give Windows a tiny fraction of a second to register the UI focus shift
+        Thread.sleep(200);
+
+        actions.sendKeys("passwordypassword").perform();
+
+        // Testing authorize access button
+        WebElement authField = driver.findElement(AppiumBy.name("Access System"));
+        actions.moveToElement(authField).click().perform();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        Thread.sleep(20000);
+
+        System.out.println("theo can't use vim");
+
     }
 
     @AfterAll
