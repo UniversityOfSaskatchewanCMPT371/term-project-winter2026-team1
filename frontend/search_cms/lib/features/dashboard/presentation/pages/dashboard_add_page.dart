@@ -183,24 +183,39 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 ///  - If the form is valid, then the save function is called
 ///  - if the form is not valid, than the saving does not happen
   void _handleSave(BuildContext context) {
-    _logger?.info("Save button Clicked");
+    _logger?.info("Save Button Clicked");
 
     if(_formKey.currentState!.validate()) {
       _logger?.info("Form has been valid - saving");
-      saveButtonClicked()
+      saveButtonClicked();
 
     }
     else {
       _logger?.info("Form has been invalid - not saved");
     }
   }
-
+  
+  /// PreConditions:
+  /// - The form exists and is connected through the _formkey
+  /// - The addDataCubit must be avaialbe
+  /// - the reset action was triggered by the user
+  /// 
+  /// PostConditions:
+  /// - The form fields are reset
+  /// - THe cubit field values are reset
+  /// - THe reset function is also reset
+  
+  void _handleReset(BuildContext context) {
+    _logger?.info("Reset Button Clicked");
+    _formKey.currentState!.reset();
+    context.read<AddDataCubit>().resetFields();
+    resetButtonClicked();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddDataCubit()..init(),
-      child: BlocBuilder<AddDataCubit, AddDataState>(S
+      child: BlocBuilder<AddDataCubit, AddDataState>(
         builder: (context, state) {
           return Scaffold(
             backgroundColor: AppColors.addDataBackground,
