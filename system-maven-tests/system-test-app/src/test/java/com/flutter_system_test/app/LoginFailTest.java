@@ -66,61 +66,54 @@ public class LoginFailTest {
         // Updated for Selenium 4
     }
 
+    
+    /**
+     * Tests that a user can not log in with invalid email and password
+     * 
+     * pre conditions:
+     * 1. setup() complete without errors
+     * 2. hardcoded credentials exist in backend as valid inputs
+     * 3. backend and Appium are running in background
+     * 
+     * Expected result:
+     * Should see that the UI has produced an error message after entering invalid credentials
+     * Will not log you into the application
+     */
     @Test
     public void testLoginFunctionality() throws InterruptedException {
-        // Locate UI elements (UPDATED for Appium 9)
         Actions actions = new Actions(driver);
         actions.click().perform();
-        // Use the wait driver to slow it down.
+        // Use the wait driver to allow ui to fully render
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 
-
+        // Find the ui element by name and click on it
         WebElement emailField = driver.findElement(AppiumBy.name("email_textbox"));
-        // WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.name("email_textbox")));
-
-        
         actions.moveToElement(emailField).click().perform();
 
-        // Give Windows a tiny fraction of a second to register the UI focus shift
+        // Give Windows a fraction of a second to register the UI focus shift
         Thread.sleep(200);
-
+        // Type a incorrect email into the textbox
         actions.sendKeys("wrongEmail@wrongemail.ca").perform();
-        
-        // WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.name("Access System")));
-        // actions.moveToElement(loginButton).click().perform();
 
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-
-        // Example: click login if needed
-        // WebElement loginButton = driver.findElement(AppiumBy.name("Access System"));
-        // loginButton.click();
-
-
-        // Testing Password
+        // Testing Password Field
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-
-
+        // Find Password text box and click on it
         WebElement passwordField = driver.findElement(AppiumBy.name("password_textbox"));
-        // WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.name("email_textbox")));
-
-        
         actions.moveToElement(passwordField).click().perform();
-
         // Give Windows a tiny fraction of a second to register the UI focus shift
         Thread.sleep(200);
-
+        // Type a incorrect password into the textbox
         actions.sendKeys("wrongpassword").perform();
 
-        // Testing authorize access button
+        // Testing authorize access field 
         WebElement authField = driver.findElement(AppiumBy.name("Access System"));
         actions.moveToElement(authField).click().perform();
+        // Should give an error message when trying to click on it with invalid credentials
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-        Thread.sleep(20000);
-
     }
-
+    
     @AfterAll
     public void teardown() {
         if (driver != null) {
