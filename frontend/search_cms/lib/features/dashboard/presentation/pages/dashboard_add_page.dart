@@ -187,6 +187,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 ///  - If the form is valid, then the save function is called
 ///  - if the form is not valid, than the saving does not happen
   void _handleSave(BuildContext context) {
+
+    // if (_formKey.currentState != null && _formKey.currentState!.validate()) {
     _logger?.info("Save Button Clicked");
       saveButtonClicked();
   }
@@ -203,7 +205,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   
   void _handleReset(BuildContext context) {
     _logger?.info("Reset Button Clicked");
-    _formKey.currentState!.reset();
+    _formKey.currentState?.reset();
     context.read<AddDataCubit>().resetFields();
     resetButtonClicked();
   }
@@ -275,10 +277,13 @@ class DashboardAddPageState extends State<DashboardAddPage> {
             ),
 
             child: Row(
+
               //moves the button to the left
               mainAxisAlignment: MainAxisAlignment.start,
 
               children: [
+                //"Save Button" for the Add data page
+                // Uses the "save" handler when clicked
                 TextButton(
                   onPressed: () => _handleSave(context),
                   style: TextButton.styleFrom(
@@ -290,6 +295,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   child: const Text("Save"),
 
                 ),
+                //"Reset Button" for the Add Data Page
+                // Uses the "reset" handler when clicked
                 const SizedBox(width: 10),
                 TextButton(
                   onPressed: () => _handleReset(context),
