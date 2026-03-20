@@ -73,12 +73,12 @@ extension AnyAssemblageModel on Any {
   );
 }
 
-// Runs randomized property-based tests on the AssemblageEntity class
+// Runs randomized property-based tests on the AssemblageEntity and AssemblageModel class
 // This tests the invariants of the entity against generated Glados instances
 // The unit tests already cover the edge cases where any one required 
 // field (ID, level ID) is empty, so this test does not attempt to target that
 void main() {
-  group('Assemblage PBT Tests', () {
+  group('Entity and Model PBT Tests', () {
     
     Any.setDefault<AssemblageEntity>(any.assemblageEntity);
 
@@ -105,6 +105,33 @@ void main() {
         expect(assemblageEntity.createdAt, isA<DateTime>());
         expect(assemblageEntity.updatedAt, isA<DateTime>());
     });
+
+    Any.setDefault(any.assemblageModel);
+
+    Glados<AssemblageModel>().test(
+      "generated AssemblageModel has valid fields",
+      (assemblageModel) {
+        // id and levelId must be valid UUIDs, non-empty and correct format
+        expect(assemblageModel.id, isNotEmpty);
+        expect(assemblageModel.id, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+
+        expect(assemblageModel.levelId, isNotEmpty);
+        expect(assemblageModel.levelId, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+
+        // name is nullable, if present it must be a String
+        if (assemblageModel.name != null) {
+          expect(assemblageModel.name, isA<String>());
+        }
+
+        // dates must be valid DateTime instances
+        expect(assemblageModel.createdAt, isA<DateTime>());
+        expect(assemblageModel.updatedAt, isA<DateTime>());
+      }
+    );
   },
   );
 
