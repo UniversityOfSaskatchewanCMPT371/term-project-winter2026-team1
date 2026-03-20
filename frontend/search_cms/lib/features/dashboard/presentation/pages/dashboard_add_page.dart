@@ -11,6 +11,7 @@ final Logger? _logger =
       logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
 
+
 // Its not going to be used right now since we are removing the section for the save button
 // We will use this function laterwards when the save widget button comes back  
  void saveButtonClicked(){
@@ -20,12 +21,10 @@ final Logger? _logger =
   _logger?.info("save button was clicked on the add data page");
  } 
 
+//We will use this when the function runs the reset button(when its clicked), logs a message saying that reset button was pressed
 void resetButtonClicked() {
   _logger?.info("reset button was clicked on the add data page");
 }
-
-
-
 
 /*
  * Creates the widgets for adding data to the database
@@ -41,8 +40,8 @@ void resetButtonClicked() {
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
 Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
-  //List<String> newKeys = []; --- Will it be used when the save button will be implemented
-  //String saveButtonKey = "$title-saveButton";
+  List<String> newKeys = [];
+  String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
@@ -109,6 +108,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
 
                   //The validator receives the text that user has entered
                   //Adds a textFormField with validation
+                
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter $name";
@@ -170,13 +170,36 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   // by allowing also the validation of the form in the same form
   final _formKey = GlobalKey<FormState>();
 
-  //
+//This will run all the validators -- it only saves if every field has been passed
+
+
+/// preconditions: 
+///  - The form key is connected to the form and it makes sure it exists
+///  - the Save Button action was triggered
+///  - The form key can check and validated through the form fields
+/// 
+/// postconditions:
+///  - If the form is valid, then the save function is called
+///  - if the form is not valid, than the saving does not happen
+  void _handleSave(BuildContext context) {
+    _logger?.info("Save button Clicked");
+
+    if(_formKey.currentState!.validate()) {
+      _logger?.info("Form has been valid - saving");
+      saveButtonClicked()
+
+    }
+    else {
+      _logger?.info("Form has been invalid - not saved");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddDataCubit()..init(),
-      child: BlocBuilder<AddDataCubit, AddDataState>(
+      child: BlocBuilder<AddDataCubit, AddDataState>(S
         builder: (context, state) {
           return Scaffold(
             backgroundColor: AppColors.addDataBackground,
