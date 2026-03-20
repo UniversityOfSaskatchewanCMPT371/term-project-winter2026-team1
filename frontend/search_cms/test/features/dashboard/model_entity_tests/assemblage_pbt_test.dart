@@ -1,5 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
+//import 'package:flutter_test/flutter_test.dart' hide group;
 import 'package:glados/glados.dart';
+import '../../../pbt_utils/pbt_utils.dart';
 
 // Copied over until class gets merged to develop, remove later
 class AssemblageEntity {
@@ -18,20 +19,11 @@ class AssemblageEntity {
   });
 }
 
-// produces either a string, and empty string, or null
-extension MaybeAnyString on Any {
-  // any.either randomly chooses between its two arguments
-  Generator<String?> get nullableLetters => any.either(
-    any.letters,  // string, can be empty
-    any.null_,    // always null
-  );
-}
-
 // Generates an Assemblage with random values
 extension AnyAssemblage on Any {
   Generator<AssemblageEntity> get assemblage => combine5(
-    any.nonEmptyLetters,
-    any.nonEmptyLetters,
+    any.uuid,
+    any.uuid,
     nullableLetters,
     any.dateTime,
     any.dateTime,
@@ -47,43 +39,19 @@ extension AnyAssemblage on Any {
 }
 
 void main() {
-  // A generator for UUID-like strings (not strict UUID validation—just realistic/structured data)
-  final uuidGen = any
-      .map((_) => List.generate(32, (i) => "0123456789abcdef"[any.int.restrict(0, 15).generate()]))
-      .map((chars) {
-        final s = chars.join();
-        return '${s.substring(0, 8)}-'
-               '${s.substring(8, 12)}-'
-               '${s.substring(12, 16)}-'
-               '${s.substring(16, 20)}-'
-               '${s.substring(20)}';
-      });
+  group('Assemblage PBT Tests', () {
+    
+    Any.setDefault<AssemblageEntity>(any.assemblage);
 
-  // Generator for nullable or non-null names
-  final nameGen = any.stringOrNull;
-
-  // Generator for timestamps
-  final dateGen = any.dateTime;
-
-  Glados3(uuidGen, uuidGen, nameGen).test(
-    'Entity retains provided data',
-    (id, levelId, name) {
-      final createdAt = dateGen.generate();
-      final updatedAt = dateGen.generate();
-
-      final entity = AssemblageEntity(
-        id: id,
-        levelId: levelId,
-        name: name,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+    Glados<AssemblageEntity>().test("test", (assemblage) {
+      AssemblageEntity entity = assemblage;
 
       expect(entity.id, id);
       expect(entity.levelId, levelId);
       expect(entity.name, name);
       expect(entity.createdAt, createdAt);
       expect(entity.updatedAt, updatedAt);
-    },
+    });
+  },
   );
 }
