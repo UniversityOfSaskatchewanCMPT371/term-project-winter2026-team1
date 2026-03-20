@@ -62,7 +62,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
         Text(
           title,
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.mainText,
           ),
@@ -87,7 +87,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                 Text(
                   name,
                   style: TextStyle(
-                    fontSize: 10.sp,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: AppColors.mainText,
                   ),
@@ -99,7 +99,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   key: Key("$title-$name"),
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 10.5.sp,
+                    fontSize: 14,
                     ),
 
 
