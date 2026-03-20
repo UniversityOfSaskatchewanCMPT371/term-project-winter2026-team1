@@ -81,10 +81,9 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
 
         // text fields
         ...textFieldNames.map((name) {
-            /*
-              map returns an iterable (kind of like a list) the ... pulls the items out.
-              So it goes from [widget, widget] to widget, widget
-            */
+            //
+             // map returns an iterable (kind of like a list) the ... pulls the items out.
+             // So it goes from [widget, widget] to widget, widget
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -186,81 +185,56 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   // by allowing also the validation of the form in the same form
   final _formKey = GlobalKey<FormState>();
 
-//This will run all the validators -- it only saves if every field has been passed
-
-
-/// preconditions: 
-///  - The form key is connected to the form and it makes sure it exists
-///  - the Save Button action was triggered
-///  - The form key can check and validated through the form fields
-/// 
-/// postconditions:
-///  - If the form is valid, then the save function is called
-///  - if the form is not valid, than the saving does not happen
-  void _handleSave(BuildContext context) {
-
-    // if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-    _logger?.info("Save Button Clicked");
-      saveButtonClicked();
-  }
-
-  /// PreConditions:
-  /// - The form exists and is connected through the _formkey
-  /// - The addDataCubit must be avaialbe
-  /// - the reset action was triggered by the user
-  /// 
-  /// PostConditions:
-  /// - The form fields are reset
-  /// - THe cubit field values are reset
-  /// - THe reset function is also reset
-  
-  void _handleReset(BuildContext context) {
-    _logger?.info("Reset Button Clicked");
-    _formKey.currentState?.reset();
-    context.read<AddDataCubit>().resetFields();
-    resetButtonClicked();
-  }
-
-  // Builds the Add Data page layout
-  // 
-  //preconditions:
-  // - the fieldnames context must be valid
-  // - the _formkey should be already created
-  //
-  //postconditions:
-  // - THe Add Data page layout is being returned
-  // - The AddDataCubit is provided within the widget tree
-  // - THe page is connected to the AddDatastate throughout changes within the UI
+// Builds the Add Data page layout
+// 
+//preconditions:
+// - the fieldnames context must be valid
+// - the _formkey should be already created
+//
+//postconditions:
+// - THe Add Data page layout is being returned
+// - The AddDataCubit is provided within the widget tree
+// - THe page is connected to the AddDatastate throughout changes within the UI
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F4F6),
-        elevation: 0,
-        title: const Text('Add Data'),
-      ),
-      body:  
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          //Added a outer padding that sits close to the edges
-          padding: const EdgeInsets.all(20),
-          child: Wrap(
-            direction: Axis.horizontal,
-            //Added the right amount of spacing between each section
-            spacing: 18,
-            runSpacing: 18,
-            children: [ 
-              /*
-              this is where you will add the columns and text fields for adding
-              data to the database
-              */
-              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
-              createAddDataWidget("Unit", ["Name", "Site Name"]),
-              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
-              
-
-            ]
+ // it provides the AddDataCubit state to the page and calls the init()
+    return BlocProvider(
+      create: (context) => AddDataCubit()..init(),
+      // Whenever the AddDataPage change it rebuilds the ui
+      child: BlocBuilder<AddDataCubit, AddDataState>(
+        builder: (context, state) {
+          return Scaffold(
+            //Main background for the AddDataPage
+            backgroundColor: AppColors.addDataBackground,
+            appBar: AppBar(
+              backgroundColor: AppColors.addDataBackground,
+              elevation: 0,
+              title: const Text('Add Data'),
+            ),
+          
+          //Build a form widget using the _formKey created above
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              //Added a outer padding that sits close to the edges
+              padding: EdgeInsets.all(2.w),
+              child: Wrap(
+                direction: Axis.horizontal,
+                //Added the right amount of spacing between each section
+                spacing: 1.5.w,
+                runSpacing: 1.5.h,
+                children: [
+                  //
+                  //These are the listed sections that are displayed in the Add Data Page
+                  //eventually will be displayed in the Homepage and also in the database
+                  */
+                  createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
+                  createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
+                  createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+                ],
+              ),
+            ),
           ),
         )
         
