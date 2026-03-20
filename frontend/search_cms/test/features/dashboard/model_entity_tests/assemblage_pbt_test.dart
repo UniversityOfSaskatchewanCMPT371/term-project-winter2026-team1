@@ -17,10 +17,26 @@ class AssemblageEntity {
     required this.updatedAt,
   });
 }
+class AssemblageModel {
+  final String id;
+  final String levelId;
+  final String? name; // Name can be empty or non-empty
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-// Generates an Assemblage with random values
-extension AnyAssemblage on Any {
-  Generator<AssemblageEntity> get assemblage => combine5(
+  AssemblageModel({
+    required this.id,
+    required this.levelId,
+    required this.name,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+}
+
+// Generates an AssemblageEntity with random values
+// call with assemblageEntity
+extension AnyAssemblageEntity on Any {
+  Generator<AssemblageEntity> get assemblageEntity => combine5(
     any.uuid,
     any.uuid,
     nullableLetters,
@@ -37,6 +53,26 @@ extension AnyAssemblage on Any {
   );
 }
 
+// Generates an AssemblageModel with random values
+// call with assemblageModel
+extension AnyAssemblageModel on Any {
+  Generator<AssemblageModel> get assemblageModel => combine5(
+    any.uuid,
+    any.uuid,
+    nullableLetters,
+    any.dateTime,
+    any.dateTime,
+    (id, levelId, name, createdAt, updatedAt) {
+      return AssemblageModel(
+        id: id,
+        levelId: levelId,
+        name: name,
+        createdAt: createdAt,
+        updatedAt: updatedAt);
+    }
+  );
+}
+
 // Runs randomized property-based tests on the AssemblageEntity class
 // This tests the invariants of the entity against generated Glados instances
 // The unit tests already cover the edge cases where any one required 
@@ -44,30 +80,30 @@ extension AnyAssemblage on Any {
 void main() {
   group('Assemblage PBT Tests', () {
     
-    Any.setDefault<AssemblageEntity>(any.assemblage);
+    Any.setDefault<AssemblageEntity>(any.assemblageEntity);
 
     Glados<AssemblageEntity>().test(
       "generated AssemblageEntity has valid fields",
-      (assemblage) {
+      (assemblageEntity) {
         // id and levelId must be valid UUIDs, non-empty and correct format
-        expect(assemblage.id, isNotEmpty);
-        expect(assemblage.id, matches(
+        expect(assemblageEntity.id, isNotEmpty);
+        expect(assemblageEntity.id, matches(
           RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
         ));
 
-        expect(assemblage.levelId, isNotEmpty);
-        expect(assemblage.levelId, matches(
+        expect(assemblageEntity.levelId, isNotEmpty);
+        expect(assemblageEntity.levelId, matches(
           RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
         ));
 
         // name is nullable, if present it must be a String
-        if (assemblage.name != null) {
-          expect(assemblage.name, isA<String>());
+        if (assemblageEntity.name != null) {
+          expect(assemblageEntity.name, isA<String>());
         }
 
         // dates must be valid DateTime instances
-        expect(assemblage.createdAt, isA<DateTime>());
-        expect(assemblage.updatedAt, isA<DateTime>());
+        expect(assemblageEntity.createdAt, isA<DateTime>());
+        expect(assemblageEntity.updatedAt, isA<DateTime>());
     });
   },
   );
