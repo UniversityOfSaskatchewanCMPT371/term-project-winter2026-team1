@@ -261,11 +261,13 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
                   createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
                   createAddDataWidget(context, "Assemblage", ["Assemblage Name", "Unit Name", "Level Name"]),
-                ],
-              ),
-            ),
+                  createAddDataWidget(context, "Artifact (Faunal)", ["Assemblage Name", "Porosity", "Size Upper", "Size Lower", "Comment", "Pre Excavation Fragments", "Post Excavation Fragments", "Elements"]),
+                  
+                  ],
           ),
-          ),
+        ),
+      ),
+    ),
 
           Container(
             padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
