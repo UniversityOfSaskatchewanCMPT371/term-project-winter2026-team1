@@ -271,22 +271,27 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                     backgroundColor: AppColors.addDataFieldFocus,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
 
-                    )
-                  ),
+                    ),
                   child: const Text("Save"),
+
                 ),
                 const SizedBox(width: 10),
-                ElevatedButton(
+                TextButton(
                   onPressed: () => _handleReset(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.mainText,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
                   child: const Text("Reset"),
                       ),
                     ],
                   ),
                 ),
- 
               ],
             ),
           );
