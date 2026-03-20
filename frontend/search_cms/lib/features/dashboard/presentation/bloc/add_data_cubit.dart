@@ -29,6 +29,15 @@ class AddDataCubit extends Cubit<AddDataState> {
 // Adds a text field value function and runs the user types in a text field
 // 3 parts: sectionTitle, fieldName, value
 // It updates the stored text for one specific field
+//   
+// preconditions:
+// - The Add Data Page should be already in a valid stage
+// sectionTitle and fieldName refer to the real field thats its being used on the page
+//
+// postconditions:
+// - The value for the fieldName is updated
+// - the new value will be stored and will use the updated matching section-field key
+// - the updated state will keep the latest new value
   void updateFieldValue(String sectionTitle, String fieldName, String value) {
 
     // places the store field names and their typed values within the different sections
