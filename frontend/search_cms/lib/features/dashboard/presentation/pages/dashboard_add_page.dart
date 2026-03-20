@@ -39,9 +39,6 @@ void resetButtonClicked() {
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
 Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
-  List<String> newKeys = [];
-  String saveButtonKey = "$title-saveButton";
-
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
@@ -210,6 +207,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
     _formKey.currentState!.reset();
     context.read<AddDataCubit>().resetFields();
     resetButtonClicked();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,10 +224,15 @@ class DashboardAddPageState extends State<DashboardAddPage> {
             ),
           
           //Build a form widget using the _formKey created above
-            body: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+            body: Column(
+              children: [
+
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      
+                    scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
               padding: EdgeInsets.all(2.w),
               child: Wrap(
@@ -249,9 +252,39 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               ),
             ),
           ),
-        );
-      },
-    ),
-  );
-}
+          ),
+
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+            decoration: const BoxDecoration(
+              color: AppColors.addDataBackground,
+              border: Border(
+                top: BorderSide(color: AppColors.addDataCardBorder),
+              )
+            ),
+
+            child: Row(
+              //moves the button to the left
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextButton(
+                  onPressed: () => _handleReset(context),
+                  child: const Text("Reset"),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () => _handleSave(context),
+                  child: const Text("Save"),
+                      ),
+                    ],
+                  ),
+                ),
+ 
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
