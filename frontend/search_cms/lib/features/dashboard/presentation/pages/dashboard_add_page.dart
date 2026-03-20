@@ -260,14 +260,23 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   //
                   //These are the listed sections that are displayed in the Add Data Page
                   //eventually will be displayed in the Homepage and also in the database
-                  createAddDataWidget(context, 
-                  "Site Information", {
-                  "Name": "Enter Site Name (e.g., DiRw-28)", "Borden": 
-                  "Enter Borden Number (e.g., DiRw-28)", "Area": 
-                  "Enter Area (e.g., western end of slope)"}),
+                createAddDataWidget(context, 
+                "Site Information", {
+                "Name": "Enter Site Name (e.g., DiRw-28)", "Borden": 
+                "Enter Borden Number (e.g., DiRw-28)", "Area": 
+                "Enter Area (e.g., western end of slope)"}),
 
-                  createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
-                  createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+                createAddDataWidget(context, 
+                "Unit", {"Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Site Name": "Enter Site Name (e.g., DiRw-28)"}),
+
+                createAddDataWidget(context, 
+                "Level", {"Name": "Enter Level Name (e.g., A1)", 
+                "Unit Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Parent Name": "Enter Parent Name (e.g., Area A)", 
+                "Upper Limit": "Enter Upper Limit (e.g., A)", 
+                "Lower Limit": "Enter Lower Limit (e.g., 1)"}),
+                
                   createAddDataWidget(context, "Assemblage", ["Assemblage Name", "Unit Name", "Level Name"]),
                   createAddDataWidget(context, "Artifact (Faunal)", ["Assemblage Name", "Porosity", "Size Upper", "Size Lower", "Comment", "Pre Excavation Fragments", "Post Excavation Fragments", "Elements"]),
                   
