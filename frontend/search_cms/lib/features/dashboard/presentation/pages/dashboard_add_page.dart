@@ -10,7 +10,6 @@ final Logger? _logger =
       logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
 
-
 // Its not going to be used right now since we are removing the section for the save button
 // We will use this function laterwards when the save widget button comes back  
  void saveButtonClicked(){
@@ -20,10 +19,12 @@ final Logger? _logger =
   _logger?.info("save button was clicked on the add data page");
  } 
 
-//We will use this when the function runs the reset button(when its clicked), logs a message saying that reset button was pressed
 void resetButtonClicked() {
   _logger?.info("reset button was clicked on the add data page");
 }
+
+
+
 
 /*
  * Creates the widgets for adding data to the database
@@ -39,6 +40,9 @@ void resetButtonClicked() {
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
 Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
+  //List<String> newKeys = []; --- Will it be used when the save button will be implemented
+  //String saveButtonKey = "$title-saveButton";
+
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
@@ -62,7 +66,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
         Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.mainText,
           ),
@@ -87,37 +91,31 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                 Text(
                   name,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.mainText,
                   ),
                 ),
                 const SizedBox(height: 8),
-
-
                 TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 14,
-                    ),
-
-
+                    fontSize: 10.5.sp,
+                  ),
                   onChanged: (value) {
                     context.read<AddDataCubit>().updateFieldValue(title, name, value);
                     _logger?.info("$title-$name");
-
                   },
 
                   //The validator receives the text that user has entered
                   //Adds a textFormField with validation
-
-                  //The following function will be used laterwards to determine is the field types are not input into each section
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return "Please enter $name";
-                  //   }
-                  //   return null;
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter $name";
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: "Enter $name",
                     filled: true,
@@ -147,7 +145,6 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                     ),
                   ),
                 ),
-                
               ],
             ),
           );
@@ -174,38 +171,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   // by allowing also the validation of the form in the same form
   final _formKey = GlobalKey<FormState>();
 
-//This will run all the validators -- it only saves if every field has been passed
-
-
-/// preconditions: 
-///  - The form key is connected to the form and it makes sure it exists
-///  - the Save Button action was triggered
-///  - The form key can check and validated through the form fields
-/// 
-/// postconditions:
-///  - If the form is valid, then the save function is called
-///  - if the form is not valid, than the saving does not happen
-  void _handleSave(BuildContext context) {
-    _logger?.info("Save Button Clicked");
-      saveButtonClicked();
-  }
-
-  /// PreConditions:
-  /// - The form exists and is connected through the _formkey
-  /// - The addDataCubit must be avaialbe
-  /// - the reset action was triggered by the user
-  /// 
-  /// PostConditions:
-  /// - The form fields are reset
-  /// - THe cubit field values are reset
-  /// - THe reset function is also reset
-  
-  void _handleReset(BuildContext context) {
-    _logger?.info("Reset Button Clicked");
-    _formKey.currentState!.reset();
-    context.read<AddDataCubit>().resetFields();
-    resetButtonClicked();
-  }
+  //
 
   @override
   Widget build(BuildContext context) {
@@ -222,15 +188,10 @@ class DashboardAddPageState extends State<DashboardAddPage> {
             ),
           
           //Build a form widget using the _formKey created above
-            body: Column(
-              children: [
-
-                Expanded(
-                  child: Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      
-                    scrollDirection: Axis.vertical,
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               //Added a outer padding that sits close to the edges
               padding: EdgeInsets.all(2.w),
               child: Wrap(
@@ -250,54 +211,9 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               ),
             ),
           ),
-          ),
-
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
-            decoration: const BoxDecoration(
-              color: AppColors.addDataBackground,
-              border: Border(
-                top: BorderSide(color: AppColors.addDataCardBorder),
-              )
-            ),
-
-            child: Row(
-              //moves the button to the left
-              mainAxisAlignment: MainAxisAlignment.start,
-
-              children: [
-                TextButton(
-                  onPressed: () => _handleSave(context),
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppColors.addDataFieldFocus,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-
-                    ),
-                  child: const Text("Save"),
-
-                ),
-                const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () => _handleReset(context),
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.mainText,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                  ),
-                  child: const Text("Reset"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
+        );
+      },
+    ),
+  );
+}
 }
