@@ -275,10 +275,24 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 "Parent Name": "Enter Parent Name (e.g., Area A)", 
                 "Upper Limit": "Enter Upper Limit (e.g., A)", 
                 "Lower Limit": "Enter Lower Limit (e.g., 1)"}),
-                
-                  createAddDataWidget(context, "Assemblage", ["Assemblage Name", "Unit Name", "Level Name"]),
-                  createAddDataWidget(context, "Artifact (Faunal)", ["Assemblage Name", "Porosity", "Size Upper", "Size Lower", "Comment", "Pre Excavation Fragments", "Post Excavation Fragments", "Elements"]),
-                  
+
+                createAddDataWidget(context, 
+                "Assemblage", {"Assemblage Name": 
+                "Enter Assemblage Name (e.g., Faunal Assemblage 1)", 
+                "Unit Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Level Name": "Enter Level Name (e.g., A1)"}),
+
+
+                createAddDataWidget(context, 
+                "Artifact (Faunal)", {"Assemblage Name": 
+                "Enter Assemblage Name (e.g., Faunal Assemblage 1)", 
+                "Porosity": "Enter Porosity (e.g., 4)", 
+                "Size Upper": "Enter Size Upper (e.g., 30)", 
+                "Size Lower": "Enter Size Lower (e.g., 4)", 
+                "Comment": "Enter Comment (e.g., broken fish vertebrae)", 
+                "Pre Excavation Fragments": "Enter Pre Excavation Fragments (e.g., 1)", 
+                "Post Excavation Fragments": "Enter Post Excavation Fragments (e.g., 2)", 
+                "Elements": "Enter Elements (e.g., vertebra)"}),
                   ],
           ),
         ),
