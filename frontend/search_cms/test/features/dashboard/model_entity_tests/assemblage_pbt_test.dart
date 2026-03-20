@@ -1,4 +1,3 @@
-//import 'package:flutter_test/flutter_test.dart' hide group;
 import 'package:glados/glados.dart';
 import '../../../pbt_utils/pbt_utils.dart';
 
@@ -38,6 +37,10 @@ extension AnyAssemblage on Any {
   );
 }
 
+// Runs randomized property-based tests on the AssemblageEntity class
+// This tests the invariants of the entity against generated Glados instances
+// The unit tests already cover the edge cases where any one required 
+// field (ID, level ID) is empty, so this test does not attempt to target that
 void main() {
   group('Assemblage PBT Tests', () {
     
@@ -68,4 +71,6 @@ void main() {
     });
   },
   );
+
+  // TODO: Test the AssemblageModel and model toEntity? Should be easy
 }
