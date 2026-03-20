@@ -61,7 +61,6 @@ class AddDataCubit extends Cubit<AddDataState> {
 // - The value for the fieldName is updated
 // - the new value will be stored and will use the updated matching section-field key
 // - the updated state will keep the latest new value
-
   void updateFieldValue(String sectionTitle, String fieldName, String value) {
 
     // places the store field names and their typed values within the different sections
