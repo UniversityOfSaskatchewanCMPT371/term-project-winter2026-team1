@@ -16,11 +16,25 @@ void healthChecksTest(Logger logger) {
       logger.info("Attempting to ping Supabase");
     });
 
+    /*
+      Preconditions:
+      - Powersync service must be initialized
+
+      Postconditions:
+      - Confirms Powersync service is running without errors
+    */
     test("Attempt ping to Powersync", (
     ) async {
       logger.info("Attempting to ping Powersync");
     });
 
+    /*
+      Preconditions:
+      - Supabase instance must be running locally
+
+      Postconditions:
+      - Confirms retry mechanism successfully reconnects to Supabase
+    */
     test("Retry connection to Supabase", (
     ) async {
       logger.info("Attempting to ping Supabase with retry logic");
