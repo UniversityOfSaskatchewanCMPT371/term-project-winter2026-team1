@@ -70,10 +70,9 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
 
         // text fields
         ...textFieldNames.map((name) {
-            /*
-              map returns an iterable (kind of like a list) the ... pulls the items out.
-              So it goes from [widget, widget] to widget, widget
-            */
+            //
+             // map returns an iterable (kind of like a list) the ... pulls the items out.
+             // So it goes from [widget, widget] to widget, widget
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -162,13 +161,26 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   // by allowing also the validation of the form in the same form
   final _formKey = GlobalKey<FormState>();
 
+// Builds the Add Data page layout
+// 
+//preconditions:
+// - the fieldnames context must be valid
+// - the _formkey should be already created
+//
+//postconditions:
+// - THe Add Data page layout is being returned
+// - The AddDataCubit is provided within the widget tree
+// - THe page is connected to the AddDatastate throughout changes within the UI
   @override
   Widget build(BuildContext context) {
+ // it provides the AddDataCubit state to the page and calls the init()
     return BlocProvider(
       create: (context) => AddDataCubit()..init(),
+      // Whenever the AddDataPage change it rebuilds the ui
       child: BlocBuilder<AddDataCubit, AddDataState>(
         builder: (context, state) {
           return Scaffold(
+            //Main background for the AddDataPage
             backgroundColor: AppColors.addDataBackground,
             appBar: AppBar(
               backgroundColor: AppColors.addDataBackground,
@@ -189,9 +201,9 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 spacing: 1.5.w,
                 runSpacing: 1.5.h,
                 children: [
-                  /*
-                  this is where you will add the columns and text fields for adding
-                  data to the database
+                  //
+                  //These are the listed sections that are displayed in the Add Data Page
+                  //eventually will be displayed in the Homepage and also in the database
                   */
                   createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
                   createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
