@@ -261,6 +261,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
                   createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
                   createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+                  createAddDataWidget(context, "Assemblage", ["Assemblage Name", "Unit Name", "Level Name"]),
                 ],
               ),
             ),
