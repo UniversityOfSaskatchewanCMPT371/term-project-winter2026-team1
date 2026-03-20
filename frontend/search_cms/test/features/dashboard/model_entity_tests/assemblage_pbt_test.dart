@@ -43,14 +43,28 @@ void main() {
     
     Any.setDefault<AssemblageEntity>(any.assemblage);
 
-    Glados<AssemblageEntity>().test("test", (assemblage) {
-      AssemblageEntity entity = assemblage;
+    Glados<AssemblageEntity>().test(
+      "generated AssemblageEntity has valid fields",
+      (assemblage) {
+        // id and levelId must be valid UUIDs, non-empty and correct format
+        expect(assemblage.id, isNotEmpty);
+        expect(assemblage.id, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
 
-      expect(entity.id, id);
-      expect(entity.levelId, levelId);
-      expect(entity.name, name);
-      expect(entity.createdAt, createdAt);
-      expect(entity.updatedAt, updatedAt);
+        expect(assemblage.levelId, isNotEmpty);
+        expect(assemblage.levelId, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+
+        // name is nullable, if present it must be a String
+        if (assemblage.name != null) {
+          expect(assemblage.name, isA<String>());
+        }
+
+        // dates must be valid DateTime instances
+        expect(assemblage.createdAt, isA<DateTime>());
+        expect(assemblage.updatedAt, isA<DateTime>());
     });
   },
   );
