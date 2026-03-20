@@ -14,15 +14,23 @@ import 'add_data_state.dart';
 //- THe cubit can emit the state changes from the page
 //- The page will eventually move the add data page to its initial, loading, loaded states.
 
+//Add Data cubit that its used for the Add Data page
+//Keeps track of what the user types into the text fields and manages the state changes for the page itself
+//
+//preconditions:
+//- The cubit should be created before the page tries to use it
+//- The Dashboard will use the "use cases" from the getIt
+//
+//postconditions:
+//- THe cubit can emit the state changes from the page
+//- The page will eventually move the add data page to its initial, loading, loaded states.
 class AddDataCubit extends Cubit<AddDataState> {
 
-  DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
-
-  // starting state for the add data page
-
+    DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
+  //starting state for the add data page
   AddDataCubit() : super(const AddDataInitial());
 
-  // loads the starting data and then moves the Add Data Page to a loaded state
+// loads the starting data and then moves the Add Data Page to a loaded state
     void init() async {
     await dashboardUsecases.getAllSitesUseCase.call();
     emit(const AddDataLoaded());
