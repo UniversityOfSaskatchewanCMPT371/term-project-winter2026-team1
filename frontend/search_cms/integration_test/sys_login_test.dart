@@ -122,11 +122,12 @@ void main() {
   // Failure case
   /* Preconditions:
    * Supabase backend must be running
+   * Login page fully renders and is in LoginInitial state
    * 
    * Post conditions:
-   * Errors are properly handle and system fails gracefully
+   * Errors are properly handled and system fails gracefully
    */
-  group('Login Failure Case', () {
+  group('SYS-LOGIN-01 - Login Failure Case', () {
       testWidgets(
       'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
       (WidgetTester tester) async {
@@ -171,9 +172,15 @@ void main() {
   });
 
   /*----- Success case ----
-   * Requires - Environment variables are properly loaded from pipeline
+   * Pre-conditions
+   * Environment variables are properly loaded from pipeline
+   * Login Page propers renders and is in LoginInitial state
+   * 
+   * Post-Conditions
+   * Login Page transitions to LoginSuccess
+   * LoginSuccess contains the user id and role
   */
-  group('Login Success Case', () {
+  group('SYS-LOGIN-02 - Login Success Case', () {
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
       (WidgetTester tester) async {
