@@ -204,7 +204,6 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   //
                   //These are the listed sections that are displayed in the Add Data Page
                   //eventually will be displayed in the Homepage and also in the database
-                  */
                   createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
                   createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
                   createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
