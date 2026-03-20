@@ -265,13 +265,13 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextButton(
-                  onPressed: () => _handleReset(context),
-                  child: const Text("Reset"),
+                  onPressed: () => _handleSave(context),
+                  child: const Text("Save"),
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: () => _handleSave(context),
-                  child: const Text("Save"),
+                  onPressed: () => _handleReset(context),
+                  child: const Text("Reset"),
                       ),
                     ],
                   ),
