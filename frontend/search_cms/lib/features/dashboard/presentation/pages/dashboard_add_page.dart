@@ -264,9 +264,19 @@ class DashboardAddPageState extends State<DashboardAddPage> {
             child: Row(
               //moves the button to the left
               mainAxisAlignment: MainAxisAlignment.start,
+
               children: [
                 TextButton(
                   onPressed: () => _handleSave(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppColors.addDataFieldFocus,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+
+                    )
+                  ),
                   child: const Text("Save"),
                 ),
                 const SizedBox(width: 10),
