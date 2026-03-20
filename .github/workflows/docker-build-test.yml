@@ -1,4 +1,4 @@
-name: Docker Build Test
+name: Docker Build Test and Smoke Test
 
 on:
   push:
@@ -54,12 +54,12 @@ jobs:
           compose-file: ./backend/docker-compose.test.yml
     
     
-          # For 500 seconds, do a docker healthcheck
+        # For 500 seconds, do a docker healthcheck on Supabase
       - name: Health Check Test Supabase Ubuntu
         run: |
             # Wait and check
             for i in {1..50}; do
-            STATUS=$(docker inspect --format "{{.State.Health.Status}}" backend_ubuntu-vm-1 2>/dev/null || echo "waiting")
+            STATUS=$(docker inspect --format "{{.State.Health.Status}}"  backend_ubuntu-vm-1 2>/dev/null || echo "waiting")
             if [ "$STATUS" == "No such object: backend-ubuntu-vm-1"];
                 then echo "Could not find backend... waiting..."
             fi
@@ -72,7 +72,7 @@ jobs:
             fi
             sleep 10
             done
-    
+        # For 500 seconds, do a docker healthcheck on Powersync
       - name: Health Check Test Powersync Container
         run: |
             # Wait and check
@@ -121,7 +121,7 @@ jobs:
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
         
-      # runa headless xvfb to initiate flutter integration tests
+      # run a headless flutter integration test (Smoke)
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
