@@ -1,22 +1,19 @@
 import 'package:bloc/bloc.dart';
-import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'add_data_state.dart';
-
 
 //Add Data page state that uses a Manager function
 //Keeps track of what the user types into the text fields
 class AddDataCubit extends Cubit<AddDataState> {
-
-    DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
   //starting state
   AddDataCubit() : super(const AddDataInitial());
 
 // Moves the Add Data Page to a loaded state
-    void init() async {
-    await dashboardUsecases.getAllSitesUseCase.call();
-    emit(const AddDataLoaded());
-    }
+  void init() => emit(const AddDataLoaded());
+
+// Resets all the field values in the cubit itself and sets it back to an empty AddDataLoaded
+  void resetFields() {
+  emit(const AddDataLoaded());
+}
 
 // Adds a text field value function and runs the user types in a text field
 // 3 parts: sectionTitle, fieldName, value
@@ -40,4 +37,5 @@ class AddDataCubit extends Cubit<AddDataState> {
       fieldValues: updatedFieldValues,
     ));
   }
+
 }
