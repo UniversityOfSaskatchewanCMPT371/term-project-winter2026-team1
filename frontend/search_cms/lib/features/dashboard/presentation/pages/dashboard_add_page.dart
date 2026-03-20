@@ -38,7 +38,7 @@ void resetButtonClicked() {
  *      an instance of AddDataPageEntries
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
-Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
+Widget createAddDataWidget( BuildContext context, String title, Map<String, String> textFieldNames){
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
 
@@ -74,7 +74,9 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
         const SizedBox(height: 16),
 
         // text fields
-        ...textFieldNames.map((name) {
+        ...textFieldNames.entries.map((entry) {
+          String name = entry.key;
+          String entryValue = entry.value;
 
             //
             // map returns an iterable (kind of like a list) the ... pulls the items out.
@@ -258,7 +260,12 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                   //
                   //These are the listed sections that are displayed in the Add Data Page
                   //eventually will be displayed in the Homepage and also in the database
-                  createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
+                  createAddDataWidget(context, 
+                  "Site Information", {
+                  "Name": "Enter Site Name (e.g., DiRw-28)", "Borden": 
+                  "Enter Borden Number (e.g., DiRw-28)", "Area": 
+                  "Enter Area (e.g., western end of slope)"}),
+
                   createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
                   createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
                   createAddDataWidget(context, "Assemblage", ["Assemblage Name", "Unit Name", "Level Name"]),
