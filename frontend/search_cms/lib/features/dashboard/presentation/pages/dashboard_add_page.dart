@@ -93,26 +93,31 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                   ),
                 ),
                 const SizedBox(height: 8),
+
+
                 TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 10.5.sp,
-                  ),
+                    ),
+
+
                   onChanged: (value) {
                     context.read<AddDataCubit>().updateFieldValue(title, name, value);
                     _logger?.info("$title-$name");
+
                   },
 
                   //The validator receives the text that user has entered
                   //Adds a textFormField with validation
-                
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter $name";
-                    }
-                    return null;
-                  },
+
+                  //The following function will be used laterwards to determine is the field types are not input into each section
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return "Please enter $name";
+                  //   }
+                  //   return null;
                   decoration: InputDecoration(
                     hintText: "Enter $name",
                     filled: true,
@@ -142,6 +147,7 @@ Widget createAddDataWidget( BuildContext context, String title, List<String> tex
                     ),
                   ),
                 ),
+                
               ],
             ),
           );
@@ -181,17 +187,9 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 ///  - if the form is not valid, than the saving does not happen
   void _handleSave(BuildContext context) {
     _logger?.info("Save Button Clicked");
-
-    if(_formKey.currentState!.validate()) {
-      _logger?.info("Form has been valid - saving");
       saveButtonClicked();
-
-    }
-    else {
-      _logger?.info("Form has been invalid - not saved");
-    }
   }
-  
+
   /// PreConditions:
   /// - The form exists and is connected through the _formkey
   /// - The addDataCubit must be avaialbe
