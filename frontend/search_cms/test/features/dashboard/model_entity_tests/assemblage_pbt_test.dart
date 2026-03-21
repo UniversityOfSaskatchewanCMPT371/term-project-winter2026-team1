@@ -5,12 +5,12 @@ import 'package:search_cms/features/dashboard/domain/entities/assemblage_entity.
 import '../../../pbt_utils/pbt_utils.dart';
 
 // Generates an AssemblageEntity with random values
-// call with assemblageEntity
+// call with 'assemblageEntity'
 extension AnyAssemblageEntity on Any {
   Generator<AssemblageEntity> get assemblageEntity => combine5(
     any.uuid,
     any.uuid,
-    nullableLetters,
+    any.letters,  // string or empty string, not null
     any.dateTime,
     any.dateTime,
     (id, levelId, name, createdAt, updatedAt) {
@@ -25,7 +25,7 @@ extension AnyAssemblageEntity on Any {
 }
 
 // Generates an AssemblageModel with random values
-// call with assemblageModel
+// call with 'assemblageModel'
 extension AnyAssemblageModel on Any {
   Generator<AssemblageModel> get assemblageModel => combine5(
     any.uuid,
@@ -49,7 +49,7 @@ extension AnyAssemblageModel on Any {
 // The unit tests already cover the edge cases where any one required 
 // field (ID, level ID) is empty, so this test does not attempt to target that
 void main() {
-  group('Entity and Model PBT Tests', () {
+  group('ASSEMBLAGE-PBT : Entity and Model PBT Tests', () {
     
     /*** Test 1 - AssemblageEntity ***/
     Any.setDefault<AssemblageEntity>(any.assemblageEntity);
@@ -68,10 +68,8 @@ void main() {
           RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
         ));
 
-        // name is nullable, if present it must be a String
-        if (assemblageEntity.name != null) {
-          expect(assemblageEntity.name, isA<String>());
-        }
+        // An entity with a null name gets converted to ''
+        expect(assemblageEntity.name, isA<String>());
 
         // dates must be valid DateTime instances
         expect(assemblageEntity.createdAt, isA<DateTime>());
@@ -122,7 +120,14 @@ void main() {
         // Returned entity has the same values
         expect(entity.id, assemblageModel.id);
         expect(entity.levelId, assemblageModel.levelId);
-        expect(entity.name, assemblageModel.name);
+
+        // If model.name is null it will get converted to empty string
+        if (assemblageModel.name == null) {
+          expect(entity.name, entity.name.isEmpty);
+        } else {
+          expect(entity.name, assemblageModel.name);
+        }
+
         expect(entity.createdAt, assemblageModel.createdAt);
         expect(entity.updatedAt, assemblageModel.updatedAt);
     });
