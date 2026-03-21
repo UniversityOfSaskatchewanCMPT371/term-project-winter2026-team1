@@ -71,6 +71,8 @@ CREATE TABLE level (
 
     -- Composite primary key as per the ER diagram. If no crossing allowed (a parent level must belong to the same unit), then
     PRIMARY KEY (id, unit_id),
+    UNIQUE(id), -- Since ID is not the only PK, make it unique for Assemblage to refer
+
     FOREIGN KEY (unit_id) REFERENCES unit(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_id, unit_id) REFERENCES level(id, unit_id) ON DELETE CASCADE,
 
@@ -88,7 +90,5 @@ ON level
 FOR SELECT
 TO authenticated
 USING (true);
-
-
 
 
