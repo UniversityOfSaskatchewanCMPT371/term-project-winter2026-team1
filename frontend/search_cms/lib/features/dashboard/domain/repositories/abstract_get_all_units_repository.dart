@@ -1,18 +1,18 @@
 import 'package:search_cms/core/utils/class_templates/result.dart';
 
 /*
-  The repository interface for retrieving all sites
+  The repository interface for retrieving all units
  */
-abstract class AbstractGetAllSitesRepository {
+abstract class AbstractGetAllUnitsRepository {
   /*
-    Retrieves all Sites in the system
+    Retrieves all Units in the system
 
-    @return A Success if the fetch is successful, containing the list of site
+    @return A Success if the fetch is successful, containing the list of unit
       entities or Failure containing the errorMessage otherwise
 
     Preconditions:
       (1) PowerSync database is initialized
       (2) The user must be authenticated
   */
-  Future<Result> getAllSites();
+  Future<Result> getAllUnits();
 }
