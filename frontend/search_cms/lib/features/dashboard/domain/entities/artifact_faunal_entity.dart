@@ -15,16 +15,16 @@
   - updatedAt: Timestamp of last modification
 
   Invariants:
-  - id must be a non-empty UUID string
-  - assemblageId must be a non-empty UUID string
-  - porosity must be null or between 1-5
-  - sizeUpper can be non-empty or empty
-  - sizeLower can be non-empty or empty
+  - id must be a non-empty UUID string (id != "")
+  - assemblageId must be a non-empty UUID string (assemblageId != "")
+  - porosity must be null or between 1-5 (porosity == null || (porosity > 0 && porosity <= 5))
+  - sizeUpper can be non-empty or empty (sizeUpper == null || sizeUpper != null)
+  - sizeLower can be non-empty or empty (sizeLower == null || sizeLower != null)
   - sizeUpper >= sizeLower
-  - comment can be non-empty or empty
-  - preExcavFrags cannot be empty and will default to 1
-  - postExcavFrags cannot be empty and will default to 1
-  - elements cannot be empty and will default to 1
+  - comment can be non-empty or empty (comment == null || comment != null)
+  - preExcavFrags cannot be empty and will default to 1 (preExcavFrags > 0 && preExcavFrags ?? 1)
+  - postExcavFrags cannot be empty and will default to 1 (postExcavFrags > 0 && postExcavFrags ?? 1)
+  - elements cannot be empty and will default to 1 (elements > 0 && elements ?? 1)
 */
 
 class ArtifactFaunalEntity {
