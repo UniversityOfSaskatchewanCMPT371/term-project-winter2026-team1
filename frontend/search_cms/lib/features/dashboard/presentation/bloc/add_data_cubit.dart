@@ -3,14 +3,14 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'add_data_state.dart';
 
-//Add Data cubit that its used for the Add Data page
-//Keeps track of what the user types into the text fields and manages the state changes for the page itself
+// Add Data cubit that its used for the Add Data page
+// Keeps track of what the user types into the text fields and manages the state changes for the page itself
 //
-//preconditions:
+// preconditions:
 //- The cubit should be created before the page tries to use it
 //- The Dashboard will use the "use cases" from the getIt
 //
-//postconditions:
+// postconditions:
 //- THe cubit can emit the state changes from the page
 //- The page will eventually move the add data page to its initial, loading, loaded states.
 
@@ -18,7 +18,7 @@ class AddDataCubit extends Cubit<AddDataState> {
 
   DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
 
-  //starting state for the add data page
+  // starting state for the add data page
 
   AddDataCubit() : super(const AddDataInitial());
 
@@ -30,10 +30,10 @@ class AddDataCubit extends Cubit<AddDataState> {
 
 // Resets all the fields values for the Add Data Page
 //
-//preconditions:
+// preconditions:
 // - The cubit initial has already been created
 //
-//postconditions:
+// postconditions:
 // - All the saved fields that are inputed are cleared
 // - The page goes into an empty state when the resetfields is through the loaded state
     void resetFields() {
@@ -60,7 +60,7 @@ class AddDataCubit extends Cubit<AddDataState> {
     Map<String, String> updatedFieldValues = {};
 
     // This makes sure that if the add data page is already loaded, it keeps the old field values
-    //No field values are being deleted
+    // No field values are being deleted
     if (state is AddDataLoaded) {
       AddDataLoaded current = state as AddDataLoaded;
       updatedFieldValues = Map<String,String>.from(current.fieldValues);
