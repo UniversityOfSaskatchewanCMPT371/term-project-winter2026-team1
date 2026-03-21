@@ -22,7 +22,7 @@ class AddDataCubit extends Cubit<AddDataState> {
 
   AddDataCubit() : super(const AddDataInitial());
 
-// loads the starting data and then moves the Add Data Page to a loaded state
+  // loads the starting data and then moves the Add Data Page to a loaded state
     void init() async {
     await dashboardUsecases.getAllSitesUseCase.call();
     emit(const AddDataLoaded());
