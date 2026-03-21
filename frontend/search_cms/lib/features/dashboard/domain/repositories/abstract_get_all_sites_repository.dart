@@ -7,7 +7,7 @@ abstract class AbstractGetAllSitesRepository {
   /*
     Retrieves all Sites in the system
 
-    @return A Success if login is successful, containing the list of site
+    @return A Success if the fetch is successful, containing the list of site
       entities or Failure containing the errorMessage otherwise
 
     Preconditions:
