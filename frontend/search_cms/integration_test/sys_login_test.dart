@@ -20,7 +20,7 @@ import '../test/features/authentication/presentation/pages/login_page_testcases.
 // Test Credentials for success case
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
 const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
-const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: 'http://localhost:8080');
+const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: 'http://localhost:54323');
 
 // Bad credentials to intentionally fail login
 const String _badEmail = 'i_am_an_evildoer_and_this_is_my_email@totally_real_email.com';

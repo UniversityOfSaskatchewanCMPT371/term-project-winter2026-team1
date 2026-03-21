@@ -110,7 +110,7 @@ jobs:
            bash -c "mkdir -p test-results"
            bash -c "flutter test integration_test/end_to_end_test.dart -d linux --machine | tojunit --output test-results/end_to_end_${{ env.TIMESTAMP }}.xml"
            bash -c "flutter test integration_test/smoke_test.dart -d linux --machine | tojunit --output test-results/smoke_${{ env.TIMESTAMP }}.xml"
-           bash -c "flutter test integration_test -d linux --machine --dart-define=TEST_EMAIL=$TEST_EMAIL --dart-define=TEST_PASSWORD=$TEST_PASSWORD --dart-define=SUPABASE_URL=$API_BASE_URL --dart-define=SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY | tojunit --output test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml"
+           bash -c "flutter test integration_test/sys_login_test.dart -d linux --machine --dart-define=TEST_EMAIL=$TEST_EMAIL --dart-define=TEST_PASSWORD=$TEST_PASSWORD | tojunit --output test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml"
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080
