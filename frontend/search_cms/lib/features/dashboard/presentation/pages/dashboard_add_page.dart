@@ -38,55 +38,67 @@ void resetButtonClicked() {
  *      an instance of AddDataPageEntries
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
-Widget createAddDataWidget( BuildContext context, String title, Map<String, String> textFieldNames){
+Widget createAddDataWidget( BuildContext context, String title, Map<String, String> textFieldNames, {bool twoColumnFields = false}){
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
+      double widgetWidth = 360;
+      if (twoColumnFields) {
+        widgetWidth = 625;
+      }
 
-  AddDataPageEntries(title, newKeys);
-  double widgetWidth = 360;
+      double fieldWidth = widgetWidth;
+      if (twoColumnFields) {
+        fieldWidth = 270;
+      }
 
-  return Container(
-    width: widgetWidth,
-    //Changed the padding size for edge
-    padding: EdgeInsets.all(2.w),
-    //Added a decoration box that seperates each section
-    decoration: BoxDecoration(
-      color: AppColors.addDataCard,
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: AppColors.addDataCardBorder),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // section title
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: AppColors.mainText,
-          ),
+      return Container(
+        width: widgetWidth,
+        //Changed the padding size for edge
+        padding: EdgeInsets.all(2.w),
+        //Added a decoration box that seperates each section
+        decoration: BoxDecoration(
+          color: AppColors.addDataCard,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.addDataCardBorder),
         ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // section title
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.mainText,
+              ),
+            ),
 
-        //Aligns with each Box Section and signifies it to its own unique part
-        const SizedBox(height: 12),
-        const Divider(height: 1, color: AppColors.addDataCardBorder),
-        const SizedBox(height: 16),
+          //Aligns with each Box Section and signifies it to its own unique part
+          const SizedBox(height: 12),
+          const Divider(height: 1, color: AppColors.addDataCardBorder),
+          const SizedBox(height: 16),
 
         // text fields
-        ...textFieldNames.entries.map((entry) {
-          String name = entry.key;
-          String entryValue = entry.value;
+        Wrap(
+          spacing: 12,
+          runSpacing: 14,
+          children: [
+            ...textFieldNames.entries.map((entry) {
+              String name = entry.key;
+              String entryValue = entry.value;
 
             //
             // map returns an iterable (kind of like a list) the ... pulls the items out.
             // So it goes from [widget, widget] to widget, widget
         
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          return Container(
+            width: fieldWidth,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 Text(
                   name,
                   style: TextStyle(
@@ -95,9 +107,8 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
                     color: AppColors.mainText,
                   ),
                 ),
+
                 const SizedBox(height: 8),
-
-
                 TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
@@ -121,20 +132,25 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
                   //     return "Please enter $name";
                   //   }
                   //   return null;
+
                   decoration: InputDecoration(
-                    hintText: "Enter $name",
+                    hintText: entryValue,
                     filled: true,
                     fillColor: AppColors.addDataFieldFill,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
                       vertical: 16,
+
                     ),
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
                         color: AppColors.addDataFieldBorder,
                       ),
                     ),
+
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
@@ -149,15 +165,18 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
                       ),
                     ),
                   ),
-                ),
-                
+                ),               
               ],
+            ),
             ),
           );
         }),
       ],
     ),
-  );
+      ],
+    ),
+
+    );
 }
 
 // Define a custom Form widget
@@ -293,7 +312,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 "Comment": "Enter Comment (e.g., broken fish vertebrae)", 
                 "Pre Excavation Fragments": "Enter Pre Excavation Fragments (e.g., 1)", 
                 "Post Excavation Fragments": "Enter Post Excavation Fragments (e.g., 2)", 
-                "Elements": "Enter Elements (e.g., vertebra)"}),
+                "Elements": "Enter Elements (e.g., vertebra)"}, twoColumnFields: true),
                   ],
           ),
         ),
