@@ -125,7 +125,7 @@ void main() {
 
         // If model.name is null it will get converted to empty string
         if (assemblageModel.name == null) {
-          expect(entity.name, entity.name.isEmpty);
+          expect(entity.name, isEmpty);
         } else {
           expect(entity.name, assemblageModel.name);
         }
