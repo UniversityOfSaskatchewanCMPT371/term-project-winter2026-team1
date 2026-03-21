@@ -52,6 +52,7 @@ void main() {
   group('ASSEMBLAGE-PBT : Entity and Model PBT Tests', () {
     
     /*** Test 1 - AssemblageEntity ***/
+    // Creates a randomly generated entity and verifies its contents
     Any.setDefault<AssemblageEntity>(any.assemblageEntity);
 
     Glados<AssemblageEntity>().test(
@@ -78,6 +79,7 @@ void main() {
 
 
     /*** Test 2 - AssemblageModel ***/
+    // Creates a randomly generated model and verifies its contents
     Any.setDefault(any.assemblageModel);
 
     Glados<AssemblageModel>().test(
