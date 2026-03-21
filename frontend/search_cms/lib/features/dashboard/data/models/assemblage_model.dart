@@ -53,9 +53,7 @@ class AssemblageModel {
 
     Postconditions:
     - Returns an AssemblageModel
-    - Ensures invariants are satisfied before creating the model:
-      - id != null
-      - levelId != null
+    - Ensures invariants are satisfied before creating the model
 
     Throws a FormatException if required columns are missing.
   */
