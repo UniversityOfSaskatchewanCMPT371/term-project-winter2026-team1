@@ -93,7 +93,7 @@ Widget createAddDataWidget( BuildContext context, String title, Map<String, Stri
             // map returns an iterable (kind of like a list) the ... pulls the items out.
             // So it goes from [widget, widget] to widget, widget
         
-          return Container(
+          return SizedBox(
             width: fieldWidth,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 14),
