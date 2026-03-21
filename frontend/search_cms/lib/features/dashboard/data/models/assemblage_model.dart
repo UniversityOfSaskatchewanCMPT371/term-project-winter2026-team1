@@ -3,7 +3,21 @@ import 'package:search_cms/features/dashboard/domain/entities/assemblage_entity.
 
 /*
   Data-layer model responsible for mapping PowerSync SQLite row.
-*/
+
+  This model acts as the bridge between the database layer and the domain layer.
+  It is responsible for converting database rows in Dart objects.
+  
+  This model helps maintain separation of concerns by separating database logic from the domain layer, 
+  ensuring that domain entities remain independent.
+
+  Responsibilities:
+  - Provide a mapping function (toEntity()) to convert the model into an entity
+  - Extract raw values from a PowerSync SQLite row
+  - Convert dynamic raw values into Dart data types (String, int, Datetime, etc.)
+  - Handle nullable fields and optional values
+  - Check that all the required fields are present before creating a model (object)
+  
+  */
 
 class AssemblageModel {
   final String id;
@@ -39,7 +53,9 @@ class AssemblageModel {
 
     Postconditions:
     - Returns an AssemblageModel
-    - Ensures invariants are satisfied before creating the model
+    - Ensures invariants are satisfied before creating the model:
+      - id != null
+      - levelId != null
 
     Throws a FormatException if required columns are missing.
   */

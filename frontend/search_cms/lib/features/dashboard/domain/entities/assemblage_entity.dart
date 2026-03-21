@@ -9,9 +9,9 @@
   - updatedAt: Timestamp of last modification
 
   Invariants:
-  - id must be a non-empty UUID string
-  - levelId must be a non-empty UUID string
-  - name can be non-empty or empty
+  - id must be a non-empty UUID string (id != "")
+  - levelId must be a non-empty UUID string (levelId != "")
+  - name can be non-empty or empty (name == null || name != null)
 */
 
 class AssemblageEntity {
