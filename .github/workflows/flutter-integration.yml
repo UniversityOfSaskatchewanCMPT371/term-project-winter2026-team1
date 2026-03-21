@@ -67,6 +67,25 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
 
+      # runs a ping on supabase every 5 seconds until passes
+      - name: Ensure Supabase is ready before running tests
+        run: |
+          echo "Waiting for Supabase on port 54321..."
+          for i in $(seq 1 30); do
+            if curl -s http://127.0.0.1:54321/auth/v1/health > /dev/null 2>&1; then
+              echo "Supabase is ready after $i attempts"
+              exit 0
+            fi
+            echo "Attempt $i/30 - not ready, waiting 5s..."
+            sleep 5
+          done
+          echo "ERROR: Supabase failed to start within 150 seconds"
+          exit 1
+
+      # for testing / sanity checks
+      - name: Ensure containers are running
+        run: docker ps -a
+
       # Install xvfb (headless display) and all it's dependencies
       - name: Install xvfb
         run: |
@@ -82,7 +101,7 @@ jobs:
       - name: Flutter add junitreport
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
-        
+
       # runa headless xvfb to initiate flutter integration tests
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
@@ -91,9 +110,13 @@ jobs:
            bash -c "mkdir -p test-results"
            bash -c "flutter test integration_test/end_to_end_test.dart -d linux --machine | tojunit --output test-results/end_to_end_${{ env.TIMESTAMP }}.xml"
            bash -c "flutter test integration_test/smoke_test.dart -d linux --machine | tojunit --output test-results/smoke_${{ env.TIMESTAMP }}.xml"
+           bash -c "flutter test integration_test/sys_login_test.dart -d linux --machine --dart-define=TEST_EMAIL=$TEST_EMAIL --dart-define=TEST_PASSWORD=$TEST_PASSWORD | tojunit --output test-results/sys_login_${{ env.TIMESTAMP }}.xml"
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080
+          # Login credentials for sys_login_test.dart
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_SYSLOG_USER_PASSWORD }}
       # Run integration tests in headless Chrom
 
       # Upload out flutter test to the artifacts
@@ -102,13 +125,13 @@ jobs:
           # Name of the artifact to upload.
           # Optional. Default is 'artifact'
           name: flutter_int_test_report_${{ env.TIMESTAMP }}
-          path: frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml
+          path: frontend/search_cms/test-results/*.xml
 
       # Upload Test reports to the pull request.
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: success() || failure() # always run even if the previous step fails
         with:
-          report_paths: 'frontend/search_cms/test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml'
+          report_paths: 'frontend/search_cms/test-results/*.xml'
           include_passed: True
           fail_on_failure: True

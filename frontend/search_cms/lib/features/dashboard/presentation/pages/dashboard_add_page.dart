@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:sizer/sizer.dart';
+import '../bloc/add_data_cubit.dart';
+import '../bloc/add_data_state.dart';
 
 
 final Logger? _logger =
@@ -14,31 +18,7 @@ final Logger? _logger =
   // implement when business logic is planned or when I can talk to them
 
   _logger?.info("save button was clicked for $title widget");
-
-
 }
-
-/*
-Will be used to store the keys for for the text fields of widgets created by
-createAddDataWidget.
-If needed, can be modified to store information about what type a text field
-will need to be converted to later.
-*/
-class AddDataPageEntries{
-
-  // so business logic can get relevent keys using the title
-  static Map <String, AddDataPageEntries> dataEntries = {}; // maps title to the instance of this class that will store the relevent keys
-
-  String title; 
-
-  List<String> textFieldKeys = [];
-  // String saveButtonKey = ""; // to allow testers to press the button (will be used later when the "Save" button will be implemented..)
-
-  AddDataPageEntries(this.title, this.textFieldKeys){
-    dataEntries[title] = this;
-  }
-}
-
 /*
  * Creates the widgets for adding data to the database
  * preconditions: unique title and text field names such that
@@ -52,34 +32,23 @@ class AddDataPageEntries{
  *      an instance of AddDataPageEntries
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
-Widget createAddDataWidget(String title, List<String> textFieldNames){
-  List<String> newKeys = [];
-  
-  for (int index = 0; index < textFieldNames.length; index++){
-    String keyName = "$title-${textFieldNames[index]}";
-
-    // apparently these asserts cause problems if the page is reloaded
-    // assert(find.byKey(Key(keyName)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $keyName");
-    newKeys.add(keyName);
-  }
-
+Widget createAddDataWidget( BuildContext context, String title, List<String> textFieldNames){
+  //List<String> newKeys = []; --- Will it be used when the save button will be implemented
   //String saveButtonKey = "$title-saveButton";
 
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
-
-  AddDataPageEntries(title, newKeys);
   double widgetWidth = 360;
 
   return Container(
     width: widgetWidth,
     //Changed the padding size for edge
-    padding: const EdgeInsets.all(25),
+    padding: EdgeInsets.all(2.w),
     //Added a decoration box that seperates each section
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: AppColors.addDataCard,
       borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: const Color(0xFFD9DEE8)),
+      border: Border.all(color: AppColors.addDataCardBorder),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,24 +56,23 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
         // section title
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 28,
+          style: TextStyle(
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111827),
+            color: AppColors.mainText,
           ),
         ),
 
         //Aligns with each Box Section and signifies it to its own unique part
         const SizedBox(height: 12),
-        const Divider(height: 1, color: Color(0xFFD9DEE8)),
+        const Divider(height: 1, color: AppColors.addDataCardBorder),
         const SizedBox(height: 16),
 
         // text fields
         ...textFieldNames.map((name) {
-            /*
-              map returns an iterable (kind of like a list) the ... pulls the items out.
-              So it goes from [widget, widget] to widget, widget
-            */
+            //
+             // map returns an iterable (kind of like a list) the ... pulls the items out.
+             // So it goes from [widget, widget] to widget, widget
           return Padding(
             padding: const EdgeInsets.only(bottom: 14),
             child: Column(
@@ -112,23 +80,36 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF111827),
+                    color: AppColors.mainText,
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextField(
+                TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 10.5.sp,
                   ),
+                  onChanged: (value) {
+                    context.read<AddDataCubit>().updateFieldValue(title, name, value);
+                    _logger?.info("$title-$name");
+                  },
+
+                  //The validator receives the text that user has entered
+                  //Adds a textFormField with validation
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter $name";
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: "Enter $name",
                     filled: true,
-                    fillColor: const Color(0xFFF8FAFC),
+                    fillColor: AppColors.addDataFieldFill,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
                       vertical: 16,
@@ -136,19 +117,19 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFF1F40B0),
+                        color: AppColors.addDataFieldBorder,
                         width: 1.5,
                       ),
                     ),
@@ -163,47 +144,76 @@ Widget createAddDataWidget(String title, List<String> textFieldNames){
   );
 }
 
-class DashboardAddPage extends StatelessWidget { 
+// Define a custom Form widget
+class DashboardAddPage extends StatefulWidget {
   const DashboardAddPage({super.key});
 
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F4F6),
-        elevation: 0,
-        title: const Text('Add Data'),
-      ),
-      body:  
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          //Added a outer padding that sits close to the edges
-          padding: const EdgeInsets.all(20),
-          child: Wrap(
-            direction: Axis.horizontal,
-            //Added the right amount of spacing between each section
-            spacing: 18,
-            runSpacing: 18,
-            children: [ 
-              /*
-              this is where you will add the columns and text fields for adding
-              data to the database
-              */
-              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
-              createAddDataWidget("Unit", ["Name", "Site Name"]),
-              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
-              
+  State<DashboardAddPage> createState() => DashboardAddPageState();
 
-            ]
-          ),
-        )
-        
-    );
-    
-  }
 }
 
+// Define a corresponding State class
+// This class holds the data related to the form
+class DashboardAddPageState extends State<DashboardAddPage> {
 
+  // Creates the global key that identifies the Form widget
+  // by allowing also the validation of the form in the same form
+  final _formKey = GlobalKey<FormState>();
 
+// Builds the Add Data page layout
+// 
+//preconditions:
+// - the fieldnames context must be valid
+// - the _formkey should be already created
+//
+//postconditions:
+// - THe Add Data page layout is being returned
+// - The AddDataCubit is provided within the widget tree
+// - THe page is connected to the AddDatastate throughout changes within the UI
+  @override
+  Widget build(BuildContext context) {
+ // it provides the AddDataCubit state to the page and calls the init()
+    return BlocProvider(
+      create: (context) => AddDataCubit()..init(),
+      // Whenever the AddDataPage change it rebuilds the ui
+      child: BlocBuilder<AddDataCubit, AddDataState>(
+        builder: (context, state) {
+          return Scaffold(
+            //Main background for the AddDataPage
+            backgroundColor: AppColors.addDataBackground,
+            appBar: AppBar(
+              backgroundColor: AppColors.addDataBackground,
+              elevation: 0,
+              title: const Text('Add Data'),
+            ),
+          
+          //Build a form widget using the _formKey created above
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              //Added a outer padding that sits close to the edges
+              padding: EdgeInsets.all(2.w),
+              child: Wrap(
+                direction: Axis.horizontal,
+                //Added the right amount of spacing between each section
+                spacing: 1.5.w,
+                runSpacing: 1.5.h,
+                children: [
+                  //
+                  //These are the listed sections that are displayed in the Add Data Page
+                  //eventually will be displayed in the Homepage and also in the database
+                  createAddDataWidget(context, "Site Information", ["Name", "Borden", "Area"]),
+                  createAddDataWidget(context, "Unit", ["Name", "Site Name"]),
+                  createAddDataWidget(context, "Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+}

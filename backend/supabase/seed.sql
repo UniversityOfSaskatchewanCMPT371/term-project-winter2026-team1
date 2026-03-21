@@ -77,3 +77,51 @@ INSERT INTO artifact_faunal
 (id, assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements, created_at, updated_at)
 VALUES
 ('99999999-9999-9999-9999-999999999999', '88888888-8888-8888-8888-888888888888', 4, 3, 2, '', 1, 1, 1, now(), now());
+
+-- Test credentials for login_sys_test
+-- Creates test credentials for sys_login_test.dart
+INSERT INTO
+    auth.users (
+        instance_id,
+        id,
+        aud,
+        role,
+        email,
+        encrypted_password,
+        email_confirmed_at,
+        recovery_sent_at,
+        last_sign_in_at,
+        raw_app_meta_data,
+        raw_user_meta_data,
+        created_at,
+        updated_at,
+        confirmation_token,
+        email_change,
+        email_change_token_new,
+        recovery_token
+    ) (
+        select
+            '00000000-0000-0000-0000-000000000000',
+            'c9013501-e1db-4bf8-aca2-572ffc0b4e20',
+            'authenticated',
+            'authenticated',
+            'reallygoodemail@email.com',
+            '$2a$10$OVm64DFu1NXfdXa3cszk7.45/ohzofUFabdUwDpx6u7c.YP5G2ACe',
+            current_timestamp,
+            current_timestamp,
+            current_timestamp,
+            '{"provider":"email","providers":["email"]}',
+            '{}',
+            current_timestamp,
+            current_timestamp,
+            '',
+            '',
+            '',
+            ''
+    );
+-- Seed test user into role table
+INSERT INTO public.role (id, role)
+VALUES (
+    'c9013501-e1db-4bf8-aca2-572ffc0b4e20',
+    'viewer'
+) ON CONFLICT (id) DO NOTHING;  -- guard if seed runs more than once
