@@ -35,7 +35,7 @@ void healthChecksTest(Logger logger) {
       // if result != true this will throw a timeout which will cause retry
       expect(ready, true, reason:"Could not ping Supabase");
 
-  }, timeout: const Timeout(Duration(minutes: 15)));
+    }, timeout: const Timeout(Duration(minutes: 15)));
 
     /*
       Preconditions:
@@ -58,8 +58,12 @@ void healthChecksTest(Logger logger) {
     */
     test("Retry connection to Supabase", (
     ) async {
-      logger.info("Attempting to ping Supabase with retry logic");
-    });
+      await expectLater(await pingSupabase(), true,
+      ).timeout(Duration(seconds: 10));
+
+      await Future<void>.delayed(Duration(seconds: 5));
+
+    }, retry: 30);
   });
 }
 
