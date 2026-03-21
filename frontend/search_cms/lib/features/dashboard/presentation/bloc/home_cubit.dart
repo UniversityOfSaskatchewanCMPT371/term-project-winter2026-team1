@@ -1,10 +1,19 @@
 import 'package:bloc/bloc.dart';
+import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import './home_state.dart';
 
+
 class HomeCubit extends Cubit<HomeState> {
+
+  DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
+
   HomeCubit() : super(const HomeInitial());
 
-  void init() => emit(const HomeLoaded());
+  void init() async {
+    await dashboardUsecases.getAllSitesUseCase.call();
+    emit(const HomeLoaded());
+    }
 
   // Update the selected search type (basic or advanced)
   void updateSearchToggle(int index) {
