@@ -89,7 +89,8 @@ jobs:
         with:
           run: |
            bash -c "mkdir -p test-results"
-           bash -c "flutter test integration_test -d linux --machine | tojunit --output test-results/flutter_int_test_report_${{ env.TIMESTAMP }}.xml"
+           bash -c "flutter test integration_test/end_to_end_test.dart -d linux --machine | tojunit --output test-results/end_to_end_${{ env.TIMESTAMP }}.xml"
+           bash -c "flutter test integration_test/smoke_test.dart -d linux --machine | tojunit --output test-results/smoke_${{ env.TIMESTAMP }}.xml"
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080

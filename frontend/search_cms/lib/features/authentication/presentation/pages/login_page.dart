@@ -227,23 +227,29 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 0.8.h),
                           SizedBox(
                             height: controlHeight,
+                            child: Semantics(
+
+                            label: 'email_textbox',
+
+                            identifier: 'email_input', 
                             child: TextFormField(
-                              key: ValueKey('emailField'),
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: _inputDecoration(),
-                              style: TextStyle(
-                                fontSize: labelSize,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.mainText,
-                                height: 1.2,
+                                key: ValueKey('emailField'),
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: _inputDecoration(),
+                                style: TextStyle(
+                                  fontSize: labelSize,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.mainText,
+                                  height: 1.2,
+                                ),
+                                validator: (v) {
+                                  final value = (v ?? '').trim();
+                                  if (value.isEmpty) return 'Email is required';
+                                  if (!value.contains('@')) return 'Enter a valid email';
+                                  return null;
+                                },
                               ),
-                              validator: (v) {
-                                final value = (v ?? '').trim();
-                                if (value.isEmpty) return 'Email is required';
-                                if (!value.contains('@')) return 'Enter a valid email';
-                                return null;
-                              },
                             ),
                           ),
 
