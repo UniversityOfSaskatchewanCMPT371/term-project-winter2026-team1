@@ -1,37 +1,8 @@
 import 'package:glados/glados.dart';
+import 'package:search_cms/features/dashboard/data/models/assemblage_model.dart';
+import 'package:search_cms/features/dashboard/domain/entities/assemblage_entity.dart';
+
 import '../../../pbt_utils/pbt_utils.dart';
-
-// Copied over until class gets merged to develop, remove later
-class AssemblageEntity {
-  final String id;
-  final String levelId;
-  final String? name;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-
-  AssemblageEntity({
-    required this.id,
-    required this.levelId,
-    required this.name,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-}
-class AssemblageModel {
-  final String id;
-  final String levelId;
-  final String? name; // Name can be empty or non-empty
-  final DateTime createdAt;
-  final DateTime updatedAt;
-
-  AssemblageModel({
-    required this.id,
-    required this.levelId,
-    required this.name,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-}
 
 // Generates an AssemblageEntity with random values
 // call with assemblageEntity
@@ -142,16 +113,8 @@ void main() {
    Glados<AssemblageModel>().test(
       "generated AssemblageModel has valid fields",
       (assemblageModel) {
-        // PLACEHOLDER
-        final AssemblageEntity entity = AssemblageEntity(
-          id: '88888888-8888-8888-8888-888888888888', 
-          levelId: '77777777-7777-7777-7777-777777777777', 
-          name: '', 
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
-        // REPLACE WITH:
-        //final entity = assemblageModel.toEntity();
+        
+        final entity = assemblageModel.toEntity();
 
         // Entity is the correct type
         expect(entity, isA<AssemblageEntity>());
