@@ -16,11 +16,11 @@ import 'package:search_cms/core/utils/class_templates/result.dart' as _i2;
 import 'package:search_cms/features/dashboard/data/data_sources/abstract_dashboard_api.dart'
     as _i14;
 import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_areas_api.dart'
-    as _i21;
-import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_levels_api.dart'
-    as _i22;
-import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_sites_api.dart'
     as _i20;
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_levels_api.dart'
+    as _i21;
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_sites_api.dart'
+    as _i22;
 import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_units_api.dart'
     as _i23;
 import 'package:search_cms/features/dashboard/data/models/area_model.dart'
@@ -46,11 +46,11 @@ import 'package:search_cms/features/dashboard/domain/entities/unit_entity.dart'
 import 'package:search_cms/features/dashboard/domain/repositories/abstract_dashboard_repository.dart'
     as _i3;
 import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_areas_repository.dart'
-    as _i30;
-import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_levels_repository.dart'
-    as _i31;
-import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_sites_repository.dart'
     as _i29;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_levels_repository.dart'
+    as _i30;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_sites_repository.dart'
+    as _i31;
 import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_units_repository.dart'
     as _i32;
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart'
@@ -346,31 +346,11 @@ class MockAbstractDashboardApi extends _i1.Mock
           as _i11.Future<void>);
 }
 
-/// A class which mocks [AbstractGetAllSitesApi].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockAbstractGetAllSitesApi extends _i1.Mock
-    implements _i20.AbstractGetAllSitesApi {
-  MockAbstractGetAllSitesApi() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i11.Future<List<_i15.SiteModel>> getAllSites() =>
-      (super.noSuchMethod(
-            Invocation.method(#getAllSites, []),
-            returnValue: _i11.Future<List<_i15.SiteModel>>.value(
-              <_i15.SiteModel>[],
-            ),
-          )
-          as _i11.Future<List<_i15.SiteModel>>);
-}
-
 /// A class which mocks [AbstractGetAllAreasApi].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllAreasApi extends _i1.Mock
-    implements _i21.AbstractGetAllAreasApi {
+    implements _i20.AbstractGetAllAreasApi {
   MockAbstractGetAllAreasApi() {
     _i1.throwOnMissingStub(this);
   }
@@ -390,7 +370,7 @@ class MockAbstractGetAllAreasApi extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllLevelsApi extends _i1.Mock
-    implements _i22.AbstractGetAllLevelsApi {
+    implements _i21.AbstractGetAllLevelsApi {
   MockAbstractGetAllLevelsApi() {
     _i1.throwOnMissingStub(this);
   }
@@ -404,6 +384,26 @@ class MockAbstractGetAllLevelsApi extends _i1.Mock
             ),
           )
           as _i11.Future<List<_i19.LevelModel>>);
+}
+
+/// A class which mocks [AbstractGetAllSitesApi].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllSitesApi extends _i1.Mock
+    implements _i22.AbstractGetAllSitesApi {
+  MockAbstractGetAllSitesApi() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<List<_i15.SiteModel>> getAllSites() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllSites, []),
+            returnValue: _i11.Future<List<_i15.SiteModel>>.value(
+              <_i15.SiteModel>[],
+            ),
+          )
+          as _i11.Future<List<_i15.SiteModel>>);
 }
 
 /// A class which mocks [AbstractGetAllUnitsApi].
@@ -556,31 +556,11 @@ class MockAbstractDashboardRepository extends _i1.Mock
           as _i11.Future<void>);
 }
 
-/// A class which mocks [AbstractGetAllSitesRepository].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockAbstractGetAllSitesRepository extends _i1.Mock
-    implements _i29.AbstractGetAllSitesRepository {
-  MockAbstractGetAllSitesRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i11.Future<_i2.Result> getAllSites() =>
-      (super.noSuchMethod(
-            Invocation.method(#getAllSites, []),
-            returnValue: _i11.Future<_i2.Result>.value(
-              _FakeResult_0(this, Invocation.method(#getAllSites, [])),
-            ),
-          )
-          as _i11.Future<_i2.Result>);
-}
-
 /// A class which mocks [AbstractGetAllAreasRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllAreasRepository extends _i1.Mock
-    implements _i30.AbstractGetAllAreasRepository {
+    implements _i29.AbstractGetAllAreasRepository {
   MockAbstractGetAllAreasRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -600,7 +580,7 @@ class MockAbstractGetAllAreasRepository extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllLevelsRepository extends _i1.Mock
-    implements _i31.AbstractGetAllLevelsRepository {
+    implements _i30.AbstractGetAllLevelsRepository {
   MockAbstractGetAllLevelsRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -611,6 +591,26 @@ class MockAbstractGetAllLevelsRepository extends _i1.Mock
             Invocation.method(#getAllLevels, []),
             returnValue: _i11.Future<_i2.Result>.value(
               _FakeResult_0(this, Invocation.method(#getAllLevels, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [AbstractGetAllSitesRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllSitesRepository extends _i1.Mock
+    implements _i31.AbstractGetAllSitesRepository {
+  MockAbstractGetAllSitesRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> getAllSites() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllSites, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#getAllSites, [])),
             ),
           )
           as _i11.Future<_i2.Result>);
