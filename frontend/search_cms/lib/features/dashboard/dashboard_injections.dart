@@ -227,9 +227,4 @@ void _registerGetAllSitesUseCase() {
   getIt.registerFactory<GetAllSitesUseCase>(
     () => GetAllSitesUseCase(repository: getIt<GetAllSitesRepositoryImpl>()),
   );
-
-  // The dashboard use case collection
-  getIt.registerFactory<DashboardUsecases>(
-    () => DashboardUsecases(getAllSitesUseCase: getIt<GetAllSitesUseCase>()),
-  );
 }

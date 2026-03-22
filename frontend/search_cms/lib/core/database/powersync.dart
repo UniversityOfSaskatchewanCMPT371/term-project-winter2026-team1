@@ -162,11 +162,7 @@ const options = SyncOptions(syncImplementation: SyncClientImplementation.rust);
 // ignore: lines_longer_than_80_chars
 Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) async {
   // Open the local database and initialize sync/auth integrations
-  final PowerSyncDatabase db = PowerSyncDatabase(
-    schema: schema,
-    path: await getDatabasePath(),
-    logger: attachedLogger,
-  );
+  final PowerSyncDatabase db = powersyncDatabase;
   await db.initialize();
 
   await loadSupabase();
