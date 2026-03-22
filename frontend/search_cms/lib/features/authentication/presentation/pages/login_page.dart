@@ -268,39 +268,45 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 0.8.h),
                           SizedBox(
                             height: controlHeight,
-                            child: TextFormField(
-                              key: ValueKey('passwordField'),
-                              controller: _passwordController,
-                              obscureText: _obscurePassword,
-                              decoration: _inputDecoration(
-                                suffixIcon: IconButton(
-                                  splashRadius: 18,
-                                  onPressed: () => setState(
-                                    () => _obscurePassword = !_obscurePassword,
-                                  ),
-                                  icon: Icon(
-                                    _obscurePassword
-                                        ? Icons.visibility_outlined
-                                        : Icons.visibility_off_outlined,
-                                    color: AppColors.mutedText,
+                            child: Semantics(
+
+                            label: 'password_textbox',
+
+                            identifier: 'email_input', 
+                              child: TextFormField(
+                                key: ValueKey('passwordField'),
+                                controller: _passwordController,
+                                obscureText: _obscurePassword,
+                                decoration: _inputDecoration(
+                                  suffixIcon: IconButton(
+                                    splashRadius: 18,
+                                    onPressed: () => setState(
+                                      () => _obscurePassword = !_obscurePassword,
+                                    ),
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined,
+                                      color: AppColors.mutedText,
+                                    ),
                                   ),
                                 ),
+                                style: TextStyle(
+                                  fontSize: labelSize,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.mainText,
+                                  height: 1.2,
+                                ),
+                                validator: (v) {
+                                  final value = (v ?? '');
+                                  if (value.isEmpty) return 'Password is required';
+                                  if (value.length < 6) {
+                                    return 'Password must be at least 6 characters';
+                                  }
+                                  return null;
+                                },
+                                onFieldSubmitted: (_) => _onSubmit(context),
                               ),
-                              style: TextStyle(
-                                fontSize: labelSize,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.mainText,
-                                height: 1.2,
-                              ),
-                              validator: (v) {
-                                final value = (v ?? '');
-                                if (value.isEmpty) return 'Password is required';
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                              onFieldSubmitted: (_) => _onSubmit(context),
                             ),
                           ),
 

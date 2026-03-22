@@ -54,7 +54,7 @@ public class LoginTest {
          */
 
         // Working directory and application path
-        String workingDir = "C:\\repo\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
+        String workingDir = "C:\\471\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
         String appPath = workingDir + "\\flutter_supabase_template.exe";
 
         // Launch the application using ProcessBuilder
@@ -91,21 +91,53 @@ public class LoginTest {
 
         // Initialise the windows driver that the test will use
         driver = new WindowsDriver(
-                new URL("http://127.0.0.1:4723"),
+                new URL("http://127.0.0.1:4723/"),
                 appOptions
         );
 
-        // Wait for process to start up
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        // Updated for Selenium 4
     }
-
-// END OF Partial AI Usage
-
+    
+    /**
+     * Tests that a user can log in with valid email and password
+     * 
+     * pre conditions:
+     * 1. setup() complete without errors
+     * 2. hardcoded credentials exist in backend as valid inputs
+     * 3. backend and Appium are running in background
+     */
     @Test
-    public void testLoginFunctionality() {
-        //Basic Skeleton, Tests go here
-
+    public void testLoginFunctionality() throws InterruptedException {
         Actions actions = new Actions(driver);
+        actions.click().perform();
+        // Use the wait driver to allow ui to fully render
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+
+        // Find the ui element by name and click on it
+        WebElement emailField = driver.findElement(AppiumBy.name("email_textbox"));
+        actions.moveToElement(emailField).click().perform();
+
+        // Give Windows a fraction of a second to register the UI focus shift
+        Thread.sleep(200);
+        // Type a correct email into the textbox
+        actions.sendKeys("pleasework@fortheloveofgod.ca").perform();
+
+
+        // Testing Password Field
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+        // Find Password text box and click on it
+        WebElement passwordField = driver.findElement(AppiumBy.name("password_textbox"));
+        actions.moveToElement(passwordField).click().perform();
+        // Give Windows a tiny fraction of a second to register the UI focus shift
+        Thread.sleep(200);
+        // Type a correct password into the textbox
+        actions.sendKeys("passwordypassword").perform();
+
+        // Testing authorize access field 
+        WebElement authField = driver.findElement(AppiumBy.name("Access System"));
+        actions.moveToElement(authField).click().perform();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
     }
 
     @AfterAll
