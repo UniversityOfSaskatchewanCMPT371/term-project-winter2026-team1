@@ -145,3 +145,48 @@ void main() {
         expect(artifactFaunalEntity.updatedAt, isA<DateTime>());
       }
     );
+
+    /*** Test 2 - ArtifactFaunalModel ***/
+    // Creates a randomly generated model and verifies its contents
+    Any.setDefault<ArtifactFaunalModel>(any.artifactFaunalModel);
+ 
+    Glados<ArtifactFaunalModel>().test(
+      'generated ArtifactFaunalModel has valid fields',
+      (artifactFaunalModel) {
+        // id and assemblageId must be valid UUIDs — non-empty and correct format
+        expect(artifactFaunalModel.id, isNotEmpty);
+        expect(artifactFaunalModel.id, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+ 
+        expect(artifactFaunalModel.assemblageId, isNotEmpty);
+        expect(artifactFaunalModel.assemblageId, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+ 
+        // porosity must be null or between 1-5
+        if (artifactFaunalModel.porosity != null) {
+          expect(artifactFaunalModel.porosity, greaterThanOrEqualTo(1));
+          expect(artifactFaunalModel.porosity, lessThanOrEqualTo(5));
+        }
+ 
+        // sizeUpper >= sizeLower when both are present
+        if (artifactFaunalModel.sizeUpper != null && artifactFaunalModel.sizeLower != null) {
+          expect(artifactFaunalModel.sizeUpper, greaterThanOrEqualTo(artifactFaunalModel.sizeLower!));
+        }
+ 
+        // comment is nullable on the model
+        if (artifactFaunalModel.comment != null) {
+          expect(artifactFaunalModel.comment, isA<String>());
+        }
+ 
+        // fragment and element counts must all be > 0
+        expect(artifactFaunalModel.preExcavFrags, greaterThan(0));
+        expect(artifactFaunalModel.postExcavFrags, greaterThan(0));
+        expect(artifactFaunalModel.elements, greaterThan(0));
+ 
+        // dates must be valid DateTime instances
+        expect(artifactFaunalModel.createdAt, isA<DateTime>());
+        expect(artifactFaunalModel.updatedAt, isA<DateTime>());
+      }
+    );
