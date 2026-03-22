@@ -145,6 +145,8 @@ Future<bool> pingPowersync() async {
 
     final powersync = getIt<PowerSyncDatabase>();
 
+    logger.info("Powersync status: ${powersync.currentStatus}");
+    
     if (powersync.currentStatus.anyError != null) {
       logger.warning("Powersync has error: ${powersync.currentStatus.anyError}");
       return false;
