@@ -36,3 +36,24 @@ extension AnyUUID on Any {
     shrink: (uuid) => [],
   );
 }
+
+
+// Produces null or an int between 1-5 (for porosity)
+extension AnyNullablePorosity on Any {
+  Generator<int?> get nullablePorosity => any.either(
+    any.intInRange(1, 6), // 1 inclusive, 6 exclusive = 1-5
+    any.null_,
+  );
+}
+
+// Produces [sizeUpper, sizeLower] as a valid pair: either both null, or sizeUpper >= sizeLower
+extension AnyNullableValidSizeRange on Any {
+  Generator<List<double?>> get nullableValidSizeRange => any.either(
+    any.always([null, null]),              // both null case
+    combine2(                              // both present, upper >= lower
+      any.positiveDouble,
+      any.positiveDouble,
+      (a, b) => a >= b ? [a, b] : [b, a], // ensure ordering
+    ),
+  );
+}
