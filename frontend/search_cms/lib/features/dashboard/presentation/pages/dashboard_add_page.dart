@@ -1,42 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:sizer/sizer.dart';
+import '../bloc/add_data_cubit.dart';
+import '../bloc/add_data_state.dart';
 
 
 final Logger? _logger =
       logLevel != Level.OFF ? Logger('Add data page UI') : null;
 
 
+
 // Its not going to be used right now since we are removing the section for the save button
 // We will use this function laterwards when the save widget button comes back  
- void saveButtonClicked(String title){
+ void saveButtonClicked(){
   //AddDataPageEntries? dataEntry = AddDataPageEntries.dataEntries[title]; //un comment this out when business logic is started
   // implement when business logic is planned or when I can talk to them
 
-  _logger?.info("save button was clicked for $title widget");
+  _logger?.info("save button was clicked on the add data page");
+ } 
 
-
-}
-
-/*
-Will be used to store the keys for for the text fields of widgets created by
-createAddDataWidget.
-If needed, can be modified to store information about what type a text field
-will need to be converted to later.
-*/
-class AddDataPageEntries{
-
-  // so business logic can get relevent keys using the title
-  static Map <String, AddDataPageEntries> dataEntries = {}; // maps title to the instance of this class that will store the relevent keys
-
-  String title; 
-
-  List<String> textFieldKeys = [];
-  // String saveButtonKey = ""; // to allow testers to press the button (will be used later when the "Save" button will be implemented..)
-
-  AddDataPageEntries(this.title, this.textFieldKeys){
-    dataEntries[title] = this;
-  }
+//We will use this when the function runs the reset button(when its clicked), logs a message saying that reset button was pressed
+void resetButtonClicked() {
+  _logger?.info("reset button was clicked on the add data page");
 }
 
 /*
@@ -52,158 +39,338 @@ class AddDataPageEntries{
  *      an instance of AddDataPageEntries
  * returns a widget for adding an entry to the data base for a table corrosponding to title
  */
-Widget createAddDataWidget(String title, List<String> textFieldNames){
-  List<String> newKeys = [];
-  
-  for (int index = 0; index < textFieldNames.length; index++){
-    String keyName = "$title-${textFieldNames[index]}";
-
-    // apparently these asserts cause problems if the page is reloaded
-    // assert(find.byKey(Key(keyName)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $keyName");
-    newKeys.add(keyName);
-  }
-
-  //String saveButtonKey = "$title-saveButton";
-
+Widget createAddDataWidget( BuildContext context, String title, Map<String, String> textFieldNames, {bool twoColumnFields = false}){
   // apparently these asserts cause problems if the page is reloaded
   // assert(find.byKey(Key(saveButtonKey)).evaluate().isEmpty, "Add data page tried to create a widget with an already existing key: $saveButtonKey");
+      double widgetWidth = 360;
+      if (twoColumnFields) {
+        widgetWidth = 625;
+      }
 
-  AddDataPageEntries(title, newKeys);
-  double widgetWidth = 360;
+      double fieldWidth = widgetWidth;
+      if (twoColumnFields) {
+        fieldWidth = 270;
+      }
 
-  return Container(
-    width: widgetWidth,
-    //Changed the padding size for edge
-    padding: const EdgeInsets.all(25),
-    //Added a decoration box that seperates each section
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: const Color(0xFFD9DEE8)),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // section title
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF111827),
-          ),
+      return Container(
+        width: widgetWidth,
+        //Changed the padding size for edge
+        padding: EdgeInsets.all(2.w),
+        //Added a decoration box that seperates each section
+        decoration: BoxDecoration(
+          color: AppColors.addDataCard,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.addDataCardBorder),
         ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // section title
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.mainText,
+              ),
+            ),
 
-        //Aligns with each Box Section and signifies it to its own unique part
-        const SizedBox(height: 12),
-        const Divider(height: 1, color: Color(0xFFD9DEE8)),
-        const SizedBox(height: 16),
+          //Aligns with each Box Section and signifies it to its own unique part
+          const SizedBox(height: 12),
+          const Divider(height: 1, color: AppColors.addDataCardBorder),
+          const SizedBox(height: 16),
 
         // text fields
-        ...textFieldNames.map((name) {
-            /*
-              map returns an iterable (kind of like a list) the ... pulls the items out.
-              So it goes from [widget, widget] to widget, widget
-            */
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        Wrap(
+          spacing: 12,
+          runSpacing: 14,
+          children: [
+            ...textFieldNames.entries.map((entry) {
+              String name = entry.key;
+              String entryValue = entry.value;
+
+            //
+            // map returns an iterable (kind of like a list) the ... pulls the items out.
+            // So it goes from [widget, widget] to widget, widget
+        
+          return SizedBox(
+            width: fieldWidth,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 Text(
                   name,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF111827),
+                    color: AppColors.mainText,
                   ),
                 ),
+
                 const SizedBox(height: 8),
-                TextField(
+                TextFormField(
                   key: Key("$title-$name"),
                   maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(
+                    fontSize: 14,
+                    ),
+
+
+                  onChanged: (value) {
+                    context.read<AddDataCubit>().updateFieldValue(title, name, value);
+                    _logger?.info("$title-$name");
+
+                  },
+
+                  //The validator receives the text that user has entered
+                  //Adds a textFormField with validation
+
+                  //The following function will be used laterwards to determine is the field types are not input into each section
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return "Please enter $name";
+                  //   }
+                  //   return null;
+
                   decoration: InputDecoration(
-                    hintText: "Enter $name",
+                    hintText: entryValue,
                     filled: true,
-                    fillColor: const Color(0xFFF8FAFC),
+                    fillColor: AppColors.addDataFieldFill,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,
                       vertical: 16,
+
                     ),
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
+
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFFC7D0DD),
+                        color: AppColors.addDataFieldBorder,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: Color(0xFF1F40B0),
+                        color: AppColors.addDataFieldBorder,
                         width: 1.5,
                       ),
                     ),
                   ),
-                ),
+                ),               
               ],
+            ),
             ),
           );
         }),
       ],
     ),
-  );
+      ],
+    ),
+
+    );
 }
 
-class DashboardAddPage extends StatelessWidget { 
+// Define a custom Form widget
+class DashboardAddPage extends StatefulWidget {
   const DashboardAddPage({super.key});
 
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF3F4F6),
-        elevation: 0,
-        title: const Text('Add Data'),
-      ),
-      body:  
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          //Added a outer padding that sits close to the edges
-          padding: const EdgeInsets.all(20),
-          child: Wrap(
-            direction: Axis.horizontal,
-            //Added the right amount of spacing between each section
-            spacing: 18,
-            runSpacing: 18,
-            children: [ 
-              /*
-              this is where you will add the columns and text fields for adding
-              data to the database
-              */
-              createAddDataWidget("Site Information", ["Name", "Borden", "Area"]),
-              createAddDataWidget("Unit", ["Name", "Site Name"]),
-              createAddDataWidget("Level", ["Name", "Unit Name", "Parent Name", "Upper Limit", "Lower Limit"]),
-              
+  State<DashboardAddPage> createState() => DashboardAddPageState();
 
-            ]
-          ),
-        )
-        
-    );
-    
-  }
 }
 
+// Define a corresponding State class
+// This class holds the data related to the form
+class DashboardAddPageState extends State<DashboardAddPage> {
+
+  // Creates the global key that identifies the Form widget
+  // by allowing also the validation of the form in the same form
+  final _formKey = GlobalKey<FormState>();
+
+//This will run all the validators -- it only saves if every field has been passed
 
 
+/// preconditions: 
+///  - The form key is connected to the form and it makes sure it exists
+///  - the Save Button action was triggered
+///  - The form key can check and validated through the form fields
+/// 
+/// postconditions:
+///  - If the form is valid, then the save function is called
+///  - if the form is not valid, than the saving does not happen
+  void _handleSave(BuildContext context) {
+
+    // if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+    _logger?.info("Save Button Clicked");
+      saveButtonClicked();
+  }
+
+  /// PreConditions:
+  /// - The form exists and is connected through the _formkey
+  /// - The addDataCubit must be avaialbe
+  /// - the reset action was triggered by the user
+  /// 
+  /// PostConditions:
+  /// - The form fields are reset
+  /// - THe cubit field values are reset
+  /// - THe reset function is also reset
+  
+  void _handleReset(BuildContext context) {
+    _logger?.info("Reset Button Clicked");
+    _formKey.currentState?.reset();
+    context.read<AddDataCubit>().resetFields();
+    resetButtonClicked();
+  }
+
+  // Builds the Add Data page layout
+  // 
+  //preconditions:
+  // - the fieldnames context must be valid
+  // - the _formkey should be already created
+  //
+  //postconditions:
+  // - THe Add Data page layout is being returned
+  // - The AddDataCubit is provided within the widget tree
+  // - THe page is connected to the AddDatastate throughout changes within the UI
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AddDataCubit()..init(),
+
+       // it provides the AddDataCubit state to the page and calls the init()
+      child: BlocBuilder<AddDataCubit, AddDataState>(
+        builder: (context, state) {
+          return Scaffold(
+            //Main background for the AddDataPage
+            backgroundColor: AppColors.addDataBackground,
+            appBar: AppBar(
+              backgroundColor: AppColors.addDataBackground,
+              elevation: 0,
+              title: const Text('Add Data'),
+            ),
+          
+          //Build a form widget using the _formKey created above
+            body: Column(
+              children: [
+
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      
+                    scrollDirection: Axis.vertical,
+              //Added a outer padding that sits close to the edges
+              padding: EdgeInsets.all(2.w),
+              child: Wrap(
+                direction: Axis.horizontal,
+                //Added the right amount of spacing between each section
+                spacing: 1.5.w,
+                runSpacing: 1.5.h,
+                children: [
+                  //
+                  //These are the listed sections that are displayed in the Add Data Page
+                  //eventually will be displayed in the Homepage and also in the database
+                createAddDataWidget(context, 
+                "Site Information", {
+                "Name": "Enter Site Name (e.g., DiRw-28)", "Borden": 
+                "Enter Borden Number (e.g., DiRw-28)", "Area": 
+                "Enter Area (e.g., western end of slope)"}),
+
+                createAddDataWidget(context, 
+                "Unit", {"Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Site Name": "Enter Site Name (e.g., DiRw-28)"}),
+
+                createAddDataWidget(context, 
+                "Level", {"Name": "Enter Level Name (e.g., A1)", 
+                "Unit Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Parent Name": "Enter Parent Name (e.g., Area A)", 
+                "Upper Limit": "Enter Upper Limit (e.g., A)", 
+                "Lower Limit": "Enter Lower Limit (e.g., 1)"}),
+
+                createAddDataWidget(context, 
+                "Assemblage", {"Assemblage Name": 
+                "Enter Assemblage Name (e.g., Faunal Assemblage 1)", 
+                "Unit Name": "Enter Unit Name (e.g., N84SW1)", 
+                "Level Name": "Enter Level Name (e.g., A1)"}),
+
+
+                createAddDataWidget(context, 
+                "Artifact (Faunal)", {"Assemblage Name": 
+                "Enter Assemblage Name (e.g., Faunal Assemblage 1)", 
+                "Porosity": "Enter Porosity (e.g., 4)", 
+                "Size Upper": "Enter Size Upper (e.g., 30)", 
+                "Size Lower": "Enter Size Lower (e.g., 4)", 
+                "Comment": "Enter Comment (e.g., broken fish vertebrae)", 
+                "Pre Excavation Fragments": "Enter Pre Excavation Fragments (e.g., 1)", 
+                "Post Excavation Fragments": "Enter Post Excavation Fragments (e.g., 2)", 
+                "Elements": "Enter Elements (e.g., vertebra)"}, twoColumnFields: true),
+                  ],
+          ),
+        ),
+      ),
+    ),
+
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+            decoration: const BoxDecoration(
+              color: AppColors.addDataBackground,
+              border: Border(
+                top: BorderSide(color: AppColors.addDataCardBorder),
+              )
+            ),
+
+            child: Row(
+
+              //moves the button to the left
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: [
+                //"Save Button" for the Add data page
+                // Uses the "save" handler when clicked
+                TextButton(
+                  onPressed: () => _handleSave(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppColors.addDataFieldFocus,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+
+                    ),
+                  child: const Text("Save"),
+
+                ),
+                //"Reset Button" for the Add Data Page
+                // Uses the "reset" handler when clicked
+                const SizedBox(width: 10),
+                TextButton(
+                  onPressed: () => _handleReset(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.mainText,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: const Text("Reset"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
