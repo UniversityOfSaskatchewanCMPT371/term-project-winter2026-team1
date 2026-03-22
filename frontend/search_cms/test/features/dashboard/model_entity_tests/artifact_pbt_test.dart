@@ -30,7 +30,7 @@ extension AnyArtifactFaunalEntity on Any {
         postExcavFrags: postExcavFrags,
         elements: elements,
         createdAt: createdAt,
-        updatedAt: updatedAt,  // use same datetime to keep combine9 within the 9-arg limit
+        updatedAt: updatedAt,
       );
     }
   );
@@ -46,9 +46,9 @@ extension AnyArtifactFaunalModel on Any {
     // The 'combine' method is limited to ten fields so we use porosity as a tuple
     any.nullableValidSizeRange,   // [sizeUpper, sizeLower]: null pair or valid ordered pair
     any.nullableLetters,          // comment: string, empty string, or null (model allows null)
-    any.intInRange(1, null),              // preExcavFrags > 0
-    any.intInRange(1, null),              // postExcavFrags > 0
-    any.intInRange(1, null),              // elements > 0
+    any.intInRange(1, null),      // preExcavFrags > 0
+    any.intInRange(1, null),      // postExcavFrags > 0
+    any.intInRange(1, null),      // elements > 0
     any.dateTime,                 // createdAt
     any.dateTime,                 // updatedAt
     (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt, updatedAt) {
@@ -200,6 +200,5 @@ void main() {
         expect(entity.updatedAt, artifactFaunalModel.updatedAt);
       }
     );
- 
   });
 }
