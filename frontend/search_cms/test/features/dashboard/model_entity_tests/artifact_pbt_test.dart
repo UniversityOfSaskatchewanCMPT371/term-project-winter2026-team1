@@ -31,3 +31,35 @@ extension AnyNullableValidSizeRange on Any {
     ),
   );
 }
+
+
+// Generates an ArtifactFaunalEntity with random values that satisfy all invariants
+// call with 'artifactFaunalEntity'
+extension AnyArtifactFaunalEntity on Any {
+  Generator<ArtifactFaunalEntity> get artifactFaunalEntity => combine9(
+    any.uuid,                     // id
+    any.uuid,                     // assemblageId
+    any.nullablePorosity,         // porosity: null or int between 1-5
+    any.nullableValidSizeRange,   // [sizeUpper, sizeLower]: null pair or valid ordered pair
+    any.letters,                  // comment: string or empty, never null (entity requires String)
+    any.positiveInt,              // preExcavFrags > 0
+    any.positiveInt,              // postExcavFrags > 0
+    any.positiveInt,              // elements > 0
+    any.dateTime,                 // createdAt
+    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt) {
+      return ArtifactFaunalEntity(
+        id: id,
+        assemblageId: assemblageId,
+        porosity: porosity,
+        sizeUpper: sizePair[0],
+        sizeLower: sizePair[1],
+        comment: comment,
+        preExcavFrags: preExcavFrags,
+        postExcavFrags: postExcavFrags,
+        elements: elements,
+        createdAt: createdAt,
+        updatedAt: createdAt,  // use same datetime to keep combine9 within the 9-arg limit
+      );
+    }
+  );
+}
