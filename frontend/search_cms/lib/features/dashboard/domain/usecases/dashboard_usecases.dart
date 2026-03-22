@@ -4,6 +4,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usec
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
 
 // The collection of all use cases for the dashboard
 class DashboardUsecases {
@@ -13,6 +14,7 @@ class DashboardUsecases {
   final GetAllLevelsUseCase getAllLevelsUseCase;
   final InsertSiteUsecase insertSiteUsecase;
   final InsertAreaUsecase insertAreaUsecase;
+  final InsertSiteAreaUsecase insertSiteAreaUsecase;
 
   DashboardUsecases({
     required this.getAllSitesUseCase,
@@ -21,5 +23,6 @@ class DashboardUsecases {
     required this.getAllLevelsUseCase,
     required this.insertSiteUsecase,
     required this.insertAreaUsecase,
+    required this.insertSiteAreaUsecase,
   });
 }
