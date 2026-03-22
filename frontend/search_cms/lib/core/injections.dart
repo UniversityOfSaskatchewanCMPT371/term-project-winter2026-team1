@@ -15,8 +15,6 @@ Future<void> initInjections() async {
   await initDatabases();
   // Register authentication injections
   initAuthenticationInjections();
-  initSiteInjections();
-  initAreaInjections();
   // Register dashboard injections
   initDashboardInjections();
 }
