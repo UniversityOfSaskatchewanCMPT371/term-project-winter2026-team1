@@ -154,7 +154,6 @@ Future<bool> pingPowersync() async {
 
     logger.info("Powersync is healthy");
     return true;
-
   } catch (e) {
     logger.severe("Error checking Powersync: $e");
     return false;
