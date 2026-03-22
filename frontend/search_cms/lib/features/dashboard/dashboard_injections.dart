@@ -7,6 +7,7 @@ import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_ap
 import 'package:search_cms/features/dashboard/data/data_sources/insert_area_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/insert_site_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/insert_site_area_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_unit_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_levels_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
@@ -14,6 +15,7 @@ import 'package:search_cms/features/dashboard/data/repositories/get_all_units_re
 import 'package:search_cms/features/dashboard/data/repositories/insert_area_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/insert_site_area_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/insert_site_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_unit_repository_impl.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
@@ -22,6 +24,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usec
 import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_unit_usecase.dart';
 
 /*
   This defines how getIt should construct the classes for us
@@ -37,6 +40,7 @@ void initDashboardInjections() {
   _registerInsertSiteUseCase();
   _registerInsertAreaUseCase();
   _registerInsertSiteAreaUseCase();
+  _registerInsertUnitUseCase();
 
   // The dashboard use case collection
   getIt.registerFactory<DashboardUsecases>(
@@ -48,6 +52,7 @@ void initDashboardInjections() {
       insertSiteUsecase: getIt<InsertSiteUsecase>(),
       insertAreaUsecase: getIt<InsertAreaUsecase>(),
       insertSiteAreaUsecase: getIt<InsertSiteAreaUsecase>(),
+      insertUnitUsecase: getIt<InsertUnitUsecase>(),
     ),
   );
 }
@@ -160,6 +165,24 @@ void _registerInsertSiteAreaUseCase() {
   // Register the InsertSiteAreaUsecase
   getIt.registerFactory<InsertSiteAreaUsecase>(
     () => InsertSiteAreaUsecase(repository: getIt<InsertSiteAreaRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert unit use case
+ */
+void _registerInsertUnitUseCase() {
+  // Register the InsertUnitApiImpl
+  getIt.registerFactory<InsertUnitApiImpl>(
+    () => InsertUnitApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertUnitRepositoryImpl
+  getIt.registerFactory<InsertUnitRepositoryImpl>(
+    () => InsertUnitRepositoryImpl(api: getIt<InsertUnitApiImpl>()),
+  );
+  // Register the InsertUnitUsecase
+  getIt.registerFactory<InsertUnitUsecase>(
+    () => InsertUnitUsecase(repository: getIt<InsertUnitRepositoryImpl>()),
   );
 }
 
