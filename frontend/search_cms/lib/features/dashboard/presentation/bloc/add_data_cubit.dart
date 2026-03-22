@@ -15,16 +15,11 @@ import 'add_data_state.dart';
 //- The page will eventually move the add data page to its initial, loading, loaded states.
 
 class AddDataCubit extends Cubit<AddDataState> {
-  DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
-
   // starting state for the add data page
   AddDataCubit() : super(const AddDataInitial());
 
   // loads the starting data and then moves the Add Data Page to a loaded state
-  void init() async {
-    await dashboardUsecases.getAllSitesUseCase.call();
-    emit(const AddDataLoaded());
-  }
+  void init() {}
 
   // Resets all the fields values for the Add Data Page
   //
@@ -63,8 +58,6 @@ class AddDataCubit extends Cubit<AddDataState> {
     updatedFieldValues['$sectionTitle-$fieldName'] = value;
 
     //emit the new state to the add data loaded values
-    emit(AddDataLoaded(
-      fieldValues: updatedFieldValues,
-    ));
+    emit(AddDataLoaded(fieldValues: updatedFieldValues));
   }
 }
