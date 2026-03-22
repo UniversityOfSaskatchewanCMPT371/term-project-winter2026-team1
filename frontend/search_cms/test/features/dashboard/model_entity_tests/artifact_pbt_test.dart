@@ -63,3 +63,34 @@ extension AnyArtifactFaunalEntity on Any {
     }
   );
 }
+ 
+// Generates an ArtifactFaunalModel with random values
+// call with 'artifactFaunalModel'
+extension AnyArtifactFaunalModel on Any {
+  Generator<ArtifactFaunalModel> get artifactFaunalModel => combine9(
+    any.uuid,                     // id
+    any.uuid,                     // assemblageId
+    any.nullablePorosity,         // porosity: null or int between 1-5
+    any.nullableValidSizeRange,   // [sizeUpper, sizeLower]: null pair or valid ordered pair
+    any.nullableLetters,          // comment: string, empty string, or null (model allows null)
+    any.positiveInt,              // preExcavFrags > 0
+    any.positiveInt,              // postExcavFrags > 0
+    any.positiveInt,              // elements > 0
+    any.dateTime,                 // createdAt
+    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt) {
+      return ArtifactFaunalModel(
+        id: id,
+        assemblageId: assemblageId,
+        porosity: porosity,
+        sizeUpper: sizePair[0],
+        sizeLower: sizePair[1],
+        comment: comment,
+        preExcavFrags: preExcavFrags,
+        postExcavFrags: postExcavFrags,
+        elements: elements,
+        createdAt: createdAt,
+        updatedAt: createdAt,
+      );
+    }
+  );
+}
