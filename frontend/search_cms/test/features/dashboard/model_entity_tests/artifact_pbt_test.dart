@@ -146,6 +146,7 @@ void main() {
       }
     );
 
+
     /*** Test 2 - ArtifactFaunalModel ***/
     // Creates a randomly generated model and verifies its contents
     Any.setDefault<ArtifactFaunalModel>(any.artifactFaunalModel);
@@ -190,3 +191,41 @@ void main() {
         expect(artifactFaunalModel.updatedAt, isA<DateTime>());
       }
     );
+
+
+    /*** Test 3 - toEntity() ***/
+    // Ensures any model, when converted to an entity, will be both
+    // a valid entity and will carry the same values as the model
+    Glados<ArtifactFaunalModel>().test(
+      'toEntity() returns a valid ArtifactFaunalEntity with the same values',
+      (artifactFaunalModel) {
+ 
+        final entity = artifactFaunalModel.toEntity();
+ 
+        // Entity is the correct type
+        expect(entity, isA<ArtifactFaunalEntity>());
+ 
+        // Returned entity has the same values for all fields
+        expect(entity.id, artifactFaunalModel.id);
+        expect(entity.assemblageId, artifactFaunalModel.assemblageId);
+        expect(entity.porosity, artifactFaunalModel.porosity);
+        expect(entity.sizeUpper, artifactFaunalModel.sizeUpper);
+        expect(entity.sizeLower, artifactFaunalModel.sizeLower);
+ 
+        // If model.comment is null it gets converted to empty string in toEntity()
+        if (artifactFaunalModel.comment == null) {
+          expect(entity.comment, isEmpty);
+        } else {
+          expect(entity.comment, artifactFaunalModel.comment);
+        }
+ 
+        expect(entity.preExcavFrags, artifactFaunalModel.preExcavFrags);
+        expect(entity.postExcavFrags, artifactFaunalModel.postExcavFrags);
+        expect(entity.elements, artifactFaunalModel.elements);
+        expect(entity.createdAt, artifactFaunalModel.createdAt);
+        expect(entity.updatedAt, artifactFaunalModel.updatedAt);
+      }
+    );
+ 
+  });
+}
