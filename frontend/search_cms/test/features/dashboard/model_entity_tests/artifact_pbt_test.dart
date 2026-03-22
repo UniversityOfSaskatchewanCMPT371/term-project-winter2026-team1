@@ -20,7 +20,7 @@ extension AnyPositiveInt on Any {
   Generator<int> get positiveInt => any.intInRange(1, null);
 }
 
-// Produces [sizeUpper, sizeLower] as a valid pair: both null, or sizeUpper >= sizeLower
+// Produces [sizeUpper, sizeLower] as a valid pair: either both null, or sizeUpper >= sizeLower
 extension AnyNullableValidSizeRange on Any {
   Generator<List<double?>> get nullableValidSizeRange => any.either(
     any.always([null, null]),              // both null case
@@ -36,7 +36,7 @@ extension AnyNullableValidSizeRange on Any {
 // Generates an ArtifactFaunalEntity with random values that satisfy all invariants
 // call with 'artifactFaunalEntity'
 extension AnyArtifactFaunalEntity on Any {
-  Generator<ArtifactFaunalEntity> get artifactFaunalEntity => combine9(
+  Generator<ArtifactFaunalEntity> get artifactFaunalEntity => combine10(
     any.uuid,                     // id
     any.uuid,                     // assemblageId
     any.nullablePorosity,         // porosity: null or int between 1-5
@@ -46,7 +46,8 @@ extension AnyArtifactFaunalEntity on Any {
     any.positiveInt,              // postExcavFrags > 0
     any.positiveInt,              // elements > 0
     any.dateTime,                 // createdAt
-    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt) {
+    any.dateTime,                 // updatedAt
+    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt, updatedAt) {
       return ArtifactFaunalEntity(
         id: id,
         assemblageId: assemblageId,
@@ -58,7 +59,7 @@ extension AnyArtifactFaunalEntity on Any {
         postExcavFrags: postExcavFrags,
         elements: elements,
         createdAt: createdAt,
-        updatedAt: createdAt,  // use same datetime to keep combine9 within the 9-arg limit
+        updatedAt: updatedAt,  // use same datetime to keep combine9 within the 9-arg limit
       );
     }
   );
@@ -67,17 +68,19 @@ extension AnyArtifactFaunalEntity on Any {
 // Generates an ArtifactFaunalModel with random values
 // call with 'artifactFaunalModel'
 extension AnyArtifactFaunalModel on Any {
-  Generator<ArtifactFaunalModel> get artifactFaunalModel => combine9(
+  Generator<ArtifactFaunalModel> get artifactFaunalModel => combine10(
     any.uuid,                     // id
     any.uuid,                     // assemblageId
     any.nullablePorosity,         // porosity: null or int between 1-5
+    // The 'combine' method is limited to ten fields so we use porosity as a tuple
     any.nullableValidSizeRange,   // [sizeUpper, sizeLower]: null pair or valid ordered pair
     any.nullableLetters,          // comment: string, empty string, or null (model allows null)
     any.positiveInt,              // preExcavFrags > 0
     any.positiveInt,              // postExcavFrags > 0
     any.positiveInt,              // elements > 0
     any.dateTime,                 // createdAt
-    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt) {
+    any.dateTime,                 // updatedAt
+    (id, assemblageId, porosity, sizePair, comment, preExcavFrags, postExcavFrags, elements, createdAt, updatedAt) {
       return ArtifactFaunalModel(
         id: id,
         assemblageId: assemblageId,
@@ -89,7 +92,7 @@ extension AnyArtifactFaunalModel on Any {
         postExcavFrags: postExcavFrags,
         elements: elements,
         createdAt: createdAt,
-        updatedAt: createdAt,
+        updatedAt: updatedAt,
       );
     }
   );
