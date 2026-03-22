@@ -94,3 +94,54 @@ extension AnyArtifactFaunalModel on Any {
     }
   );
 }
+
+
+// Runs randomized property-based tests on the ArtifactFaunalEntity and ArtifactFaunalModel class
+// This tests the invariants of the entity against generated Glados instances
+// The unit tests already cover the edge cases where required fields are empty or
+// constrained fields are out of range, so this test does not attempt to target those
+void main() {
+  group('ARTIFACT-FAUNAL-PBT : Entity and Model PBT Tests', () {
+ 
+    /*** Test 1 - ArtifactFaunalEntity ***/
+    // Creates a randomly generated entity and verifies its contents
+    Any.setDefault<ArtifactFaunalEntity>(any.artifactFaunalEntity);
+ 
+    Glados<ArtifactFaunalEntity>().test(
+      'generated ArtifactFaunalEntity has valid fields',
+      (artifactFaunalEntity) {
+        // id and assemblageId must be valid UUIDs — non-empty and correct format
+        expect(artifactFaunalEntity.id, isNotEmpty);
+        expect(artifactFaunalEntity.id, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+ 
+        expect(artifactFaunalEntity.assemblageId, isNotEmpty);
+        expect(artifactFaunalEntity.assemblageId, matches(
+          RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+        ));
+ 
+        // porosity must be null or between 1-5
+        if (artifactFaunalEntity.porosity != null) {
+          expect(artifactFaunalEntity.porosity, greaterThanOrEqualTo(1));
+          expect(artifactFaunalEntity.porosity, lessThanOrEqualTo(5));
+        }
+ 
+        // sizeUpper >= sizeLower when both are present
+        if (artifactFaunalEntity.sizeUpper != null && artifactFaunalEntity.sizeLower != null) {
+          expect(artifactFaunalEntity.sizeUpper, greaterThanOrEqualTo(artifactFaunalEntity.sizeLower!));
+        }
+ 
+        // comment is always a String (never null) on the entity
+        expect(artifactFaunalEntity.comment, isA<String>());
+ 
+        // fragment and element counts must all be > 0
+        expect(artifactFaunalEntity.preExcavFrags, greaterThan(0));
+        expect(artifactFaunalEntity.postExcavFrags, greaterThan(0));
+        expect(artifactFaunalEntity.elements, greaterThan(0));
+ 
+        // dates must be valid DateTime instances
+        expect(artifactFaunalEntity.createdAt, isA<DateTime>());
+        expect(artifactFaunalEntity.updatedAt, isA<DateTime>());
+      }
+    );
