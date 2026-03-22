@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/app_config.dart';
+import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 
 void healthChecksTest(Logger logger) {
@@ -49,6 +50,8 @@ void healthChecksTest(Logger logger) {
     test("Attempt ping to Powersync", (
     ) async {
       logger.info("Attempting to ping Powersync");
+
+      await initInjections();
 
       int attempts = 0;
       const int maxAttempts = 100;
@@ -146,7 +149,7 @@ Future<bool> pingPowersync() async {
     final powersync = getIt<PowerSyncDatabase>();
 
     logger.info("Powersync status: ${powersync.currentStatus}");
-    
+
     if (powersync.currentStatus.anyError != null) {
       logger.warning("Powersync has error: ${powersync.currentStatus.anyError}");
       return false;
