@@ -19,7 +19,7 @@ void main() {
         ),
       );
 
-      // making sure there is at least 1 save button
+      // ensuring there is at least 1 save button
       expect(find.byKey(Key("saveButton")), findsAny);
     });
 
@@ -34,7 +34,7 @@ void main() {
         ),
       );
 
-      // making sure there is at least 1 reset button
+      // ensuring there is at least 1 reset button
       expect(find.byKey(Key("resetButton")), findsAny);
     });
   });
