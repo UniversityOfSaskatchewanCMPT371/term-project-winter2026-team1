@@ -13,7 +13,7 @@ import 'package:search_cms/features/dashboard/domain/entities/level_entity.dart'
 
 void main() {
   group('Success', () {
-    test('stores the provided listOfLevelEntity', () {
+    test('GET-ALL-LEVELS-RESULT-1-stores the provided listOfLevelEntity', () {
       final listOfLevelEntity = <LevelEntity>[
         LevelEntity(
           id: 'level-1',
@@ -54,7 +54,7 @@ void main() {
       expect(result.listOfLevelEntity[1].name, 'Level Two');
     });
 
-    test('stores an empty listOfLevelEntity', () {
+    test('GET-ALL-LEVELS-RESULT-2-stores an empty listOfLevelEntity', () {
       final result = get_all_levels_result_classes.Success(
         listOfLevelEntity: <LevelEntity>[],
       );
@@ -65,7 +65,7 @@ void main() {
   });
 
   group('Failure', () {
-    test('stores the provided errorMessage', () {
+    test('GET-ALL-LEVELS-RESULT-3-stores the provided errorMessage', () {
       final result = get_all_levels_result_classes.Failure(
         errorMessage: 'Something went wrong',
       );
@@ -74,7 +74,7 @@ void main() {
       expect(result.errorMessage, 'Something went wrong');
     });
 
-    test('stores an empty errorMessage', () {
+    test('GET-ALL-LEVELS-RESULT-4-stores an empty errorMessage', () {
       final result = get_all_levels_result_classes.Failure(
         errorMessage: '',
       );

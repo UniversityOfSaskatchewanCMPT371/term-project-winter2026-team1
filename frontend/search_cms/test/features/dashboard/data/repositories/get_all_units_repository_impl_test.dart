@@ -83,7 +83,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success with mapped UnitEntity list when API succeeds',
+    test('GET-ALL-UNITS-REPO-1-returns Success with mapped UnitEntity list when API succeeds',
             () async {
           final listOfUnitModel = <UnitModel>[
             UnitModel(
@@ -152,7 +152,7 @@ void main() {
           verify(mockApi.getAllUnits()).called(1);
         });
 
-    test('returns Success with an empty list when API returns no units',
+    test('GET-ALL-UNITS-REPO-2-returns Success with an empty list when API returns no units',
             () async {
           when(mockApi.getAllUnits()).thenAnswer((_) async => <UnitModel>[]);
 
@@ -167,7 +167,7 @@ void main() {
           verify(mockApi.getAllUnits()).called(1);
         });
 
-    test('returns Failure when API throws an exception', () async {
+    test('GET-ALL-UNITS-REPO-3-returns Failure when API throws an exception', () async {
       when(mockApi.getAllUnits()).thenThrow(Exception('api failure'));
 
       final result = await repository.getAllUnits();
@@ -181,7 +181,7 @@ void main() {
       verify(mockApi.getAllUnits()).called(1);
     });
 
-    test('returns Failure when PowerSync status has an error', () async {
+    test('GET-ALL-UNITS-REPO-4-returns Failure when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -202,7 +202,7 @@ void main() {
       verifyNever(mockApi.getAllUnits());
     });
 
-    test('returns Failure when no authenticated session exists', () async {
+    test('GET-ALL-UNITS-REPO-5-returns Failure when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());

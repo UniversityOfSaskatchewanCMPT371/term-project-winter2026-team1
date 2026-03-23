@@ -87,7 +87,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success from the repository unchanged', () async {
+    test('GET-ALL-SITES-USECASE-1-returns Success from the repository unchanged', () async {
       final success = get_all_sites_result_classes.Success(
         listOfSiteEntity: <SiteEntity>[
           SiteEntity(
@@ -110,7 +110,7 @@ void main() {
       verify(mockRepository.getAllSites()).called(1);
     });
 
-    test('returns Failure from the repository unchanged', () async {
+    test('GET-ALL-SITES-USECASE-2-returns Failure from the repository unchanged', () async {
       final failure = get_all_sites_result_classes.Failure(
         errorMessage: 'repository failure',
       );
@@ -125,7 +125,7 @@ void main() {
       verify(mockRepository.getAllSites()).called(1);
     });
 
-    test('calls repository.getAllSites once', () async {
+    test('GET-ALL-SITES-USECASE-3-calls repository.getAllSites once', () async {
       final success = get_all_sites_result_classes.Success(
         listOfSiteEntity: <SiteEntity>[],
       );
@@ -138,7 +138,7 @@ void main() {
       verify(mockRepository.getAllSites()).called(1);
     });
 
-    test('throws AssertionError when PowerSync status has an error', () async {
+    test('GET-ALL-SITES-USECASE-4-throws AssertionError when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -154,7 +154,7 @@ void main() {
       verifyNever(mockRepository.getAllSites());
     });
 
-    test('throws AssertionError when no authenticated session exists', () async {
+    test('GET-ALL-SITES-USECASE-5-throws AssertionError when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());

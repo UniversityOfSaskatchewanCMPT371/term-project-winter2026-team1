@@ -87,7 +87,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success with mapped SiteEntity list when API succeeds',
+    test('GET-ALL-SITES-REPO-1-returns Success with mapped SiteEntity list when API succeeds',
             () async {
           final listOfSiteModel = <SiteModel>[
             SiteModel(
@@ -156,7 +156,7 @@ void main() {
           verify(mockApi.getAllSites()).called(1);
         });
 
-    test('returns Success with an empty list when API returns no sites',
+    test('GET-ALL-SITES-REPO-2-returns Success with an empty list when API returns no sites',
             () async {
           when(mockApi.getAllSites()).thenAnswer((_) async => <SiteModel>[]);
 
@@ -172,7 +172,7 @@ void main() {
           verify(mockApi.getAllSites()).called(1);
         });
 
-    test('returns Failure when API throws an exception', () async {
+    test('GET-ALL-SITES-REPO-3-returns Failure when API throws an exception', () async {
       when(mockApi.getAllSites()).thenThrow(Exception('api failure'));
 
       final result = await repository.getAllSites();
@@ -187,7 +187,7 @@ void main() {
       verify(mockApi.getAllSites()).called(1);
     });
 
-    test('returns Failure when PowerSync status has an error', () async {
+    test('GET-ALL-SITES-REPO-4-returns Failure when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -209,7 +209,7 @@ void main() {
       verifyNever(mockApi.getAllSites());
     });
 
-    test('returns Failure when no authenticated session exists', () async {
+    test('GET-ALL-SITES-REPO-5-returns Failure when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());

@@ -83,7 +83,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success with mapped AreaEntity list when API succeeds',
+    test('GET-ALL-AREAS-REPO-1-returns Success with mapped AreaEntity list when API succeeds',
             () async {
           final listOfAreaModel = <AreaModel>[
             AreaModel(
@@ -148,7 +148,7 @@ void main() {
           verify(mockApi.getAllAreas()).called(1);
         });
 
-    test('returns Success with an empty list when API returns no areas',
+    test('GET-ALL-AREAS-REPO-2-returns Success with an empty list when API returns no areas',
             () async {
           when(mockApi.getAllAreas()).thenAnswer((_) async => <AreaModel>[]);
 
@@ -163,7 +163,7 @@ void main() {
           verify(mockApi.getAllAreas()).called(1);
         });
 
-    test('returns Failure when API throws an exception', () async {
+    test('GET-ALL-AREAS-REPO-3-returns Failure when API throws an exception', () async {
       when(mockApi.getAllAreas()).thenThrow(Exception('api failure'));
 
       final result = await repository.getAllAreas();
@@ -177,7 +177,7 @@ void main() {
       verify(mockApi.getAllAreas()).called(1);
     });
 
-    test('returns Failure when PowerSync status has an error', () async {
+    test('GET-ALL-AREAS-REPO-4-returns Failure when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -198,7 +198,7 @@ void main() {
       verifyNever(mockApi.getAllAreas());
     });
 
-    test('returns Failure when no authenticated session exists', () async {
+    test('GET-ALL-AREAS-REPO-5-returns Failure when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());

@@ -102,7 +102,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns mapped SiteModel list when rows are returned', () async {
+    test('GET-ALL-SITES-API-1-returns mapped SiteModel list when rows are returned', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -173,7 +173,7 @@ void main() {
       database.dispose();
     });
 
-    test('returns an empty list when no rows are returned', () async {
+    test('GET-ALL-SITES-API-2-returns an empty list when no rows are returned', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -199,7 +199,7 @@ void main() {
       database.dispose();
     });
 
-    test('queries the site table once', () async {
+    test('GET-ALL-SITES-API-3-queries the site table once', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -226,7 +226,7 @@ void main() {
       database.dispose();
     });
 
-    test('rethrows when the database query fails', () async {
+    test('GET-ALL-SITES-API-4-rethrows when the database query fails', () async {
       final exception = Exception('database failure');
 
       when(
@@ -239,7 +239,7 @@ void main() {
       );
     });
 
-    test('throws AssertionError when PowerSync status has an error', () async {
+    test('GET-ALL-SITES-API-5-throws AssertionError when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -252,7 +252,7 @@ void main() {
       );
     });
 
-    test('throws AssertionError when no authenticated session exists', () async {
+    test('GET-ALL-SITES-API-6-throws AssertionError when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());

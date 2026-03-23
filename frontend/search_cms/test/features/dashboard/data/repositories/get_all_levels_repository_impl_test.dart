@@ -83,7 +83,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success with mapped LevelEntity list when API succeeds',
+    test('GET-ALL-LEVELS-REPO-1-returns Success with mapped LevelEntity list when API succeeds',
             () async {
           final listOfLevelModel = <LevelModel>[
             LevelModel(
@@ -172,7 +172,7 @@ void main() {
           verify(mockApi.getAllLevels()).called(1);
         });
 
-    test('returns Success with an empty list when API returns no levels',
+    test('GET-ALL-LEVELS-REPO-2-returns Success with an empty list when API returns no levels',
             () async {
           when(mockApi.getAllLevels()).thenAnswer((_) async => <LevelModel>[]);
 
@@ -187,7 +187,7 @@ void main() {
           verify(mockApi.getAllLevels()).called(1);
         });
 
-    test('returns Failure when API throws an exception', () async {
+    test('GET-ALL-LEVELS-REPO-3-returns Failure when API throws an exception', () async {
       when(mockApi.getAllLevels()).thenThrow(Exception('api failure'));
 
       final result = await repository.getAllLevels();
@@ -201,7 +201,7 @@ void main() {
       verify(mockApi.getAllLevels()).called(1);
     });
 
-    test('returns Failure when PowerSync status has an error', () async {
+    test('GET-ALL-LEVELS-REPO-4-returns Failure when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -222,7 +222,7 @@ void main() {
       verifyNever(mockApi.getAllLevels());
     });
 
-    test('returns Failure when no authenticated session exists', () async {
+    test('GET-ALL-LEVELS-REPO-5-returns Failure when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());
