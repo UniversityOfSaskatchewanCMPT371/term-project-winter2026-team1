@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
-import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/main.dart';
 
 void basicFunctionalityTest(Logger logger) {
@@ -24,8 +23,6 @@ void basicFunctionalityTest(Logger logger) {
       logger.info("Running login system smoke test");
       // Load app widget
       await tester.pumpWidget(const MyApp());
-
-      await initInjections();
 
       // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);

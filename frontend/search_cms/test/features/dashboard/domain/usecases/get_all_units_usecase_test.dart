@@ -3,7 +3,7 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 /*
-Unit tests for GetAllSitesUseCase.
+Unit tests for GetAllUnitsUseCase.
 
 These tests ensure the use case enforces its preconditions, delegates to the
 repository, and returns the repository result unchanged.
@@ -13,10 +13,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/dashboard/domain/entities/get_all_sites_result_classes.dart'
-as get_all_sites_result_classes;
-import 'package:search_cms/features/dashboard/domain/entities/site_entity.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/entities/get_all_units_result_classes.dart'
+as get_all_units_result_classes;
+import 'package:search_cms/features/dashboard/domain/entities/unit_entity.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../mocks/dashboard_mocks.mocks.dart';
@@ -44,16 +44,16 @@ void main() {
     provideDummy<SyncStatus>(SyncStatus());
   });
 
-  group('GetAllSitesUseCase', () {
-    late MockAbstractGetAllSitesRepository mockRepository;
+  group('GetAllUnitsUseCase', () {
+    late MockAbstractGetAllUnitsRepository mockRepository;
     late MockPowerSyncDatabase mockPowerSyncDatabase;
     late MockSupabaseClient mockSupabaseClient;
-    late GetAllSitesUseCase useCase;
+    late GetAllUnitsUseCase useCase;
 
     setUp(() async {
       await getIt.reset();
 
-      mockRepository = MockAbstractGetAllSitesRepository();
+      mockRepository = MockAbstractGetAllUnitsRepository();
       mockPowerSyncDatabase = MockPowerSyncDatabase();
       mockSupabaseClient = MockSupabaseClient();
 
@@ -80,65 +80,65 @@ void main() {
       getIt.registerSingleton<PowerSyncDatabase>(mockPowerSyncDatabase);
       getIt.registerSingleton<SupabaseClient>(mockSupabaseClient);
 
-      useCase = GetAllSitesUseCase(repository: mockRepository);
+      useCase = GetAllUnitsUseCase(repository: mockRepository);
     });
 
     tearDown(() async {
       await getIt.reset();
     });
 
-    test('GET-ALL-SITES-USECASE-1-returns Success from the repository unchanged', () async {
-      final success = get_all_sites_result_classes.Success(
-        listOfSiteEntity: <SiteEntity>[
-          SiteEntity(
-            id: 'site-1',
-            name: 'Alpha Site',
-            borden: 'BORD001',
+    test('GET-ALL-UNITS-USECASE-1-returns Success from the repository unchanged', () async {
+      final success = get_all_units_result_classes.Success(
+        listOfUnitEntity: <UnitEntity>[
+          UnitEntity(
+            id: 'unit-1',
+            siteId: 'site-1',
+            name: 'Alpha Unit',
             createdAt: DateTime.parse('2026-01-01T00:00:00.000Z'),
             updatedAt: DateTime.parse('2026-01-02T00:00:00.000Z'),
           ),
         ],
       );
 
-      when(mockRepository.getAllSites()).thenAnswer((_) async => success);
+      when(mockRepository.getAllUnits()).thenAnswer((_) async => success);
 
       final result = await useCase();
 
       expect(result, same(success));
 
       verify(mockPowerSyncDatabase.currentStatus).called(1);
-      verify(mockRepository.getAllSites()).called(1);
+      verify(mockRepository.getAllUnits()).called(1);
     });
 
-    test('GET-ALL-SITES-USECASE-2-returns Failure from the repository unchanged', () async {
-      final failure = get_all_sites_result_classes.Failure(
+    test('GET-ALL-UNITS-USECASE-2-returns Failure from the repository unchanged', () async {
+      final failure = get_all_units_result_classes.Failure(
         errorMessage: 'repository failure',
       );
 
-      when(mockRepository.getAllSites()).thenAnswer((_) async => failure);
+      when(mockRepository.getAllUnits()).thenAnswer((_) async => failure);
 
       final result = await useCase();
 
       expect(result, same(failure));
 
       verify(mockPowerSyncDatabase.currentStatus).called(1);
-      verify(mockRepository.getAllSites()).called(1);
+      verify(mockRepository.getAllUnits()).called(1);
     });
 
-    test('GET-ALL-SITES-USECASE-3-calls repository.getAllSites once', () async {
-      final success = get_all_sites_result_classes.Success(
-        listOfSiteEntity: <SiteEntity>[],
+    test('GET-ALL-UNITS-USECASE-3-calls repository.getAllUnits once', () async {
+      final success = get_all_units_result_classes.Success(
+        listOfUnitEntity: <UnitEntity>[],
       );
 
-      when(mockRepository.getAllSites()).thenAnswer((_) async => success);
+      when(mockRepository.getAllUnits()).thenAnswer((_) async => success);
 
       await useCase();
 
       verify(mockPowerSyncDatabase.currentStatus).called(1);
-      verify(mockRepository.getAllSites()).called(1);
+      verify(mockRepository.getAllUnits()).called(1);
     });
 
-    test('GET-ALL-SITES-USECASE-4-throws AssertionError when PowerSync status has an error', () async {
+    test('GET-ALL-UNITS-USECASE-4-throws AssertionError when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -151,10 +151,10 @@ void main() {
       );
 
       verify(mockPowerSyncDatabase.currentStatus).called(1);
-      verifyNever(mockRepository.getAllSites());
+      verifyNever(mockRepository.getAllUnits());
     });
 
-    test('GET-ALL-SITES-USECASE-5-throws AssertionError when no authenticated session exists', () async {
+    test('GET-ALL-UNITS-USECASE-5-throws AssertionError when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());
@@ -165,7 +165,7 @@ void main() {
       );
 
       verify(mockPowerSyncDatabase.currentStatus).called(1);
-      verifyNever(mockRepository.getAllSites());
+      verifyNever(mockRepository.getAllUnits());
     });
   });
 }
