@@ -3,52 +3,71 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i11;
 
-import 'package:logging/logging.dart' as _i5;
+import 'package:logging/logging.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i26;
-import 'package:powersync_core/src/abort_controller.dart' as _i30;
-import 'package:powersync_core/src/connector.dart' as _i28;
-import 'package:powersync_core/src/crud.dart' as _i31;
-import 'package:powersync_core/src/database/active_instances.dart' as _i27;
-import 'package:powersync_core/src/database/powersync_database.dart' as _i25;
-import 'package:powersync_core/src/schema.dart' as _i3;
-import 'package:powersync_core/src/sync/options.dart' as _i29;
-import 'package:powersync_core/src/sync/stream.dart' as _i9;
-import 'package:powersync_core/src/sync/sync_status.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i35;
+import 'package:powersync/powersync.dart' as _i8;
+import 'package:powersync_core/src/abort_controller.dart' as _i38;
+import 'package:powersync_core/src/database/active_instances.dart' as _i36;
+import 'package:powersync_core/src/sync/options.dart' as _i37;
 import 'package:search_cms/core/utils/class_templates/result.dart' as _i2;
 import 'package:search_cms/features/dashboard/data/data_sources/abstract_dashboard_api.dart'
-    as _i11;
-import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_sites_api.dart'
-    as _i17;
-import 'package:search_cms/features/dashboard/data/models/area_model.dart'
-    as _i13;
-import 'package:search_cms/features/dashboard/data/models/level_model.dart'
-    as _i16;
-import 'package:search_cms/features/dashboard/data/models/site_area_model.dart'
     as _i14;
-import 'package:search_cms/features/dashboard/data/models/site_model.dart'
-    as _i12;
-import 'package:search_cms/features/dashboard/data/models/unit_model.dart'
-    as _i15;
-import 'package:search_cms/features/dashboard/domain/entities/area_entity.dart'
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_areas_api.dart'
     as _i20;
-import 'package:search_cms/features/dashboard/domain/entities/level_entity.dart'
-    as _i23;
-import 'package:search_cms/features/dashboard/domain/entities/site_area_entity.dart'
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_levels_api.dart'
     as _i21;
-import 'package:search_cms/features/dashboard/domain/entities/site_entity.dart'
-    as _i19;
-import 'package:search_cms/features/dashboard/domain/entities/unit_entity.dart'
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_sites_api.dart'
     as _i22;
-import 'package:search_cms/features/dashboard/domain/repositories/abstract_dashboard_repository.dart'
+import 'package:search_cms/features/dashboard/data/data_sources/abstract_get_all_units_api.dart'
+    as _i23;
+import 'package:search_cms/features/dashboard/data/models/area_model.dart'
+    as _i16;
+import 'package:search_cms/features/dashboard/data/models/level_model.dart'
+    as _i19;
+import 'package:search_cms/features/dashboard/data/models/site_area_model.dart'
+    as _i17;
+import 'package:search_cms/features/dashboard/data/models/site_model.dart'
+    as _i15;
+import 'package:search_cms/features/dashboard/data/models/unit_model.dart'
     as _i18;
-import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_sites_repository.dart'
+import 'package:search_cms/features/dashboard/domain/entities/area_entity.dart'
+    as _i25;
+import 'package:search_cms/features/dashboard/domain/entities/level_entity.dart'
+    as _i28;
+import 'package:search_cms/features/dashboard/domain/entities/site_area_entity.dart'
+    as _i26;
+import 'package:search_cms/features/dashboard/domain/entities/site_entity.dart'
     as _i24;
-import 'package:sqlite3/common.dart' as _i7;
-import 'package:sqlite_async/sqlite_async.dart' as _i4;
-import 'package:supabase/supabase.dart' as _i10;
+import 'package:search_cms/features/dashboard/domain/entities/unit_entity.dart'
+    as _i27;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_dashboard_repository.dart'
+    as _i3;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_areas_repository.dart'
+    as _i29;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_levels_repository.dart'
+    as _i30;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_sites_repository.dart'
+    as _i31;
+import 'package:search_cms/features/dashboard/domain/repositories/abstract_get_all_units_repository.dart'
+    as _i32;
+import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart'
+    as _i34;
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart'
+    as _i5;
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart'
+    as _i7;
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_site_areas_usecase.dart'
+    as _i33;
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart'
+    as _i4;
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart'
+    as _i6;
+import 'package:sqlite3/common.dart' as _i12;
+import 'package:sqlite_async/sqlite_async.dart' as _i9;
+import 'package:supabase_flutter/supabase_flutter.dart' as _i13;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -70,100 +89,130 @@ class _FakeResult_0 extends _i1.SmartFake implements _i2.Result {
     : super(parent, parentInvocation);
 }
 
-class _FakeSchema_1 extends _i1.SmartFake implements _i3.Schema {
-  _FakeSchema_1(Object parent, Invocation parentInvocation)
+class _FakeAbstractDashboardRepository_1 extends _i1.SmartFake
+    implements _i3.AbstractDashboardRepository {
+  _FakeAbstractDashboardRepository_1(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSqliteDatabase_2 extends _i1.SmartFake
-    implements _i4.SqliteDatabase {
-  _FakeSqliteDatabase_2(Object parent, Invocation parentInvocation)
+class _FakeGetAllSitesUseCase_2 extends _i1.SmartFake
+    implements _i4.GetAllSitesUseCase {
+  _FakeGetAllSitesUseCase_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLogger_3 extends _i1.SmartFake implements _i5.Logger {
-  _FakeLogger_3(Object parent, Invocation parentInvocation)
+class _FakeGetAllAreasUseCase_3 extends _i1.SmartFake
+    implements _i5.GetAllAreasUseCase {
+  _FakeGetAllAreasUseCase_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDuration_4 extends _i1.SmartFake implements Duration {
-  _FakeDuration_4(Object parent, Invocation parentInvocation)
+class _FakeGetAllUnitsUseCase_4 extends _i1.SmartFake
+    implements _i6.GetAllUnitsUseCase {
+  _FakeGetAllUnitsUseCase_4(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFuture_5<T1> extends _i1.SmartFake implements _i6.Future<T1> {
-  _FakeFuture_5(Object parent, Invocation parentInvocation)
+class _FakeGetAllLevelsUseCase_5 extends _i1.SmartFake
+    implements _i7.GetAllLevelsUseCase {
+  _FakeGetAllLevelsUseCase_5(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeIsolateConnectionFactory_6<Database extends _i7.CommonDatabase>
+class _FakeSchema_6 extends _i1.SmartFake implements _i8.Schema {
+  _FakeSchema_6(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSqliteDatabase_7 extends _i1.SmartFake
+    implements _i9.SqliteDatabase {
+  _FakeSqliteDatabase_7(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeLogger_8 extends _i1.SmartFake implements _i10.Logger {
+  _FakeLogger_8(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDuration_9 extends _i1.SmartFake implements Duration {
+  _FakeDuration_9(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFuture_10<T1> extends _i1.SmartFake implements _i11.Future<T1> {
+  _FakeFuture_10(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeIsolateConnectionFactory_11<Database extends _i12.CommonDatabase>
     extends _i1.SmartFake
-    implements _i4.IsolateConnectionFactory<Database> {
-  _FakeIsolateConnectionFactory_6(Object parent, Invocation parentInvocation)
+    implements _i9.IsolateConnectionFactory<Database> {
+  _FakeIsolateConnectionFactory_11(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUploadQueueStats_7 extends _i1.SmartFake
+class _FakeUploadQueueStats_12 extends _i1.SmartFake
     implements _i8.UploadQueueStats {
-  _FakeUploadQueueStats_7(Object parent, Invocation parentInvocation)
+  _FakeUploadQueueStats_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSyncStream_8 extends _i1.SmartFake implements _i9.SyncStream {
-  _FakeSyncStream_8(Object parent, Invocation parentInvocation)
+class _FakeSyncStream_13 extends _i1.SmartFake implements _i8.SyncStream {
+  _FakeSyncStream_13(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFunctionsClient_9 extends _i1.SmartFake
-    implements _i10.FunctionsClient {
-  _FakeFunctionsClient_9(Object parent, Invocation parentInvocation)
+class _FakeFunctionsClient_14 extends _i1.SmartFake
+    implements _i13.FunctionsClient {
+  _FakeFunctionsClient_14(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseStorageClient_10 extends _i1.SmartFake
-    implements _i10.SupabaseStorageClient {
-  _FakeSupabaseStorageClient_10(Object parent, Invocation parentInvocation)
+class _FakeSupabaseStorageClient_15 extends _i1.SmartFake
+    implements _i13.SupabaseStorageClient {
+  _FakeSupabaseStorageClient_15(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeRealtimeClient_11 extends _i1.SmartFake
-    implements _i10.RealtimeClient {
-  _FakeRealtimeClient_11(Object parent, Invocation parentInvocation)
+class _FakeRealtimeClient_16 extends _i1.SmartFake
+    implements _i13.RealtimeClient {
+  _FakeRealtimeClient_16(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePostgrestClient_12 extends _i1.SmartFake
-    implements _i10.PostgrestClient {
-  _FakePostgrestClient_12(Object parent, Invocation parentInvocation)
+class _FakePostgrestClient_17 extends _i1.SmartFake
+    implements _i13.PostgrestClient {
+  _FakePostgrestClient_17(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeGoTrueClient_13 extends _i1.SmartFake implements _i10.GoTrueClient {
-  _FakeGoTrueClient_13(Object parent, Invocation parentInvocation)
+class _FakeGoTrueClient_18 extends _i1.SmartFake implements _i13.GoTrueClient {
+  _FakeGoTrueClient_18(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseQueryBuilder_14 extends _i1.SmartFake
-    implements _i10.SupabaseQueryBuilder {
-  _FakeSupabaseQueryBuilder_14(Object parent, Invocation parentInvocation)
+class _FakeSupabaseQueryBuilder_19 extends _i1.SmartFake
+    implements _i13.SupabaseQueryBuilder {
+  _FakeSupabaseQueryBuilder_19(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseQuerySchema_15 extends _i1.SmartFake
-    implements _i10.SupabaseQuerySchema {
-  _FakeSupabaseQuerySchema_15(Object parent, Invocation parentInvocation)
+class _FakeSupabaseQuerySchema_20 extends _i1.SmartFake
+    implements _i13.SupabaseQuerySchema {
+  _FakeSupabaseQuerySchema_20(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePostgrestFilterBuilder_16<T1> extends _i1.SmartFake
-    implements _i10.PostgrestFilterBuilder<T1> {
-  _FakePostgrestFilterBuilder_16(Object parent, Invocation parentInvocation)
+class _FakePostgrestFilterBuilder_21<T1> extends _i1.SmartFake
+    implements _i13.PostgrestFilterBuilder<T1> {
+  _FakePostgrestFilterBuilder_21(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeRealtimeChannel_17 extends _i1.SmartFake
-    implements _i10.RealtimeChannel {
-  _FakeRealtimeChannel_17(Object parent, Invocation parentInvocation)
+class _FakeRealtimeChannel_22 extends _i1.SmartFake
+    implements _i13.RealtimeChannel {
+  _FakeRealtimeChannel_22(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -171,81 +220,81 @@ class _FakeRealtimeChannel_17 extends _i1.SmartFake
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractDashboardApi extends _i1.Mock
-    implements _i11.AbstractDashboardApi {
+    implements _i14.AbstractDashboardApi {
   MockAbstractDashboardApi() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i12.SiteModel>> getAllSites() =>
+  _i11.Future<List<_i15.SiteModel>> getAllSites() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSites, []),
-            returnValue: _i6.Future<List<_i12.SiteModel>>.value(
-              <_i12.SiteModel>[],
+            returnValue: _i11.Future<List<_i15.SiteModel>>.value(
+              <_i15.SiteModel>[],
             ),
           )
-          as _i6.Future<List<_i12.SiteModel>>);
+          as _i11.Future<List<_i15.SiteModel>>);
 
   @override
-  _i6.Future<List<_i13.AreaModel>> getAllAreas() =>
+  _i11.Future<List<_i16.AreaModel>> getAllAreas() =>
       (super.noSuchMethod(
             Invocation.method(#getAllAreas, []),
-            returnValue: _i6.Future<List<_i13.AreaModel>>.value(
-              <_i13.AreaModel>[],
+            returnValue: _i11.Future<List<_i16.AreaModel>>.value(
+              <_i16.AreaModel>[],
             ),
           )
-          as _i6.Future<List<_i13.AreaModel>>);
+          as _i11.Future<List<_i16.AreaModel>>);
 
   @override
-  _i6.Future<List<_i14.SiteAreaModel>> getAllSiteAreas() =>
+  _i11.Future<List<_i17.SiteAreaModel>> getAllSiteAreas() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSiteAreas, []),
-            returnValue: _i6.Future<List<_i14.SiteAreaModel>>.value(
-              <_i14.SiteAreaModel>[],
+            returnValue: _i11.Future<List<_i17.SiteAreaModel>>.value(
+              <_i17.SiteAreaModel>[],
             ),
           )
-          as _i6.Future<List<_i14.SiteAreaModel>>);
+          as _i11.Future<List<_i17.SiteAreaModel>>);
 
   @override
-  _i6.Future<List<_i15.UnitModel>> getAllUnits() =>
+  _i11.Future<List<_i18.UnitModel>> getAllUnits() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUnits, []),
-            returnValue: _i6.Future<List<_i15.UnitModel>>.value(
-              <_i15.UnitModel>[],
+            returnValue: _i11.Future<List<_i18.UnitModel>>.value(
+              <_i18.UnitModel>[],
             ),
           )
-          as _i6.Future<List<_i15.UnitModel>>);
+          as _i11.Future<List<_i18.UnitModel>>);
 
   @override
-  _i6.Future<List<_i16.LevelModel>> getAllLevels() =>
+  _i11.Future<List<_i19.LevelModel>> getAllLevels() =>
       (super.noSuchMethod(
             Invocation.method(#getAllLevels, []),
-            returnValue: _i6.Future<List<_i16.LevelModel>>.value(
-              <_i16.LevelModel>[],
+            returnValue: _i11.Future<List<_i19.LevelModel>>.value(
+              <_i19.LevelModel>[],
             ),
           )
-          as _i6.Future<List<_i16.LevelModel>>);
+          as _i11.Future<List<_i19.LevelModel>>);
 
   @override
-  _i6.Future<void> createSite({required String? borden, String? name}) =>
+  _i11.Future<void> createSite({required String? borden, String? name}) =>
       (super.noSuchMethod(
             Invocation.method(#createSite, [], {#borden: borden, #name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createArea({required String? name}) =>
+  _i11.Future<void> createArea({required String? name}) =>
       (super.noSuchMethod(
             Invocation.method(#createArea, [], {#name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createSiteArea({
+  _i11.Future<void> createSiteArea({
     required String? siteId,
     required String? areaId,
   }) =>
@@ -254,25 +303,25 @@ class MockAbstractDashboardApi extends _i1.Mock
               #siteId: siteId,
               #areaId: areaId,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createUnit({
+  _i11.Future<void> createUnit({
     required String? siteId,
     required String? name,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#createUnit, [], {#siteId: siteId, #name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createLevel({
+  _i11.Future<void> createLevel({
     required String? unitId,
     required String? name,
     required int? upLimit,
@@ -291,111 +340,171 @@ class MockAbstractDashboardApi extends _i1.Mock
               #levelChar: levelChar,
               #levelInt: levelInt,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
+}
+
+/// A class which mocks [AbstractGetAllAreasApi].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllAreasApi extends _i1.Mock
+    implements _i20.AbstractGetAllAreasApi {
+  MockAbstractGetAllAreasApi() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<List<_i16.AreaModel>> getAllAreas() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllAreas, []),
+            returnValue: _i11.Future<List<_i16.AreaModel>>.value(
+              <_i16.AreaModel>[],
+            ),
+          )
+          as _i11.Future<List<_i16.AreaModel>>);
+}
+
+/// A class which mocks [AbstractGetAllLevelsApi].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllLevelsApi extends _i1.Mock
+    implements _i21.AbstractGetAllLevelsApi {
+  MockAbstractGetAllLevelsApi() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<List<_i19.LevelModel>> getAllLevels() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllLevels, []),
+            returnValue: _i11.Future<List<_i19.LevelModel>>.value(
+              <_i19.LevelModel>[],
+            ),
+          )
+          as _i11.Future<List<_i19.LevelModel>>);
 }
 
 /// A class which mocks [AbstractGetAllSitesApi].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllSitesApi extends _i1.Mock
-    implements _i17.AbstractGetAllSitesApi {
+    implements _i22.AbstractGetAllSitesApi {
   MockAbstractGetAllSitesApi() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i12.SiteModel>> getAllSites() =>
+  _i11.Future<List<_i15.SiteModel>> getAllSites() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSites, []),
-            returnValue: _i6.Future<List<_i12.SiteModel>>.value(
-              <_i12.SiteModel>[],
+            returnValue: _i11.Future<List<_i15.SiteModel>>.value(
+              <_i15.SiteModel>[],
             ),
           )
-          as _i6.Future<List<_i12.SiteModel>>);
+          as _i11.Future<List<_i15.SiteModel>>);
+}
+
+/// A class which mocks [AbstractGetAllUnitsApi].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllUnitsApi extends _i1.Mock
+    implements _i23.AbstractGetAllUnitsApi {
+  MockAbstractGetAllUnitsApi() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<List<_i18.UnitModel>> getAllUnits() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllUnits, []),
+            returnValue: _i11.Future<List<_i18.UnitModel>>.value(
+              <_i18.UnitModel>[],
+            ),
+          )
+          as _i11.Future<List<_i18.UnitModel>>);
 }
 
 /// A class which mocks [AbstractDashboardRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractDashboardRepository extends _i1.Mock
-    implements _i18.AbstractDashboardRepository {
+    implements _i3.AbstractDashboardRepository {
   MockAbstractDashboardRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i19.SiteEntity>> getAllSites() =>
+  _i11.Future<List<_i24.SiteEntity>> getAllSites() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSites, []),
-            returnValue: _i6.Future<List<_i19.SiteEntity>>.value(
-              <_i19.SiteEntity>[],
+            returnValue: _i11.Future<List<_i24.SiteEntity>>.value(
+              <_i24.SiteEntity>[],
             ),
           )
-          as _i6.Future<List<_i19.SiteEntity>>);
+          as _i11.Future<List<_i24.SiteEntity>>);
 
   @override
-  _i6.Future<List<_i20.AreaEntity>> getAllAreas() =>
+  _i11.Future<List<_i25.AreaEntity>> getAllAreas() =>
       (super.noSuchMethod(
             Invocation.method(#getAllAreas, []),
-            returnValue: _i6.Future<List<_i20.AreaEntity>>.value(
-              <_i20.AreaEntity>[],
+            returnValue: _i11.Future<List<_i25.AreaEntity>>.value(
+              <_i25.AreaEntity>[],
             ),
           )
-          as _i6.Future<List<_i20.AreaEntity>>);
+          as _i11.Future<List<_i25.AreaEntity>>);
 
   @override
-  _i6.Future<List<_i21.SiteAreaEntity>> getAllSiteAreas() =>
+  _i11.Future<List<_i26.SiteAreaEntity>> getAllSiteAreas() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSiteAreas, []),
-            returnValue: _i6.Future<List<_i21.SiteAreaEntity>>.value(
-              <_i21.SiteAreaEntity>[],
+            returnValue: _i11.Future<List<_i26.SiteAreaEntity>>.value(
+              <_i26.SiteAreaEntity>[],
             ),
           )
-          as _i6.Future<List<_i21.SiteAreaEntity>>);
+          as _i11.Future<List<_i26.SiteAreaEntity>>);
 
   @override
-  _i6.Future<List<_i22.UnitEntity>> getAllUnits() =>
+  _i11.Future<List<_i27.UnitEntity>> getAllUnits() =>
       (super.noSuchMethod(
             Invocation.method(#getAllUnits, []),
-            returnValue: _i6.Future<List<_i22.UnitEntity>>.value(
-              <_i22.UnitEntity>[],
+            returnValue: _i11.Future<List<_i27.UnitEntity>>.value(
+              <_i27.UnitEntity>[],
             ),
           )
-          as _i6.Future<List<_i22.UnitEntity>>);
+          as _i11.Future<List<_i27.UnitEntity>>);
 
   @override
-  _i6.Future<List<_i23.LevelEntity>> getAllLevels() =>
+  _i11.Future<List<_i28.LevelEntity>> getAllLevels() =>
       (super.noSuchMethod(
             Invocation.method(#getAllLevels, []),
-            returnValue: _i6.Future<List<_i23.LevelEntity>>.value(
-              <_i23.LevelEntity>[],
+            returnValue: _i11.Future<List<_i28.LevelEntity>>.value(
+              <_i28.LevelEntity>[],
             ),
           )
-          as _i6.Future<List<_i23.LevelEntity>>);
+          as _i11.Future<List<_i28.LevelEntity>>);
 
   @override
-  _i6.Future<void> createSite({required String? borden, String? name}) =>
+  _i11.Future<void> createSite({required String? borden, String? name}) =>
       (super.noSuchMethod(
             Invocation.method(#createSite, [], {#borden: borden, #name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createArea({required String? name}) =>
+  _i11.Future<void> createArea({required String? name}) =>
       (super.noSuchMethod(
             Invocation.method(#createArea, [], {#name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createSiteArea({
+  _i11.Future<void> createSiteArea({
     required String? siteId,
     required String? areaId,
   }) =>
@@ -404,25 +513,25 @@ class MockAbstractDashboardRepository extends _i1.Mock
               #siteId: siteId,
               #areaId: areaId,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createUnit({
+  _i11.Future<void> createUnit({
     required String? siteId,
     required String? name,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#createUnit, [], {#siteId: siteId, #name: name}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> createLevel({
+  _i11.Future<void> createLevel({
     required String? unitId,
     required String? name,
     required int? upLimit,
@@ -441,36 +550,260 @@ class MockAbstractDashboardRepository extends _i1.Mock
               #levelChar: levelChar,
               #levelInt: levelInt,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
+}
+
+/// A class which mocks [AbstractGetAllAreasRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllAreasRepository extends _i1.Mock
+    implements _i29.AbstractGetAllAreasRepository {
+  MockAbstractGetAllAreasRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> getAllAreas() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllAreas, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#getAllAreas, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [AbstractGetAllLevelsRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllLevelsRepository extends _i1.Mock
+    implements _i30.AbstractGetAllLevelsRepository {
+  MockAbstractGetAllLevelsRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> getAllLevels() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllLevels, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#getAllLevels, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
 }
 
 /// A class which mocks [AbstractGetAllSitesRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractGetAllSitesRepository extends _i1.Mock
-    implements _i24.AbstractGetAllSitesRepository {
+    implements _i31.AbstractGetAllSitesRepository {
   MockAbstractGetAllSitesRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.Result> getAllSites() =>
+  _i11.Future<_i2.Result> getAllSites() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSites, []),
-            returnValue: _i6.Future<_i2.Result>.value(
+            returnValue: _i11.Future<_i2.Result>.value(
               _FakeResult_0(this, Invocation.method(#getAllSites, [])),
             ),
           )
-          as _i6.Future<_i2.Result>);
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [AbstractGetAllUnitsRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAbstractGetAllUnitsRepository extends _i1.Mock
+    implements _i32.AbstractGetAllUnitsRepository {
+  MockAbstractGetAllUnitsRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> getAllUnits() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllUnits, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#getAllUnits, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [GetAllAreasUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllAreasUseCase extends _i1.Mock
+    implements _i5.GetAllAreasUseCase {
+  MockGetAllAreasUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#call, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [GetAllLevelsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllLevelsUseCase extends _i1.Mock
+    implements _i7.GetAllLevelsUseCase {
+  MockGetAllLevelsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#call, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [GetAllSiteAreasUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllSiteAreasUseCase extends _i1.Mock
+    implements _i33.GetAllSiteAreasUseCase {
+  MockGetAllSiteAreasUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.AbstractDashboardRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeAbstractDashboardRepository_1(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i3.AbstractDashboardRepository);
+
+  @override
+  _i11.Future<List<_i26.SiteAreaEntity>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i11.Future<List<_i26.SiteAreaEntity>>.value(
+              <_i26.SiteAreaEntity>[],
+            ),
+          )
+          as _i11.Future<List<_i26.SiteAreaEntity>>);
+}
+
+/// A class which mocks [GetAllSitesUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllSitesUseCase extends _i1.Mock
+    implements _i4.GetAllSitesUseCase {
+  MockGetAllSitesUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#call, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [GetAllUnitsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAllUnitsUseCase extends _i1.Mock
+    implements _i6.GetAllUnitsUseCase {
+  MockGetAllUnitsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.Future<_i2.Result> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i11.Future<_i2.Result>.value(
+              _FakeResult_0(this, Invocation.method(#call, [])),
+            ),
+          )
+          as _i11.Future<_i2.Result>);
+}
+
+/// A class which mocks [DashboardUsecases].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDashboardUsecases extends _i1.Mock implements _i34.DashboardUsecases {
+  MockDashboardUsecases() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.GetAllSitesUseCase get getAllSitesUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getAllSitesUseCase),
+            returnValue: _FakeGetAllSitesUseCase_2(
+              this,
+              Invocation.getter(#getAllSitesUseCase),
+            ),
+          )
+          as _i4.GetAllSitesUseCase);
+
+  @override
+  _i5.GetAllAreasUseCase get getAllAreasUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getAllAreasUseCase),
+            returnValue: _FakeGetAllAreasUseCase_3(
+              this,
+              Invocation.getter(#getAllAreasUseCase),
+            ),
+          )
+          as _i5.GetAllAreasUseCase);
+
+  @override
+  _i6.GetAllUnitsUseCase get getAllUnitsUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getAllUnitsUseCase),
+            returnValue: _FakeGetAllUnitsUseCase_4(
+              this,
+              Invocation.getter(#getAllUnitsUseCase),
+            ),
+          )
+          as _i6.GetAllUnitsUseCase);
+
+  @override
+  _i7.GetAllLevelsUseCase get getAllLevelsUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getAllLevelsUseCase),
+            returnValue: _FakeGetAllLevelsUseCase_5(
+              this,
+              Invocation.getter(#getAllLevelsUseCase),
+            ),
+          )
+          as _i7.GetAllLevelsUseCase);
 }
 
 /// A class which mocks [PowerSyncDatabase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
+class MockPowerSyncDatabase extends _i1.Mock implements _i8.PowerSyncDatabase {
   MockPowerSyncDatabase() {
     _i1.throwOnMissingStub(this);
   }
@@ -481,45 +814,45 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
           as bool);
 
   @override
-  _i6.Stream<_i4.UpdateNotification> get updates =>
+  _i11.Stream<_i9.UpdateNotification> get updates =>
       (super.noSuchMethod(
             Invocation.getter(#updates),
-            returnValue: _i6.Stream<_i4.UpdateNotification>.empty(),
+            returnValue: _i11.Stream<_i9.UpdateNotification>.empty(),
           )
-          as _i6.Stream<_i4.UpdateNotification>);
+          as _i11.Stream<_i9.UpdateNotification>);
 
   @override
-  _i3.Schema get schema =>
+  _i8.Schema get schema =>
       (super.noSuchMethod(
             Invocation.getter(#schema),
-            returnValue: _FakeSchema_1(this, Invocation.getter(#schema)),
+            returnValue: _FakeSchema_6(this, Invocation.getter(#schema)),
           )
-          as _i3.Schema);
+          as _i8.Schema);
 
   @override
-  _i4.SqliteDatabase get database =>
+  _i9.SqliteDatabase get database =>
       (super.noSuchMethod(
             Invocation.getter(#database),
-            returnValue: _FakeSqliteDatabase_2(
+            returnValue: _FakeSqliteDatabase_7(
               this,
               Invocation.getter(#database),
             ),
           )
-          as _i4.SqliteDatabase);
+          as _i9.SqliteDatabase);
 
   @override
-  _i5.Logger get logger =>
+  _i10.Logger get logger =>
       (super.noSuchMethod(
             Invocation.getter(#logger),
-            returnValue: _FakeLogger_3(this, Invocation.getter(#logger)),
+            returnValue: _FakeLogger_8(this, Invocation.getter(#logger)),
           )
-          as _i5.Logger);
+          as _i10.Logger);
 
   @override
   _i8.SyncStatus get currentStatus =>
       (super.noSuchMethod(
             Invocation.getter(#currentStatus),
-            returnValue: _i26.dummyValue<_i8.SyncStatus>(
+            returnValue: _i35.dummyValue<_i8.SyncStatus>(
               this,
               Invocation.getter(#currentStatus),
             ),
@@ -527,39 +860,39 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
           as _i8.SyncStatus);
 
   @override
-  _i6.Stream<_i8.SyncStatus> get statusStream =>
+  _i11.Stream<_i8.SyncStatus> get statusStream =>
       (super.noSuchMethod(
             Invocation.getter(#statusStream),
-            returnValue: _i6.Stream<_i8.SyncStatus>.empty(),
+            returnValue: _i11.Stream<_i8.SyncStatus>.empty(),
           )
-          as _i6.Stream<_i8.SyncStatus>);
+          as _i11.Stream<_i8.SyncStatus>);
 
   @override
-  _i27.ActiveDatabaseGroup get group =>
+  _i36.ActiveDatabaseGroup get group =>
       (super.noSuchMethod(
             Invocation.getter(#group),
-            returnValue: _i26.dummyValue<_i27.ActiveDatabaseGroup>(
+            returnValue: _i35.dummyValue<_i36.ActiveDatabaseGroup>(
               this,
               Invocation.getter(#group),
             ),
           )
-          as _i27.ActiveDatabaseGroup);
+          as _i36.ActiveDatabaseGroup);
 
   @override
   Duration get retryDelay =>
       (super.noSuchMethod(
             Invocation.getter(#retryDelay),
-            returnValue: _FakeDuration_4(this, Invocation.getter(#retryDelay)),
+            returnValue: _FakeDuration_9(this, Invocation.getter(#retryDelay)),
           )
           as Duration);
 
   @override
-  _i6.Future<void> get isInitialized =>
+  _i11.Future<void> get isInitialized =>
       (super.noSuchMethod(
             Invocation.getter(#isInitialized),
-            returnValue: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
   bool get connected =>
@@ -567,7 +900,7 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
           as bool);
 
   @override
-  set schema(_i3.Schema? schema) => super.noSuchMethod(
+  set schema(_i8.Schema? schema) => super.noSuchMethod(
     Invocation.setter(#schema, schema),
     returnValueForMissingStub: null,
   );
@@ -579,7 +912,7 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
   );
 
   @override
-  set updates(_i6.Stream<_i4.UpdateNotification>? value) => super.noSuchMethod(
+  set updates(_i11.Stream<_i9.UpdateNotification>? value) => super.noSuchMethod(
     Invocation.setter(#updates, value),
     returnValueForMissingStub: null,
   );
@@ -591,66 +924,66 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
   );
 
   @override
-  _i6.Future<_i7.ResultSet> execute(
+  _i11.Future<_i12.ResultSet> execute(
     String? sql, [
     List<Object?>? parameters = const [],
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#execute, [sql, parameters]),
-            returnValue: _i6.Future<_i7.ResultSet>.value(
-              _i26.dummyValue<_i7.ResultSet>(
+            returnValue: _i11.Future<_i12.ResultSet>.value(
+              _i35.dummyValue<_i12.ResultSet>(
                 this,
                 Invocation.method(#execute, [sql, parameters]),
               ),
             ),
           )
-          as _i6.Future<_i7.ResultSet>);
+          as _i11.Future<_i12.ResultSet>);
 
   @override
-  _i6.Future<_i7.ResultSet> getAll(
+  _i11.Future<_i12.ResultSet> getAll(
     String? sql, [
     List<Object?>? parameters = const [],
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#getAll, [sql, parameters]),
-            returnValue: _i6.Future<_i7.ResultSet>.value(
-              _i26.dummyValue<_i7.ResultSet>(
+            returnValue: _i11.Future<_i12.ResultSet>.value(
+              _i35.dummyValue<_i12.ResultSet>(
                 this,
                 Invocation.method(#getAll, [sql, parameters]),
               ),
             ),
           )
-          as _i6.Future<_i7.ResultSet>);
+          as _i11.Future<_i12.ResultSet>);
 
   @override
-  _i6.Future<_i7.Row> get(
+  _i11.Future<_i12.Row> get(
     String? sql, [
     List<Object?>? parameters = const [],
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#get, [sql, parameters]),
-            returnValue: _i6.Future<_i7.Row>.value(
-              _i26.dummyValue<_i7.Row>(
+            returnValue: _i11.Future<_i12.Row>.value(
+              _i35.dummyValue<_i12.Row>(
                 this,
                 Invocation.method(#get, [sql, parameters]),
               ),
             ),
           )
-          as _i6.Future<_i7.Row>);
+          as _i11.Future<_i12.Row>);
 
   @override
-  _i6.Future<_i7.Row?> getOptional(
+  _i11.Future<_i12.Row?> getOptional(
     String? sql, [
     List<Object?>? parameters = const [],
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#getOptional, [sql, parameters]),
-            returnValue: _i6.Future<_i7.Row?>.value(),
+            returnValue: _i11.Future<_i12.Row?>.value(),
           )
-          as _i6.Future<_i7.Row?>);
+          as _i11.Future<_i12.Row?>);
 
   @override
-  _i6.Stream<_i7.ResultSet> watch(
+  _i11.Stream<_i12.ResultSet> watch(
     String? sql, {
     List<Object?>? parameters = const [],
     Duration? throttle = const Duration(milliseconds: 30),
@@ -666,12 +999,12 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                 #triggerOnTables: triggerOnTables,
               },
             ),
-            returnValue: _i6.Stream<_i7.ResultSet>.empty(),
+            returnValue: _i11.Stream<_i12.ResultSet>.empty(),
           )
-          as _i6.Stream<_i7.ResultSet>);
+          as _i11.Stream<_i12.ResultSet>);
 
   @override
-  _i6.Stream<_i4.UpdateNotification> onChange(
+  _i11.Stream<_i9.UpdateNotification> onChange(
     Iterable<String>? tables, {
     Duration? throttle = const Duration(milliseconds: 30),
     bool? triggerImmediately = true,
@@ -682,13 +1015,13 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               [tables],
               {#throttle: throttle, #triggerImmediately: triggerImmediately},
             ),
-            returnValue: _i6.Stream<_i4.UpdateNotification>.empty(),
+            returnValue: _i11.Stream<_i9.UpdateNotification>.empty(),
           )
-          as _i6.Stream<_i4.UpdateNotification>);
+          as _i11.Stream<_i9.UpdateNotification>);
 
   @override
-  _i6.Future<T> readTransaction<T>(
-    _i6.Future<T> Function(_i4.SqliteReadContext)? callback, {
+  _i11.Future<T> readTransaction<T>(
+    _i11.Future<T> Function(_i9.SqliteReadContext)? callback, {
     Duration? lockTimeout,
   }) =>
       (super.noSuchMethod(
@@ -698,8 +1031,8 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               {#lockTimeout: lockTimeout},
             ),
             returnValue:
-                _i26.ifNotNull(
-                  _i26.dummyValueOrNull<T>(
+                _i35.ifNotNull(
+                  _i35.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #readTransaction,
@@ -707,9 +1040,9 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                       {#lockTimeout: lockTimeout},
                     ),
                   ),
-                  (T v) => _i6.Future<T>.value(v),
+                  (T v) => _i11.Future<T>.value(v),
                 ) ??
-                _FakeFuture_5<T>(
+                _FakeFuture_10<T>(
                   this,
                   Invocation.method(
                     #readTransaction,
@@ -718,11 +1051,11 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                   ),
                 ),
           )
-          as _i6.Future<T>);
+          as _i11.Future<T>);
 
   @override
-  _i6.Future<T> writeTransaction<T>(
-    _i6.Future<T> Function(_i4.SqliteWriteContext)? callback, {
+  _i11.Future<T> writeTransaction<T>(
+    _i11.Future<T> Function(_i9.SqliteWriteContext)? callback, {
     Duration? lockTimeout,
   }) =>
       (super.noSuchMethod(
@@ -732,8 +1065,8 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               {#lockTimeout: lockTimeout},
             ),
             returnValue:
-                _i26.ifNotNull(
-                  _i26.dummyValueOrNull<T>(
+                _i35.ifNotNull(
+                  _i35.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #writeTransaction,
@@ -741,9 +1074,9 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                       {#lockTimeout: lockTimeout},
                     ),
                   ),
-                  (T v) => _i6.Future<T>.value(v),
+                  (T v) => _i11.Future<T>.value(v),
                 ) ??
-                _FakeFuture_5<T>(
+                _FakeFuture_10<T>(
                   this,
                   Invocation.method(
                     #writeTransaction,
@@ -752,70 +1085,70 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                   ),
                 ),
           )
-          as _i6.Future<T>);
+          as _i11.Future<T>);
 
   @override
-  _i6.Future<T> computeWithDatabase<T>(
-    _i6.Future<T> Function(_i7.CommonDatabase)? compute,
+  _i11.Future<T> computeWithDatabase<T>(
+    _i11.Future<T> Function(_i12.CommonDatabase)? compute,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#computeWithDatabase, [compute]),
             returnValue:
-                _i26.ifNotNull(
-                  _i26.dummyValueOrNull<T>(
+                _i35.ifNotNull(
+                  _i35.dummyValueOrNull<T>(
                     this,
                     Invocation.method(#computeWithDatabase, [compute]),
                   ),
-                  (T v) => _i6.Future<T>.value(v),
+                  (T v) => _i11.Future<T>.value(v),
                 ) ??
-                _FakeFuture_5<T>(
+                _FakeFuture_10<T>(
                   this,
                   Invocation.method(#computeWithDatabase, [compute]),
                 ),
           )
-          as _i6.Future<T>);
+          as _i11.Future<T>);
 
   @override
-  _i6.Future<void> executeBatch(
+  _i11.Future<void> executeBatch(
     String? sql,
     List<List<Object?>>? parameterSets,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#executeBatch, [sql, parameterSets]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> executeMultiple(String? sql) =>
+  _i11.Future<void> executeMultiple(String? sql) =>
       (super.noSuchMethod(
             Invocation.method(#executeMultiple, [sql]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> refreshSchema() =>
+  _i11.Future<void> refreshSchema() =>
       (super.noSuchMethod(
             Invocation.method(#refreshSchema, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<bool> getAutoCommit() =>
+  _i11.Future<bool> getAutoCommit() =>
       (super.noSuchMethod(
             Invocation.method(#getAutoCommit, []),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i11.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i11.Future<bool>);
 
   @override
-  _i6.Future<T> readLock<T>(
-    _i6.Future<T> Function(_i4.SqliteReadContext)? callback, {
+  _i11.Future<T> readLock<T>(
+    _i11.Future<T> Function(_i9.SqliteReadContext)? callback, {
     String? debugContext,
     Duration? lockTimeout,
   }) =>
@@ -826,8 +1159,8 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               {#debugContext: debugContext, #lockTimeout: lockTimeout},
             ),
             returnValue:
-                _i26.ifNotNull(
-                  _i26.dummyValueOrNull<T>(
+                _i35.ifNotNull(
+                  _i35.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #readLock,
@@ -835,9 +1168,9 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                       {#debugContext: debugContext, #lockTimeout: lockTimeout},
                     ),
                   ),
-                  (T v) => _i6.Future<T>.value(v),
+                  (T v) => _i11.Future<T>.value(v),
                 ) ??
-                _FakeFuture_5<T>(
+                _FakeFuture_10<T>(
                   this,
                   Invocation.method(
                     #readLock,
@@ -846,11 +1179,11 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                   ),
                 ),
           )
-          as _i6.Future<T>);
+          as _i11.Future<T>);
 
   @override
-  _i6.Future<T> writeLock<T>(
-    _i6.Future<T> Function(_i4.SqliteWriteContext)? callback, {
+  _i11.Future<T> writeLock<T>(
+    _i11.Future<T> Function(_i9.SqliteWriteContext)? callback, {
     String? debugContext,
     Duration? lockTimeout,
   }) =>
@@ -861,8 +1194,8 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               {#debugContext: debugContext, #lockTimeout: lockTimeout},
             ),
             returnValue:
-                _i26.ifNotNull(
-                  _i26.dummyValueOrNull<T>(
+                _i35.ifNotNull(
+                  _i35.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #writeLock,
@@ -870,9 +1203,9 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                       {#debugContext: debugContext, #lockTimeout: lockTimeout},
                     ),
                   ),
-                  (T v) => _i6.Future<T>.value(v),
+                  (T v) => _i11.Future<T>.value(v),
                 ) ??
-                _FakeFuture_5<T>(
+                _FakeFuture_10<T>(
                   this,
                   Invocation.method(
                     #writeLock,
@@ -881,43 +1214,43 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
                   ),
                 ),
           )
-          as _i6.Future<T>);
+          as _i11.Future<T>);
 
   @override
-  _i6.Future<void> close() =>
+  _i11.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> baseInit() =>
+  _i11.Future<void> baseInit() =>
       (super.noSuchMethod(
             Invocation.method(#baseInit, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> initialize() =>
+  _i11.Future<void> initialize() =>
       (super.noSuchMethod(
             Invocation.method(#initialize, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> waitForFirstSync({_i8.StreamPriority? priority}) =>
+  _i11.Future<void> waitForFirstSync({_i8.StreamPriority? priority}) =>
       (super.noSuchMethod(
             Invocation.method(#waitForFirstSync, [], {#priority: priority}),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
   void setStatus(_i8.SyncStatus? status) => super.noSuchMethod(
@@ -926,9 +1259,9 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
   );
 
   @override
-  _i6.Future<void> connect({
-    required _i28.PowerSyncBackendConnector? connector,
-    _i29.SyncOptions? options,
+  _i11.Future<void> connect({
+    required _i8.PowerSyncBackendConnector? connector,
+    _i8.SyncOptions? options,
     Duration? crudThrottleTime,
     Map<String, dynamic>? params,
   }) =>
@@ -939,20 +1272,20 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               #crudThrottleTime: crudThrottleTime,
               #params: params,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> connectInternal({
-    required _i28.PowerSyncBackendConnector? connector,
-    required _i29.ResolvedSyncOptions? options,
+  _i11.Future<void> connectInternal({
+    required _i8.PowerSyncBackendConnector? connector,
+    required _i37.ResolvedSyncOptions? options,
     required List<({String name, String parameters})>? initiallyActiveStreams,
-    required _i6.Stream<List<({String name, String parameters})>>?
+    required _i11.Stream<List<({String name, String parameters})>>?
     activeStreams,
-    required _i30.AbortController? abort,
-    required _i6.Zone? asyncWorkZone,
+    required _i38.AbortController? abort,
+    required _i11.Zone? asyncWorkZone,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#connectInternal, [], {
@@ -963,83 +1296,84 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               #abort: abort,
               #asyncWorkZone: asyncWorkZone,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> disconnect() =>
+  _i11.Future<void> disconnect() =>
       (super.noSuchMethod(
             Invocation.method(#disconnect, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> disconnectAndClear({bool? clearLocal = true}) =>
+  _i11.Future<void> disconnectAndClear({bool? clearLocal = true}) =>
       (super.noSuchMethod(
             Invocation.method(#disconnectAndClear, [], {
               #clearLocal: clearLocal,
             }),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> disconnectedAndClear() =>
+  _i11.Future<void> disconnectedAndClear() =>
       (super.noSuchMethod(
             Invocation.method(#disconnectedAndClear, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i6.Future<void> updateSchema(_i3.Schema? schema) =>
+  _i11.Future<void> updateSchema(_i8.Schema? schema) =>
       (super.noSuchMethod(
             Invocation.method(#updateSchema, [schema]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 
   @override
-  _i4.IsolateConnectionFactory<_i7.CommonDatabase> isolateConnectionFactory() =>
+  _i9.IsolateConnectionFactory<_i12.CommonDatabase>
+  isolateConnectionFactory() =>
       (super.noSuchMethod(
             Invocation.method(#isolateConnectionFactory, []),
-            returnValue: _FakeIsolateConnectionFactory_6<_i7.CommonDatabase>(
+            returnValue: _FakeIsolateConnectionFactory_11<_i12.CommonDatabase>(
               this,
               Invocation.method(#isolateConnectionFactory, []),
             ),
           )
-          as _i4.IsolateConnectionFactory<_i7.CommonDatabase>);
+          as _i9.IsolateConnectionFactory<_i12.CommonDatabase>);
 
   @override
-  _i6.Future<String> getClientId() =>
+  _i11.Future<String> getClientId() =>
       (super.noSuchMethod(
             Invocation.method(#getClientId, []),
-            returnValue: _i6.Future<String>.value(
-              _i26.dummyValue<String>(
+            returnValue: _i11.Future<String>.value(
+              _i35.dummyValue<String>(
                 this,
                 Invocation.method(#getClientId, []),
               ),
             ),
           )
-          as _i6.Future<String>);
+          as _i11.Future<String>);
 
   @override
-  _i6.Future<_i8.UploadQueueStats> getUploadQueueStats({
+  _i11.Future<_i8.UploadQueueStats> getUploadQueueStats({
     bool? includeSize = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getUploadQueueStats, [], {
               #includeSize: includeSize,
             }),
-            returnValue: _i6.Future<_i8.UploadQueueStats>.value(
-              _FakeUploadQueueStats_7(
+            returnValue: _i11.Future<_i8.UploadQueueStats>.value(
+              _FakeUploadQueueStats_12(
                 this,
                 Invocation.method(#getUploadQueueStats, [], {
                   #includeSize: includeSize,
@@ -1047,95 +1381,95 @@ class MockPowerSyncDatabase extends _i1.Mock implements _i25.PowerSyncDatabase {
               ),
             ),
           )
-          as _i6.Future<_i8.UploadQueueStats>);
+          as _i11.Future<_i8.UploadQueueStats>);
 
   @override
-  _i6.Future<_i31.CrudBatch?> getCrudBatch({int? limit = 100}) =>
+  _i11.Future<_i8.CrudBatch?> getCrudBatch({int? limit = 100}) =>
       (super.noSuchMethod(
             Invocation.method(#getCrudBatch, [], {#limit: limit}),
-            returnValue: _i6.Future<_i31.CrudBatch?>.value(),
+            returnValue: _i11.Future<_i8.CrudBatch?>.value(),
           )
-          as _i6.Future<_i31.CrudBatch?>);
+          as _i11.Future<_i8.CrudBatch?>);
 
   @override
-  _i6.Future<_i31.CrudTransaction?> getNextCrudTransaction() =>
+  _i11.Future<_i8.CrudTransaction?> getNextCrudTransaction() =>
       (super.noSuchMethod(
             Invocation.method(#getNextCrudTransaction, []),
-            returnValue: _i6.Future<_i31.CrudTransaction?>.value(),
+            returnValue: _i11.Future<_i8.CrudTransaction?>.value(),
           )
-          as _i6.Future<_i31.CrudTransaction?>);
+          as _i11.Future<_i8.CrudTransaction?>);
 
   @override
-  _i6.Stream<_i31.CrudTransaction> getCrudTransactions() =>
+  _i11.Stream<_i8.CrudTransaction> getCrudTransactions() =>
       (super.noSuchMethod(
             Invocation.method(#getCrudTransactions, []),
-            returnValue: _i6.Stream<_i31.CrudTransaction>.empty(),
+            returnValue: _i11.Stream<_i8.CrudTransaction>.empty(),
           )
-          as _i6.Stream<_i31.CrudTransaction>);
+          as _i11.Stream<_i8.CrudTransaction>);
 
   @override
-  _i9.SyncStream syncStream(String? name, [Map<String, Object?>? parameters]) =>
+  _i8.SyncStream syncStream(String? name, [Map<String, Object?>? parameters]) =>
       (super.noSuchMethod(
             Invocation.method(#syncStream, [name, parameters]),
-            returnValue: _FakeSyncStream_8(
+            returnValue: _FakeSyncStream_13(
               this,
               Invocation.method(#syncStream, [name, parameters]),
             ),
           )
-          as _i9.SyncStream);
+          as _i8.SyncStream);
 }
 
 /// A class which mocks [SupabaseClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSupabaseClient extends _i1.Mock implements _i10.SupabaseClient {
+class MockSupabaseClient extends _i1.Mock implements _i13.SupabaseClient {
   MockSupabaseClient() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i10.FunctionsClient get functions =>
+  _i13.FunctionsClient get functions =>
       (super.noSuchMethod(
             Invocation.getter(#functions),
-            returnValue: _FakeFunctionsClient_9(
+            returnValue: _FakeFunctionsClient_14(
               this,
               Invocation.getter(#functions),
             ),
           )
-          as _i10.FunctionsClient);
+          as _i13.FunctionsClient);
 
   @override
-  _i10.SupabaseStorageClient get storage =>
+  _i13.SupabaseStorageClient get storage =>
       (super.noSuchMethod(
             Invocation.getter(#storage),
-            returnValue: _FakeSupabaseStorageClient_10(
+            returnValue: _FakeSupabaseStorageClient_15(
               this,
               Invocation.getter(#storage),
             ),
           )
-          as _i10.SupabaseStorageClient);
+          as _i13.SupabaseStorageClient);
 
   @override
-  _i10.RealtimeClient get realtime =>
+  _i13.RealtimeClient get realtime =>
       (super.noSuchMethod(
             Invocation.getter(#realtime),
-            returnValue: _FakeRealtimeClient_11(
+            returnValue: _FakeRealtimeClient_16(
               this,
               Invocation.getter(#realtime),
             ),
           )
-          as _i10.RealtimeClient);
+          as _i13.RealtimeClient);
 
   @override
-  _i10.PostgrestClient get rest =>
+  _i13.PostgrestClient get rest =>
       (super.noSuchMethod(
             Invocation.getter(#rest),
-            returnValue: _FakePostgrestClient_12(
+            returnValue: _FakePostgrestClient_17(
               this,
               Invocation.getter(#rest),
             ),
           )
-          as _i10.PostgrestClient);
+          as _i13.PostgrestClient);
 
   @override
   Map<String, String> get headers =>
@@ -1146,33 +1480,33 @@ class MockSupabaseClient extends _i1.Mock implements _i10.SupabaseClient {
           as Map<String, String>);
 
   @override
-  _i10.GoTrueClient get auth =>
+  _i13.GoTrueClient get auth =>
       (super.noSuchMethod(
             Invocation.getter(#auth),
-            returnValue: _FakeGoTrueClient_13(this, Invocation.getter(#auth)),
+            returnValue: _FakeGoTrueClient_18(this, Invocation.getter(#auth)),
           )
-          as _i10.GoTrueClient);
+          as _i13.GoTrueClient);
 
   @override
-  set functions(_i10.FunctionsClient? value) => super.noSuchMethod(
+  set functions(_i13.FunctionsClient? value) => super.noSuchMethod(
     Invocation.setter(#functions, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set storage(_i10.SupabaseStorageClient? value) => super.noSuchMethod(
+  set storage(_i13.SupabaseStorageClient? value) => super.noSuchMethod(
     Invocation.setter(#storage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set realtime(_i10.RealtimeClient? value) => super.noSuchMethod(
+  set realtime(_i13.RealtimeClient? value) => super.noSuchMethod(
     Invocation.setter(#realtime, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set rest(_i10.PostgrestClient? value) => super.noSuchMethod(
+  set rest(_i13.PostgrestClient? value) => super.noSuchMethod(
     Invocation.setter(#rest, value),
     returnValueForMissingStub: null,
   );
@@ -1184,91 +1518,91 @@ class MockSupabaseClient extends _i1.Mock implements _i10.SupabaseClient {
   );
 
   @override
-  _i10.SupabaseQueryBuilder from(String? table) =>
+  _i13.SupabaseQueryBuilder from(String? table) =>
       (super.noSuchMethod(
             Invocation.method(#from, [table]),
-            returnValue: _FakeSupabaseQueryBuilder_14(
+            returnValue: _FakeSupabaseQueryBuilder_19(
               this,
               Invocation.method(#from, [table]),
             ),
           )
-          as _i10.SupabaseQueryBuilder);
+          as _i13.SupabaseQueryBuilder);
 
   @override
-  _i10.SupabaseQuerySchema schema(String? schema) =>
+  _i13.SupabaseQuerySchema schema(String? schema) =>
       (super.noSuchMethod(
             Invocation.method(#schema, [schema]),
-            returnValue: _FakeSupabaseQuerySchema_15(
+            returnValue: _FakeSupabaseQuerySchema_20(
               this,
               Invocation.method(#schema, [schema]),
             ),
           )
-          as _i10.SupabaseQuerySchema);
+          as _i13.SupabaseQuerySchema);
 
   @override
-  _i10.PostgrestFilterBuilder<T> rpc<T>(
+  _i13.PostgrestFilterBuilder<T> rpc<T>(
     String? fn, {
     Map<String, dynamic>? params,
     dynamic get = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#rpc, [fn], {#params: params, #get: get}),
-            returnValue: _FakePostgrestFilterBuilder_16<T>(
+            returnValue: _FakePostgrestFilterBuilder_21<T>(
               this,
               Invocation.method(#rpc, [fn], {#params: params, #get: get}),
             ),
           )
-          as _i10.PostgrestFilterBuilder<T>);
+          as _i13.PostgrestFilterBuilder<T>);
 
   @override
-  _i10.RealtimeChannel channel(
+  _i13.RealtimeChannel channel(
     String? name, {
-    _i10.RealtimeChannelConfig? opts = const _i10.RealtimeChannelConfig(),
+    _i13.RealtimeChannelConfig? opts = const _i13.RealtimeChannelConfig(),
   }) =>
       (super.noSuchMethod(
             Invocation.method(#channel, [name], {#opts: opts}),
-            returnValue: _FakeRealtimeChannel_17(
+            returnValue: _FakeRealtimeChannel_22(
               this,
               Invocation.method(#channel, [name], {#opts: opts}),
             ),
           )
-          as _i10.RealtimeChannel);
+          as _i13.RealtimeChannel);
 
   @override
-  List<_i10.RealtimeChannel> getChannels() =>
+  List<_i13.RealtimeChannel> getChannels() =>
       (super.noSuchMethod(
             Invocation.method(#getChannels, []),
-            returnValue: <_i10.RealtimeChannel>[],
+            returnValue: <_i13.RealtimeChannel>[],
           )
-          as List<_i10.RealtimeChannel>);
+          as List<_i13.RealtimeChannel>);
 
   @override
-  _i6.Future<String> removeChannel(_i10.RealtimeChannel? channel) =>
+  _i11.Future<String> removeChannel(_i13.RealtimeChannel? channel) =>
       (super.noSuchMethod(
             Invocation.method(#removeChannel, [channel]),
-            returnValue: _i6.Future<String>.value(
-              _i26.dummyValue<String>(
+            returnValue: _i11.Future<String>.value(
+              _i35.dummyValue<String>(
                 this,
                 Invocation.method(#removeChannel, [channel]),
               ),
             ),
           )
-          as _i6.Future<String>);
+          as _i11.Future<String>);
 
   @override
-  _i6.Future<List<String>> removeAllChannels() =>
+  _i11.Future<List<String>> removeAllChannels() =>
       (super.noSuchMethod(
             Invocation.method(#removeAllChannels, []),
-            returnValue: _i6.Future<List<String>>.value(<String>[]),
+            returnValue: _i11.Future<List<String>>.value(<String>[]),
           )
-          as _i6.Future<List<String>>);
+          as _i11.Future<List<String>>);
 
   @override
-  _i6.Future<void> dispose() =>
+  _i11.Future<void> dispose() =>
       (super.noSuchMethod(
             Invocation.method(#dispose, []),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i11.Future<void>);
 }
