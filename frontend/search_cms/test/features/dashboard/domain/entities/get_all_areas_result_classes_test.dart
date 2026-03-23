@@ -13,7 +13,7 @@ as get_all_areas_result_classes;
 
 void main() {
   group('Success', () {
-    test('stores the provided listOfAreaEntity', () {
+    test('GET-ALL-AREAS-RESULT-1-stores the provided listOfAreaEntity', () {
       final listOfAreaEntity = <AreaEntity>[
         AreaEntity(
           id: 'area-1',
@@ -42,7 +42,7 @@ void main() {
       expect(result.listOfAreaEntity[1].name, 'Beta Area');
     });
 
-    test('stores an empty listOfAreaEntity', () {
+    test('GET-ALL-AREAS-RESULT-2-stores an empty listOfAreaEntity', () {
       final result = get_all_areas_result_classes.Success(
         listOfAreaEntity: <AreaEntity>[],
       );
@@ -53,7 +53,7 @@ void main() {
   });
 
   group('Failure', () {
-    test('stores the provided errorMessage', () {
+    test('GET-ALL-AREAS-RESULT-3-stores the provided errorMessage', () {
       final result = get_all_areas_result_classes.Failure(
         errorMessage: 'Something went wrong',
       );
@@ -62,7 +62,7 @@ void main() {
       expect(result.errorMessage, 'Something went wrong');
     });
 
-    test('stores an empty errorMessage', () {
+    test('GET-ALL-AREAS-RESULT-4-stores an empty errorMessage', () {
       final result = get_all_areas_result_classes.Failure(
         errorMessage: '',
       );

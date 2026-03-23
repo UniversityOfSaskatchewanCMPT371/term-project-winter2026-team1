@@ -13,7 +13,7 @@ import 'package:search_cms/features/dashboard/domain/entities/unit_entity.dart';
 
 void main() {
   group('Success', () {
-    test('stores the provided listOfUnitEntity', () {
+    test('GET-ALL-UNITS-RESULT-1-stores the provided listOfUnitEntity', () {
       final listOfUnitEntity = <UnitEntity>[
         UnitEntity(
           id: 'unit-1',
@@ -44,7 +44,7 @@ void main() {
       expect(result.listOfUnitEntity[1].name, 'Beta Unit');
     });
 
-    test('stores an empty listOfUnitEntity', () {
+    test('GET-ALL-UNITS-RESULT-2-stores an empty listOfUnitEntity', () {
       final result = get_all_units_result_classes.Success(
         listOfUnitEntity: <UnitEntity>[],
       );
@@ -55,7 +55,7 @@ void main() {
   });
 
   group('Failure', () {
-    test('stores the provided errorMessage', () {
+    test('GET-ALL-UNITS-RESULT-3-stores the provided errorMessage', () {
       final result = get_all_units_result_classes.Failure(
         errorMessage: 'Something went wrong',
       );
@@ -64,7 +64,7 @@ void main() {
       expect(result.errorMessage, 'Something went wrong');
     });
 
-    test('stores an empty errorMessage', () {
+    test('GET-ALL-UNITS-RESULT-4-stores an empty errorMessage', () {
       final result = get_all_units_result_classes.Failure(
         errorMessage: '',
       );

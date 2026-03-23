@@ -99,7 +99,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns mapped UnitModel list when rows are returned', () async {
+    test('GET-ALL-UNITS-API-1-returns mapped UnitModel list when rows are returned', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -167,7 +167,7 @@ void main() {
       database.dispose();
     });
 
-    test('returns an empty list when no rows are returned', () async {
+    test('GET-ALL-UNITS-API-2-returns an empty list when no rows are returned', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -192,7 +192,7 @@ void main() {
       database.dispose();
     });
 
-    test('queries the unit table once', () async {
+    test('GET-ALL-UNITS-API-3-queries the unit table once', () async {
       final database = sqlite.sqlite3.openInMemory();
 
       database.execute('''
@@ -218,7 +218,7 @@ void main() {
       database.dispose();
     });
 
-    test('rethrows when the database query fails', () async {
+    test('GET-ALL-UNITS-API-4-rethrows when the database query fails', () async {
       final exception = Exception('database failure');
 
       when(mockPowerSyncDatabase.getAll('SELECT * FROM unit'))
@@ -230,7 +230,7 @@ void main() {
       );
     });
 
-    test('throws AssertionError when PowerSync status has an error', () async {
+    test('GET-ALL-UNITS-API-5-throws AssertionError when PowerSync status has an error', () async {
       when(mockPowerSyncDatabase.currentStatus).thenReturn(
         SyncStatus(downloadError: Exception('sync failed')),
       );
@@ -241,7 +241,7 @@ void main() {
       );
     });
 
-    test('throws AssertionError when no authenticated session exists', () async {
+    test('GET-ALL-UNITS-API-6-throws AssertionError when no authenticated session exists', () async {
       when(mockSupabaseClient.auth)
           .thenReturn(FakeUnauthenticatedGoTrueClient());
 

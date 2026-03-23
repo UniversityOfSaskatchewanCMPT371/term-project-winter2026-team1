@@ -87,7 +87,7 @@ void main() {
       await getIt.reset();
     });
 
-    test('returns Success from the repository unchanged', () async {
+    test('GET-ALL-AREAS-USECASE-1-returns Success from the repository unchanged', () async {
       final success = get_all_areas_result_classes.Success(
         listOfAreaEntity: <AreaEntity>[
           AreaEntity(
@@ -109,7 +109,7 @@ void main() {
       verify(mockRepository.getAllAreas()).called(1);
     });
 
-    test('returns Failure from the repository unchanged', () async {
+    test('GET-ALL-AREAS-USECASE-2-returns Failure from the repository unchanged', () async {
       final failure = get_all_areas_result_classes.Failure(
         errorMessage: 'repository failure',
       );
@@ -124,7 +124,7 @@ void main() {
       verify(mockRepository.getAllAreas()).called(1);
     });
 
-    test('calls repository.getAllAreas once', () async {
+    test('GET-ALL-AREAS-USECASE-3-calls repository.getAllAreas once', () async {
       final success = get_all_areas_result_classes.Success(
         listOfAreaEntity: <AreaEntity>[],
       );
@@ -137,7 +137,7 @@ void main() {
       verify(mockRepository.getAllAreas()).called(1);
     });
 
-    test('throws AssertionError when PowerSync status has an error', () async {
+    test('GET-ALL-AREAS-USECASE-4-throws AssertionError when PowerSync status has an error', () async {
       when(
         mockPowerSyncDatabase.currentStatus,
       ).thenReturn(
@@ -153,7 +153,7 @@ void main() {
       verifyNever(mockRepository.getAllAreas());
     });
 
-    test('throws AssertionError when no authenticated session exists', () async {
+    test('GET-ALL-AREAS-USECASE-5-throws AssertionError when no authenticated session exists', () async {
       when(
         mockSupabaseClient.auth,
       ).thenReturn(FakeUnauthenticatedGoTrueClient());
