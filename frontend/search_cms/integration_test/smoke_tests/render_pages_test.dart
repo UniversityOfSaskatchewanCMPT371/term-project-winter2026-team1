@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
+import 'package:search_cms/main.dart';
 
 void renderPagesTest(Logger logger) {
   group("Page Rendering Tests", () {
@@ -28,7 +30,29 @@ void renderPagesTest(Logger logger) {
     testWidgets("Access system button exists", (
       tester,
     ) async {
-      logger.info("Access system button exists");
+      logger.info("Running access system button existence test");
+      // Load app widget
+      await tester.pumpWidget(const MyApp());
+
+      // ** this works as an assertion
+      expect(find.text('Email'), findsOneWidget);
+
+      // Finds the floating action button to tap on
+      final fab = find.byKey(const ValueKey('accessSystemButton'));
+
+      logger.info("Looking for access system button");
+
+      // ** this works as an assertion
+      expect(fab, findsOneWidget);
+
+      logger.info("Tapping access system button");
+      // Emulate a tap on the floating action button
+      await tester.tap(fab);
+
+      // Trigger a frame
+      await tester.pumpAndSettle();
+
+      logger.info("Done running test");
     });
 
     /*
