@@ -209,10 +209,8 @@ class TableRowModel {
       sizeUpper: sizeUpper,
       sizeLower: sizeLower, 
       comment: comment, 
-      preExcavFrags: 
-      preExcavFrags, 
-      postExcavFrags: 
-      postExcavFrags, 
+      preExcavFrags: preExcavFrags, 
+      postExcavFrags: postExcavFrags, 
       elements: elements
     );
   }
