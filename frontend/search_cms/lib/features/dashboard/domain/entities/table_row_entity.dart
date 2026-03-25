@@ -77,7 +77,6 @@ TableRowEntity({
   assert(unitName.isNotEmpty),
   assert(levelName.isNotEmpty),
   assert(upLimit <= lowLimit),
-  assert(assemblageName.isNotEmpty),
   assert(porosity == null || (porosity > 0 && porosity <= 5)),
   assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower),
   assert(preExcavFrags > 0),
