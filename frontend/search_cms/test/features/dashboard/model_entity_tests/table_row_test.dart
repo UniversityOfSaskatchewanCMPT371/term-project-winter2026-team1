@@ -286,5 +286,110 @@ void main() {
 
   /*-----------------------------------------------------------------*/
 
-  
+  /********************************************** TableRowModel Tests ***********************************************/
+
+  // Test Case 4: General Test Case
+
+  test('Create model with valid inputs', () {
+    final TableRowModel model = TableRowModel(
+      borden: 'DiRx-28',
+      siteName: 'Site',
+      areaName: 'Western End of Slope',
+      unitName: 'N84SW1',
+      levelName: 'A1',
+      upLimit: 1,
+      lowLimit: 5,
+      assemblageName: 'A1 Faunal Assemblage',
+      porosity: 3,
+      sizeUpper: 3,
+      sizeLower: 2,
+      comment: 'Bone',
+      preExcavFrags: 1,
+      postExcavFrags: 1,
+      elements: 1,
+    );
+
+    expect(model.borden, 'DiRx-28');
+    expect(model.siteName, 'Site');
+    expect(model.areaName, 'Western End of Slope');
+    expect(model.unitName, 'N84SW1');
+    expect(model.levelName, 'A1');
+    expect(model.upLimit, 1);
+    expect(model.lowLimit, 5);
+    expect(model.assemblageName, 'A1 Faunal Assemblage');
+    expect(model.porosity, 3);
+    expect(model.sizeUpper, 3);
+    expect(model.sizeLower, 2);
+    expect(model.comment, 'Bone');
+    expect(model.preExcavFrags, 1);
+    expect(model.postExcavFrags, 1);
+    expect(model.elements, 1);
+  });
+
+  /*-----------------------------------------------------------------*/
+
+  // Test Case 5: Test toEntity() Function
+
+  // 5(a): Return TableRowEntity with Same Values
+  test('toEntity() should return TableRowEntity with same values it had before conversion', () {
+    final TableRowModel model = TableRowModel(
+      borden: 'DiRx-28',
+      siteName: 'Site',
+      areaName: 'Western End of Slope',
+      unitName: 'N84SW1',
+      levelName: 'A1',
+      upLimit: 1,
+      lowLimit: 5,
+      assemblageName: 'A1 Faunal Assemblage',
+      porosity: 3,
+      sizeUpper: 3,
+      sizeLower: 2,
+      comment: 'Bone',
+      preExcavFrags: 1,
+      postExcavFrags: 1,
+      elements: 1,
+    );
+
+    final TableRowEntity entity = model.toEntity();
+
+    expect(model.borden, entity.borden);
+    expect(model.siteName, entity.siteName);
+    expect(model.areaName, entity.areaName);
+    expect(model.unitName, entity.unitName);
+    expect(model.levelName, entity.levelName);
+    expect(model.upLimit, entity.upLimit);
+    expect(model.lowLimit, entity.lowLimit);
+    expect(model.assemblageName, entity.assemblageName);
+    expect(model.porosity, entity.porosity);
+    expect(model.sizeUpper, entity.sizeUpper);
+    expect(model.sizeLower, entity.sizeLower);
+    expect(model.comment, entity.comment);
+    expect(model.preExcavFrags, entity.preExcavFrags);
+    expect(model.postExcavFrags, entity.postExcavFrags);
+    expect(model.elements, entity.elements);
+  });
+
+  // 5(b): Ensure toEntity() Returns a TableRowEntity
+  test('Ensure toEntity() funtion returns an TableRowEntity', () {
+    final TableRowModel model = TableRowModel(
+      borden: 'DiRx-28',
+      siteName: 'Site',
+      areaName: 'Western End of Slope',
+      unitName: 'N84SW1',
+      levelName: 'A1',
+      upLimit: 1,
+      lowLimit: 5,
+      assemblageName: 'A1 Faunal Assemblage',
+      porosity: 3,
+      sizeUpper: 3,
+      sizeLower: 2,
+      comment: 'Bone',
+      preExcavFrags: 1,
+      postExcavFrags: 1,
+      elements: 1,
+    );
+
+    expect(model.toEntity(), isA<TableRowEntity>());
+
+  });
 }
