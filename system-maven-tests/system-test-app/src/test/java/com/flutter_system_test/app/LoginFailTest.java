@@ -24,7 +24,7 @@ public class LoginFailTest {
     public void setup() throws Exception {
 
         // Working directory and application path
-        String workingDir = "C:\\471\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
+        String workingDir = "..\\..\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release/";
         String appPath = workingDir + "\\flutter_supabase_template.exe";
 
         // Launch the application using ProcessBuilder
