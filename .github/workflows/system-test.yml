@@ -28,7 +28,7 @@ permissions:
 jobs:
   build:
     # Runs on ubuntu latest, this means the display driver does not test mac or windows
-    runs-on: windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
