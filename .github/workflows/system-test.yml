@@ -57,7 +57,7 @@ jobs:
           java-version: '17'
       
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn clean test
         working-directory: ./system-maven-tests/system-test-app
 
       # Aid in dependency chain, this will use install-dependencies to cover issues

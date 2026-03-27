@@ -39,7 +39,7 @@ public class LoginFailTest {
 
         // 3. Launch the application using ProcessBuilder
         ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
-        builder.directory(new File(workingDir));
+        builder.directory(workingDirPath.toFile());
         appProcess = builder.start();
 
         System.out.println("Waiting 5 seconds for app to launch...");
