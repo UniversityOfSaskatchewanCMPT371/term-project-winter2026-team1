@@ -19,14 +19,26 @@ import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.d
 */
 
 class TableRowModel {
+
+  // Site
   final String borden;
   final String? siteName;
+
+  // Area
   final String areaName;
+
+  // Unit
   final String unitName;
+
+  // Level
   final String levelName;
   final int upLimit;
   final int lowLimit;
+
+  // Assemblage
   final String? assemblageName;
+
+  // Artifact_Faunal
   final int? porosity;
   final double? sizeUpper;
   final double? sizeLower;
@@ -218,3 +230,5 @@ class TableRowModel {
     );
   }
 }
+
+

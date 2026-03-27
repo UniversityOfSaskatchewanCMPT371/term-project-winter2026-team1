@@ -39,14 +39,26 @@
 */
 
 class TableRowEntity {
+
+  // Site
   final String borden;
   final String siteName;
+
+  // Area
   final String areaName;
+
+  // Unit
   final String unitName;
+
+  // Level
   final String levelName;
   final int upLimit;
   final int lowLimit;
+
+  // Assemblage
   final String assemblageName;
+
+  // Artifact_Faunal
   final int? porosity;
   final double? sizeUpper;
   final double? sizeLower;
@@ -83,6 +95,5 @@ TableRowEntity({
   assert(postExcavFrags > 0),
   assert(elements > 0);
 }
-
 
 
