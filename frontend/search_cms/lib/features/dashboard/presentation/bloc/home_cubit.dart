@@ -7,9 +7,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases
 
 import './home_state.dart';
 
-
 class HomeCubit extends Cubit<HomeState> {
-
   DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
 
   HomeCubit() : super(const HomeInitial());
