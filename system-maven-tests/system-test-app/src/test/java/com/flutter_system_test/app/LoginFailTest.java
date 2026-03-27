@@ -10,6 +10,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
@@ -23,12 +27,18 @@ public class LoginFailTest {
     @BeforeAll
     public void setup() throws Exception {
 
-        // Working directory and application path
-        String workingDir = "..\\..\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release/";
-        String appPath = workingDir + "\\flutter_supabase_template.exe";
+       
+        String currentDir = System.getProperty("user.dir");
+        
+        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
+        Path appExePath = workingDirPath.resolve("flutter_supabase_template.exe");
 
-        // Launch the application using ProcessBuilder
-        ProcessBuilder builder = new ProcessBuilder(appPath);
+        // Print paths to the console so you can debug in CI/CD if it fails again
+        System.out.println("Resolved Working Directory: " + workingDirPath.toAbsolutePath());
+        System.out.println("Resolved App Path: " + appExePath.toAbsolutePath());
+
+        // 3. Launch the application using ProcessBuilder
+        ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
         builder.directory(new File(workingDir));
         appProcess = builder.start();
 
