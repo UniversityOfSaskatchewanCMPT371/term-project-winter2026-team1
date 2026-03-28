@@ -1,5 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
+// import 'package:frontend/search_cms/lib/features/dashboard/domain/entities/insert_area_result_classes.dart';
+// May not need all of these
+// frontend/search_cms/lib/features/dashboard/domain/entities/insert_level_result_classes.dart
+// frontend/search_cms/lib/features/dashboard/domain/entities/insert_site_area_result_classes.dart
+// frontend/search_cms/lib/features/dashboard/domain/entities/insert_site_result_classes.dart
+// frontend/search_cms/lib/features/dashboard/domain/entities/insert_unit_result_classes.dart
 import 'add_data_state.dart';
+import '../../domain/entities/area_entity.dart';
+import '../../domain/entities/site_entity.dart';
+import '../../domain/entities/site_area_entity.dart';
+import '../../domain/entities/level_entity.dart';
+import '../../domain/entities/assemblage_entity.dart';
+import '../../domain/entities/artifact_faunal_entity.dart';
+
 
 // Add Data cubit that its used for the Add Data page
 // Keeps track of what the user types into the text fields and manages the state changes for the page itself
@@ -73,13 +88,31 @@ class AddDataCubit extends Cubit<AddDataState> {
       return;
     }
 
+    // display a little waiter
     emit(SaveLoading());
 
-    // decide which fields are filled
+    final usecases = getIt<DashboardUsecases>();
+    // store results in a map, if any fail, throw
+    Result results = [];
 
-    // call appropriate backend calls
+
+    // decide which fields are filled
+    // iterate over the map and filter out calls into repespective types
+    // possible keys inlude Site Information, Unit, Level, Assemblage, Artifact (Faunal)
+    // hyphonated with -feildName (ie. Unit-Name, Unit-Site Name)
+    inputs.forEach((k, val) {
+      // truncate key to everything before -
+      List<String> keyList = k.split('-');
+      String sectionKey = keyList.first;
+      // if sectionKey == "Unit"
+        if (sectionKey == "Unit") {
+          // validate that existing types that are filled aren't missing anything
+        }
+    });
+
 
     // display success/fail
+    // behavior if some succeed and some fail??
 
     // reset fields
     resetFields();
