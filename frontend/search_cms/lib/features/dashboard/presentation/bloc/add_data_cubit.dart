@@ -58,4 +58,30 @@ class AddDataCubit extends Cubit<AddDataState> {
     //emit the new state to the add data loaded values
     emit(AddDataLoaded(fieldValues: updatedFieldValues));
   }
+
+  // Collects all fields that are filled, organizes them and calls the corresponding backend calls
+  void save() {
+    // collect all inputs
+    Map<String, String> inputs = {};
+    if (state is AddDataLoaded) {
+      AddDataLoaded current = state as AddDataLoaded;
+      inputs = Map<String, String>.from(current.fieldValues);
+    }
+
+    // if no values are filled just do nothing
+    if (inputs.isEmpty) {
+      return;
+    }
+
+    emit(SaveLoading());
+
+    // decide which fields are filled
+
+    // call appropriate backend calls
+
+    // display success/fail
+
+    // reset fields
+    resetFields();
+  }
 }
