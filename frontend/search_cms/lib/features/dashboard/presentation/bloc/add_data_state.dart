@@ -59,3 +59,19 @@ class AddDataLoaded extends AddDataState {
   @override
   List<Object> get props => [fieldValues];
 }
+
+// State to register that the save button has been pressed
+// Displays a small loading icon while the backend is processing the call
+class SaveLoading extends AddDataState {
+  const SaveLoading();
+}
+
+// State to register when a save is successful
+class SaveSuccess extends AddDataState {
+  const SaveSuccess();
+}
+
+// State to register when a save call has failed
+class SaveFailure extends AddDataState {
+  const SaveFailure();
+}
