@@ -205,9 +205,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   ///  - If the form is valid, then the save function is called
   ///  - if the form is not valid, than the saving does not happen
   void _handleSave(BuildContext context) {
-    // if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-    _logger?.info("Save Button Clicked");
-    saveButtonClicked();
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _logger?.info("Save Button Clicked");
+      saveButtonClicked();
+      context.read<AddDataCubit>().save();
+    }
   }
 
   /// PreConditions:
@@ -367,6 +369,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                         ),
                         child: const Text("Reset"),
                       ),
+
+                      const SizedBox(width: 10),
+                      // If processing a save, show a small indicator
+                      if (state is SaveLoading)
+                        Center(child: CircularProgressIndicator()),
                     ],
                   ),
                 ),
