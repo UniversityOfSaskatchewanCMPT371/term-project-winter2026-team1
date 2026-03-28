@@ -1,4 +1,5 @@
 import 'package:logging/logging.dart';
+import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/utils/constants.dart';
 import '../models/user_model.dart';
@@ -9,6 +10,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
 
   // The Supabase client that is passed into this class
   final SupabaseClient _supabaseClient;
+  final PowerSyncDatabase _powerSyncDatabase;
 
   /*
     The logger class we use to do logging.
@@ -21,7 +23,9 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
   final Logger? _logger =
       logLevel != Level.OFF ? Logger('Authentication Sign In Api') : null;
 
-  AuthenticationSignInApiImpl({required SupabaseClient supabaseClient}) : _supabaseClient = supabaseClient;
+  AuthenticationSignInApiImpl({required SupabaseClient supabaseClient, 
+    required PowerSyncDatabase powerSyncDatabase}) : 
+    _supabaseClient = supabaseClient, _powerSyncDatabase = powerSyncDatabase;
 
   /*
     The api function for signing in with email and password to Supabase
@@ -52,8 +56,14 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
       _logger?.finest(session);
 
       if (session != null) {
-        PostgrestList queryResult = await _supabaseClient.
-          from('role').select().eq('id', session.user.id);
+        // waitforfirstsync allows you to load the data to powersync after you login
+        await _powerSyncDatabase.waitForFirstSync();
+
+        // Query the role of the user from the role table
+        final queryResult = await _powerSyncDatabase.getAll(
+          'SELECT * FROM role WHERE id = ?',
+          [session.user.id],
+        );
 
         _logger?.finest(queryResult);
 
