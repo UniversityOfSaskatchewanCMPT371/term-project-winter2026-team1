@@ -47,6 +47,7 @@ jobs:
         run: appium driver install --source=npm appium-novawindows-driver && sleep 30
 
       - name: Start Appium Server in background
+        shell: bash
         run: |
           appium &
           sleep 15
