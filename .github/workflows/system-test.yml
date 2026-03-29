@@ -75,6 +75,14 @@ jobs:
       - name: Initialize windows desktop EXE file
         run: flutter config --enable-windows-desktop
         working-directory: ./frontend/search_cms
+      
+      - name: Build windoes desktop exe file
+        run: flutter build windows
+        working-directory: ./frontend/search_cms
+        env:
+          # URL for flutter initialization
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          POWERSYNC_URL: ${{ secrets.POWERSYNC_URL }}
 
       # for testing / sanity checks
       - name: Ensure containers are running
