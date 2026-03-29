@@ -3,8 +3,7 @@ import 'package:glados/glados.dart';
 // Generally useful generators for use in Glados
 // Property based testing
 
-
-// produces either a string, and empty string, or null
+// Produces either a string, and empty string, or null
 // call with 'nullableLetters'
 // ex. Glados<String>().test('test_example', (nullableLetters) { ... });
 extension MaybeAnyString on Any {
@@ -37,6 +36,14 @@ extension AnyUUID on Any {
   );
 }
 
+// Produces [upLimit, lowLimit] as a valid pair: either both 0, or upLimit <= lowLimit
+extension AnyValidLimitRange on Any {
+  Generator<List<int>> get validLimitRange => combine2(
+    any.intInRange(0, null),
+    any.intInRange(0, null),
+    (a, b) => a <= b ? [a, b] : [b, a], // ensure ordering
+  );
+}
 
 // Produces null or an int between 1-5 (for porosity)
 extension AnyNullablePorosity on Any {
@@ -57,3 +64,16 @@ extension AnyNullableValidSizeRange on Any {
     ),
   );
 }
+
+// Produces preExcavFrags, postExcavFrags, elements: all > 0
+extension AnyValidTripleRange on Any {
+  Generator<List<int>> get validTripleRnage => combine3(
+    any.intInRange(1, null),               // preExcavFrags > 0    
+    any.intInRange(1, null),               // postExcavFrags > 0 
+    any.intInRange(1, null),               // elements > 0
+    (a, b, c) => [a, b, c],
+  );
+}
+
+
+
