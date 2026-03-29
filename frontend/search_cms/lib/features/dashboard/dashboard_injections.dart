@@ -4,15 +4,18 @@ import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_ap
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_levels_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/get_all_table_rows_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_levels_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_units_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/get_all_table_rows_repository_impl.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_table_rows_usecase.dart';
 
 /*
   This defines how getIt should construct the classes for us
@@ -25,6 +28,8 @@ void initDashboardInjections() {
   _registerGetAllAreasUseCase();
   _registerGetAllUnitsUseCase();
   _registerGetAllLevelsUseCase();
+  _registerGetAllTableRowsUseCase();
+
 
   // The dashboard use case collection
   getIt.registerFactory<DashboardUsecases>(
@@ -33,6 +38,7 @@ void initDashboardInjections() {
       getAllAreasUseCase: getIt<GetAllAreasUseCase>(),
       getAllUnitsUseCase: getIt<GetAllUnitsUseCase>(),
       getAllLevelsUseCase: getIt<GetAllLevelsUseCase>(),
+      getAllTableRowsUseCase: getIt<GetAllTableRowsUseCase>(),
     ),
   );
 }
@@ -111,5 +117,25 @@ void _registerGetAllSitesUseCase() {
   // Register the GetAllSitesUseCase
   getIt.registerFactory<GetAllSitesUseCase>(
     () => GetAllSitesUseCase(repository: getIt<GetAllSitesRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the get all table rows use case
+ */
+void _registerGetAllTableRowsUseCase() {
+  // Register the GetAllTableRowsApiImpl
+  getIt.registerFactory<GetAllTableRowsApiImpl>(
+    () => GetAllTableRowsApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+
+  // Register the GetAllTableRowsRepositoryImpl
+  getIt.registerFactory<GetAllTableRowsRepositoryImpl>(
+    () => GetAllTableRowsRepositoryImpl(api: getIt<GetAllTableRowsApiImpl>()),
+  );
+
+  // Register the GetAllTableRowsUseCase
+  getIt.registerFactory<GetAllTableRowsUseCase>(
+    () => GetAllTableRowsUseCase(repository: getIt<GetAllTableRowsRepositoryImpl>()),
   );
 }

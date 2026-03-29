@@ -13,7 +13,7 @@ class GetAllTableRowsApiImpl implements AbstractGetAllTableRowsApi {
   final PowerSyncDatabase _powerSyncDatabase;
   final Logger _logger = Logger('Get all table rows API');
 
-  GetAllSitesApiImpl({required PowerSyncDatabase powerSyncDatabase})
+  GetAllTableRowsApiImpl({required PowerSyncDatabase powerSyncDatabase})
     : _powerSyncDatabase = powerSyncDatabase;
 
   /*
