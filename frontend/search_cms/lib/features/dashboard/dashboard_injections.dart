@@ -3,19 +3,19 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_levels_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
-import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_table_rows_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_levels_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
-import 'package:search_cms/features/dashboard/data/repositories/get_all_units_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_table_rows_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/get_all_units_repository_impl.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_table_rows_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 
 /*
   This defines how getIt should construct the classes for us
