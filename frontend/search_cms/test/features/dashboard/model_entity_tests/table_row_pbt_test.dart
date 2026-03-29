@@ -133,7 +133,7 @@ void main() {
         expect(tableRowEntity.elements, greaterThan(0));
       });
 
-      /*** Test 1 - TableRowModel ***/
+    /*** Test 2 - TableRowModel ***/
     // Creates a randomly generated model and verifies its contents
     Any.setDefault<TableRowModel>(any.tableRowModel);
 
@@ -188,7 +188,55 @@ void main() {
         expect(tableRowModel.elements, greaterThan(0));
       });
 
-      
+    /*** Test 3 - toEntity() ***/
+    // Ensures any model, when converted to an entity, will be both
+    // a valid entity and will carry the same values as the model
+    Glados<TableRowModel>().test(
+      'toEntity() returns a valid TableRowEntity with the same values', 
+      (tableRowModel) {
+
+        final entity = tableRowModel.toEntity();
+
+        // Entity is the correct type
+        expect(entity, isA<TableRowEntity>());
+
+        // Returned entity has the same values for all fields
+        expect(entity.borden, tableRowModel.borden);
+
+        // If model.siteName is null it gets converted to empty string in toEntity()
+        if (tableRowModel.siteName == null) {
+          expect(entity.siteName, isEmpty);
+        } else {
+          expect(entity.siteName, tableRowModel.siteName);
+        }
+
+        expect(entity.areaName, tableRowModel.areaName);
+        expect(entity.unitName, tableRowModel.unitName);
+        expect(entity.levelName, tableRowModel.levelName);
+
+        // If model.assemblageName is null it gets converted to empty string in toEntity()
+        if (tableRowModel.assemblageName == null) {
+          expect(entity.assemblageName, isEmpty);
+        } else {
+          expect(entity.assemblageName, tableRowModel.assemblageName);
+        }
+
+        expect(entity.porosity, tableRowModel.porosity);
+        expect(entity.sizeUpper, tableRowModel.sizeUpper);
+        expect(entity.sizeLower, tableRowModel.sizeLower);
+
+        
+        // If model.comment is null it gets converted to empty string in toEntity()
+        if (tableRowModel.comment == null) {
+          expect(entity.comment, isEmpty);
+        } else {
+          expect(entity.comment, tableRowModel.comment);
+        }
+
+        expect(entity.preExcavFrags, tableRowModel.preExcavFrags);
+        expect(entity.postExcavFrags, tableRowModel.postExcavFrags);
+        expect(entity.elements, tableRowModel.elements);
+      });
   });
 }
 
