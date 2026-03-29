@@ -9,6 +9,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
