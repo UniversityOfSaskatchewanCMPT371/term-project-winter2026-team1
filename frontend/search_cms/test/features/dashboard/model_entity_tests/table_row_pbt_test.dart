@@ -80,7 +80,6 @@ extension AnyTableRowModel on Any {
 // This tests the invariants of the entity against generated Glados instances
 // The unit tests already cover the edge cases where required fields are empty or
 // constrained fields are out of range, so this test does not attempt to target those
-
 void main() { 
   group('TABLE-ROW-PBT: Entity and Model PBT Tests', () {
 
