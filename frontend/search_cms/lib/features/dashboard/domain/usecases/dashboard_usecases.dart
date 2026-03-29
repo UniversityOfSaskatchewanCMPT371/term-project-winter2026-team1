@@ -3,9 +3,9 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_use
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
-import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_level_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_unit_usecase.dart';
 
 // The collection of all use cases for the dashboard
