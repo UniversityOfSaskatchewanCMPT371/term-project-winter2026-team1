@@ -132,6 +132,63 @@ void main() {
         expect(tableRowEntity.postExcavFrags, greaterThan(0));
         expect(tableRowEntity.elements, greaterThan(0));
       });
+
+      /*** Test 1 - TableRowModel ***/
+    // Creates a randomly generated model and verifies its contents
+    Any.setDefault<TableRowModel>(any.tableRowModel);
+
+    Glados<TableRowModel>().test(
+      'generated TableRowModel has valid fields', 
+      (tableRowModel) {
+
+        // borden must always be a valid string
+        expect(tableRowModel.borden, isA<String>());
+
+        // siteName is nullable on the model
+        if (tableRowModel.siteName != null) {
+          expect(tableRowModel.siteName, isA<String>());
+        }
+
+        // areaName must always be a valid string
+        expect(tableRowModel.areaName, isA<String>());
+
+        // unitName must always be a valid string
+        expect(tableRowModel.unitName, isA<String>());
+
+        // levelName must always be a valid string
+        expect(tableRowModel.levelName, isA<String>());
+
+        // upLimit <= lowLimit when both are present
+        expect(tableRowModel.upLimit, lessThanOrEqualTo(tableRowModel.lowLimit));
+
+        // assemblageName is nullable on the model
+        if (tableRowModel.assemblageName != null) {
+          expect(tableRowModel.assemblageName, isA<String>());
+        }
+
+        // porosity must be null or between 1-5
+        if (tableRowModel.porosity != null) {
+          expect(tableRowModel.porosity, greaterThanOrEqualTo(1));
+          expect(tableRowModel.porosity, lessThanOrEqualTo(5));
+        }
+ 
+        // sizeUpper >= sizeLower when both are present
+        if (tableRowModel.sizeUpper != null && tableRowModel.sizeLower != null) {
+          expect(tableRowModel.sizeUpper, greaterThanOrEqualTo(tableRowModel.sizeLower!));
+        }
+ 
+        // comment is nullable on the model
+        if (tableRowModel.comment != null) {
+          expect(tableRowModel.comment, isA<String>());
+        }
+
+        // fragment and element counts must all be > 0
+        expect(tableRowModel.preExcavFrags, greaterThan(0));
+        expect(tableRowModel.postExcavFrags, greaterThan(0));
+        expect(tableRowModel.elements, greaterThan(0));
+      });
+
+      
   });
 }
 
