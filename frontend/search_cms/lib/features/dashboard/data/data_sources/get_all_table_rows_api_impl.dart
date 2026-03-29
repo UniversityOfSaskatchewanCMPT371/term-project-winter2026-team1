@@ -42,7 +42,7 @@ class GetAllTableRowsApiImpl implements AbstractGetAllTableRowsApi {
       assert(getIt<SupabaseClient>().auth.currentSession != null);
 
       // Query all tables using joined SQL query
-      final result = await _powerSyncDatabase.getAll('
+      final result = await _powerSyncDatabase.getAll('''
         SELECT
         site.borden, site.name AS site_name,
         area.name AS area_name,
@@ -75,7 +75,7 @@ class GetAllTableRowsApiImpl implements AbstractGetAllTableRowsApi {
         ON site_area.area_id = area.id
 
         ORDER BY site.name, area.name, unit.name, level.name, assemblage.name
-        ');
+        ''');
 
       _logger.finest(result);
 
