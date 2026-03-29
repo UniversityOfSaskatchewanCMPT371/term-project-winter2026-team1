@@ -1,7 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/utils/constants.dart';
 import '../models/user_model.dart';
 import 'abstract_authentication_sign_in_api.dart';
 
@@ -20,8 +19,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
     The code before will check if logger is built and chooses not to log if
     there is no logger.
    */
-  final Logger? _logger =
-      logLevel != Level.OFF ? Logger('Authentication Sign In Api') : null;
+  final Logger _logger = Logger('Authentication Sign In Api');
 
   AuthenticationSignInApiImpl({required SupabaseClient supabaseClient, 
     required PowerSyncDatabase powerSyncDatabase}) : 
@@ -40,7 +38,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
   @override
   Future<UserModel?> signIn(String email, String password) async {
     try {
-      _logger?.finer('Authentication sign in API start');
+      _logger.finer('Authentication sign in API start');
 
       // Assertion for the preconditions
       assert(password.length >= 6 && password.length <= 72);
@@ -50,10 +48,10 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
           email: email,
           password: password,
       );
-      _logger?.finest(authResponse);
+      _logger.finest(authResponse);
 
       final Session? session = authResponse.session;
-      _logger?.finest(session);
+      _logger.finest(session);
 
       if (session != null) {
         // waitforfirstsync allows you to load the data to powersync after you login
@@ -65,7 +63,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
           [session.user.id],
         );
 
-        _logger?.finest(queryResult);
+        _logger.finest(queryResult);
 
         // There should be only one role result for one user
         assert(queryResult.length == 1);
@@ -87,16 +85,16 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
           role: queryResult[0]['role'] as String,
         );
 
-        _logger?.finer('Authentication sign in API end');
+        _logger.finer('Authentication sign in API end');
 
         return userModel;
       } else {
-        _logger?.finer('Authentication sign in API end');
+        _logger.finer('Authentication sign in API end');
 
         return null;
       }
     } catch (e) {
-      _logger?.shout(e);
+      _logger.shout(e);
 
       rethrow;
     }
