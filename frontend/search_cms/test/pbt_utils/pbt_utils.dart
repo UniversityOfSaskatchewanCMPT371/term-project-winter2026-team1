@@ -67,7 +67,7 @@ extension AnyNullableValidSizeRange on Any {
 
 // Produces preExcavFrags, postExcavFrags, elements: all > 0
 extension AnyValidTripleRange on Any {
-  Generator<List<int>> get validTripleRnage => combine3(
+  Generator<List<int>> get validTripleRange => combine3(
     any.intInRange(1, null),               // preExcavFrags > 0    
     any.intInRange(1, null),               // postExcavFrags > 0 
     any.intInRange(1, null),               // elements > 0
