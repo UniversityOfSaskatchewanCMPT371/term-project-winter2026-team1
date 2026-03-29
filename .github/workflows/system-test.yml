@@ -48,7 +48,8 @@ jobs:
 
       - name: Start Appium Server in background
         run: |
-          appium & sleep 15
+          appium &
+          sleep 15
 
       - name: Initialize java JDK
         uses: actions/setup-java@v4

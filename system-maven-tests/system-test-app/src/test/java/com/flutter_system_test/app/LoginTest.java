@@ -54,12 +54,18 @@ public class LoginTest {
          */
 
         // Working directory and application path
-        String workingDir = "C:\\471\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
-        String appPath = workingDir + "\\flutter_supabase_template.exe";
+        String currentDir = System.getProperty("user.dir");
+        
+        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
+        Path appExePath = workingDirPath.resolve("flutter_supabase_template.exe");
 
-        // Launch the application using ProcessBuilder
-        ProcessBuilder builder = new ProcessBuilder(appPath);
-        builder.directory(new File(workingDir));
+        // Print paths to the console so you can debug in CI/CD if it fails again
+        System.out.println("Resolved Working Directory: " + workingDirPath.toAbsolutePath());
+        System.out.println("Resolved App Path: " + appExePath.toAbsolutePath());
+
+        // 3. Launch the application using ProcessBuilder
+        ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
+        builder.directory(workingDirPath.toFile());
         appProcess = builder.start();
 
         System.out.println("Waiting 5 seconds for app to launch...");
