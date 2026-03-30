@@ -37,21 +37,23 @@ class InsertAssemblageApiImpl implements AbstractInsertAssemblageApi {
       assert(unitName.isNotEmpty);
       assert(levelName.isNotEmpty);
 
-      // resolve unit
+      // use the unit name to resolve the unit ID, used to then get the level ID
       final unitResult = await _powerSyncDatabase.execute(
         'SELECT id FROM unit WHERE name = ? LIMIT 1',
         [unitName],
       );
       final String unitId = unitResult.first['id'] as String;
 
-      // resolve level
+      // use the level name and the resolved unit ID to get the level ID
+      // level name is not a unique identifier, so we use the unit id here
+      // to ensure that we are resolving the correct level ID
       final levelResult = await _powerSyncDatabase.execute(
         'SELECT id FROM level WHERE name = ? AND unit_id = ? LIMIT 1',
         [levelName, unitId],
       );
       final String levelId = levelResult.first['id'] as String;
 
-      // insert
+      // use the resolved level ID to insert an assemblage with name 'name'
       await _powerSyncDatabase.execute(
         'INSERT INTO assemblage (level_id, name) VALUES (?, ?)',
         [levelId, name],
@@ -60,6 +62,8 @@ class InsertAssemblageApiImpl implements AbstractInsertAssemblageApi {
       _logger.finer('Insert unit API: Inserting Assemblage into PowerSync '
           'Database end');
     } catch (e) {
+      // catch any errors either from the assertions 
+      // or the powersync queries and just send them back up
       rethrow;
     }
   }
