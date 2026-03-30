@@ -17,7 +17,7 @@ class InsertUnitApiImpl implements AbstractInsertUnitApi {
   /*
     Inserts a new Unit record into the PowerSync local database
 
-    @param siteId A valid UUID reference to an existing site
+    @param siteName A valid name for existing site
     @param name A non-empty name string for the unit
 
     Preconditions:
