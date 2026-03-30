@@ -53,12 +53,13 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
       assert(getIt<SupabaseClient>().auth.currentSession != null);
       assert(assemblageName.isNotEmpty);
 
-      // resolve assemblage ID from name
+      // resolve assemblage ID from the assmeblage name
       final assemblageId = await _powerSyncDatabase.execute(
         'SELECT id FROM assemblage WHERE name = ? LIMIT 1'
       );
 
-      // insert artifact
+      // use the resolved assemblage ID to insert the artifact with all given fields into that assemblage
+      // leaves created_at and updated_at to default to now()
       await _powerSyncDatabase.execute(
         'INSERT INTO artifact_faunal (assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements)'
         'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
