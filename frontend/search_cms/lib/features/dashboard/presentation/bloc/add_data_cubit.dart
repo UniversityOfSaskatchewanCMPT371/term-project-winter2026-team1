@@ -110,7 +110,7 @@ class AddDataCubit extends Cubit<AddDataState> {
     final Set<String> sections = inputs.keys.map((k) => k.split('-').first).toSet();
     List<Future<Result>> results = [];
 
-    sections.forEach((section) {
+    for (String section in sections) {
       // for each possible type, collect inputs and call corresponding API call
       switch (section) {
         case 'Site Information':
@@ -125,7 +125,9 @@ class AddDataCubit extends Cubit<AddDataState> {
           final name = inputs['Unit-Name']!;
           final siteName = inputs['Unit-Site Name']!;
           // TODO: resolve siteName to a siteId before calling usecase
+          // Why does this usecase take in an ID????
           results.add(usecases.insertUnitUsecase(siteId: siteName, name: name));
+
         case 'Level':
           final name = inputs['Level-Name']!;
           final unitName = inputs['Level-Unit Name']!;
@@ -139,18 +141,21 @@ class AddDataCubit extends Cubit<AddDataState> {
             lowLimit: 0,
             parentId: parentName,
           ));
+
         case 'Assemblage':
           // TODO: resolve names to IDs, then call insertAssemblageUsecase
           // final unitName = inputs['Assemblage-Unit Name']!;
           // final parentName = inputs['Assemblage-Parent Name']!;
           // results.add(usecases.insertAssemblageUsecase(levelId: parentName));
+
         case 'Artifact (Faunal)':
           // TODO: collect artifact inputs and call insertArtifactFaunalUsecase
           // results.add(usecases.insertArtifactFaunalUsecase(assemblageId: ...));
+
         default:
           emit(SaveFailure("Unknown Section Key Detected"));
       }
-    });
+    }
 
     // display success/fail
     // behavior if some succeed and some fail??
