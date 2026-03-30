@@ -1,0 +1,74 @@
+import 'package:logging/logging.dart';
+import 'package:powersync/powersync.dart';
+import 'package:search_cms/core/utils/constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'abstract_insert_artifact_api.dart';
+
+/*
+  The PowerSync API implementation for inserting a unit
+*/
+class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
+  final PowerSyncDatabase _powerSyncDatabase;
+  final Logger _logger = Logger('Insert artifact API');
+
+  InsertArtifactApiImpl({required PowerSyncDatabase powerSyncDatabase})
+      : _powerSyncDatabase = powerSyncDatabase;
+
+  /*
+    Inserts a new faunal artifact record into the database
+
+    @param assemblageName: non-empty name of associated assemblage
+    Optional parameters:
+    @param porosity: int 1-5
+    @param sizeUpper: lower bound of tuple
+    @param sizeLower: upper bound of same tuple
+    @param comment: string comment
+    @param preExcavFrags: integer, default is 1
+    @param postExcavFrags: integer, default is 1
+    @param elements: integer, default to 1
+
+    Preconditions:
+      (1) PowerSync database is initialized
+      (2) The user must be authenticated
+      (3) assemblageName.isNotEmpty && sizeUpper <= sizeLower if non-null
+
+    Postconditions: new artifact record is inserted into the database
+  */
+  @override
+  Future<void> insertArtifact({
+    required String assemblageName,
+    int? porosity,
+    int? sizeUpper,
+    int? sizeLower,
+    String? comment,
+    int? preExcavFrags,
+    int? postExcavFrags,
+    int? elements
+  }) async {
+    try {
+      _logger.finer('Insert unit API: Inserting artifact into PowerSync '
+          'Database start');
+
+      assert(_powerSyncDatabase.currentStatus.anyError == null);
+      assert(getIt<SupabaseClient>().auth.currentSession != null);
+      assert(assemblageName.isNotEmpty);
+
+      // resolve assemblage ID from name
+      final assemblageId = await _powerSyncDatabase.execute(
+        'SELECT id FROM assemblage WHERE name = ? LIMIT 1'
+      );
+
+      // insert artifact
+      await _powerSyncDatabase.execute(
+        'INSERT INTO artifact_faunal (assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements)'
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [assemblageId, porosity, sizeUpper, sizeLower, comment, preExcavFrags, postExcavFrags, elements],
+      );
+
+      _logger.finer('Insert unit API: Inserting artifact into PowerSync '
+          'Database end');
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
