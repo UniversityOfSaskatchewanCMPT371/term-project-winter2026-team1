@@ -103,12 +103,12 @@ jobs:
         run: mvn clean test
         working-directory: ./system-maven-tests/system-test-app
 
-      # Upload out flutter test to the artifacts
+      # Upload out Maven System Tests to github
       - uses: actions/upload-artifact@v4
         with:
           # Name of the artifact to upload.
           # Optional. Default is 'artifact'
-          name: flutter_int_test_report_${{ env.TIMESTAMP }}
+          name: System_Maven_test_${{ env.TIMESTAMP }}
           path: ./system-maven-tests/system-test-app/target/surefire-reports/TEST-*.xml
 
       # Upload Test reports to the pull request.
@@ -116,6 +116,6 @@ jobs:
         uses: mikepenz/action-junit-report@v6
         if: success() || failure() # always run even if the previous step fails
         with:
-          report_paths: 'frontend/search_cms/test-results/*.xml'
+          report_paths: './system-maven-tests/system-test-app/target/surefire-reports/TEST-*.xml'
           include_passed: True
           fail_on_failure: True
