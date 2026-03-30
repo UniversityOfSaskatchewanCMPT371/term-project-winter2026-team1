@@ -2,21 +2,19 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../../core/utils/class_templates/result.dart';
-import '../../data/data_sources/abstract_insert_artifact_api.dart';
-import '../../domain/entities/insert_artifact_result_classes.dart'
-    as insert_artifact_result_classes;
 import '../../domain/repositories/abstract_insert_artifact_repository.dart';
 
 /*
-  The repository implementation for inserting a faunal artifact
+  The use case for inserting a faunal artifact
 */
-class InsertArtifactRepositoryImpl implements AbstractInsertArtifactRepository {
-  final AbstractInsertArtifactApi _api;
-  final Logger _logger = Logger('Insert artifact usecase');
 
-  InsertArtifactRepositoryImpl({required AbstractInsertArtifactApi api}) : _api = api;
+class InsertArtifactUsecase {
+  final AbstractInsertArtifactRepository _repository;
+  final Logger _logger = Logger('Insert unit use case');
+
+  InsertArtifactUsecase({required AbstractInsertArtifactRepository repository})
+      : _repository = repository;
 
   /*
     Inserts a new faunal artifact record into the database
@@ -38,8 +36,7 @@ class InsertArtifactRepositoryImpl implements AbstractInsertArtifactRepository {
 
     Postconditions: new artifact record is inserted into the database
   */
-  @override
-  Future<Result> insertArtifact({
+  Future<Result> call({
     required String assemblageName,
     int? porosity,
     int? sizeUpper,
@@ -49,23 +46,19 @@ class InsertArtifactRepositoryImpl implements AbstractInsertArtifactRepository {
     int? postExcavFrags,
     int? elements
   }) async {
-    try {
-      _logger.finer('Insert artifact usecase: Inserting artifact into PowerSync '
-          'Database start');
+    _logger.finer('Insert artifact use case: Inserting artifact into PowerSync '
+        'Database start');
 
-      assert(getIt<PowerSyncDatabase>().currentStatus.anyError == null);
-      assert(getIt<SupabaseClient>().auth.currentSession != null);
+    assert(getIt<PowerSyncDatabase>().currentStatus.anyError == null);
+    assert(getIt<SupabaseClient>().auth.currentSession != null);
 
-      await _api.insertArtifact(assemblageName: assemblageName, porosity: porosity,
+    Result result = await _repository.insertArtifact(assemblageName: assemblageName, porosity: porosity,
         sizeUpper: sizeUpper, sizeLower: sizeLower, comment: comment, preExcavFrags: preExcavFrags,
         postExcavFrags: postExcavFrags, elements: elements);
 
-      _logger.finer('Insert artifact usecase: Inserting artifact into PowerSync '
-          'Database end');
+    _logger.finer('Insert artifact use case: Inserting artifact into PowerSync '
+        'Database end');
 
-      return const insert_artifact_result_classes.Success();
-    } catch (e) {
-      return insert_artifact_result_classes.Failure(errorMessage: e.toString());
-    }
+    return result;
   }
 }
