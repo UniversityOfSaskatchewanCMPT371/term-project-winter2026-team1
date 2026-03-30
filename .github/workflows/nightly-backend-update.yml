@@ -35,3 +35,7 @@ jobs:
           done
           echo "ERROR: Supabase failed to start within 150 seconds"
           exit 1
+
+      - name: Reset supabase with any new migrations or seed changes
+        run: |
+          docker exec backend-ubuntu_vm-1 supabase db reset
