@@ -98,6 +98,9 @@ public class LoginFailTest {
                 new URL("http://127.0.0.1:4723/"),
                 appOptions
         );
+        // Wait for the UI to show up so we don't wait for a refresh
+        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        appWait.until(d -> driver.findElement(AppiumBy.name("email_textbox")));
 
         // Updated for Selenium 4
     }

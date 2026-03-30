@@ -78,15 +78,13 @@ jobs:
         run: flutter config --enable-windows-desktop
         working-directory: ./frontend/search_cms
       
-      - name: Build windoes desktop exe file
-        run: flutter build windows
+      - name: Build windows desktop exe file
+        run: |
+          flutter build windows  `
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
+          --dart-define=POWERSYNC_URL=${{ secrets.POWERSYNC_URL }}
         working-directory: ./frontend/search_cms
-        env:
-          # URL for flutter initialization
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          POWERSYNC_URL: ${{ secrets.POWERSYNC_URL }}
 
-      # for testing / sanity checks
       - name: Ensure containers are running
         run: docker ps -a
       
