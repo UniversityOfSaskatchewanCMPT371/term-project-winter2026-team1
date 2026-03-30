@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'abstract_insert_artifact_api.dart';
 
 /*
-  The PowerSync API implementation for inserting a unit
+  The PowerSync API implementation for inserting a faunal artifact
 */
 class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
   final PowerSyncDatabase _powerSyncDatabase;
@@ -53,7 +53,7 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
       assert(getIt<SupabaseClient>().auth.currentSession != null);
       assert(assemblageName.isNotEmpty);
 
-      // resolve assemblage ID from the assmeblage name
+      // resolve assemblage ID from the assemblage name
       final assemblageId = await _powerSyncDatabase.execute(
         'SELECT id FROM assemblage WHERE name = ? LIMIT 1'
       );
