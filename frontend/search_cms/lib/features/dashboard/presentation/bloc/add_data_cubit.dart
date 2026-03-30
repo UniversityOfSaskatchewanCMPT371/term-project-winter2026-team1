@@ -88,6 +88,14 @@ class AddDataCubit extends Cubit<AddDataState> {
       return;
     }
 
+    // check that all mandatory fields exist based on the existing section titles
+    List<String> result = validateFieldEntries(inputs);
+    if (result.isNotEmpty) {
+      // TODO idk what to do here yet, need to add UX to display warnings
+      // Maybe add a state SaveIncomplete that will take the list and display the message
+      return;
+    }
+
     // display a little waiter
     emit(SaveLoading());
 
@@ -134,6 +142,7 @@ class AddDataCubit extends Cubit<AddDataState> {
 
     // Required fields per section
     const sectionRequirements = <String, List<String>>{
+      // Section Title : [Required Fields]
       'Site Information': ['Name', 'Borden', 'Area'],
       'Unit': ['Name', 'Site Name'],
       'Level': ['Name', 'Unit Name', 'Parent Name'],
