@@ -3,6 +3,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_use
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_assemblage_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_level_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
@@ -19,6 +20,7 @@ class DashboardUsecases {
   final InsertSiteAreaUsecase insertSiteAreaUsecase;
   final InsertUnitUsecase insertUnitUsecase;
   final InsertLevelUsecase insertLevelUsecase;
+  final InsertAssemblageUsecase insertAssemblageUsecase;
 
   DashboardUsecases({
     required this.getAllSitesUseCase,
@@ -30,5 +32,6 @@ class DashboardUsecases {
     required this.insertSiteAreaUsecase,
     required this.insertUnitUsecase,
     required this.insertLevelUsecase,
+    required this.insertAssemblageUsecase,
   });
 }
