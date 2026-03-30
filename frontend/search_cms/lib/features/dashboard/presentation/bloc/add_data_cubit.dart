@@ -106,7 +106,7 @@ class AddDataCubit extends Cubit<AddDataState> {
     // iterate over the map and filter out calls into repespective types
     // possible keys inlude Site Information, Unit, Level, Assemblage, Artifact (Faunal)
     // hyphonated with -feildName (ie. Unit-Name, Unit-Site Name)
-    // Determine which sections are present
+    // Determine which sections are present by splitting on '-'
     final Set<String> sections = inputs.keys.map((k) => k.split('-').first).toSet();
     List<Future<Result>> results = [];
 
@@ -132,24 +132,29 @@ class AddDataCubit extends Cubit<AddDataState> {
           final name = inputs['Level-Name']!;
           final unitName = inputs['Level-Unit Name']!;
           final parentName = inputs['Level-Parent Name'];
+          final upperLimit = inputs['Level-Upper Limit'] ?? 0;
+          final lowerLimit = inputs['Level-Lower Limit'] ?? 0;
           // TODO: resolve unitName to unitId, parentName to parentId before calling usecase
           // TODO: collect upLimit and lowLimit from form inputs
           results.add(usecases.insertLevelUsecase(
             unitId: unitName,
             name: name,
-            upLimit: 0,
-            lowLimit: 0,
+            upLimit: upperLimit,
+            lowLimit: lowerLimit,
             parentId: parentName,
           ));
 
         case 'Assemblage':
-          // TODO: resolve names to IDs, then call insertAssemblageUsecase
-          // final unitName = inputs['Assemblage-Unit Name']!;
-          // final parentName = inputs['Assemblage-Parent Name']!;
-          // results.add(usecases.insertAssemblageUsecase(levelId: parentName));
+          final name = inputs['Assemblage-Assemblage Name']!;
+          final unitName = inputs['Assemblage-Unit Name']!;
+          final levelName = inputs['Assemblage-Parent Name']!;
+          // results.add(usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
 
         case 'Artifact (Faunal)':
           // TODO: collect artifact inputs and call insertArtifactFaunalUsecase
+          final assemblageName = inputs['Artifact (Faunal)-Assemblage Name']!;
+          final porosity = inputs['Artifact (Faunal)-Porosity'];
+          final 
           // results.add(usecases.insertArtifactFaunalUsecase(assemblageId: ...));
 
         default:
@@ -176,7 +181,7 @@ class AddDataCubit extends Cubit<AddDataState> {
   List<String> _validateFieldEntries(Map<String, String> fields) {
     List<String> result = [];
 
-    // Determine which sections are present
+    // Determine which sections are present by splitting on '-'
     final sections = fields.keys.map((k) => k.split('-').first).toSet();
 
     // Required fields per section
@@ -185,8 +190,8 @@ class AddDataCubit extends Cubit<AddDataState> {
       'Site Information': ['Name', 'Borden', 'Area'],
       'Unit': ['Name', 'Site Name'],
       'Level': ['Name', 'Unit Name', 'Parent Name'],
-      'Assemblage': ['Unit Name', 'Parent Name'],
-      'Artifact (Faunal)': [], // stub
+      'Assemblage': ['Assemblage Name', 'Unit Name', 'Level Name'],
+      'Artifact (Faunal)': ['Assemblage Name'], 
     };
 
     for (final section in sections) {
