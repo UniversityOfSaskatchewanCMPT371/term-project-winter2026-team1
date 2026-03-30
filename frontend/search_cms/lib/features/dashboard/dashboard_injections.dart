@@ -4,15 +4,30 @@ import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_ap
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_levels_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_area_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_level_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_site_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_site_area_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/insert_unit_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_levels_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_units_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_area_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_level_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_site_area_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_site_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/insert_unit_repository_impl.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_level_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/insert_unit_usecase.dart';
 
 /*
   This defines how getIt should construct the classes for us
@@ -25,6 +40,11 @@ void initDashboardInjections() {
   _registerGetAllAreasUseCase();
   _registerGetAllUnitsUseCase();
   _registerGetAllLevelsUseCase();
+  _registerInsertSiteUseCase();
+  _registerInsertAreaUseCase();
+  _registerInsertSiteAreaUseCase();
+  _registerInsertUnitUseCase();
+  _registerInsertLevelUseCase();
 
   // The dashboard use case collection
   getIt.registerFactory<DashboardUsecases>(
@@ -33,6 +53,11 @@ void initDashboardInjections() {
       getAllAreasUseCase: getIt<GetAllAreasUseCase>(),
       getAllUnitsUseCase: getIt<GetAllUnitsUseCase>(),
       getAllLevelsUseCase: getIt<GetAllLevelsUseCase>(),
+      insertSiteUsecase: getIt<InsertSiteUsecase>(),
+      insertAreaUsecase: getIt<InsertAreaUsecase>(),
+      insertSiteAreaUsecase: getIt<InsertSiteAreaUsecase>(),
+      insertUnitUsecase: getIt<InsertUnitUsecase>(),
+      insertLevelUsecase: getIt<InsertLevelUsecase>(),
     ),
   );
 }
@@ -91,6 +116,96 @@ void _registerGetAllAreasUseCase() {
   // Register the GetAllAreasUseCase
   getIt.registerFactory<GetAllAreasUseCase>(
     () => GetAllAreasUseCase(repository: getIt<GetAllAreasRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert site use case
+ */
+void _registerInsertSiteUseCase() {
+  // Register the InsertSiteApiImpl
+  getIt.registerFactory<InsertSiteApiImpl>(
+    () => InsertSiteApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertSiteRepositoryImpl
+  getIt.registerFactory<InsertSiteRepositoryImpl>(
+    () => InsertSiteRepositoryImpl(api: getIt<InsertSiteApiImpl>()),
+  );
+  // Register the InsertSiteUsecase
+  getIt.registerFactory<InsertSiteUsecase>(
+    () => InsertSiteUsecase(repository: getIt<InsertSiteRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert area use case
+ */
+void _registerInsertAreaUseCase() {
+  // Register the InsertAreaApiImpl
+  getIt.registerFactory<InsertAreaApiImpl>(
+    () => InsertAreaApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertAreaRepositoryImpl
+  getIt.registerFactory<InsertAreaRepositoryImpl>(
+    () => InsertAreaRepositoryImpl(api: getIt<InsertAreaApiImpl>()),
+  );
+  // Register the InsertAreaUsecase
+  getIt.registerFactory<InsertAreaUsecase>(
+    () => InsertAreaUsecase(repository: getIt<InsertAreaRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert site_area use case
+ */
+void _registerInsertSiteAreaUseCase() {
+  // Register the InsertSiteAreaApiImpl
+  getIt.registerFactory<InsertSiteAreaApiImpl>(
+    () => InsertSiteAreaApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertSiteAreaRepositoryImpl
+  getIt.registerFactory<InsertSiteAreaRepositoryImpl>(
+    () => InsertSiteAreaRepositoryImpl(api: getIt<InsertSiteAreaApiImpl>()),
+  );
+  // Register the InsertSiteAreaUsecase
+  getIt.registerFactory<InsertSiteAreaUsecase>(
+    () => InsertSiteAreaUsecase(repository: getIt<InsertSiteAreaRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert unit use case
+ */
+void _registerInsertUnitUseCase() {
+  // Register the InsertUnitApiImpl
+  getIt.registerFactory<InsertUnitApiImpl>(
+    () => InsertUnitApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertUnitRepositoryImpl
+  getIt.registerFactory<InsertUnitRepositoryImpl>(
+    () => InsertUnitRepositoryImpl(api: getIt<InsertUnitApiImpl>()),
+  );
+  // Register the InsertUnitUsecase
+  getIt.registerFactory<InsertUnitUsecase>(
+    () => InsertUnitUsecase(repository: getIt<InsertUnitRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the insert level use case
+ */
+void _registerInsertLevelUseCase() {
+  // Register the InsertLevelApiImpl
+  getIt.registerFactory<InsertLevelApiImpl>(
+    () => InsertLevelApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+  // Register the InsertLevelRepositoryImpl
+  getIt.registerFactory<InsertLevelRepositoryImpl>(
+    () => InsertLevelRepositoryImpl(api: getIt<InsertLevelApiImpl>()),
+  );
+  // Register the InsertLevelUsecase
+  getIt.registerFactory<InsertLevelUsecase>(
+    () => InsertLevelUsecase(repository: getIt<InsertLevelRepositoryImpl>()),
   );
 }
 
