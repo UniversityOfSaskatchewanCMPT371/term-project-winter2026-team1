@@ -73,5 +73,10 @@ class SaveSuccess extends AddDataState {
 
 // State to register when a save call has failed
 class SaveFailure extends AddDataState {
-  const SaveFailure();
+  final String message;
+
+  const SaveFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
