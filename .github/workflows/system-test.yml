@@ -103,21 +103,19 @@ jobs:
         run: mvn clean test
         working-directory: ./system-maven-tests/system-test-app
 
-      # runa headless xvfb to initiate flutter integration tests
+      # Upload out flutter test to the artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: flutter_int_test_report_${{ env.TIMESTAMP }}
+          path: ./system-maven-tests/system-test-app/target/surefire-reports/TEST-*.xml
 
-      # # Upload out flutter test to the artifacts
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     # Name of the artifact to upload.
-      #     # Optional. Default is 'artifact'
-      #     name: flutter_int_test_report_${{ env.TIMESTAMP }}
-      #     path: frontend/search_cms/test-results/*.xml
-
-      # # Upload Test reports to the pull request.
-      # - name: Publish Test Report
-      #   uses: mikepenz/action-junit-report@v6
-      #   if: success() || failure() # always run even if the previous step fails
-      #   with:
-      #     report_paths: 'frontend/search_cms/test-results/*.xml'
-      #     include_passed: True
-      #     fail_on_failure: True
+      # Upload Test reports to the pull request.
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: 'frontend/search_cms/test-results/*.xml'
+          include_passed: True
+          fail_on_failure: True
