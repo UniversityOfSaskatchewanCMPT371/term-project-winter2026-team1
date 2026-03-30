@@ -17,9 +17,10 @@ USING (true);
 
 -- An intermediate table for Site and Area as per the ER diagram 
 CREATE TABLE site_area (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     site_id UUID NOT NULL,
     area_id UUID NOT NULL, -- Using area_id instead of location_id for consistent naming
-    PRIMARY KEY (site_id, area_id),
+    UNIQUE (site_id, area_id),
     FOREIGN KEY (site_id) REFERENCES site(id) ON DELETE CASCADE,
     FOREIGN KEY (area_id) REFERENCES area(id) ON DELETE CASCADE
 );

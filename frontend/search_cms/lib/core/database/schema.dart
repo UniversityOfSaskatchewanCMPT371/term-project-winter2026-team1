@@ -14,7 +14,7 @@ const schema = Schema([
     Column.text('updated_at'), // When was data last updated
   ]),
 
-  // An intermediate table. Takes site_id and area_id as PKs
+  // An intermediate table linking site and area
   Table('site_area', [
     Column.text('site_id'),
     Column.text('area_id'),
