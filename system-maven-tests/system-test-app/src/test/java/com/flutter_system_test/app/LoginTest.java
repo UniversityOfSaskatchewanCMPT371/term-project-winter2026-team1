@@ -43,7 +43,6 @@ public class LoginTest {
     public void setup() throws Exception {
 
         /**
-         * 
          * This is the setup function that initializes
          * the connection with appium
          * It has both a @BeforeAll and @AfterAll
@@ -53,8 +52,6 @@ public class LoginTest {
          * (2) NovaWindows is installed with appium
          * (3) Local ip 127.0.0.1 is availabe with port 4723
          * (4) flutter's exe is built and exists in the release file
-         * 
-         *  
          */
 
         // Working directory and application path
@@ -67,7 +64,7 @@ public class LoginTest {
         System.out.println("Resolved Working Directory: " + workingDirPath.toAbsolutePath());
         System.out.println("Resolved App Path: " + appExePath.toAbsolutePath());
 
-        // 3. Launch the application using ProcessBuilder
+        // Launch the application using ProcessBuilder
         ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
         builder.directory(workingDirPath.toFile());
         appProcess = builder.start();

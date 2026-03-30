@@ -23,11 +23,37 @@ public class LoginFailTest {
 
     private WindowsDriver driver;
     private Process appProcess;
-
+    /**
+     * 
+     * This class is the initialization of file LoginTest
+     * This functions off Junit and will fire off all
+     * associated tests with the @Test underneath it's methods
+     * 
+     * It has both a @BeforeAll and @AfterAll
+     * 
+     * Pre-conditions:
+     * (1) Appium is running on local machine
+     * (2) NovaWindows is installed with appium
+     * (3) Local ip 127.0.0.1 is availabe with port 4723
+     * 
+     *  
+     */
     @BeforeAll
     public void setup() throws Exception {
 
-       
+       /**
+         * This is the setup function that initializes
+         * the connection with appium
+         * It has both a @BeforeAll and @AfterAll
+         * 
+         * Pre-conditions:
+         * (1) Appium is running on local machine
+         * (2) NovaWindows is installed with appium
+         * (3) Local ip 127.0.0.1 is availabe with port 4723
+         * (4) flutter's exe is built and exists in the release file
+         */
+
+
         String currentDir = System.getProperty("user.dir");
         
         Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
@@ -37,7 +63,7 @@ public class LoginFailTest {
         System.out.println("Resolved Working Directory: " + workingDirPath.toAbsolutePath());
         System.out.println("Resolved App Path: " + appExePath.toAbsolutePath());
 
-        // 3. Launch the application using ProcessBuilder
+        // Launch the application using ProcessBuilder
         ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
         builder.directory(workingDirPath.toFile());
         appProcess = builder.start();
