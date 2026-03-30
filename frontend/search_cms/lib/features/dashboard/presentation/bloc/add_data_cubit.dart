@@ -124,23 +124,22 @@ class AddDataCubit extends Cubit<AddDataState> {
         case 'Unit':
           final name = inputs['Unit-Name']!;
           final siteName = inputs['Unit-Site Name']!;
-          // TODO: resolve siteName to a siteId before calling usecase
-          // Why does this usecase take in an ID????
+          // TODO modify usecase to take site name and self-resolve to ID
           results.add(usecases.insertUnitUsecase(siteId: siteName, name: name));
 
         case 'Level':
           final name = inputs['Level-Name']!;
           final unitName = inputs['Level-Unit Name']!;
           final parentName = inputs['Level-Parent Name'];
-          final upperLimit = inputs['Level-Upper Limit'] ?? 0;
-          final lowerLimit = inputs['Level-Lower Limit'] ?? 0;
+          final int? upperLimit = int.tryParse(inputs['Level-Upper Limit']?? '');
+          final int? lowerLimit = int.tryParse(inputs['Level-Lower Limit']?? '');
+          // TODO: change unitID to instead take name, resolve to ID in API, same with parent -> area
           // TODO: resolve unitName to unitId, parentName to parentId before calling usecase
-          // TODO: collect upLimit and lowLimit from form inputs
           results.add(usecases.insertLevelUsecase(
             unitId: unitName,
             name: name,
-            upLimit: upperLimit,
-            lowLimit: lowerLimit,
+            upLimit: upperLimit ?? 0,   // use default behaviour of 0 if null
+            lowLimit: lowerLimit ?? 0,
             parentId: parentName,
           ));
 
@@ -148,14 +147,18 @@ class AddDataCubit extends Cubit<AddDataState> {
           final name = inputs['Assemblage-Assemblage Name']!;
           final unitName = inputs['Assemblage-Unit Name']!;
           final levelName = inputs['Assemblage-Parent Name']!;
-          // results.add(usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
+          results.add(usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
 
         case 'Artifact (Faunal)':
-          // TODO: collect artifact inputs and call insertArtifactFaunalUsecase
           final assemblageName = inputs['Artifact (Faunal)-Assemblage Name']!;
-          final porosity = inputs['Artifact (Faunal)-Porosity'];
-          final 
-          // results.add(usecases.insertArtifactFaunalUsecase(assemblageId: ...));
+          final int? porosity = int.tryParse(inputs['Artifact (Faunal)-Porosity'] ?? '');
+          final int? sizeUpper = int.tryParse(inputs['Artifact (Faunal)-Size Upper'] ?? '');
+          final int? sizeLower = int.tryParse(inputs['Artifact (Faunal)-Size Lower'] ?? '');
+          final int? preExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Pre Excavation Fragments'] ?? '');
+          final int? postExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Post Excavation Fragments'] ?? '');
+          final int? elements = int.tryParse(inputs['Artifact (Faunal)-Elements'] ?? '');
+          final String? comment = inputs['Artifact (Faunal)-Comment'];
+          // results.add(usecases.insertArtifactUsecase(assemblageName: assemblageName, ));
 
         default:
           emit(SaveFailure("Unknown Section Key Detected"));
