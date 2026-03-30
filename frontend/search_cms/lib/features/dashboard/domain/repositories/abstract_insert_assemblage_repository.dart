@@ -19,5 +19,5 @@ abstract class AbstractInsertAssemblageRepository {
       (2) The user must be authenticated
       (3) unitName.isNotEmpty && levelName.isNotEmpty
   */
-  Future<Result> insertUnit({String? name, required String unitName, required String levelName});
+  Future<Result> insertAssemblage({String? name, required String unitName, required String levelName});
 }
