@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
+import 'package:search_cms/core/utils/class_templates/result.dart';
+
 // import 'package:frontend/search_cms/lib/features/dashboard/domain/entities/insert_area_result_classes.dart';
 // May not need all of these
 // frontend/search_cms/lib/features/dashboard/domain/entities/insert_level_result_classes.dart
@@ -89,8 +91,8 @@ class AddDataCubit extends Cubit<AddDataState> {
     }
 
     // check that all mandatory fields exist based on the existing section titles
-    List<String> result = validateFieldEntries(inputs);
-    if (result.isNotEmpty) {
+    List<String> missingFields = _validateFieldEntries(inputs);
+    if (missingFields.isNotEmpty) {
       // TODO idk what to do here yet, need to add UX to display warnings
       // Maybe add a state SaveIncomplete that will take the list and display the message
       return;
@@ -100,27 +102,59 @@ class AddDataCubit extends Cubit<AddDataState> {
     emit(SaveLoading());
 
     final usecases = getIt<DashboardUsecases>();
-    // store results in a map, if any fail, throw
-    //Result results = [];
 
-
-    // decide which fields are filled
     // iterate over the map and filter out calls into repespective types
     // possible keys inlude Site Information, Unit, Level, Assemblage, Artifact (Faunal)
     // hyphonated with -feildName (ie. Unit-Name, Unit-Site Name)
-    inputs.forEach((k, val) {
-      // truncate key to everything before -
-      List<String> keyList = k.split('-');
-      String sectionKey = keyList.first;
-      // if sectionKey == "Unit"
-        if (sectionKey == "Unit") {
-          // validate that existing types that are filled aren't missing anything
-        }
-    });
+    // Determine which sections are present
+    final Set<String> sections = inputs.keys.map((k) => k.split('-').first).toSet();
+    List<Future<Result>> results = [];
 
+    sections.forEach((section) {
+      // for each possible type, collect inputs and call corresponding API call
+      switch (section) {
+        case 'Site Information':
+          final borden = inputs['Site Information-Borden']!;
+          final name = inputs['Site Information-Name'];
+          results.add(usecases.insertSiteUsecase(borden: borden, name: name));
+          
+          final String area = inputs['Site Information-Area']!;
+          results.add(usecases.insertAreaUsecase(name: area));
+
+        case 'Unit':
+          final name = inputs['Unit-Name']!;
+          final siteName = inputs['Unit-Site Name']!;
+          // TODO: resolve siteName to a siteId before calling usecase
+          results.add(usecases.insertUnitUsecase(siteId: siteName, name: name));
+        case 'Level':
+          final name = inputs['Level-Name']!;
+          final unitName = inputs['Level-Unit Name']!;
+          final parentName = inputs['Level-Parent Name'];
+          // TODO: resolve unitName to unitId, parentName to parentId before calling usecase
+          // TODO: collect upLimit and lowLimit from form inputs
+          results.add(usecases.insertLevelUsecase(
+            unitId: unitName,
+            name: name,
+            upLimit: 0,
+            lowLimit: 0,
+            parentId: parentName,
+          ));
+        case 'Assemblage':
+          // TODO: resolve names to IDs, then call insertAssemblageUsecase
+          // final unitName = inputs['Assemblage-Unit Name']!;
+          // final parentName = inputs['Assemblage-Parent Name']!;
+          // results.add(usecases.insertAssemblageUsecase(levelId: parentName));
+        case 'Artifact (Faunal)':
+          // TODO: collect artifact inputs and call insertArtifactFaunalUsecase
+          // results.add(usecases.insertArtifactFaunalUsecase(assemblageId: ...));
+        default:
+          emit(SaveFailure("Unknown Section Key Detected"));
+      }
+    });
 
     // display success/fail
     // behavior if some succeed and some fail??
+    
 
     // reset fields
     resetFields();
@@ -134,7 +168,7 @@ class AddDataCubit extends Cubit<AddDataState> {
   //
   // returns: list of fields that needed to be filled but were empty
   // if return value has lengthq == 0, we can proceed
-  List<String> validateFieldEntries(Map<String, String> fields) {
+  List<String> _validateFieldEntries(Map<String, String> fields) {
     List<String> result = [];
 
     // Determine which sections are present
