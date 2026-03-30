@@ -93,7 +93,7 @@ class AddDataCubit extends Cubit<AddDataState> {
 
     final usecases = getIt<DashboardUsecases>();
     // store results in a map, if any fail, throw
-    Result results = [];
+    //Result results = [];
 
 
     // decide which fields are filled
@@ -116,5 +116,43 @@ class AddDataCubit extends Cubit<AddDataState> {
 
     // reset fields
     resetFields();
+  }
+
+
+  // Helper method for save() to verify that no mandatory fields are missing
+  // from the Map of currently filled entries. This needs to be called prior to
+  // any backend API calls to avoid the case where some forms get inserted into the
+  // database before aborting due to do unfilled entires.
+  //
+  // returns: list of fields that needed to be filled but were empty
+  // if return value has lengthq == 0, we can proceed
+  List<String> validateFieldEntries(Map<String, String> fields) {
+    List<String> result = [];
+
+    // Determine which sections are present
+    final sections = fields.keys.map((k) => k.split('-').first).toSet();
+
+    // Required fields per section
+    const sectionRequirements = <String, List<String>>{
+      'Site Information': ['Name', 'Borden', 'Area'],
+      'Unit': ['Name', 'Site Name'],
+      'Level': ['Name', 'Unit Name', 'Parent Name'],
+      'Assemblage': ['Unit Name', 'Parent Name'],
+      'Artifact (Faunal)': [], // stub
+    };
+
+    for (final section in sections) {
+      final required = sectionRequirements[section];
+      if (required == null) continue;
+
+      for (final field in required) {
+        final key = '$section-$field';
+        if ((fields[key] ?? '').trim().isEmpty) {
+          result.add(field);
+        }
+      }
+    }
+
+    return result;
   }
 }
