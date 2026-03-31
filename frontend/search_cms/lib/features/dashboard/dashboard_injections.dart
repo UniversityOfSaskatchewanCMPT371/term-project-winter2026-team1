@@ -265,7 +265,7 @@ void _registerInsertArtifactUseCase() {
   getIt.registerFactory<InsertArtifactApiImpl>(
     () => InsertArtifactApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
   );
-  // Register the InsertAssemblageRepositoryImpl
+  // Register the InsertArtifactRepositoryImpl
   getIt.registerFactory<InsertArtifactRepositoryImpl>(
     () => InsertArtifactRepositoryImpl(api: getIt<InsertArtifactApiImpl>()),
   );
