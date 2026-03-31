@@ -1,7 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/dashboard/domain/entities/insert_site_result_classes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'abstract_insert_artifact_api.dart';
 
