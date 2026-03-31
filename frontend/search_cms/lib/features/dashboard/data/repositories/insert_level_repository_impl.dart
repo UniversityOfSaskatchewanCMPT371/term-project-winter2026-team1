@@ -26,17 +26,15 @@ class InsertLevelRepositoryImpl implements AbstractInsertLevelRepository {
     Preconditions:
       (1) PowerSync database is initialized
       (2) The user must be authenticated
-      (3) unitId.isNotEmpty && name.isNotEmpty && upLimit <= lowLimit
+      (3) unitName.isNotEmpty && name.isNotEmpty && upLimit <= lowLimit
   */
   @override
   Future<Result> insertLevel({
-    required String unitId,
+    required String unitName,
     required String name,
     required int upLimit,
     required int lowLimit,
-    String? parentId,
-    String? levelChar,
-    int? levelInt,
+    String? parentName,
   }) async {
     try {
       _logger.finer('Insert level repository: Inserting level into PowerSync '
@@ -46,13 +44,11 @@ class InsertLevelRepositoryImpl implements AbstractInsertLevelRepository {
       assert(getIt<SupabaseClient>().auth.currentSession != null);
 
       await _api.insertLevel(
-        unitId: unitId,
+        unitName: unitName,
         name: name,
         upLimit: upLimit,
         lowLimit: lowLimit,
-        parentId: parentId,
-        levelChar: levelChar,
-        levelInt: levelInt,
+        parentName: parentName,
       );
 
       _logger.finer('Insert level repository: Inserting level into PowerSync '
