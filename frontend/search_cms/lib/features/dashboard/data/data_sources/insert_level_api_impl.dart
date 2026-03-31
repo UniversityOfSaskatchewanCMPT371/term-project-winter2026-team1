@@ -17,30 +17,26 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
   /*
     Inserts a new Level record into the PowerSync local database
 
-    @param unitId A valid UUID reference to an existing unit
+    @param unitName A valid UUID reference to an existing unit
     @param name A non-empty name string for the level
     @param upLimit An integer representing the upper depth limit in cm
     @param lowLimit An integer representing the lower depth limit in cm
-    @param parentId An optional reference to an existing level which is the level's parent
-    @param levelChar An optional string representing some other archeological data
-    @param levelInt An optional integer representing some other archeological data
+    @param parentName An optional reference to an existing level which is the level's parent
 
     Preconditions:
       (1) PowerSync database is initialized
       (2) The user must be authenticated
-      (3) unitId.isNotEmpty && name.isNotEmpty && upLimit <= lowLimit
+      (3) unitName.isNotEmpty && name.isNotEmpty && upLimit <= lowLimit
 
     Postconditions: new level record is inserted into the database
   */
   @override
   Future<void> insertLevel({
-    required String unitId,
+    required String unitName,
     required String name,
     required int upLimit,
     required int lowLimit,
-    String? parentId,
-    String? levelChar,
-    int? levelInt,
+    String? parentName,
   }) async {
     try {
       _logger.finer('Insert level API: Inserting level into PowerSync '
@@ -48,17 +44,38 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
 
       assert(_powerSyncDatabase.currentStatus.anyError == null);
       assert(getIt<SupabaseClient>().auth.currentSession != null);
-      assert(unitId.isNotEmpty);
+      assert(unitName.isNotEmpty);
       assert(name.isNotEmpty);
       assert(upLimit <= lowLimit);
 
       final String now = DateTime.now().toUtc().toIso8601String();
 
+      // find unitId for given unitName
+      final unitResult = await _powerSyncDatabase.execute(
+        'SELECT id FROM unit WHERE name = ? LIMIT 1',
+        [unitName],
+      );
+      final String unitId = unitResult.rows.first[0] as String;
+
+      // if not null, find parent levelId for parent level name
+      String? parentId;
+      if (parentName != null) {
+        final parentResult = await _powerSyncDatabase.execute(
+          'SELECT id FROM level WHERE name = ? LIMIT 1',
+          [parentName],
+        );
+        if (parentResult.rows.isNotEmpty) {
+          parentId = parentResult.rows.first[0] as String;
+        }
+      }
+
+      // insert level into unit with resolved ID and optionally parent level ID
+      // leaves level_char and level_int unused
       await _powerSyncDatabase.execute(
         'INSERT INTO level (unit_id, name, up_limit, low_limit, created_at, '
-        'updated_at, parent_id, level_char, level_int) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [unitId, name, upLimit, lowLimit, now, now, parentId, levelChar, levelInt],
+        'updated_at, parent_id) '
+        'VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [unitId, name, upLimit, lowLimit, now, now, parentId],
       );
 
       _logger.finer('Insert level API: Inserting level into PowerSync '
