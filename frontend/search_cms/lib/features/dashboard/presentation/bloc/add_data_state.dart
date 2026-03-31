@@ -80,3 +80,13 @@ class SaveFailure extends AddDataState {
   @override
   List<Object?> get props => [errors];
 }
+
+// State to register when missing fields are identified in save()
+class SaveIncomplete extends AddDataState {
+  final List<String> missing;
+
+  const SaveIncomplete(this.missing);
+
+  @override
+  List<Object?> get props => [missing];
+}
