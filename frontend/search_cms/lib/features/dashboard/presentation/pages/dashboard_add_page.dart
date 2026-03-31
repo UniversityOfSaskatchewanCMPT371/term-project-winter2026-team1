@@ -245,7 +245,27 @@ class DashboardAddPageState extends State<DashboardAddPage> {
       create: (context) => AddDataCubit()..init(),
 
       // it provides the AddDataCubit state to the page and calls the init()
-      child: BlocBuilder<AddDataCubit, AddDataState>(
+      child: BlocConsumer<AddDataCubit, AddDataState>(
+        listener: (context, state) {
+          if (state is SaveIncomplete) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Missing required fields: ${state.missing.join(', ')}"),
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                action: SnackBarAction(label: 'X', onPressed: () {})
+              )
+            );
+          }
+          if (state is SaveFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("An error occured while saving: ${state.errors.join(', ')}"),
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                action: SnackBarAction(label: 'X', onPressed: () {})
+              )
+            );
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             //Main background for the AddDataPage
