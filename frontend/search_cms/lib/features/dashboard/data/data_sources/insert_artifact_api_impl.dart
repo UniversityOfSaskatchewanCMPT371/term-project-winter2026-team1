@@ -1,6 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/domain/entities/insert_site_result_classes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'abstract_insert_artifact_api.dart';
 
@@ -54,9 +55,13 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
       assert(assemblageName.isNotEmpty);
 
       // resolve assemblage ID from the assemblage name
-      final assemblageId = await _powerSyncDatabase.execute(
-        'SELECT id FROM assemblage WHERE name = ? LIMIT 1'
+      final result = await _powerSyncDatabase.execute(
+        'SELECT id FROM assemblage WHERE name = ? LIMIT 1',
+        [assemblageName],
       );
+      assert(result.rows.isNotEmpty);
+      // query returns a ResultSet so we extract the ID here
+      final String assemblageId = result.first['id'] as String;
 
       // use the resolved assemblage ID to insert the artifact with all given fields into that assemblage
       // leaves created_at and updated_at to default to now()
