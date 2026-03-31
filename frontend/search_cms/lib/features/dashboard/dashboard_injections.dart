@@ -269,7 +269,7 @@ void _registerInsertArtifactUseCase() {
   getIt.registerFactory<InsertArtifactRepositoryImpl>(
     () => InsertArtifactRepositoryImpl(api: getIt<InsertArtifactApiImpl>()),
   );
-  // Register the InsertAssemblageUsecase
+  // Register the InsertArtifactUsecase
   getIt.registerFactory<InsertArtifactUsecase>(
     () => InsertArtifactUsecase(repository: getIt<InsertArtifactRepositoryImpl>()),
   );
