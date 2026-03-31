@@ -1,21 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:glados/glados.dart';
+import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
-import 'package:search_cms/core/utils/class_templates/result.dart';
-
-// import 'package:frontend/search_cms/lib/features/dashboard/domain/entities/insert_area_result_classes.dart';
-// May not need all of these
-// frontend/search_cms/lib/features/dashboard/domain/entities/insert_level_result_classes.dart
-// frontend/search_cms/lib/features/dashboard/domain/entities/insert_site_area_result_classes.dart
-// frontend/search_cms/lib/features/dashboard/domain/entities/insert_site_result_classes.dart
-// frontend/search_cms/lib/features/dashboard/domain/entities/insert_unit_result_classes.dart
 import 'add_data_state.dart';
-import '../../domain/entities/area_entity.dart';
-import '../../domain/entities/site_entity.dart';
-import '../../domain/entities/site_area_entity.dart';
-import '../../domain/entities/level_entity.dart';
-import '../../domain/entities/assemblage_entity.dart';
-import '../../domain/entities/artifact_faunal_entity.dart';
+import '../../domain/entities/insert_site_result_classes.dart';
+// using to return results, could be any result classes files
+
 
 
 // Add Data cubit that its used for the Add Data page
@@ -77,7 +68,7 @@ class AddDataCubit extends Cubit<AddDataState> {
   }
 
   // Collects all fields that are filled, organizes them and calls the corresponding backend calls
-  void save() {
+  Future<void> save() async {
     // collect all inputs
     Map<String, String> inputs = {};
     if (state is AddDataLoaded) {
@@ -161,14 +152,27 @@ class AddDataCubit extends Cubit<AddDataState> {
           // results.add(usecases.insertArtifactUsecase(assemblageName: assemblageName, ));
 
         default:
+          // TODO maybe swap this for a Result - Failure instance with mesasage
+          results.add(Failure(errorMessage: "Unknown Section Key Detected"));
           emit(SaveFailure("Unknown Section Key Detected"));
       }
     }
 
-    // display success/fail
-    // behavior if some succeed and some fail??
-    
+    // check results for any Failures
+    final List<Result> resolved = await Future.wait(results);
+    List<String> errors = resolved
+        .whereType<Failure>()
+        // collect error messages
+        .map((f) => f.errorMessage)
+        // store in list errors
+        .toList();
 
+    if (errors.isNotEmpty) {
+      emit(SaveFailure(errors));
+    } else {
+      emit(SaveSuccess());
+    }
+    
     // reset fields
     resetFields();
   }
