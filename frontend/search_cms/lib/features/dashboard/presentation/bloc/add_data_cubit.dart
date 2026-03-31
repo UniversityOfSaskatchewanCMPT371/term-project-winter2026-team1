@@ -99,9 +99,10 @@ class AddDataCubit extends Cubit<AddDataState> {
     List<String> missingFields = _validateFieldEntries(inputs);
     if (missingFields.isNotEmpty) {
       _logger?.warning("Save - Missing fields detected");
+      // trigger error popup
       emit(SaveIncomplete(missingFields));
-      // Does this reset the fields too? cuz that should not happen
-      emit(AddDataLoaded());
+      // transition to Loaded so user can continue with inputs without reseting
+      emit(AddDataLoaded(fieldValues: inputs));
       return;
     }
 
@@ -198,14 +199,15 @@ class AddDataCubit extends Cubit<AddDataState> {
     if (errors.isNotEmpty) {
       _logger?.warning("Save - Errors Detected: $errors");
       emit(SaveFailure(errors));
+      // preserve inputs in case user wants to retry
+      emit(AddDataLoaded(fieldValues: inputs));
     } else {
       // else emit SaveSuccess
       _logger?.info("Save - all inserts successful");
       emit(SaveSuccess());
+      // reset fields
+      resetFields();
     }
-    
-    // reset fields
-    resetFields();
   }
 
 

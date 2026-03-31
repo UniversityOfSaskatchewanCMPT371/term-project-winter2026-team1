@@ -224,8 +224,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 
   void _handleReset(BuildContext context) {
     _logger?.info("Reset Button Clicked");
-    _formKey.currentState?.reset();
-    context.read<AddDataCubit>().resetFields();
+    _formKey.currentState?.reset();   // resets field entries
+    context.read<AddDataCubit>().resetFields(); // resets state memory
     resetButtonClicked();
   }
 
@@ -304,6 +304,9 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 duration: Duration(seconds: 3), // auto dismiss
               )
             );
+
+            // reset all fields to empty
+            _formKey.currentState?.reset();
           }
         },
         builder: (context, state) {
