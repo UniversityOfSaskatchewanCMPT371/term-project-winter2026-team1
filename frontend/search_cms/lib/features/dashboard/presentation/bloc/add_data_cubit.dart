@@ -4,8 +4,7 @@ import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
 
-import '../../domain/entities/insert_site_result_classes.dart';
-// using to return results, could be any result classes files
+import '../../domain/entities/insert_site_result_classes.dart'; // using to return results, could be any result classes files
 import 'add_data_state.dart';
 
 final Logger? _logger = logLevel != Level.OFF
@@ -96,6 +95,7 @@ class AddDataCubit extends Cubit<AddDataState> {
     }
 
     // check that all mandatory fields exist based on the existing section titles
+    // If any required feilds are missing function aborts, no backend calls made
     List<String> missingFields = _validateFieldEntries(inputs);
     if (missingFields.isNotEmpty) {
       _logger?.warning("Save - Missing fields detected");
@@ -213,6 +213,7 @@ class AddDataCubit extends Cubit<AddDataState> {
   // from the Map of currently filled entries. This needs to be called prior to
   // any backend API calls to avoid the case where some forms get inserted into the
   // database before aborting due to do unfilled entires.
+  // Treats both null values and empty strings as a missing field
   //
   // returns: list of fields that needed to be filled but were empty
   // if return value has lengthq == 0, we can proceed
