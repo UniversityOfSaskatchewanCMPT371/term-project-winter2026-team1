@@ -18,7 +18,7 @@ class InsertUnitUsecase {
   /*
     Inserts a new Unit in the system
 
-    @param siteId A valid UUID reference to an existing site
+    @param siteName A valid name of an existing site
     @param name A non-empty name string for the unit
 
     @return A Success if the insert is successful, or a Failure
@@ -27,16 +27,16 @@ class InsertUnitUsecase {
     Preconditions:
       (1) PowerSync database is initialized
       (2) The user must be authenticated
-      (3) siteId.isNotEmpty && name.isNotEmpty
+      (3) siteName.isNotEmpty && name.isNotEmpty
   */
-  Future<Result> call({required String siteId, required String name}) async {
+  Future<Result> call({required String siteName, required String name}) async {
     _logger.finer('Insert unit use case: Inserting unit into PowerSync '
         'Database start');
 
     assert(getIt<PowerSyncDatabase>().currentStatus.anyError == null);
     assert(getIt<SupabaseClient>().auth.currentSession != null);
 
-    Result result = await _repository.insertUnit(siteId: siteId, name: name);
+    Result result = await _repository.insertUnit(siteName: siteName, name: name);
 
     _logger.finer('Insert unit use case: Inserting unit into PowerSync '
         'Database end');
