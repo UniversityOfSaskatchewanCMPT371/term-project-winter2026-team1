@@ -35,23 +35,27 @@ jobs:
         with:
           channel: 'stable' 
       
+      # Setup package manager node for npm
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20' # Use a recent Node.js version
 
-      - name: Install Appium Server
+      - name: Install Appium Package
         run: npm install -g appium
 
+      # Uses appium novawindows to run the system tests, need to install it
       - name: Install Appium novawindows
         run: appium driver install --source=npm appium-novawindows-driver && sleep 30
 
+      # Start up Appium
       - name: Start Appium Server in background
         shell: bash
         run: |
           appium &
           sleep 15
 
+      # JDK setup for maven appium java application
       - name: Initialize java JDK
         uses: actions/setup-java@v4
         with:
@@ -74,19 +78,20 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend/search_cms
       
+      # Setup our environment for windows desktop applications
       - name: Initialize windows desktop EXE file
         run: flutter config --enable-windows-desktop
         working-directory: ./frontend/search_cms
       
+      # Build the windows exe that the system tests will run
+      # This will pass in the URLs used for the flutter application for
+      # both supabase and powersync
       - name: Build windows desktop exe file
         run: |
           flutter build windows  `
           --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
           --dart-define=POWERSYNC_URL=${{ secrets.POWERSYNC_URL }}
         working-directory: ./frontend/search_cms
-
-      - name: Ensure containers are running
-        run: docker ps -a
       
       # Initializes timestamp for the artifact files being generated
       - name: Set Timestamp
@@ -97,6 +102,8 @@ jobs:
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
 
+
+      # Build and run the maven system tests.
       - name: Build with Maven
         run: mvn clean test
         working-directory: ./system-maven-tests/system-test-app

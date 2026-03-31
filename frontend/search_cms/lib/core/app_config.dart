@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-// 1. Default these to empty strings so we can check if they were actually provided
 const String _envSupabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: '');
 const String _envPowersyncUrl = String.fromEnvironment('POWERSYNC_URL', defaultValue: '');
 
