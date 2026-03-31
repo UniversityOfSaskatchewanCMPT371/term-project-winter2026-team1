@@ -40,36 +40,59 @@ class DashboardLayout extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+
                 Padding(
                   padding: const EdgeInsets.all(24.0),
-
-                  // Logo
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 16,
-                        height: 1.1,
-                        letterSpacing: 1.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/shishalh_sidebar.png',
+                        height: 60,
+                        fit: BoxFit.contain,
                       ),
-                      children: [
-                        TextSpan(
-                          text: 's',
-                          style: TextStyle(
-                            color: AppColors.primaryBlue,
-                            fontWeight: FontWeight.w600,
+                      const SizedBox(height: 6),
+                      Text(
+                        'shíshálh Nation',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          ),
+                          ),
+
+                          const SizedBox(height: 4),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 16,
+                                height: 1.1,
+                                letterSpacing: 1.0,
+                                ),
+
+                                children: [
+                                  TextSpan(
+                                    text: 's',
+                                    style: TextStyle(
+                                      color: AppColors.primaryBlue,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'EARCH',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        TextSpan(
-                          text: 'EARCH',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
 
                 // Dashboard navigation items
                 // Buttons for home and add page, see routes.dart for widget mounting location
