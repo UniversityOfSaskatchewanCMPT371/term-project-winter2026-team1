@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
               Image.asset(
                 //Adding the logo as a background
                 //Might get removed -- just an idea.
-                'assets/images/background_shishalh.jpg',
+                'assets/images/background_shishalh.png',
                 fit: BoxFit.cover,
                 ),
                 Center(

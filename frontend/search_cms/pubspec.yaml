@@ -39,5 +39,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/shishalh.png
-    - assets/images/background_shishalh.jpg
+    - assets/images/background_shishalh.png
     - assets/images/shishalh_sidebar.png

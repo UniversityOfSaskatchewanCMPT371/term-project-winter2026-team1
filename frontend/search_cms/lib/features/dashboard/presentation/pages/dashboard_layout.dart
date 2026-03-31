@@ -43,7 +43,7 @@ class DashboardLayout extends StatelessWidget {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -52,7 +52,7 @@ class DashboardLayout extends StatelessWidget {
                         height: 60,
                         fit: BoxFit.contain,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 12),
                       Text(
                         'shíshálh Nation',
                         textAlign: TextAlign.center,
