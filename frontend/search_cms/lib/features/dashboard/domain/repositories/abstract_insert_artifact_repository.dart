@@ -27,8 +27,8 @@ abstract class AbstractInsertArtifactRepository {
   Future<Result> insertArtifact({
     required String assemblageName,
     int? porosity,
-    int? sizeUpper,
-    int? sizeLower,
+    double? sizeUpper,
+    double? sizeLower,
     String? comment,
     int? preExcavFrags,
     int? postExcavFrags,
