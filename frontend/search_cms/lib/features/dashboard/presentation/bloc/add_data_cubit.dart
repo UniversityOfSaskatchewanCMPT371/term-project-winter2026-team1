@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:glados/glados.dart';
+import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
-import 'add_data_state.dart';
+
 import '../../domain/entities/insert_site_result_classes.dart';
 // using to return results, could be any result classes files
+import 'add_data_state.dart';
 
-
+final Logger? _logger = logLevel != Level.OFF
+    ? Logger('Add data page UI')
+    : null;
 
 // Add Data cubit that its used for the Add Data page
 // Keeps track of what the user types into the text fields and manages the state changes for the page itself
@@ -67,8 +70,18 @@ class AddDataCubit extends Cubit<AddDataState> {
     emit(AddDataLoaded(fieldValues: updatedFieldValues));
   }
 
-  // Collects all fields that are filled, organizes them and calls the corresponding backend calls
+  // Collects all fields that are filled, checks them and calls the corresponding backend calls
+  // Handles case where all entries are empty
+  // First checks for any missing required fields and aborts if needed
+  // Pre-conditions:
+  // - Add data page in valid state
+  //
+  // Post-conditions:
+  // - Filled forms with all neccessary fields are saved to database
+  // - Any errors are returned and saved to state
   Future<void> save() async {
+    _logger?.info("Save button pressed");
+
     // collect all inputs
     Map<String, String> inputs = {};
     if (state is AddDataLoaded) {
@@ -78,14 +91,17 @@ class AddDataCubit extends Cubit<AddDataState> {
 
     // if no values are filled just do nothing
     if (inputs.isEmpty) {
+      _logger?.info("Save - no values found");
       return;
     }
 
     // check that all mandatory fields exist based on the existing section titles
     List<String> missingFields = _validateFieldEntries(inputs);
     if (missingFields.isNotEmpty) {
-      // TODO idk what to do here yet, need to add UX to display warnings
-      // Maybe add a state SaveIncomplete that will take the list and display the message
+      _logger?.warning("Save - Missing fields detected");
+      emit(SaveIncomplete(missingFields));
+      // Does this reset the fields too? cuz that should not happen
+      emit(AddDataLoaded());
       return;
     }
 
@@ -105,39 +121,47 @@ class AddDataCubit extends Cubit<AddDataState> {
       // for each possible type, collect inputs and call corresponding API call
       switch (section) {
         case 'Site Information':
+          // all required fields at this point must exist
           final borden = inputs['Site Information-Borden']!;
           final name = inputs['Site Information-Name'];
+
+          _logger?.info("Save - Inserting Site");
           results.add(usecases.insertSiteUsecase(borden: borden, name: name));
           
           final String area = inputs['Site Information-Area']!;
+          
+          _logger?.info("Save - Inserting Area");
           results.add(usecases.insertAreaUsecase(name: area));
 
         case 'Unit':
           final name = inputs['Unit-Name']!;
           final siteName = inputs['Unit-Site Name']!;
-          // TODO modify usecase to take site name and self-resolve to ID
-          results.add(usecases.insertUnitUsecase(siteId: siteName, name: name));
+
+          _logger?.info("Save - Inserting Unit");
+          results.add(usecases.insertUnitUsecase(siteName: siteName, name: name));
 
         case 'Level':
           final name = inputs['Level-Name']!;
           final unitName = inputs['Level-Unit Name']!;
           final parentName = inputs['Level-Parent Name'];
-          final int? upperLimit = int.tryParse(inputs['Level-Upper Limit']?? '');
-          final int? lowerLimit = int.tryParse(inputs['Level-Lower Limit']?? '');
-          // TODO: change unitID to instead take name, resolve to ID in API, same with parent -> area
-          // TODO: resolve unitName to unitId, parentName to parentId before calling usecase
+          final int? upperLimit = int.tryParse(inputs['Level-Upper Limit'] ?? '');
+          final int? lowerLimit = int.tryParse(inputs['Level-Lower Limit'] ?? '');
+        
+          _logger?.info("Save - Inserting Level");
           results.add(usecases.insertLevelUsecase(
-            unitId: unitName,
+            unitName: unitName,
             name: name,
             upLimit: upperLimit ?? 0,   // use default behaviour of 0 if null
             lowLimit: lowerLimit ?? 0,
-            parentId: parentName,
+            parentName: parentName,
           ));
 
         case 'Assemblage':
           final name = inputs['Assemblage-Assemblage Name']!;
           final unitName = inputs['Assemblage-Unit Name']!;
           final levelName = inputs['Assemblage-Parent Name']!;
+
+          _logger?.info("Save - Inserting Assemblage");
           results.add(usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
 
         case 'Artifact (Faunal)':
@@ -149,12 +173,15 @@ class AddDataCubit extends Cubit<AddDataState> {
           final int? postExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Post Excavation Fragments'] ?? '');
           final int? elements = int.tryParse(inputs['Artifact (Faunal)-Elements'] ?? '');
           final String? comment = inputs['Artifact (Faunal)-Comment'];
-          // results.add(usecases.insertArtifactUsecase(assemblageName: assemblageName, ));
+          
+          _logger?.info("Save - Inserting Faunal Artifact");
+          results.add(usecases.insertArtifactUsecase(assemblageName: assemblageName,
+              porosity: porosity, sizeUpper: sizeUpper, sizeLower: sizeLower, comment: comment,
+              preExcavFrags: preExcavFrags, postExcavFrags: postExcavFrags, elements: elements));
 
         default:
-          // TODO maybe swap this for a Result - Failure instance with mesasage
-          results.add(Failure(errorMessage: "Unknown Section Key Detected"));
-          emit(SaveFailure("Unknown Section Key Detected"));
+          // log error as an instance of Failure, will get picked up in following portion
+          results.add(Future.value(Failure(errorMessage: "Unknown Section Key Detected")));
       }
     }
 
@@ -167,9 +194,13 @@ class AddDataCubit extends Cubit<AddDataState> {
         // store in list errors
         .toList();
 
+    // if any Failures occured, return list of errors as SaveFailure state
     if (errors.isNotEmpty) {
+      _logger?.warning("Save - Errors Detected: $errors");
       emit(SaveFailure(errors));
     } else {
+      // else emit SaveSuccess
+      _logger?.info("Save - all inserts successful");
       emit(SaveSuccess());
     }
     
@@ -186,6 +217,7 @@ class AddDataCubit extends Cubit<AddDataState> {
   // returns: list of fields that needed to be filled but were empty
   // if return value has lengthq == 0, we can proceed
   List<String> _validateFieldEntries(Map<String, String> fields) {
+    _logger?.info("Save - Validating Fields");
     List<String> result = [];
 
     // Determine which sections are present by splitting on '-'
