@@ -110,23 +110,32 @@ class _LoginPageState extends State<LoginPage> {
       create: (_) => LoginCubit(),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxCardWidth),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: outerPad),
-              child: Container(
-                padding: EdgeInsets.all(cardPad),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(AppDimens.cardRadius),
-                  border: Border.all(color: AppColors.cardBorder, width: 1),
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 6,
-                      spreadRadius: -1,
-                      color: Color.fromRGBO(0, 0, 0, 0.10),
+        body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                //Adding the logo as a background
+                //Might get removed -- just an idea.
+                'assets/images/background_shishalh.jpg',
+                fit: BoxFit.cover,
+                ),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: maxCardWidth),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: outerPad),
+                      child: Container(
+                        padding: EdgeInsets.all(cardPad),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppDimens.cardRadius),
+                          border: Border.all(color: AppColors.cardBorder, width: 1),
+                          boxShadow: const [
+                            BoxShadow(
+                              offset: Offset(0, 4),
+                              blurRadius: 6,
+                              spreadRadius: -1,
+                              color: Color.fromRGBO(0, 0, 0, 0.10),
                     ),
                   ],
                 ),
@@ -159,7 +168,15 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Logo
+                          Center(
+                            child: Image.asset(
+                              //adding the logo from the assets-images folder
+                              'assets/images/shishalh.png',
+                              height: 80,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+
                           Center(
                             child: RichText(
                               text: TextSpan(
@@ -365,15 +382,17 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             child: const Text('Request Account Access'),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
