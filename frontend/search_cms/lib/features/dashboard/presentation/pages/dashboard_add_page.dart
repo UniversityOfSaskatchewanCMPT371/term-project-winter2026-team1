@@ -247,6 +247,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
       // it provides the AddDataCubit state to the page and calls the init()
       child: BlocConsumer<AddDataCubit, AddDataState>(
         listener: (context, state) {
+          // Error handling
+          // Displays error for missing fields
           if (state is SaveIncomplete) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Missing required fields: ${state.missing.join(', ')}"),
@@ -256,9 +258,20 @@ class DashboardAddPageState extends State<DashboardAddPage> {
               )
             );
           }
+          // Displays error if backend failed and in which forms
           if (state is SaveFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("An error occured while saving: ${state.errors.join(', ')}"),
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                action: SnackBarAction(label: 'X', onPressed: () {})
+              )
+            );
+          }
+          // Display success message
+          if (state is SaveSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Save Successful"),
                 behavior: SnackBarBehavior.floating,
                 margin: EdgeInsets.only(top: 50, left: 16, right: 16),
                 action: SnackBarAction(label: 'X', onPressed: () {})
