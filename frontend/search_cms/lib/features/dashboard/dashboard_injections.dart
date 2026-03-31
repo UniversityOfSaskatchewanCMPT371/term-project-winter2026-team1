@@ -3,6 +3,7 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_areas_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_levels_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_sites_api_impl.dart';
+import 'package:search_cms/features/dashboard/data/data_sources/get_all_table_rows_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/get_all_units_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/insert_area_api_impl.dart';
 import 'package:search_cms/features/dashboard/data/data_sources/insert_assemblage_api_impl.dart';
@@ -13,6 +14,7 @@ import 'package:search_cms/features/dashboard/data/data_sources/insert_unit_api_
 import 'package:search_cms/features/dashboard/data/repositories/get_all_areas_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_levels_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_sites_repository_impl.dart';
+import 'package:search_cms/features/dashboard/data/repositories/get_all_table_rows_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/get_all_units_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/insert_area_repository_impl.dart';
 import 'package:search_cms/features/dashboard/data/repositories/insert_assemblage_repository_impl.dart';
@@ -24,6 +26,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_areas_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_levels_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_sites_usecase.dart';
+import 'package:search_cms/features/dashboard/domain/usecases/get_all_table_rows_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/get_all_units_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_assemblage_usecase.dart';
@@ -43,6 +46,8 @@ void initDashboardInjections() {
   _registerGetAllAreasUseCase();
   _registerGetAllUnitsUseCase();
   _registerGetAllLevelsUseCase();
+  _registerGetAllTableRowsUseCase();
+
   _registerInsertSiteUseCase();
   _registerInsertAreaUseCase();
   _registerInsertSiteAreaUseCase();
@@ -57,6 +62,7 @@ void initDashboardInjections() {
       getAllAreasUseCase: getIt<GetAllAreasUseCase>(),
       getAllUnitsUseCase: getIt<GetAllUnitsUseCase>(),
       getAllLevelsUseCase: getIt<GetAllLevelsUseCase>(),
+      getAllTableRowsUseCase: getIt<GetAllTableRowsUseCase>(),
       insertSiteUsecase: getIt<InsertSiteUsecase>(),
       insertAreaUsecase: getIt<InsertAreaUsecase>(),
       insertSiteAreaUsecase: getIt<InsertSiteAreaUsecase>(),
@@ -231,6 +237,26 @@ void _registerGetAllSitesUseCase() {
   // Register the GetAllSitesUseCase
   getIt.registerFactory<GetAllSitesUseCase>(
     () => GetAllSitesUseCase(repository: getIt<GetAllSitesRepositoryImpl>()),
+  );
+}
+
+/*
+ Register all the necessary dependency injections for the get all table rows use case
+ */
+void _registerGetAllTableRowsUseCase() {
+  // Register the GetAllTableRowsApiImpl
+  getIt.registerFactory<GetAllTableRowsApiImpl>(
+    () => GetAllTableRowsApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+  );
+
+  // Register the GetAllTableRowsRepositoryImpl
+  getIt.registerFactory<GetAllTableRowsRepositoryImpl>(
+    () => GetAllTableRowsRepositoryImpl(api: getIt<GetAllTableRowsApiImpl>()),
+  );
+
+  // Register the GetAllTableRowsUseCase
+  getIt.registerFactory<GetAllTableRowsUseCase>(
+    () => GetAllTableRowsUseCase(repository: getIt<GetAllTableRowsRepositoryImpl>()),
   );
 }
 
