@@ -251,12 +251,18 @@ class DashboardAddPageState extends State<DashboardAddPage> {
           // Displays error for missing fields
           if (state is SaveIncomplete) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Missing required fields: ${state.missing.join(', ')}",
-                       selectionColor: AppColors.mainText,),
+              SnackBar(
+                content: 
+                  Text("Missing required fields: ${state.missing.join(', ')}",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                    )),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: AppColors.danger,
                 margin: EdgeInsets.only(top: 50, left: 16, right: 16),
-                action: SnackBarAction(label: 'X', onPressed: () {}),
+                action: SnackBarAction(label: 'X', onPressed: () => {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
+                }),  // X button to dismiss
                 persist: true,  // remain until dismissed
               )
             );
@@ -264,12 +270,18 @@ class DashboardAddPageState extends State<DashboardAddPage> {
           // Displays error if backend failed and in which forms
           if (state is SaveFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("An error occured while saving: ${state.errors.join(', ')}",
-                        selectionColor: AppColors.mainText,),
+              SnackBar(
+                content: 
+                  Text("An error occured while saving: ${state.errors.join(', ')}",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                    )),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: AppColors.danger,
                 margin: EdgeInsets.only(top: 50, left: 16, right: 16),
-                action: SnackBarAction(label: 'X', onPressed: () {}),
+                action: SnackBarAction(label: 'X', onPressed: () => {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
+                }),
                 persist: true,  // remain until dismissed
               )
             );
@@ -277,11 +289,18 @@ class DashboardAddPageState extends State<DashboardAddPage> {
           // Display success message
           if (state is SaveSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Save Successful", selectionColor: AppColors.mainText,),
+              SnackBar(
+                content: 
+                  Text("Save Successful",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                  )),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: AppColors.primaryBlue,
                 margin: EdgeInsets.only(top: 50, left: 16, right: 16),
-                action: SnackBarAction(label: 'X', onPressed: () {}),
+                action: SnackBarAction(label: 'X', onPressed: () => {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
+                }),
                 duration: Duration(seconds: 3), // auto dismiss
               )
             );
