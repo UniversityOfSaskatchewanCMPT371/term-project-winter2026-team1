@@ -12,7 +12,7 @@ create table public.role (
 -- Enable RLS policy. Prevent users from reading other users roles
 alter table public.role enable row level security;
 
-create policy "User can read their own role"
+create policy "User can only read their own role"
 on role
 for select
 to authenticated
