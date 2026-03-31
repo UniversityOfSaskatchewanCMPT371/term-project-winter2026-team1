@@ -205,7 +205,7 @@ class AddDataCubit extends Cubit<AddDataState> {
       // else emit SaveSuccess
       _logger?.info("Save - all inserts successful");
       emit(SaveSuccess());
-      // reset fields
+      // reset fields, emits AddDataLoaded
       resetFields();
     }
   }
