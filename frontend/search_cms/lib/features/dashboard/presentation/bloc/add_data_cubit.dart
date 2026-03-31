@@ -167,8 +167,8 @@ class AddDataCubit extends Cubit<AddDataState> {
         case 'Artifact (Faunal)':
           final assemblageName = inputs['Artifact (Faunal)-Assemblage Name']!;
           final int? porosity = int.tryParse(inputs['Artifact (Faunal)-Porosity'] ?? '');
-          final int? sizeUpper = int.tryParse(inputs['Artifact (Faunal)-Size Upper'] ?? '');
-          final int? sizeLower = int.tryParse(inputs['Artifact (Faunal)-Size Lower'] ?? '');
+          final double? sizeUpper = double.tryParse(inputs['Artifact (Faunal)-Size Upper'] ?? '');
+          final double? sizeLower = double.tryParse(inputs['Artifact (Faunal)-Size Lower'] ?? '');
           final int? preExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Pre Excavation Fragments'] ?? '');
           final int? postExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Post Excavation Fragments'] ?? '');
           final int? elements = int.tryParse(inputs['Artifact (Faunal)-Elements'] ?? '');
