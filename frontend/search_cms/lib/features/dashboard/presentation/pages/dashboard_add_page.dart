@@ -402,7 +402,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                       // Uses the "save" handler when clicked
                       TextButton(
                         key: Key("saveButton"),
-                        onPressed: () => _handleSave(context),
+                        // prevent repeated press if already processing a save
+                        onPressed: state is SaveLoading ? null : () => _handleSave(context),
                         style: TextButton.styleFrom(
                           backgroundColor: AppColors.addDataFieldFocus,
                           foregroundColor: Colors.white,
@@ -418,7 +419,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                       const SizedBox(width: 10),
                       TextButton(
                         key: Key("resetButton"),
-                        onPressed: () => _handleReset(context),
+                        // prevent reset during save
+                        onPressed: state is SaveLoading ? null : () => _handleReset(context),
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: AppColors.mainText,
