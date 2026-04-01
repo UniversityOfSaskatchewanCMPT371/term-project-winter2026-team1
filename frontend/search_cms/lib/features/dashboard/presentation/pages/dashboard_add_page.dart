@@ -272,7 +272,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: 
-                  Text("An error occured while saving: ${state.errors.join(', ')}",
+                  Text("An error occured while saving",
                     style: TextStyle(
                       color: AppColors.mainText,
                     )),
