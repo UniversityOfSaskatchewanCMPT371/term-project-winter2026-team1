@@ -68,12 +68,13 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
       // generate random UUID
       final String id = const Uuid().v4();
 
+      final String now = DateTime.now().toUtc().toIso8601String();
+
       // use the resolved assemblage ID to insert the artifact with all given fields into that assemblage
-      // leaves created_at and updated_at to default to now()
       await _powerSyncDatabase.execute(
-        'INSERT INTO artifact_faunal (id, assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements)'
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [id, assemblageId, porosity, sizeUpper, sizeLower, comment, preExcavFrags, postExcavFrags, elements],
+        'INSERT INTO artifact_faunal (id, assemblage_id, porosity, size_upper, size_lower, comment, pre_excav_frags, post_excav_frags, elements, created_at, updated_at)'
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [id, assemblageId, porosity, sizeUpper, sizeLower, comment, preExcavFrags, postExcavFrags, elements, now, now],
       );
 
       _logger.finer('Insert unit API: Inserting artifact into PowerSync '
