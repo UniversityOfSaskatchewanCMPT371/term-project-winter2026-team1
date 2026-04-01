@@ -68,8 +68,8 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
       String? parentId;
       if (parentName != null) {
         final parentResult = await _powerSyncDatabase.execute(
-          'SELECT id FROM level WHERE name = ? LIMIT 1',
-          [parentName],
+          'SELECT id FROM level WHERE name = ? AND unit_id = ? LIMIT 1',
+          [parentName, unitId],
         );
         if (parentResult.rows.isNotEmpty) {
           parentId = parentResult.first['id'] as String;
