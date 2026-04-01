@@ -241,10 +241,17 @@ class AddDataCubit extends Cubit<AddDataState> {
       final required = sectionRequirements[section];
       if (required == null) continue;
 
+      // Only validate this section if the user has filled at least one field in it
+      final hasAnyFilledField = fields.entries
+          .where((e) => e.key.startsWith('$section-'))
+          .any((e) => e.value.trim().isNotEmpty);
+      // skip if untouched
+      if (!hasAnyFilledField) continue;
+
       for (final field in required) {
         final key = '$section-$field';
         if ((fields[key] ?? '').trim().isEmpty) {
-          result.add("$key: $field");
+          result.add("${key.split('-').first}: $field");
         }
       }
     }
