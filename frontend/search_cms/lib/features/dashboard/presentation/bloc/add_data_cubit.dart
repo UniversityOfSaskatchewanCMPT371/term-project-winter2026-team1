@@ -114,8 +114,16 @@ class AddDataCubit extends Cubit<AddDataState> {
     // iterate over the map and filter out calls into repespective types
     // possible keys inlude Site Information, Unit, Level, Assemblage, Artifact (Faunal)
     // hyphonated with -feildName (ie. Unit-Name, Unit-Site Name)
-    // Determine which sections are present by splitting on '-'
-    final Set<String> sections = inputs.keys.map((k) => k.split('-').first).toSet();
+    // This determines which sections are present by splitting on '-', taking the first
+    // and then filter sections to only those where the user actually filled something in
+    final Set<String> sections = inputs.keys
+        .map((k) => k.split('-').first)
+        .toSet()
+        .where((section) => inputs.entries
+            .where((e) => e.key.startsWith('$section-'))
+            .any((e) => e.value.trim().isNotEmpty))
+        .toSet();
+    
     List<Result> results = [];
 
     // run each insert in sequential order to ensure correct dependency heirarchy
