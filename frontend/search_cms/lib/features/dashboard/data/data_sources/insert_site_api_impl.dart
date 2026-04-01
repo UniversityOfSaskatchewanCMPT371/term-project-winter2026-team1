@@ -3,7 +3,7 @@ import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'abstract_insert_site_api.dart';
-
+import 'package:uuid/uuid.dart';
 /*
   The PowerSync API implementation for inserting a site
 */
@@ -40,10 +40,13 @@ class InsertSiteApiImpl implements AbstractInsertSiteApi {
 
       final String now = DateTime.now().toUtc().toIso8601String();
 
+      // generate random UUID
+      final String id = const Uuid().v4();
+
       await _powerSyncDatabase.execute(
-        'INSERT INTO site (name, borden, created_at, updated_at) '
-        'VALUES (?, ?, ?, ?)',
-        [name, borden, now, now],
+        'INSERT INTO site (id, name, borden, created_at, updated_at) '
+        'VALUES (?, ?, ?, ?, ?)',
+        [id, name, borden, now, now],
       );
 
       _logger.finer('Insert site API: Inserting site into PowerSync '
