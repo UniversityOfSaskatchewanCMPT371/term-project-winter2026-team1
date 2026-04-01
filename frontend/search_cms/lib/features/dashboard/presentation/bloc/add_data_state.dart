@@ -72,6 +72,8 @@ class SaveSuccess extends AddDataState {
 }
 
 // State to register when a save call has failed
+// Error message is only for debugging
+// DO NOT SHOW TO USER
 class SaveFailure extends AddDataState {
   final List<String> errors;
 
