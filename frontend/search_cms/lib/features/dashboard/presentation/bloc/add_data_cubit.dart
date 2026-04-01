@@ -116,79 +116,80 @@ class AddDataCubit extends Cubit<AddDataState> {
     // hyphonated with -feildName (ie. Unit-Name, Unit-Site Name)
     // Determine which sections are present by splitting on '-'
     final Set<String> sections = inputs.keys.map((k) => k.split('-').first).toSet();
-    List<Future<Result>> results = [];
+    List<Result> results = [];
 
-    for (String section in sections) {
-      // for each possible type, collect inputs and call corresponding API call
-      switch (section) {
-        case 'Site Information':
-          // all required fields at this point must exist
-          final borden = inputs['Site Information-Borden']!;
-          final name = inputs['Site Information-Name'];
+    // run each insert in sequential order to ensure correct dependency heirarchy
+    if (sections.contains('Site Information')) {
+      // all required fields at this point must exist
+      final String borden = inputs['Site Information-Borden']!;
+      final String? name = inputs['Site Information-Name'];
 
-          _logger?.info("Save - Inserting Site");
-          results.add(usecases.insertSiteUsecase(borden: borden, name: name));
-          
-          final String area = inputs['Site Information-Area']!;
-          
-          _logger?.info("Save - Inserting Area");
-          results.add(usecases.insertAreaUsecase(name: area));
+      _logger?.info("Save - Inserting Site");
+      results.add(await usecases.insertSiteUsecase(borden: borden, name: name));
+      
+      final String area = inputs['Site Information-Area']!;
+      
+      _logger?.info("Save - Inserting Area");
+      results.add(await usecases.insertAreaUsecase(name: area));
+    }
 
-        case 'Unit':
-          final name = inputs['Unit-Name']!;
-          final siteName = inputs['Unit-Site Name']!;
 
-          _logger?.info("Save - Inserting Unit");
-          results.add(usecases.insertUnitUsecase(siteName: siteName, name: name));
+    if (sections.contains('Unit')) {
+      final String name = inputs['Unit-Name']!;
+      final String siteName = inputs['Unit-Site Name']!;
 
-        case 'Level':
-          final name = inputs['Level-Name']!;
-          final unitName = inputs['Level-Unit Name']!;
-          final parentName = inputs['Level-Parent Name'];
-          final int? upperLimit = int.tryParse(inputs['Level-Upper Limit'] ?? '');
-          final int? lowerLimit = int.tryParse(inputs['Level-Lower Limit'] ?? '');
-        
-          _logger?.info("Save - Inserting Level");
-          results.add(usecases.insertLevelUsecase(
-            unitName: unitName,
-            name: name,
-            upLimit: upperLimit ?? 0,   // use default behaviour of 0 if null
-            lowLimit: lowerLimit ?? 0,
-            parentName: parentName,
-          ));
+      _logger?.info("Save - Inserting Unit");
+      results.add(await usecases.insertUnitUsecase(siteName: siteName, name: name));
+    }
 
-        case 'Assemblage':
-          final name = inputs['Assemblage-Assemblage Name']!;
-          final unitName = inputs['Assemblage-Unit Name']!;
-          final levelName = inputs['Assemblage-Parent Name']!;
 
-          _logger?.info("Save - Inserting Assemblage");
-          results.add(usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
+    if (sections.contains('Level')) {
+      final String name = inputs['Level-Name']!;
+      final String unitName = inputs['Level-Unit Name']!;
+      final String? parentName = inputs['Level-Parent Name'];
+      // this syntax gets the result as an int if exists, null otherwise
+      final int? upperLimit = int.tryParse(inputs['Level-Upper Limit'] ?? '');
+      final int? lowerLimit = int.tryParse(inputs['Level-Lower Limit'] ?? '');
+    
+      _logger?.info("Save - Inserting Level");
+      results.add(await usecases.insertLevelUsecase(
+        unitName: unitName,
+        name: name,
+        upLimit: upperLimit ?? 0,   // use default behaviour of 0 if null
+        lowLimit: lowerLimit ?? 0,
+        parentName: parentName,
+      ));
+    }
 
-        case 'Artifact (Faunal)':
-          final assemblageName = inputs['Artifact (Faunal)-Assemblage Name']!;
-          final int? porosity = int.tryParse(inputs['Artifact (Faunal)-Porosity'] ?? '');
-          final double? sizeUpper = double.tryParse(inputs['Artifact (Faunal)-Size Upper'] ?? '');
-          final double? sizeLower = double.tryParse(inputs['Artifact (Faunal)-Size Lower'] ?? '');
-          final int? preExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Pre Excavation Fragments'] ?? '');
-          final int? postExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Post Excavation Fragments'] ?? '');
-          final int? elements = int.tryParse(inputs['Artifact (Faunal)-Elements'] ?? '');
-          final String? comment = inputs['Artifact (Faunal)-Comment'];
-          
-          _logger?.info("Save - Inserting Faunal Artifact");
-          results.add(usecases.insertArtifactUsecase(assemblageName: assemblageName,
-              porosity: porosity, sizeUpper: sizeUpper, sizeLower: sizeLower, comment: comment,
-              preExcavFrags: preExcavFrags, postExcavFrags: postExcavFrags, elements: elements));
 
-        default:
-          // log error as an instance of Failure, will get picked up in following portion
-          results.add(Future.value(Failure(errorMessage: "Unknown Section Key Detected")));
-      }
+    if (sections.contains('Assemblage')) {
+      final String name = inputs['Assemblage-Assemblage Name']!;
+      final String unitName = inputs['Assemblage-Unit Name']!;
+      final String levelName = inputs['Assemblage-Level Name']!;
+
+      _logger?.info("Save - Inserting Assemblage");
+      results.add(await usecases.insertAssemblageUsecase(name: name, unitName: unitName, levelName: levelName));
+    }
+
+
+    if (sections.contains('Artifact (Faunal)')) {
+      final String assemblageName = inputs['Artifact (Faunal)-Assemblage Name']!;
+      final int? porosity = int.tryParse(inputs['Artifact (Faunal)-Porosity'] ?? '');
+      final double? sizeUpper = double.tryParse(inputs['Artifact (Faunal)-Size Upper'] ?? '');
+      final double? sizeLower = double.tryParse(inputs['Artifact (Faunal)-Size Lower'] ?? '');
+      final int? preExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Pre Excavation Fragments'] ?? '');
+      final int? postExcavFrags = int.tryParse(inputs['Artifact (Faunal)-Post Excavation Fragments'] ?? '');
+      final int? elements = int.tryParse(inputs['Artifact (Faunal)-Elements'] ?? '');
+      final String? comment = inputs['Artifact (Faunal)-Comment'];
+      
+      _logger?.info("Save - Inserting Faunal Artifact");
+      results.add(await usecases.insertArtifactUsecase(assemblageName: assemblageName,
+          porosity: porosity, sizeUpper: sizeUpper, sizeLower: sizeLower, comment: comment,
+          preExcavFrags: preExcavFrags, postExcavFrags: postExcavFrags, elements: elements));
     }
 
     // check results for any Failures
-    final List<Result> resolved = await Future.wait(results);
-    List<String> errors = resolved
+    List<String> errors = results
         .whereType<Failure>()
         // collect error messages
         .map((f) => f.errorMessage)
@@ -243,7 +244,7 @@ class AddDataCubit extends Cubit<AddDataState> {
       for (final field in required) {
         final key = '$section-$field';
         if ((fields[key] ?? '').trim().isEmpty) {
-          result.add(field);
+          result.add("$key: $field");
         }
       }
     }
