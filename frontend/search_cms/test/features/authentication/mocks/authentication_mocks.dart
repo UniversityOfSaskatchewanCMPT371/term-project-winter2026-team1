@@ -9,6 +9,7 @@ To regenerate mocks : dart run build_runner build --delete-conflicting-outputs
 */
 
 import 'package:mockito/annotations.dart';
+import 'package:powersync/powersync.dart';
 import 'package:search_cms/features/authentication/data/data_sources/abstract_authentication_sign_in_api.dart';
 import 'package:search_cms/features/authentication/domain/repositories/abstract_authentication_sign_in_repository.dart';
 import 'package:search_cms/features/authentication/domain/usecases/authentication_sign_in_usecase.dart';
@@ -28,6 +29,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
   MockSpec<AuthResponse>(),
   MockSpec<Session>(),
   MockSpec<User>(),
+  MockSpec<PowerSyncDatabase>(),
 
   // PostgREST builder chain
   MockSpec<SupabaseQueryBuilder>(),
