@@ -2,8 +2,8 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'abstract_insert_site_api.dart';
 import 'package:uuid/uuid.dart';
+import 'abstract_insert_site_api.dart';
 /*
   The PowerSync API implementation for inserting a site
 */
