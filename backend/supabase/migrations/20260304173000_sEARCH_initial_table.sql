@@ -15,6 +15,13 @@ FOR SELECT
 TO authenticated
 USING (true);
 
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on area"
+ON area
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
 -- An intermediate table for Site and Area as per the ER diagram 
 CREATE TABLE site_area (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -33,6 +40,13 @@ ON site_area
 FOR SELECT
 TO authenticated
 USING (true);
+
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on site_area"
+ON site_area
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
 
 -- A Unit in a Site. Defined as the measured area where excavation takes place. A Site can have multiple units
 CREATE TABLE unit (
@@ -58,6 +72,13 @@ ON unit
 FOR SELECT
 TO authenticated
 USING (true);
+
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on unit"
+ON unit
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
 
 -- A Level in a Unit. Defined as the vertical unit of control, typically 10 cm thick. A Unit can have multiple levels
 CREATE TABLE level (
@@ -92,4 +113,9 @@ FOR SELECT
 TO authenticated
 USING (true);
 
-
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on level"
+ON level
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
