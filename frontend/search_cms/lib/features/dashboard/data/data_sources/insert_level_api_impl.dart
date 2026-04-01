@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'abstract_insert_level_api.dart';
 
 /*
@@ -75,13 +76,16 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
         }
       }
 
+      // generate random UUID
+      final String id = const Uuid().v4();
+
       // insert level into unit with resolved ID and optionally parent level ID
       // leaves level_char and level_int unused
       await _powerSyncDatabase.execute(
-        'INSERT INTO level (unit_id, name, up_limit, low_limit, created_at, '
+        'INSERT INTO level (id, unit_id, name, up_limit, low_limit, created_at, '
         'updated_at, parent_id) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [unitId, name, upLimit, lowLimit, now, now, parentId],
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [id, unitId, name, upLimit, lowLimit, now, now, parentId],
       );
 
       _logger.finer('Insert level API: Inserting level into PowerSync '

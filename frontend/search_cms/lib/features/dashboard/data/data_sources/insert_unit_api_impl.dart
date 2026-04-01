@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'abstract_insert_unit_api.dart';
 
 /*
@@ -48,12 +49,14 @@ class InsertUnitApiImpl implements AbstractInsertUnitApi {
       assert(siteResult.isNotEmpty);
       final String siteId = siteResult.first['id'] as String;
 
+      // generate random UUID
+      final String id = const Uuid().v4();
 
       // insert the unit into the site with resolved ID
       await _powerSyncDatabase.execute(
-        'INSERT INTO unit (site_id, name, created_at, updated_at) '
-        'VALUES (?, ?, ?, ?)',
-        [siteId, name, now, now],
+        'INSERT INTO unit (id, site_id, name, created_at, updated_at) '
+        'VALUES (?, ?, ?, ?, ?)',
+        [id, siteId, name, now, now],
       );
 
       _logger.finer('Insert unit API: Inserting unit into PowerSync '
