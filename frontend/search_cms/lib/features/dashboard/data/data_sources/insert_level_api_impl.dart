@@ -42,6 +42,11 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
       _logger.finer('Insert level API: Inserting level into PowerSync '
           'Database start');
 
+      // for debugging
+      // _logger.fine('anyError: ${_powerSyncDatabase.currentStatus.anyError}');
+      // _logger.fine('currentSession: ${getIt<SupabaseClient>().auth.currentSession}');
+      // _logger.fine('unitName: $unitName, name: $name');
+
       assert(_powerSyncDatabase.currentStatus.anyError == null);
       assert(getIt<SupabaseClient>().auth.currentSession != null);
       assert(unitName.isNotEmpty);
@@ -55,7 +60,8 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
         'SELECT id FROM unit WHERE name = ? LIMIT 1',
         [unitName],
       );
-      final String unitId = unitResult.rows.first[0] as String;
+      assert(unitResult.isNotEmpty);
+      final String unitId = unitResult.first['id'] as String;
 
       // if not null, find parent levelId for parent level name
       String? parentId;
@@ -65,7 +71,7 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
           [parentName],
         );
         if (parentResult.rows.isNotEmpty) {
-          parentId = parentResult.rows.first[0] as String;
+          parentId = parentResult.first['id'] as String;
         }
       }
 
@@ -80,6 +86,7 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
 
       _logger.finer('Insert level API: Inserting level into PowerSync '
           'Database end');
+
     } catch (e) {
       rethrow;
     }

@@ -41,10 +41,13 @@ class InsertUnitApiImpl implements AbstractInsertUnitApi {
       final String now = DateTime.now().toUtc().toIso8601String();
 
       // use the site name to resolve the site ID
-      final siteId = await _powerSyncDatabase.execute(
+      final siteResult = await _powerSyncDatabase.execute(
         'SELECT id FROM site WHERE name = ? LIMIT 1',
         [siteName],
       );
+      assert(siteResult.isNotEmpty);
+      final String siteId = siteResult.first['id'] as String;
+
 
       // insert the unit into the site with resolved ID
       await _powerSyncDatabase.execute(
