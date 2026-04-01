@@ -18,6 +18,13 @@ FOR SELECT
 TO authenticated
 USING (true);
 
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on assemblage"
+ON assemblage
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
 -- An Artifact in an Assemblage
 CREATE TABLE artifact_faunal (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -56,4 +63,9 @@ FOR SELECT
 TO authenticated
 USING (true);
 
-
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on artifact_faunal"
+ON artifact_faunal
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
