@@ -298,9 +298,6 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: AppColors.primaryBlue,
                 margin: EdgeInsets.only(top: 50, left: 16, right: 16),
-                action: SnackBarAction(label: 'X', onPressed: () => {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
-                }),
                 duration: Duration(seconds: 3), // auto dismiss
               )
             );
