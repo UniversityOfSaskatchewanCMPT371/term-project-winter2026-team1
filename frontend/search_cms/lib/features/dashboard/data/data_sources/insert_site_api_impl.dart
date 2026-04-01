@@ -41,6 +41,7 @@ class InsertSiteApiImpl implements AbstractInsertSiteApi {
       final String now = DateTime.now().toUtc().toIso8601String();
 
       // generate random UUID
+      // only required for inserting a new Site
       final String id = const Uuid().v4();
 
       await _powerSyncDatabase.execute(
