@@ -53,15 +53,18 @@ class InsertAssemblageApiImpl implements AbstractInsertAssemblageApi {
         'SELECT id FROM level WHERE name = ? AND unit_id = ? LIMIT 1',
         [levelName, unitId],
       );
+      assert(levelResult.isNotEmpty);
       final String levelId = levelResult.first['id'] as String;
+
+      final String now = DateTime.now().toUtc().toIso8601String();
 
       // generate random UUID
       final String id = const Uuid().v4();
 
       // use the resolved level ID to insert an assemblage with name 'name'
       await _powerSyncDatabase.execute(
-        'INSERT INTO assemblage (id, level_id, name) VALUES (?, ?, ?)',
-        [id, levelId, name],
+        'INSERT INTO assemblage (id, level_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+        [id, levelId, name, now, now],
       );
 
       _logger.finer('Insert unit API: Inserting Assemblage into PowerSync '
