@@ -143,7 +143,7 @@ class DashboardHomePage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsetsGeometry.all(2.5.h),
                 child: BlocProvider(
-                    create: (_) => DataTableCubit()..initialFetch(),
+                    create: (_) => DataTableCubit()..initialFetch(state.tableRowEntities),
                     child: const DataTableWidget(),
                   ),
                 ) 
