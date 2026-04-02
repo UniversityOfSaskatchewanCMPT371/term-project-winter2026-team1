@@ -29,7 +29,7 @@ class InsertUnitRepositoryImpl implements AbstractInsertUnitRepository {
       (3) siteId.isNotEmpty && name.isNotEmpty
   */
   @override
-  Future<Result> insertUnit({required String siteId, required String name}) async {
+  Future<Result> insertUnit({required String siteName, required String name}) async {
     try {
       _logger.finer('Insert unit repository: Inserting unit into PowerSync '
           'Database start');
@@ -37,7 +37,7 @@ class InsertUnitRepositoryImpl implements AbstractInsertUnitRepository {
       assert(getIt<PowerSyncDatabase>().currentStatus.anyError == null);
       assert(getIt<SupabaseClient>().auth.currentSession != null);
 
-      await _api.insertUnit(siteId: siteId, name: name);
+      await _api.insertUnit(siteName: siteName, name: name);
 
       _logger.finer('Insert unit repository: Inserting unit into PowerSync '
           'Database end');
