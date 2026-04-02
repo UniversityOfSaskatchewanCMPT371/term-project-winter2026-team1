@@ -49,7 +49,7 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
     int? elements
   }) async {
     try {
-      _logger.finer('Insert unit API: Inserting artifact into PowerSync '
+      _logger.finer('Insert artifact API: Inserting artifact into PowerSync '
           'Database start');
 
       assert(_powerSyncDatabase.currentStatus.anyError == null);
@@ -77,7 +77,7 @@ class InsertArtifactApiImpl implements AbstractInsertArtifactApi {
         [id, assemblageId, porosity, sizeUpper, sizeLower, comment, preExcavFrags, postExcavFrags, elements, now, now],
       );
 
-      _logger.finer('Insert unit API: Inserting artifact into PowerSync '
+      _logger.finer('Insert artifact API: Inserting artifact into PowerSync '
           'Database end');
     } catch (e) {
       rethrow;
