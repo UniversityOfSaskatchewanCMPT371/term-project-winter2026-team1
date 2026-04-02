@@ -59,3 +59,36 @@ class AddDataLoaded extends AddDataState {
   @override
   List<Object> get props => [fieldValues];
 }
+
+// State to register that the save button has been pressed
+// Displays a small loading icon while the backend is processing the call
+class SaveLoading extends AddDataState {
+  const SaveLoading();
+}
+
+// State to register when a save is successful
+class SaveSuccess extends AddDataState {
+  const SaveSuccess();
+}
+
+// State to register when a save call has failed
+// Error message is only for debugging
+// DO NOT SHOW TO USER
+class SaveFailure extends AddDataState {
+  final List<String> errors;
+
+  const SaveFailure(this.errors);
+
+  @override
+  List<Object?> get props => [errors];
+}
+
+// State to register when missing fields are identified in save()
+class SaveIncomplete extends AddDataState {
+  final List<String> missing;
+
+  const SaveIncomplete(this.missing);
+
+  @override
+  List<Object?> get props => [missing];
+}

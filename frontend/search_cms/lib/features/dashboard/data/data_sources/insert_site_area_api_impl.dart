@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'abstract_insert_site_area_api.dart';
 
 /*
@@ -41,9 +42,12 @@ class InsertSiteAreaApiImpl implements AbstractInsertSiteAreaApi {
       assert(siteId.isNotEmpty);
       assert(areaId.isNotEmpty);
 
+      // generate random UUID
+      final String id = const Uuid().v4();
+
       await _powerSyncDatabase.execute(
-        'INSERT INTO site_area (site_id, area_id) VALUES (?, ?)',
-        [siteId, areaId],
+        'INSERT INTO site_area (id, site_id, area_id) VALUES (?, ?, ?)',
+        [id, siteId, areaId],
       );
 
       _logger.finer('Insert site area API: Inserting site_area into PowerSync '
