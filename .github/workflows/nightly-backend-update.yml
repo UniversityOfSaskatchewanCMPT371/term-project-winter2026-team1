@@ -1,0 +1,41 @@
+name: Nightly Backend Update
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  refresh-system:
+    runs-on: self-hosted 
+
+    steps:
+      - name: Pull, Down, and Up
+        run: |
+          # Move to our main backend
+          cd /home/cmpt371/startup-container/term-project-winter2026-team1/backend
+          
+          git pull origin main
+          
+          # Clean up any orphans
+          docker compose down --remove-orphans
+          docker compose up -d --build
+      
+      # runs a ping on supabase every 5 seconds until passes
+      - name: Ensure Supabase is ready before running tests
+        run: |
+          echo "Waiting for Supabase on port 54321..."
+          for i in $(seq 1 30); do
+            if curl -s http://127.0.0.1:54321/auth/v1/health > /dev/null 2>&1; then
+              echo "Supabase is ready after $i attempts"
+              exit 0
+            fi
+            echo "Attempt $i/30 - not ready, waiting 5s..."
+            sleep 5
+          done
+          echo "ERROR: Supabase failed to start within 150 seconds"
+          exit 1
+
+      - name: Reset supabase with any new migrations or seed changes
+        run: |
+          docker exec backend-ubuntu_vm-1 supabase db reset

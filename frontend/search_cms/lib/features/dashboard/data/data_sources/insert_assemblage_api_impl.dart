@@ -42,6 +42,7 @@ class InsertAssemblageApiImpl implements AbstractInsertAssemblageApi {
         'SELECT id FROM unit WHERE name = ? LIMIT 1',
         [unitName],
       );
+      assert(unitResult.rows.isNotEmpty);
       final String unitId = unitResult.first['id'] as String;
 
       // use the level name and the resolved unit ID to get the level ID

@@ -17,29 +17,36 @@ class InsertUnitApiImpl implements AbstractInsertUnitApi {
   /*
     Inserts a new Unit record into the PowerSync local database
 
-    @param siteId A valid UUID reference to an existing site
+    @param siteName A valid name for existing site
     @param name A non-empty name string for the unit
 
     Preconditions:
       (1) PowerSync database is initialized
       (2) The user must be authenticated
-      (3) siteId.isNotEmpty && name.isNotEmpty
+      (3) siteName.isNotEmpty && name.isNotEmpty
 
     Postconditions: new unit record is inserted into the database
   */
   @override
-  Future<void> insertUnit({required String siteId, required String name}) async {
+  Future<void> insertUnit({required String siteName, required String name}) async {
     try {
       _logger.finer('Insert unit API: Inserting unit into PowerSync '
           'Database start');
 
       assert(_powerSyncDatabase.currentStatus.anyError == null);
       assert(getIt<SupabaseClient>().auth.currentSession != null);
-      assert(siteId.isNotEmpty);
+      assert(siteName.isNotEmpty);
       assert(name.isNotEmpty);
 
       final String now = DateTime.now().toUtc().toIso8601String();
 
+      // use the site name to resolve the site ID
+      final siteId = await _powerSyncDatabase.execute(
+        'SELECT id FROM site WHERE name = ? LIMIT 1',
+        [siteName],
+      );
+
+      // insert the unit into the site with resolved ID
       await _powerSyncDatabase.execute(
         'INSERT INTO unit (site_id, name, created_at, updated_at) '
         'VALUES (?, ?, ?, ?)',
