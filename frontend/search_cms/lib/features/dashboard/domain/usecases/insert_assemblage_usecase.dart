@@ -10,7 +10,7 @@ import '../repositories/abstract_insert_assemblage_repository.dart';
 */
 class InsertAssemblageUsecase {
   final AbstractInsertAssemblageRepository _repository;
-  final Logger _logger = Logger('Insert unit use case');
+  final Logger _logger = Logger('Insert assemblage use case');
 
   InsertAssemblageUsecase({required AbstractInsertAssemblageRepository repository})
       : _repository = repository;
