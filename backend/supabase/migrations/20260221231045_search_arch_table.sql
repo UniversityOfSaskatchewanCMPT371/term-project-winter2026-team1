@@ -27,4 +27,9 @@ FOR SELECT
 TO authenticated
 USING (true);
 
-
+-- Enable authenticated insert of new data
+CREATE POLICY "Allow authenticated insert on site"
+ON site
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
