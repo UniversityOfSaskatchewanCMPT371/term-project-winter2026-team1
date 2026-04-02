@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.dart';
 import './data_table_state.dart';
 
@@ -115,3 +116,89 @@ class DataTableCubit extends Cubit<DataTableState> {
     // TBD
   }
 }
+
+
+
+
+
+/*
+A basic search function that filters out rows from the homepage that don't contain searchString
+
+input:
+  rows: a list of rows in the table on the homepage
+  searchString: the string that will be searched for in each row
+
+Preconditions: 
+  rows != NULL, 
+  searchString != NULL
+
+Postcondition: 
+  will NOT modify rows,
+
+returns:
+  A list of all rows[i] that has an attribute where .contains(searchString) is true,
+  if searchString is "" then it will return the original list,
+
+properties / formal specification:
+  basicSearch(rows1, string1) == basicSearch(basicSearch(rows1, string1), string1) // calling it on itself with the same searchString will not change the output
+  
+  basicSearch(rows1, string1).length >= basicSearch(basicSearch(rows1, string1), string2).length // calling it on its own output with a different searchString will reduce or keep the same size
+
+  basicSearch(rows1, "") == rows1
+
+  basicSearch([], string1) == []
+
+  at time1 basicSearch(rows1, string1) == at time2 basicSearch(rows1, string1) // given the same input, calling basicSearch at different times will return the same result
+
+  basicSearch(L, searchString)
+  returns List M where there exists M[k] forall L[i] where there exists L[i].j.contains(searchString) // M only consists of rows in no guaranteed order from L where rows.someAttribute.contains(searchString) == true
+
+  0 <= list M.length <= input list L.length
+*/
+List<TableRowEntity> basicSearch(List<TableRowEntity> rows, String searchString,) {
+  String searchQuery = searchString.trim(); 
+
+   final Logger _logger = Logger('Basic search');
+   _logger.info("basic search for $searchQuery");
+
+  List<TableRowEntity> result = rows.where((row) {
+    // look through TableRowEntity's attributes for searchString
+
+    if (row == null){return false;}
+
+    // Although some attributes cannot be null, some can so I'd rather have the safeguards up for them all
+    // Site
+    bool inSite = (row.borden != null && row.borden.contains(searchQuery)) 
+      || (row.siteName != null && row.siteName.contains(searchQuery));
+
+    // Area
+    bool inArea = (row.areaName != null && row.areaName.contains(searchQuery));
+
+    // Unit
+    bool inUnit = (row.unitName != null && row.unitName.contains(searchQuery));
+
+    // Level
+    bool inLevel = (row.levelName != null && row.levelName.contains(searchQuery))
+      || (row.upLimit != null && row.upLimit.toString().contains(searchQuery))
+      || (row.lowLimit != null && row.lowLimit.toString().contains(searchQuery));
+
+    // Assemblage
+    bool inAssemblage = (row.assemblageName != null && row.assemblageName.contains(searchQuery));
+
+    // Artifact_Faunal
+    bool inArtifactFaunal = (row.porosity != null && row.porosity.toString().contains(searchQuery))
+      || (row.sizeUpper != null && row.sizeUpper.toString().contains(searchQuery))
+      || (row.sizeLower != null && row.sizeLower.toString().contains(searchQuery))
+      || (row.comment != null && row.comment.contains(searchQuery))
+      || (row.preExcavFrags != null && row.preExcavFrags.toString().contains(searchQuery))
+      || (row.postExcavFrags != null && row.postExcavFrags.toString().contains(searchQuery))
+      || (row.elements != null && row.elements.toString().contains(searchQuery));
+
+
+    return inSite || inArea || inUnit || inLevel || inAssemblage || inArtifactFaunal; // if true, include the row
+  }).toList(); // turning the iterator (from where) into a list for the proper return type
+
+  _logger.info("results of basicSearch for $searchQuery : $result");
+  return result;
+}
+
