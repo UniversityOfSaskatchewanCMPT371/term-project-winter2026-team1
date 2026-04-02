@@ -217,13 +217,56 @@ class BasicSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: const InputDecoration(
-        hintText: "Search...",
-        border: OutlineInputBorder(),
-      ),
-    //onSubmitted: context.read<DataTableCubit>().add(basicFetch(query));
+
+    // return TextField(
+    //   decoration: const InputDecoration(
+    //     hintText: "Search...",
+    //     border: OutlineInputBorder(),
+    //   ),
+    // //onSubmitted: context.read<DataTableCubit>().add(basicFetch(query));
+    // );
+
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            key: Key("basicSearchBar"),
+            decoration: const InputDecoration(
+              hintText: "Search...",
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+
+        // const SizedBox(width: 8),
+
+        // search button
+        ElevatedButton(
+          key: Key("searchButton"),
+          onPressed: (){}, // Function ran when the button is pressed
+
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(90, 40),
+            backgroundColor: const Color(0xFF1f40b0),
+            foregroundColor: Colors.white,
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            
+          ),
+
+          child: Text(
+            "Search",
+            style: TextStyle(
+              fontSize: 25,
+            )
+          ),
+        ),
+
+      ],
     );
+
   }
 }
 

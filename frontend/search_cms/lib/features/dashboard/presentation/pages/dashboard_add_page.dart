@@ -115,7 +115,7 @@ Widget createAddDataWidget(
                       const SizedBox(height: 8),
                       TextFormField(
                         key: Key("$title-$name"),
-                        maxLines: 1,
+                        maxLines: null,
                         style: TextStyle(fontSize: 14),
 
                         onChanged: (value) {
@@ -124,7 +124,7 @@ Widget createAddDataWidget(
                             name,
                             value,
                           );
-                          _logger?.info("$title-$name");
+                          // _logger?.info("$title-$name"); // slows down everytime you type a character
                         },
 
                         //The validator receives the text that user has entered
