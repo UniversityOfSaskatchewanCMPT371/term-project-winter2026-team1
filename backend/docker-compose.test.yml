@@ -27,7 +27,8 @@ services:
       timeout: 1s
       retries: 15
     depends_on:
-      - ubuntu_vm
+      ubuntu_vm:
+        condition: service_healthy
     ports:
       - "8080:8080"  # forward vm to windows
     extra_hosts:
