@@ -1,6 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/dashboard/domain/entities/get_all_table_rows_result_classes.dart'
+    as table_rows_result;
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
+
 import './home_state.dart';
 
 
@@ -11,9 +15,17 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(const HomeInitial());
 
   void init() async {
-    await dashboardUsecases.getAllSitesUseCase.call();
-    emit(const HomeLoaded());
+    final Result result = await dashboardUsecases.getAllTableRowsUseCase.call();
+
+    // If Result is of type Success at runtime we can emit the state with the actual list  
+    if (result is table_rows_result.Success) {
+      emit(HomeLoaded(tableRowEntities: result.listOfTableRowEntity));
+    } else {
+      // The call failed
+      // For now just emit an empty state
+      emit(const HomeLoaded());
     }
+  }
 
   // Update the selected search type (basic or advanced)
   void updateSearchToggle(int index) {
@@ -25,6 +37,8 @@ class HomeCubit extends Cubit<HomeState> {
       // emit new state with modified index and the same columns
       selectedSearch: index,
       selectedColumns: current.selectedColumns,
+      // Wont get deleted when switching state
+      tableRowEntities: current.tableRowEntities,
     ));
   }
 
@@ -36,6 +50,8 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoaded(
       selectedSearch: current.selectedSearch,
       selectedColumns: columns,
+      // Wont get deleted when switching state
+      tableRowEntities: current.tableRowEntities,
     ));
   }
 
