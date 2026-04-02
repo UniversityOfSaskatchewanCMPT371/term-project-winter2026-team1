@@ -60,7 +60,7 @@ jobs:
             # Wait and check
             for i in {1..50}; do
             STATUS=$(docker inspect --format "{{.State.Health.Status}}"  backend_ubuntu-vm-1 2>/dev/null || echo "waiting")
-            if [ "$STATUS" == "No such object: backend-ubuntu-vm-1"];
+            if [ "$STATUS" == "No such object: backend-ubuntu-vm-1" ];
                 then echo "Could not find backend... waiting..."
             fi
             if [ "$STATUS" == "healthy" ]; 
@@ -78,7 +78,7 @@ jobs:
             # Wait and check
             for i in {1..50}; do
             STATUS=$(docker inspect --format "{{.State.Health.Status}}" backend-powersync-1 2>/dev/null || echo "waiting")
-            if [ "$STATUS" == "No such object: backend-powersync-1"];
+            if [ "$STATUS" == "No such object: backend-powersync-1" ];
                 then echo "Could not find backend... waiting..."
             fi
             if [ "$STATUS" == "healthy" ]; then break; fi
