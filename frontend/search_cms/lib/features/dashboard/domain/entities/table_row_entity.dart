@@ -23,19 +23,14 @@
   - elements: Number of elements in an artifact
 
   Invariants:
-  - borden must be a non-empty string
-  - siteName may be empty but must not be null
-  - areaName must be a non-empty string
-  - unitName must be a non-empty string
-  - levelName must be a non-empty string
-  - upLimit <= lowLimit
-  - assemblageName must be a non-empty string
+  - Any combination of fields may be present; no single field is required
+  - Null model fields are converted to '' (strings) or 0 (ints/doubles) before construction
+  - upLimit <= lowLimit (unless either is 0, indicating the field was absent)
   - porosity is null or between 1-5
   - If sizeUpper and sizeLower are not null, then sizeUpper >= sizeLower
-  - comment may be empty but must not be null
-  - preExcavFrags > 0
-  - postExcavFrags > 0
-  - elements > 0
+  - preExcavFrags >= 0
+  - postExcavFrags >= 0
+  - elements >= 0
 */
 
 class TableRowEntity {
@@ -84,16 +79,12 @@ TableRowEntity({
   required this.postExcavFrags,
   required this.elements,
 })
-: assert(borden.isNotEmpty),
-  assert(areaName.isNotEmpty),
-  assert(unitName.isNotEmpty),
-  assert(levelName.isNotEmpty),
-  assert(upLimit <= lowLimit),
+: assert(upLimit == 0 || lowLimit == 0 || upLimit <= lowLimit),
   assert(porosity == null || (porosity > 0 && porosity <= 5)),
   assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower),
-  assert(preExcavFrags > 0),
-  assert(postExcavFrags > 0),
-  assert(elements > 0);
+  assert(preExcavFrags >= 0),
+  assert(postExcavFrags >= 0),
+  assert(elements >= 0);
 }
 
 
