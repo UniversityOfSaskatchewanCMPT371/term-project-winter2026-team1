@@ -1,7 +1,6 @@
 name: Flutter Lint Check
 
 on:
-  workflow_call:
   push:
     branches: [ "develop", "main" ]
   pull_request:
