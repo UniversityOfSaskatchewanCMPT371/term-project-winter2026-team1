@@ -9,39 +9,51 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/main.dart';
 
 /*
-- Integration test suite for authentication system and backend connectivity
-- Validates end-to-end workflow of the application, backend availability, 
-    UI rendering, successful user login
-- Operates against running local supabase instance
+  Purpose:
+  - Integration test suite for authentication flow and backend connectivity.
+  - Validates end-to-end application behavior from service readiness to
+    login screen rendering and successful login completion.
+
+  What is specifically covered:
+  - Supabase backend health
+  - UI rendering of login screen controls
+  - Successful credential submission
+  - Completion of the async login path that now includes PowerSync sync
+    and local role resolution
+
+  Environment assumptions:
+  - Local Supabase instance is running
+  - Local PowerSync instance is running
+  - App injections can initialize successfully
+  - A valid test user exists and has a role record available through sync
 */
 void main() async {
-
-  final Logger? logger = 
-    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
+  final Logger? logger =
+  logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
   group('end-to-end-integration test', () {
-
     /*
-    Preconditions:
-    - Supabase instance must be running locally
-    - Supabase health endpoint must be reachable: 127.0.0.1:54321
+      Preconditions:
+      - Supabase local services must be starting or already running
 
-    Postconditions:
-    - Confirms backend authentication system is up and running
+      Postconditions:
+      - Health endpoint eventually responds successfully
+      - Test suite can continue with auth-dependent checks
     */
-    test("Attempt http ping to Supabase", (
-    ) async {
+    test("Attempt http ping to Supabase", () async {
       logger?.info("Attempting to ping Supabase");
 
       int attempts = 0;
       const int maxAttempts = 100;
       bool ready = false;
-      while (!ready && attempts < maxAttempts){
+
+      while (!ready && attempts < maxAttempts) {
         ready = await pingSupabase();
         logger?.info("Ping result: $ready");
-        if (ready == false){
-          attempts ++;
+        if (!ready) {
+          attempts++;
           logger?.info("""Supabase not ready retrying in
           5 seconds ($attempts/$maxAttempts)""");
           await Future<void>.delayed(const Duration(seconds: 5));
@@ -50,24 +62,23 @@ void main() async {
 
       // ** this works as an assertion
       // if result != true this will throw a timeout which will cause retry
-      expect(ready, true, reason:"Could not ping Supabase");
-
-  }, timeout: const Timeout(Duration(minutes: 15)));
+      expect(ready, true, reason: "Could not ping Supabase");
+    }, timeout: const Timeout(Duration(minutes: 15)));
 
     /*
-    Preconditions:
-    - MyApp widget must load successfully
-    - LoginPage must render with correct fields
+      Preconditions:
+      - Dependency injections must initialize before MyApp is pumped
 
-    Postconditions:
-    - Button exists and is tappable
+      Postconditions:
+      - Login page renders correctly
+      - Access system button exists and is tappable
     */
-    testWidgets('Verify access system button exists', (
-      tester,
-    ) async {
+    testWidgets('Verify access system button exists', (tester) async {
       logger?.info("Running access system button existence test");
-      // Load app widget
+
+      await initInjections();
       await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
 
       // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
@@ -91,60 +102,71 @@ void main() async {
     });
 
     /*
-    Preconditions:
-    - Supabase backend must be running
-    - Database contains user with:
-      email: pleasework@fortheloveofgod.ca
-      password: passwordypassword
-    - public.role table exists
+      Preconditions:
+      - Supabase auth must be available
+      - PowerSync must be configured and able to complete first sync
+      - Valid test credentials must exist
+      - User role row must be available via synced local data
+      - Dependency injections must initialize before app startup
 
-    Postconditions:
-    - SnackBar with key "toast_successful_login" is appears
-    - Authentication system is verified to be working end to end
+      Flow under test:
+      - Render login page
+      - Enter valid credentials
+      - Submit login
+      - Wait for asynchronous auth, sync, and local role fetch
+
+      Postconditions:
+      - Success toast with key "toast_successful_login" appears
+      - This indicates the application reached post-login success state
+        after PowerSync-backed role retrieval
     */
-    testWidgets('Verify login system functions', (
-      tester,
-    ) async {
-      // Load app widget
+    testWidgets('Verify login system functions', (tester) async {
       logger?.info("Running login system integration test");
-      
-      await tester.pumpWidget(const MyApp());
 
       await initInjections();
+      await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
 
       // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
       logger?.info("Entering email");
       await tester.enterText(
-        (find.byKey(Key("emailField"))), 'pleasework@fortheloveofgod.ca');
-
+        find.byKey(const Key("emailField")),
+        'pleasework@fortheloveofgod.ca',
+      );
       await tester.pumpAndSettle();
 
       logger?.info("Entering password");
       await tester.enterText(
-        (find.byKey(Key("passwordField"))), 'passwordypassword');
-
+        find.byKey(const Key("passwordField")),
+        'passwordypassword',
+      );
       await tester.pumpAndSettle();
 
-      // Finds the floating action button to tap on
       final fab = find.byKey(const ValueKey('accessSystemButton'));
-      // ** this works as an assertion
       expect(fab, findsOneWidget);
 
       logger?.info("Tapping login button");
 
       await tester.tap(fab);
+      await tester.pump();
 
-      // Trigger a frame
-      await tester.pumpAndSettle();
+      final finder = find.byKey(const Key("toast_successful_login"));
 
-      // Finds the succesful login toast
-      final finder = find.byKey(Key("toast_successful_login"));
-      logger?.finest(finder);
+      bool foundSuccess = false;
+      for (int i = 0; i < 20; i++) {
+        await tester.pump(const Duration(seconds: 1));
+        if (tester.any(finder)) {
+          foundSuccess = true;
+          break;
+        }
+      }
 
-      if (!tester.any(finder)){
-        logger?.severe("Login failed; possible backend issue");
+      if (!foundSuccess) {
+        logger?.severe(
+          "Login failed; success toast not found after waiting for auth + PowerSync sync",
+        );
         fail("Could not find success toast");
       }
 
@@ -152,19 +174,18 @@ void main() async {
     });
   });
 
-  // END to END Test
-  // a test that verifies powersync is up and running
-  // Once it's available, i.e. timeout isn't hit 400 seconds
-  // Test flutter application (Login button)
-
+  /*
+    Purpose:
+    - Retry Supabase connectivity in a shorter repeated form to reduce
+      transient startup flakiness during local runs.
+  */
   test("Retry connection to supabase", () async {
-    await expectLater(await pingSupabase(), true,
-    ).timeout(Duration(seconds: 10));
+    await expectLater(await pingSupabase(), true)
+        .timeout(const Duration(seconds: 10));
 
-    await Future<void>.delayed(Duration(seconds: 5));
-
+    await Future<void>.delayed(const Duration(seconds: 5));
   }, retry: 30);
-} 
+}
 
 /*
 Helper function to ping the Supabase health endpoint
@@ -182,22 +203,22 @@ Postconditions:
     exception occurs during HTTP request
 */
 Future<bool> pingSupabase() async {
-  final Logger? logger = 
-    logLevel != Level.OFF ? Logger('PingSupabase') : null;
+  final Logger logger = Logger('PingSupabase');
 
   try {
-    logger?.info("Sending ping to Supabase");
-    // Sends get request to local Supabase authentication health endpoint
-    // apikey header checks request using the supbase anon key
-    final response = await http.get(Uri.parse('http://127.0.0.1:54321/auth/v1/health'), headers: {'apikey': AppConfig.supabaseAnonKey});
-    logger?.info("Finished response: ${response.statusCode}");
+    logger.info("Sending ping to Supabase");
+    final response = await http.get(
+      Uri.parse('http://127.0.0.1:54321/auth/v1/health'),
+      headers: {'apikey': AppConfig.supabaseAnonKey},
+    );
+    logger.info("Finished response: ${response.statusCode}");
 
-    if (response.statusCode == 400){
-      logger?.warning("Supabase is not ready yet");
+    if (response.statusCode == 400) {
+      logger.warning("Supabase is not ready yet");
       return false;
     }
   } catch (e) {
-    logger?.severe("Error pinging Supabase: $e");
+    logger.severe("Error pinging Supabase: $e");
     return false;
   }
   return true;
