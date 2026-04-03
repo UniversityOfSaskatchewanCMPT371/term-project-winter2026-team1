@@ -18,10 +18,6 @@ on:
 
 jobs:
 
-  env:
-    RUN_TYPE: ${{ inputs.run_type || 'default' }}
-    ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
-
   refresh-system:
     runs-on: self-hosted 
 

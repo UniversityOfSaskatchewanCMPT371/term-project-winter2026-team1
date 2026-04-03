@@ -6,14 +6,12 @@ on:
 
 jobs:
 
-  env:
-    RUN_TYPE: ${{ inputs.run_type || 'default' }}
-    ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
-
   nightly-merge:
 
     runs-on: ubuntu-latest # Just use githubs runner for this, no need for self hosted
-
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -34,30 +32,19 @@ jobs:
       id: vars
       run: echo "BRANCH=nightly-merge-v${{ steps.version.outputs.DATE_VER }}" >> $GITHUB_OUTPUT
 
-
-    - name: Merge XML reports
-      run: |
-        echo "<nightlyReport>" > nightly.xml
-        for f in artifacts/**/report.xml; do
-          sed '1{/^<?xml/d}' "$f" >> nightly.xml
-        done
-        echo "</nightlyReport>" >> nightly.xml
-
     # reset develop off of main to highlight commit changes between them
-    
-    - name: Publish report to GitHub Wiki
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Prepare changes for PR
       run: |
-        gh repo clone "${{ github.repository }}.wiki" wiki
-        cd wiki
-
-        cp ../nightly.xml Nightly-Report.xml
-
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-
-        git add Nightly-Report.xml
-        git commit -m "Nightly report $(date -u +%Y-%m-%d)" || exit 0
-        git push
-
+        git checkout develop
+        git pull origin develop
+        git checkout -b "${{ steps.vars.outputs.BRANCH }}"
+        git push origin "${{ steps.vars.outputs.BRANCH }}"
+    # Uses a marketplace gh action that merges the develop to main
+    # This action creates a PR instead of doing a direct push
+    - name: Create Pull Request to Main
+      run: |
+        gh pr create \
+          --title "Nightly Merge: ${{ steps.version.outputs.DATE_VER }}" \
+          --body "Automated nightly merge for version ${{ steps.version.outputs.DATE_VER }}. This PR will auto-merge once all status checks pass." \
+          --base main \
+          --head "${{ steps.vars.outputs.BRANCH }}"  

@@ -38,14 +38,12 @@ permissions:
 
 jobs:
 
-
-  env:
-    RUN_TYPE: ${{ inputs.run_type || 'default' }}
-    ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
-
   build:
     # Unit tests are ran through flutter, windows and mac wont affect it
     runs-on: ubuntu-latest
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     steps:
 
       - uses: actions/checkout@v4

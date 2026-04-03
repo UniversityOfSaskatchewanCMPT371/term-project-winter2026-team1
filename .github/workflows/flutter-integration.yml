@@ -37,11 +37,10 @@ permissions:
 
 jobs:
 
-  env:
-    RUN_TYPE: ${{ inputs.run_type || 'default' }}
-    ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
-
   build:
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     # Runs on ubuntu latest, this means the display driver does not test mac or windows
     runs-on: ubuntu-latest
     steps:
