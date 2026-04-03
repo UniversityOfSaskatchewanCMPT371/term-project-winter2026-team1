@@ -4,8 +4,24 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+  
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
 
 jobs:
+
+  env:
+    RUN_TYPE: ${{ inputs.run_type || 'default' }}
+    ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
+
   refresh-system:
     runs-on: self-hosted 
 
