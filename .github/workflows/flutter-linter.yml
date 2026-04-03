@@ -1,6 +1,7 @@
 name: Flutter Lint Check
 
 on:
+  workflow_call:
   push:
     branches: [ "develop", "main" ]
   pull_request:
@@ -21,6 +22,7 @@ on:
         required: true
         default: 'staging'
         type: string
+  workflow_call:
 
 permissions:
   checks: write
