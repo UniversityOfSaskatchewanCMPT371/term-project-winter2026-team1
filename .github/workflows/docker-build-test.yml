@@ -1,7 +1,6 @@
 name: Docker Build Test and Smoke Test
 
 on:
-  workflow_call:
   push:
     branches: [ "develop", "main" ]
   pull_request:

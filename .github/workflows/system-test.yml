@@ -1,7 +1,25 @@
 name: Flutter System Test
 
-
-on: [workflow_call]
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        required: true
+        default: 'staging'
+        type: string
 
 permissions:
   checks: write
