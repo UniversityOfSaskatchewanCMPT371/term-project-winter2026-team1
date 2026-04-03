@@ -33,18 +33,19 @@ const String _badPassword = 'dorwssap9000';
 // This test only goes as far as checking the route of the page is switched to
 // '/dashboard/home' and does not test and of the actual rendering of the home page
 GoRouter _buildTestRouter() {
-return GoRouter(
-  initialLocation: '/login',
-  routes: [
-    GoRoute(
-      path: '/login',
-      builder: (_, __) => const LoginPage(),
-    ),
-    GoRoute(
-      path: '/dashboard/home',
-      builder: (_, __) => const Scaffold(
-        body: Center(child: Text("Dashboard Home"))),
-    )
+  return GoRouter(
+    initialLocation: '/login',
+    routes: [
+      GoRoute(
+        path: '/login',
+        builder: (_, __) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/dashboard/home',
+        builder: (_, __) => const Scaffold(
+          body: Center(child: Text("Dashboard Home")),
+        ),
+      ),
     ],
   );
 }
@@ -58,27 +59,45 @@ Widget wrapWithRouter(GoRouter router) {
   );
 }
 
-// Helper function that fills out the form fields with provided credentials and submits
+/*
+  Helper purpose:
+  - Enters credentials, submits login, and waits for the login flow to
+    transition into either success or failure.
+*/
 Future<void> fillAndSubmit(
-  WidgetTester tester, {
-    required String email,
-    required String password,
-  }) async {
+    WidgetTester tester, {
+      required String email,
+      required String password,
+    }) async {
+  await tester.enterText(find.byKey(const ValueKey('emailField')), email);
+  await tester.enterText(find.byKey(const ValueKey('passwordField')), password);
+  await tester.tap(find.byKey(const ValueKey('accessSystemButton')));
+  await tester.pump();
 
-    await tester.enterText(find.byKey(const ValueKey('emailField')), email);
-    await tester.enterText(find.byKey(const ValueKey('passwordField')), password);
-    await tester.tap(find.byKey(const ValueKey('accessSystemButton')));
-    // Extend settle timeout to account for real network latency
-    await tester.pumpAndSettle(const Duration(seconds: 10));
+  for (int i = 0; i < 20; i++) {
+    await tester.pump(const Duration(seconds: 1));
+
+    final blocConsumerFinder = find.byType(BlocConsumer<LoginCubit, LoginState>);
+    if (tester.any(blocConsumerFinder)) {
+      final cubit = tester.element(blocConsumerFinder).read<LoginCubit>();
+      if (cubit.state is LoginSuccess || cubit.state is LoginFailure) {
+        break;
+      }
+    }
   }
-
-// Start test
+}
 
 void main() {
+  final Logger? logger =
+  logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
 
-  final Logger? logger = 
-    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
-
+  /*
+    Global setup purpose:
+    - Ensures GetIt is reset
+    - Ensures integration test binding is initialized
+    - Initializes app injections before widget tests run
+    - Verifies Supabase client is ready for the login flow
+  */
   setUpAll(() async {
 
     // Reset GetIt before registering to avoid double registration
@@ -128,10 +147,26 @@ void main() {
    * Errors are properly handled and system fails gracefully
    */
   group('SYS-LOGIN-01 - Login Failure Case', () {
-      testWidgets(
-      'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
-      (WidgetTester tester) async {
+    /*
+      Preconditions:
+      - Login page is reachable through the test router
+      - Invalid credentials are used
 
+      Flow under test:
+      - Submit invalid credentials
+      - Wait for login flow to resolve
+      - Confirm LoginFailure state and visible error
+      - Reset cubit and clear snackbars
+
+      Postconditions:
+      - LoginFailure is emitted
+      - Failure message is shown
+      - Reset returns the cubit to LoginInitial
+      - Previous error message is cleared from the UI
+    */
+    testWidgets(
+      'backend rejects login leading to LoginFailure state, verify error and reset to LoginInitial',
+          (WidgetTester tester) async {
         logger?.info('Running login failure case');
 
         // Use helpers to build login page
@@ -168,28 +203,38 @@ void main() {
         expect(find.text(failureState.message), findsNothing);
 
         logger?.info('Login failure test case finished');
-       });
+      },
+    );
   });
 
-  /*----- Success case ----
-   * Pre-conditions
-   * Environment variables are properly loaded from pipeline
-   * Login Page propers renders and is in LoginInitial state
-   * 
-   * Post-Conditions
-   * Login Page transitions to LoginSuccess
-   * LoginSuccess contains the user id and role
-  */
   group('SYS-LOGIN-02 - Login Success Case', () {
+    /*
+      Preconditions:
+      - TEST_EMAIL and TEST_PASSWORD are provided via --dart-define
+      - Supabase accepts the credentials
+      - PowerSync can complete first sync
+      - The authenticated user has a role available in synced local data
+
+      Flow under test:
+      - Submit valid credentials
+      - Wait for login flow to resolve
+      - Confirm success toast and LoginSuccess state
+      - Validate that the resolved user contains both id and role
+
+      Postconditions:
+      - Success toast appears
+      - LoginSuccess is emitted
+      - Logged-in user contains a non-empty id
+      - Logged-in user role is present, confirming role resolution path worked
+    */
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
-      (WidgetTester tester) async {
-
+          (WidgetTester tester) async {
         logger?.info('Running login success case');
         // Ensure fields were filled from CI
         assert(
-          _testEmail.isNotEmpty && _testPassword.isNotEmpty,
-          'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define. '
+        _testEmail.isNotEmpty && _testPassword.isNotEmpty,
+        'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define. ',
         );
 
         // test router used for building
@@ -219,6 +264,7 @@ void main() {
         expect(successState.user.role, isNotNull);
 
         logger?.info('Login success test case finished');
-      });
+      },
+    );
   });
 }
