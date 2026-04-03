@@ -21,19 +21,19 @@ import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.d
 class TableRowModel {
 
   // Site
-  final String borden;
+  final String? borden;
   final String? siteName;
 
   // Area
-  final String areaName;
+  final String? areaName;
 
   // Unit
-  final String unitName;
+  final String? unitName;
 
   // Level
-  final String levelName;
-  final int upLimit;
-  final int lowLimit;
+  final String? levelName;
+  final int? upLimit;
+  final int? lowLimit;
 
   // Assemblage
   final String? assemblageName;
@@ -43,46 +43,46 @@ class TableRowModel {
   final double? sizeUpper;
   final double? sizeLower;
   final String? comment;
-  final int preExcavFrags;
-  final int postExcavFrags;
-  final int elements;
+  final int? preExcavFrags;
+  final int? postExcavFrags;
+  final int? elements;
 
   TableRowModel({
-    required this.borden,
-    required this.siteName,
-    required this.areaName,
-    required this.unitName,
-    required this.levelName,
-    required this.upLimit,
-    required this.lowLimit,
-    required this.assemblageName,
+    this.borden,
+    this.siteName,
+    this.areaName,
+    this.unitName,
+    this.levelName,
+    this.upLimit,
+    this.lowLimit,
+    this.assemblageName,
     this.porosity,
     this.sizeUpper,
     this.sizeLower,
-    required this.comment,
-    required this.preExcavFrags,
-    required this.postExcavFrags,
-    required this.elements,
+    this.comment,
+    this.preExcavFrags,
+    this.postExcavFrags,
+    this.elements,
   });
 
   // Map TableRowEntity instead of inheriting it to prevent coupling and proper separation
   TableRowEntity toEntity() {
     return TableRowEntity(
-      borden: borden, 
+      borden: borden ?? '', 
       siteName: siteName ?? '', 
-      areaName: areaName, 
-      unitName: unitName, 
-      levelName: levelName, 
-      upLimit: upLimit, 
-      lowLimit: lowLimit, 
+      areaName: areaName ?? '', 
+      unitName: unitName ?? '', 
+      levelName: levelName ?? '', 
+      upLimit: upLimit ?? 0, 
+      lowLimit: lowLimit ?? 0, 
       assemblageName: assemblageName ?? '',
       porosity: porosity,
       sizeUpper: sizeUpper,
       sizeLower: sizeLower, 
       comment: comment ?? '', 
-      preExcavFrags: preExcavFrags, 
-      postExcavFrags: postExcavFrags, 
-      elements: elements
+      preExcavFrags: preExcavFrags ?? 0, 
+      postExcavFrags: postExcavFrags ?? 0, 
+      elements: elements ?? 0
     );
   }
 
@@ -90,18 +90,13 @@ class TableRowModel {
     Creates an TableRowModel from a PowerSync SQLite row.
 
     Preconditions:
-    - Row must contain: 
-      'borden', 'site_name', 'area_name', 'unit_name',
-      'level_name', 'up_limit', 'low_limit', 'assemblage_name',
-      'comment', 'pre_excav_frags', 'post_excav_frags', 
-      'elements'
-    - 'porosity', 'size_upper', 'size_lower' are optional
+    - Row cannot be completely empty
 
     Postconditions:
     - Returns an TableRow Model
     - Ensures invariants are satisfied before creating the model
 
-    Throws a FormatException if required columns are missing.
+    Throws a FormatException if row is empty.
   */
 
   factory TableRowModel.fromRow(sqlite.Row row) {
@@ -123,32 +118,37 @@ class TableRowModel {
     final dynamic postExcavFragsRaw = row['post_excav_frags'];
     final dynamic elementsRaw = row['elements'];
 
-    // Check if anything is null. If so, throw an exception
+    // Check if everthing is null. If so, throw an exception
     if (
-      bordenRaw == null ||
-      areaNameRaw == null ||
-      unitNameRaw == null ||
-      levelNameRaw == null ||
-      upLimitRaw == null ||
-      lowLimitRaw == null ||
-      preExcavFragsRaw == null ||
-      postExcavFragsRaw == null ||
+      bordenRaw == null &&
+      siteNameRaw == null &&
+      areaNameRaw == null &&
+      unitNameRaw == null &&
+      levelNameRaw == null &&
+      upLimitRaw == null &&
+      lowLimitRaw == null &&
+      assemblageNameRaw == null &&
+      porosityRaw == null &&
+      sizeUpperRaw == null &&
+      sizeLowerRaw == null &&
+      commentRaw == null &&
+      preExcavFragsRaw == null &&
+      postExcavFragsRaw == null &&
       elementsRaw == null) {
-      throw FormatException('Missing required column(s) for TableRowModel');
+      throw FormatException('Row Empty in TableRowModel');
     }
 
     // Convert raw values from PowerSync rows
-    final String borden = bordenRaw.toString().trim();
-    final String areaName = areaNameRaw.toString().trim();
-    final String unitName = unitNameRaw.toString().trim();
-    final String levelName = levelNameRaw.toString().trim();
-    final int upLimit = int.parse(upLimitRaw.toString());
-    final int lowLimit = int.parse(lowLimitRaw.toString());
-    final int preExcavFrags = int.parse(preExcavFragsRaw.toString());
-    final int postExcavFrags = int.parse(postExcavFragsRaw.toString());
-    final int elements = int.parse(elementsRaw.toString());
-
-    // Optional fields
+    final String? borden = bordenRaw?.toString().trim();
+    final String? areaName = areaNameRaw?.toString().trim();
+    final String? unitName = unitNameRaw?.toString().trim();
+    final String? levelName = levelNameRaw?.toString().trim();
+    // if upLimitRaw is not null, try to parse the string representation to an int, otherwise upLimit = null
+    final int? upLimit = upLimitRaw != null ? int.tryParse(upLimitRaw.toString()) : null;
+    final int? lowLimit = lowLimitRaw != null ? int.tryParse(lowLimitRaw.toString()) : null;
+    final int? preExcavFrags = preExcavFragsRaw != null ? int.tryParse(preExcavFragsRaw.toString()) : null;
+    final int? postExcavFrags = postExcavFragsRaw != null ? int.tryParse(postExcavFragsRaw.toString()) : null;
+    final int? elements = elementsRaw != null ? int.tryParse(elementsRaw.toString()) : null;
 
     // If site name is not null, then trim it; otherwise, make it null
     final String? siteName;
@@ -198,18 +198,22 @@ class TableRowModel {
       comment = null;
     }
 
-    assert(borden.isNotEmpty, 'Borden cannot be empty');
-    assert(areaName.isNotEmpty, 'Area name cannot be empty');
-    assert(unitName.isNotEmpty, 'Unit name cannot be empty');
-    assert(levelName.isNotEmpty, 'Level name cannot be empty');
-    assert(upLimit <= lowLimit, 'Up limit must be lower than low limit');
-    assert(porosity == null || (porosity > 0 && porosity <= 5), 
+    if (upLimit != null && lowLimit != null) {
+      assert(upLimit <= lowLimit, 'Up limit must be lower than low limit');
+    }
+    assert(porosity == null || (porosity > 0 && porosity <= 5),
     'Porosity must be between 1-5');
-    assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower, 
+    assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower,
     'Size upper must be greater than size lower');
-    assert(preExcavFrags > 0, 'There must be at least 1 pre excav frag');
-    assert(postExcavFrags > 0, 'There must be at least 1 post excav frag');
-    assert(elements > 0, 'There must be at least 1 element');
+    if (preExcavFrags != null) {
+      assert(preExcavFrags > 0, 'There must be at least 1 pre excav frag');
+    }
+    if (postExcavFrags != null) {
+      assert(postExcavFrags > 0, 'There must be at least 1 post excav frag');
+    }
+    if (elements != null) {
+      assert(elements > 0, 'There must be at least 1 element');
+    }
 
     return TableRowModel(
       borden: borden, 
