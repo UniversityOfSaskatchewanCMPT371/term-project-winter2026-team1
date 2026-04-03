@@ -20,7 +20,16 @@ on:
         required: true
         default: 'staging'
         type: string
-
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+          
 permissions:
   checks: write
   pull-requests: write
