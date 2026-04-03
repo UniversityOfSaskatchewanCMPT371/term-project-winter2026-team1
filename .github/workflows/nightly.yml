@@ -116,7 +116,9 @@ jobs:
         run: sudo apt install -y gh
 
       - name: Authenticate github
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+          gh auth setup-git
       
       - name: Publish nightly report to Wiki (historical)
         env:
