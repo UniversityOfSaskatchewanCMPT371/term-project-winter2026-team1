@@ -101,43 +101,47 @@ class DashboardHomePage extends StatelessWidget {
 
                     SizedBox(width: 35.w),
 
-                    FilterColumnsPopup(
-                      selectedColumns: state.selectedColumns,
-                      onSelectionChanged: (columns) {
-                        // Update UI State
-                        context.read<HomeCubit>().updateSelectedColumns(columns);
-                  
-                        // Trigger data table refresh
-                        //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
-                      },
-                    ),
-                    
-                    SizedBox(width: 1.w),
-              ],)
+                  /* this is the fiter columns popup which will stay commented out since not functional
+                     but left in just in case the stakeholders would like to implement it in the future
+                  FilterColumnsPopup(
+                    selectedColumns: state.selectedColumns,
+                    onSelectionChanged: (columns) {
+                      // Update UI State
+                      context.read<HomeCubit>().updateSelectedColumns(columns);
                 
-              else
-              // Advanced search
-                Row(mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 1.w),
+                      // Trigger data table refresh
+                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
+                    },
+                  ), */
+                  
+                  SizedBox(width: 1.w),
+            ],)
+              
+            else
+            // Advanced search
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 1.w),
 
                     const Expanded(child: AdvancedSearchBar()), // TODO implement real advanced search
 
                     SizedBox(width: 35.w),
 
+                  /* this is the fiter columns popup which will stay commented out since not functional
+                     but left in just in case the stakeholders would like to implement it in the future
                     FilterColumnsPopup(
-                      selectedColumns: state.selectedColumns,
-                      onSelectionChanged: (columns) {
-                        // Update UI State
-                        context.read<HomeCubit>().updateSelectedColumns(columns);
+                    selectedColumns: state.selectedColumns,
+                    onSelectionChanged: (columns) {
+                      // Update UI State
+                      context.read<HomeCubit>().updateSelectedColumns(columns);
+                
+                      // Trigger data table refresh
+                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
+                    },
+                  ), */ 
                   
-                        // Trigger data table refresh
-                        //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
-                      },
-                    ),
-                    
-                    SizedBox(width: 1.w),
-                  ])
+                  SizedBox(width: 1.w),
+                ])
 
               ,const SizedBox(height: 20),
 
