@@ -16,30 +16,35 @@ jobs:
       with:
         run_type: nightly
         artifact_suffix: nightly
+      secrets: inherit
     
   flutter-integration:
     uses: ./.github/workflows/flutter-integration.yml
     with:
       run_type: nightly
       artifact_suffix: nightly
+    secrets: inherit
 
   flutter-linter:
     uses: ./.github/workflows/flutter-linter.yml
     with:
       run_type: nightly
       artifact_suffix: nightly
+    secrets: inherit
   
   unit-tests:
     uses: ./.github/workflows/flutter.yml
     with:
       run_type: nightly
       artifact_suffix: nightly
-  
+    secrets: inherit
+
   system-tests:
     uses: ./.github/workflows/system-test.yml
     with:
       run_type: nightly
       artifact_suffix: nightly
+    secrets: inherit
 
   collect:
     runs-on: ubuntu-latest
