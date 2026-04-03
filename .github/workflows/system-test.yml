@@ -1,0 +1,126 @@
+name: Flutter System Test
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      environment:
+        required: true
+        default: 'staging'
+        type: string
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  build:
+    # Runs on ubuntu latest, this means the display driver does not test mac or windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' 
+      
+      # Setup package manager node for npm
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a recent Node.js version
+
+      - name: Install Appium Package
+        run: npm install -g appium
+
+      # Uses appium novawindows to run the system tests, need to install it
+      - name: Install Appium novawindows
+        run: appium driver install --source=npm appium-novawindows-driver && sleep 30
+
+      # Start up Appium
+      - name: Start Appium Server in background
+        shell: bash
+        run: |
+          appium &
+          sleep 15
+
+      # JDK setup for maven appium java application
+      - name: Initialize java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Aid in dependency chain, this will use install-dependencies to cover issues
+      - uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: latest
+          install-dependencies: true
+    
+      # Verify testing is added
+      - name: Flutter source add
+        run: flutter pub add dev:test
+        working-directory: ./frontend/search_cms
+      
+      # Install pub dependencies from main flutter directory 'search_cms'
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend/search_cms
+      
+      # Setup our environment for windows desktop applications
+      - name: Initialize windows desktop EXE file
+        run: flutter config --enable-windows-desktop
+        working-directory: ./frontend/search_cms
+      
+      # Build the windows exe that the system tests will run
+      # This will pass in the URLs used for the flutter application for
+      # both supabase and powersync
+      - name: Build windows desktop exe file
+        run: |
+          flutter build windows  `
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
+          --dart-define=POWERSYNC_URL=${{ secrets.POWERSYNC_URL }}
+        working-directory: ./frontend/search_cms
+      
+      # Initializes timestamp for the artifact files being generated
+      - name: Set Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+      
+      # Adding junitreport to convert json test result to jUnit.
+      - name: Flutter add junitreport
+        run: flutter pub global activate junitreport
+        working-directory: ./frontend/search_cms
+
+
+      # Build and run the maven system tests.
+      - name: Build with Maven
+        run: mvn clean test
+        working-directory: ./system-maven-tests/system-test-app
+
+      # Upload out Maven System Tests to github
+      - uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: System_Maven_test_${{ env.TIMESTAMP }}
+          path: ./system-maven-tests/system-test-app/target/surefire-reports/TEST-*.xml
+
+      # Upload Test reports to the pull request.
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: './system-maven-tests/system-test-app/target/surefire-reports/TEST-*.xml'
+          include_passed: True
+          fail_on_failure: True

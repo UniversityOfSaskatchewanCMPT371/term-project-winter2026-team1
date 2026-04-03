@@ -9,6 +9,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
@@ -39,7 +43,6 @@ public class LoginTest {
     public void setup() throws Exception {
 
         /**
-         * 
          * This is the setup function that initializes
          * the connection with appium
          * It has both a @BeforeAll and @AfterAll
@@ -49,17 +52,21 @@ public class LoginTest {
          * (2) NovaWindows is installed with appium
          * (3) Local ip 127.0.0.1 is availabe with port 4723
          * (4) flutter's exe is built and exists in the release file
-         * 
-         *  
          */
 
         // Working directory and application path
-        String workingDir = "C:\\471\\term-project-winter2026-team1\\frontend\\search_cms\\build\\windows\\x64\\runner\\Release";
-        String appPath = workingDir + "\\flutter_supabase_template.exe";
+        String currentDir = System.getProperty("user.dir");
+        
+        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
+        Path appExePath = workingDirPath.resolve("flutter_supabase_template.exe");
+
+        // Print paths to the console so you can debug in CI/CD if it fails again
+        System.out.println("Resolved Working Directory: " + workingDirPath.toAbsolutePath());
+        System.out.println("Resolved App Path: " + appExePath.toAbsolutePath());
 
         // Launch the application using ProcessBuilder
-        ProcessBuilder builder = new ProcessBuilder(appPath);
-        builder.directory(new File(workingDir));
+        ProcessBuilder builder = new ProcessBuilder(appExePath.toString());
+        builder.directory(workingDirPath.toFile());
         appProcess = builder.start();
 
         System.out.println("Waiting 5 seconds for app to launch...");
@@ -94,7 +101,11 @@ public class LoginTest {
                 new URL("http://127.0.0.1:4723/"),
                 appOptions
         );
-
+        
+        // Wait for the UI to show up so we don't wait for a refresh
+        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        appWait.until(d -> driver.findElement(AppiumBy.name("email_textbox")));
+        
         // Updated for Selenium 4
     }
     
