@@ -112,7 +112,11 @@ jobs:
           echo "</nightlyReport>" >> "$OUTPUT"
 
       
+      - name: Install github cli
+        run: sudo apt install -y gh
 
+      - name: Authenticate github
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
       
       - name: Publish nightly report to Wiki (historical)
         env:
@@ -128,9 +132,6 @@ jobs:
 
           mkdir -p "$TARGET_DIR"
           cp ../nightly.xml "$TARGET_DIR/nightly.xml"
-
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
 
           git add "$TARGET_DIR/nightly.xml"
           git commit -m "Nightly report for ${NIGHTLY_DATE}" || exit 0
