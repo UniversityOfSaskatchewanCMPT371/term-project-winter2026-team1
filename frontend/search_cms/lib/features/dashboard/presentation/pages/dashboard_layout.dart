@@ -24,7 +24,7 @@ class DashboardLayout extends StatelessWidget {
 
   Widget _buildDrawer(BuildContext context) {
     return Container(
-      width: 10.w,
+      width: 18.w,
       color: AppColors.mainText,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,14 +122,16 @@ class DashboardLayout extends StatelessWidget {
               size: 20,
             ),
             const SizedBox(width: 12),
-            Text(
+            Flexible(
+              child: Text(
               label,
               style: TextStyle(
                 color: isSelected ? AppColors.primaryBlue : Colors.white70,
                 fontSize: 14,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
