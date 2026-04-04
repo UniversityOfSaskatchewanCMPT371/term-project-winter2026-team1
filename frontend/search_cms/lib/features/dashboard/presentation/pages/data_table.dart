@@ -14,7 +14,22 @@ import '../bloc/data_table_state.dart';
     Widget build(BuildContext context) {
       return Column(
         children: [
-          // headers
+          // Text field for results
+          Align(
+            alignment: Alignment.centerRight,
+            child: BlocBuilder<DataTableCubit, DataTableState>(
+              builder: (context, state) {
+                if (state is DataTableLoaded) {
+                  int rowCount = state.rows.length;
+                  return Text('results: $rowCount', style: const TextStyle(color: Colors.blueGrey));
+                } else {
+                  int rowCount = 0;
+                  return Text('results: $rowCount', style: const TextStyle(color: Colors.blueGrey));
+                }
+              },
+            ),
+          ),
+          // Headers
           Row(
             children: [
               // Loops over every header name and builds widget for it
