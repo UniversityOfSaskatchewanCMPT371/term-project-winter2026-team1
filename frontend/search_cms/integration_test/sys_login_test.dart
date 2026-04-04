@@ -17,21 +17,19 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../test/features/authentication/presentation/pages/login_page_testcases.dart';
 
 // Constant inputs
-// Test Credentials for success case
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
 const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
-const String _supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: 'http://localhost:54323');
+const String _supabaseUrl = String.fromEnvironment(
+  'SUPABASE_URL',
+  defaultValue: 'http://localhost:54323',
+);
 
 // Bad credentials to intentionally fail login
-const String _badEmail = 'i_am_an_evildoer_and_this_is_my_email@totally_real_email.com';
+const String _badEmail =
+    'i_am_an_evildoer_and_this_is_my_email@totally_real_email.com';
 const String _badPassword = 'dorwssap9000';
 
 // Helper functions
-
-// Build a copy of the real router for use in this test suite
-// Mirrors all the real routes but does not build the actual home page
-// This test only goes as far as checking the route of the page is switched to
-// '/dashboard/home' and does not test and of the actual rendering of the home page
 GoRouter _buildTestRouter() {
   return GoRouter(
     initialLocation: '/login',
@@ -50,12 +48,11 @@ GoRouter _buildTestRouter() {
   );
 }
 
-// Wrap the router with a Sizer for LoginPage responsive layouts
 Widget wrapWithRouter(GoRouter router) {
   return Sizer(
     builder: (_, __, ___) => MaterialApp.router(
       routerConfig: router,
-    )
+    ),
   );
 }
 
@@ -63,6 +60,11 @@ Widget wrapWithRouter(GoRouter router) {
   Helper purpose:
   - Enters credentials, submits login, and waits for the login flow to
     transition into either success or failure.
+
+  Why the waiting loop matters:
+  - The application now performs more than immediate auth submission.
+  - Login completion may depend on async steps such as PowerSync first sync
+    and local role retrieval before a final LoginSuccess state is emitted.
 */
 Future<void> fillAndSubmit(
     WidgetTester tester, {
@@ -74,7 +76,7 @@ Future<void> fillAndSubmit(
   await tester.tap(find.byKey(const ValueKey('accessSystemButton')));
   await tester.pump();
 
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 60; i++) {
     await tester.pump(const Duration(seconds: 1));
 
     final blocConsumerFinder = find.byType(BlocConsumer<LoginCubit, LoginState>);
@@ -99,34 +101,27 @@ void main() {
     - Verifies Supabase client is ready for the login flow
   */
   setUpAll(() async {
-
-    // Reset GetIt before registering to avoid double registration
-    // across each of the test runs
     await GetIt.instance.reset();
 
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
     await initInjections();
-    // Initialize Supabase for the test suite
+
     try {
       logger?.info('Verifying Supabase is initialized');
       await Supabase.initialize(
         url: _supabaseUrl,
-        anonKey: AppConfig.supabaseAnonKey);
+        anonKey: AppConfig.supabaseAnonKey,
+      );
     } catch (_) {
       logger?.warning('Supabase already running');
-      // Supabase is already initialized so we can move on
     }
   });
 
   tearDown(() async {
-    // Sign out after each test for a clean authentication slate
     await Supabase.instance.client.auth.signOut();
   });
 
-
-  // Runs all widget tests to verify page rendering
-  // Also handles cases of invalid inputs to the text entry fiels
   Widget wrap(Widget child) {
     return Sizer(
       builder: (_, __, ___) {
@@ -134,29 +129,14 @@ void main() {
       },
     );
   }
+
   runLoginPageTestCases(() => wrap(const LoginPage()));
 
-  /*--------- System tests ---------*/
-
-  // Failure case
-  /* Preconditions:
-   * Supabase backend must be running
-   * Login page fully renders and is in LoginInitial state
-   * 
-   * Post conditions:
-   * Errors are properly handled and system fails gracefully
-   */
   group('SYS-LOGIN-01 - Login Failure Case', () {
     /*
       Preconditions:
       - Login page is reachable through the test router
       - Invalid credentials are used
-
-      Flow under test:
-      - Submit invalid credentials
-      - Wait for login flow to resolve
-      - Confirm LoginFailure state and visible error
-      - Reset cubit and clear snackbars
 
       Postconditions:
       - LoginFailure is emitted
@@ -169,36 +149,35 @@ void main() {
           (WidgetTester tester) async {
         logger?.info('Running login failure case');
 
-        // Use helpers to build login page
         final testRouter = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(testRouter));
         await tester.pumpAndSettle();
 
-        // Submit rejected credentials
         logger?.info('Submitting bad credentials');
-        await fillAndSubmit(tester, email: _badEmail, password: _badPassword);
+        await fillAndSubmit(
+          tester,
+          email: _badEmail,
+          password: _badPassword,
+        );
 
-        // Get LoginPage cubit from widget tree
-        final cubit = tester.element(find.byType(BlocConsumer<LoginCubit, LoginState>)).read<LoginCubit>();
-        // Check current state, should be an error from invalid login
+        final cubit = tester
+            .element(find.byType(BlocConsumer<LoginCubit, LoginState>))
+            .read<LoginCubit>();
+
         expect(cubit.state, isA<LoginFailure>());
-       
-        // Assert error message from backend call is rendered in the snackbar
+
         final failureState = cubit.state as LoginFailure;
         expect(find.text(failureState.message), findsOneWidget);
- 
-        // Trigger reset
+
         cubit.reset();
         await tester.pumpAndSettle();
 
-        // Dismiss the snackbar explicitly before asserting it's gone
         final scaffoldMessenger = ScaffoldMessenger.of(
-          tester.element(find.byType(Scaffold).first)
+          tester.element(find.byType(Scaffold).first),
         );
         scaffoldMessenger.clearSnackBars();
         await tester.pumpAndSettle();
- 
-        // Assert state returned to LoginInitial, error no longer visible
+
         expect(cubit.state, isA<LoginInitial>());
         expect(find.text(failureState.message), findsNothing);
 
@@ -218,47 +197,47 @@ void main() {
       Flow under test:
       - Submit valid credentials
       - Wait for login flow to resolve
-      - Confirm success toast and LoginSuccess state
+      - Confirm LoginSuccess state
       - Validate that the resolved user contains both id and role
+      - Confirm route target widget is rendered
 
       Postconditions:
-      - Success toast appears
       - LoginSuccess is emitted
       - Logged-in user contains a non-empty id
       - Logged-in user role is present, confirming role resolution path worked
+      - Dashboard Home test route is shown
     */
     testWidgets(
       'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
           (WidgetTester tester) async {
         logger?.info('Running login success case');
-        // Ensure fields were filled from CI
+
         assert(
         _testEmail.isNotEmpty && _testPassword.isNotEmpty,
-        'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define. ',
+        'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
         );
 
-        // test router used for building
         final testRouter = _buildTestRouter();
         await tester.pumpWidget(wrapWithRouter(testRouter));
         await tester.pumpAndSettle();
 
-        // Submit form with valid entries
         logger?.info('submitting good credentials');
-        await fillAndSubmit(tester, email: _testEmail, password: _testPassword);
+        await fillAndSubmit(
+          tester,
+          email: _testEmail,
+          password: _testPassword,
+        );
 
-        final sawToast = tester.any(find.byKey(const ValueKey('toast_successful_login')));
-        logger?.info('Success toast visible: $sawToast');
-
-        // Assert login succeeded at the state level
         final cubit = tester
             .element(find.byType(BlocConsumer<LoginCubit, LoginState>))
             .read<LoginCubit>();
         expect(cubit.state, isA<LoginSuccess>());
 
-        // LoginSuccess carries the user entity with valid id and role
         final successState = cubit.state as LoginSuccess;
         expect(successState.user.id, isNotEmpty);
         expect(successState.user.role, isNotNull);
+
+        expect(find.text('Dashboard Home'), findsOneWidget);
 
         logger?.info('Login success test case finished');
       },

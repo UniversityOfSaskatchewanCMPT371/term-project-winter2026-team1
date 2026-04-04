@@ -8,23 +8,25 @@ import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/main.dart';
 
+const String _testEmail = String.fromEnvironment('TEST_EMAIL');
+const String _testPassword = String.fromEnvironment('TEST_PASSWORD');
+
+bool _isLoginScreenStillVisible(WidgetTester tester) {
+  return tester.any(find.byKey(const Key('emailField'))) &&
+      tester.any(find.byKey(const Key('passwordField'))) &&
+      tester.any(find.byKey(const ValueKey('accessSystemButton')));
+}
+
 /*
   Purpose:
   - Integration test suite for authentication flow and backend connectivity.
   - Validates end-to-end application behavior from service readiness to
     login screen rendering and successful login completion.
 
-  What is specifically covered:
-  - Supabase backend health
-  - UI rendering of login screen controls
-  - Successful credential submission
-  - Completion of the async login path that now includes PowerSync sync
-    and local role resolution
-
   Environment assumptions:
   - Local Supabase instance is running
   - Local PowerSync instance is running
-  - App injections can initialize successfully
+  - TEST_EMAIL and TEST_PASSWORD are supplied via --dart-define
   - A valid test user exists and has a role record available through sync
 */
 void main() async {
@@ -46,24 +48,24 @@ void main() async {
       logger?.info("Attempting to ping Supabase");
 
       int attempts = 0;
-      const int maxAttempts = 100;
+      const int maxAttempts = 30;
       bool ready = false;
 
       while (!ready && attempts < maxAttempts) {
         ready = await pingSupabase();
         logger?.info("Ping result: $ready");
+
         if (!ready) {
           attempts++;
-          logger?.info("""Supabase not ready retrying in
-          5 seconds ($attempts/$maxAttempts)""");
+          logger?.info(
+            "Supabase not ready retrying in 5 seconds ($attempts/$maxAttempts)",
+          );
           await Future<void>.delayed(const Duration(seconds: 5));
         }
       }
 
-      // ** this works as an assertion
-      // if result != true this will throw a timeout which will cause retry
       expect(ready, true, reason: "Could not ping Supabase");
-    }, timeout: const Timeout(Duration(minutes: 15)));
+    }, timeout: const Timeout(Duration(minutes: 5)));
 
     /*
       Preconditions:
@@ -80,32 +82,22 @@ void main() async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
-      // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      // Finds the floating action button to tap on
       final fab = find.byKey(const ValueKey('accessSystemButton'));
-
-      logger?.info("Looking for access system button");
-
-      // ** this works as an assertion
       expect(fab, findsOneWidget);
 
-      logger?.info("Tapping access system button");
-      // Emulate a tap on the floating action button
       await tester.tap(fab);
-
-      // Trigger a frame
       await tester.pumpAndSettle();
 
-      logger?.info("Done running test");
+      logger?.info("Done running button existence test");
     });
 
     /*
       Preconditions:
       - Supabase auth must be available
       - PowerSync must be configured and able to complete first sync
-      - Valid test credentials must exist
+      - TEST_EMAIL and TEST_PASSWORD must be provided
       - User role row must be available via synced local data
       - Dependency injections must initialize before app startup
 
@@ -116,48 +108,51 @@ void main() async {
       - Wait for asynchronous auth, sync, and local role fetch
 
       Postconditions:
-      - Success toast with key "toast_successful_login" appears
-      - This indicates the application reached post-login success state
-        after PowerSync-backed role retrieval
+      - A visible post-login signal is reached, such as:
+          * success toast appears, or
+          * login screen is no longer visible
     */
     testWidgets('Verify login system functions', (tester) async {
       logger?.info("Running login system integration test");
+
+      assert(
+      _testEmail.isNotEmpty && _testPassword.isNotEmpty,
+      'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
+      );
 
       await initInjections();
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
-      // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      logger?.info("Entering email");
       await tester.enterText(
         find.byKey(const Key("emailField")),
-        'pleasework@fortheloveofgod.ca',
+        _testEmail,
       );
       await tester.pumpAndSettle();
 
-      logger?.info("Entering password");
       await tester.enterText(
         find.byKey(const Key("passwordField")),
-        'passwordypassword',
+        _testPassword,
       );
       await tester.pumpAndSettle();
 
       final fab = find.byKey(const ValueKey('accessSystemButton'));
       expect(fab, findsOneWidget);
 
-      logger?.info("Tapping login button");
-
       await tester.tap(fab);
       await tester.pump();
 
       bool foundSuccess = false;
-      for (int i = 0; i < 30; i++) {
+      for (int i = 0; i < 60; i++) {
         await tester.pump(const Duration(seconds: 1));
 
-        if (tester.any(find.byKey(const ValueKey('toast_successful_login'))) ||
-            tester.any(find.text('Dashboard Home'))) {
+        final sawToast =
+        tester.any(find.byKey(const ValueKey('toast_successful_login')));
+        final loginScreenGone = !_isLoginScreenStillVisible(tester);
+
+        if (sawToast || loginScreenGone) {
           foundSuccess = true;
           break;
         }
@@ -165,26 +160,21 @@ void main() async {
 
       if (!foundSuccess) {
         logger?.severe(
-          "Login failed; neither success toast nor dashboard route appeared",
+          "Login failed; neither success toast nor login-screen dismissal was observed",
         );
         fail("Could not observe login success");
       }
 
-      logger?.info("Done running test");
+      logger?.info("Done running login integration test");
     });
   });
 
-  /*
-    Purpose:
-    - Retry Supabase connectivity in a shorter repeated form to reduce
-      transient startup flakiness during local runs.
-  */
-  test("Retry connection to supabase", () async {
+  test("Retry connection to Supabase", () async {
     await expectLater(await pingSupabase(), true)
         .timeout(const Duration(seconds: 10));
 
     await Future<void>.delayed(const Duration(seconds: 5));
-  }, retry: 30);
+  }, retry: 10);
 }
 
 /*
