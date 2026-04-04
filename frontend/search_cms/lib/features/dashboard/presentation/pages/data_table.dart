@@ -20,7 +20,13 @@ import '../bloc/data_table_state.dart';
             DataTableInitial() => const Center(child: Text("Welcome to the sEARCH home page")),
             DataTableLoading() => const Center(child: CircularProgressIndicator()),
 
-            DataTableLoaded() => TableView.builder(
+            /**
+             * This guard is needed because there is a bug where if that db has nothing in
+             * it then TableView.builder just crashes so we need to prevent that from happening
+             */
+            DataTableLoaded() => state.rows.isEmpty
+              ? const Center(child: Text("No data in database to display"))
+              : TableView.builder(
               columnCount: state.columns.length,
               rowCount: state.rows.length,
               columnBuilder: (index) => buildColumnSpan(index, state.columns.length, context),
@@ -37,7 +43,7 @@ import '../bloc/data_table_state.dart';
                         width: 1,
                       )
                     ),
-                    child: Text('Cell ${vicinity.column} : ${vicinity.row}'),
+                    child: Text(state.rows[vicinity.row][vicinity.column]),
                   ),
                 );
               },

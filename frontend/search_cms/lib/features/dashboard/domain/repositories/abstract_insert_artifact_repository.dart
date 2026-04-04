@@ -1,0 +1,36 @@
+import 'package:search_cms/core/utils/class_templates/result.dart';
+
+/*
+  The repository interface for inserting a faunal artifact
+*/
+abstract class AbstractInsertArtifactRepository {
+  /*
+    Inserts a new faunal artifact record into the database
+
+    @param assemblageName: non-empty name of associated assemblage
+    Optional parameters:
+    @param porosity: int 1-5
+    @param sizeUpper: lower bound of tuple
+    @param sizeLower: upper bound of same tuple
+    @param comment: string comment
+    @param preExcavFrags: integer, default is 1
+    @param postExcavFrags: integer, default is 1
+    @param elements: integer, default to 1
+
+    Preconditions:
+      (1) PowerSync database is initialized
+      (2) The user must be authenticated
+      (3) assemblageName.isNotEmpty && sizeUpper <= sizeLower if non-null
+
+    Postconditions: new artifact record is inserted into the database
+  */
+  Future<Result> insertArtifact({
+    required String assemblageName,
+    int? porosity,
+    double? sizeUpper,
+    double? sizeLower,
+    String? comment,
+    int? preExcavFrags,
+    int? postExcavFrags,
+    int? elements});
+}
