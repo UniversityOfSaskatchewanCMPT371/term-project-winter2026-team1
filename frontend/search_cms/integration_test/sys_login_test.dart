@@ -232,10 +232,7 @@ void main() {
 
         expect(state, isNotNull, reason: 'Login did not resolve to success or failure within 60 seconds.');
 
-        print('sys_login_test state: $state');
-
         if (state is LoginFailure) {
-          print('sys_login_test failure message: ${state.message}');
           fail('Login resolved to LoginFailure: ${state.message}');
         }
 
