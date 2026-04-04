@@ -25,6 +25,7 @@ dependencies:
   bloc: ^9.2.0
   http: ^1.6.0
   glados: ^1.1.7
+  uuid: ^4.0.0
 
 dev_dependencies:
   flutter_test:

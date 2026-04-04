@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'abstract_insert_area_api.dart';
 
 /*
@@ -38,9 +39,12 @@ class InsertAreaApiImpl implements AbstractInsertAreaApi {
 
       final String now = DateTime.now().toUtc().toIso8601String();
 
+      // generate random UUID
+      final String id = const Uuid().v4();
+
       await _powerSyncDatabase.execute(
-        'INSERT INTO area (name, created_at, updated_at) VALUES (?, ?, ?)',
-        [name, now, now],
+        'INSERT INTO area (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)',
+        [id, name, now, now],
       );
 
       _logger.finer('Insert area API: Inserting area into PowerSync '

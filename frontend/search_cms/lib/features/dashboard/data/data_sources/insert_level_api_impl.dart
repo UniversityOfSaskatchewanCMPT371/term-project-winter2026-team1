@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'abstract_insert_level_api.dart';
 
 /*
@@ -42,6 +43,11 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
       _logger.finer('Insert level API: Inserting level into PowerSync '
           'Database start');
 
+      // for debugging
+      // _logger.fine('anyError: ${_powerSyncDatabase.currentStatus.anyError}');
+      // _logger.fine('currentSession: ${getIt<SupabaseClient>().auth.currentSession}');
+      // _logger.fine('unitName: $unitName, name: $name');
+
       assert(_powerSyncDatabase.currentStatus.anyError == null);
       assert(getIt<SupabaseClient>().auth.currentSession != null);
       assert(unitName.isNotEmpty);
@@ -55,31 +61,36 @@ class InsertLevelApiImpl implements AbstractInsertLevelApi {
         'SELECT id FROM unit WHERE name = ? LIMIT 1',
         [unitName],
       );
-      final String unitId = unitResult.rows.first[0] as String;
+      assert(unitResult.isNotEmpty);
+      final String unitId = unitResult.first['id'] as String;
 
       // if not null, find parent levelId for parent level name
       String? parentId;
       if (parentName != null) {
         final parentResult = await _powerSyncDatabase.execute(
-          'SELECT id FROM level WHERE name = ? LIMIT 1',
-          [parentName],
+          'SELECT id FROM level WHERE name = ? AND unit_id = ? LIMIT 1',
+          [parentName, unitId],
         );
         if (parentResult.rows.isNotEmpty) {
-          parentId = parentResult.rows.first[0] as String;
+          parentId = parentResult.first['id'] as String;
         }
       }
+
+      // generate random UUID
+      final String id = const Uuid().v4();
 
       // insert level into unit with resolved ID and optionally parent level ID
       // leaves level_char and level_int unused
       await _powerSyncDatabase.execute(
-        'INSERT INTO level (unit_id, name, up_limit, low_limit, created_at, '
+        'INSERT INTO level (id, unit_id, name, up_limit, low_limit, created_at, '
         'updated_at, parent_id) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [unitId, name, upLimit, lowLimit, now, now, parentId],
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [id, unitId, name, upLimit, lowLimit, now, now, parentId],
       );
 
       _logger.finer('Insert level API: Inserting level into PowerSync '
           'Database end');
+
     } catch (e) {
       rethrow;
     }
