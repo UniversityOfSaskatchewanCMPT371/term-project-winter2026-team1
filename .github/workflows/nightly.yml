@@ -112,6 +112,103 @@ jobs:
           echo "</nightlyReport>" >> "$OUTPUT"
 
       
+      
+      - name: Generate Markdown summary from nightly.xml
+        run: |
+          python << 'EOF'
+          import xml.etree.ElementTree as ET
+          from datetime import datetime
+          from collections import defaultdict
+
+          XML_FILE = "nightly.xml"
+          MD_FILE = "nightly.md"
+
+          tree = ET.parse(XML_FILE)
+          root = tree.getroot()
+
+          # Collect all testsuite elements anywhere in the document
+          suites = root.findall(".//testsuite")
+
+          total_tests = 0
+          total_failures = 0
+          total_errors = 0
+          total_skipped = 0
+
+          suite_rows = []
+
+          def shorten_name(name: str) -> str:
+              """
+              Reduce long JUnit names to something readable.
+              Example:
+              .home.runner.work...frontend.search_cms.integration_test.smoke
+              -> integration_test.smoke
+              """
+              parts = name.split(".")
+              if len(parts) > 3:
+                  return ".".join(parts[-3:])
+              return name
+
+          for suite in suites:
+              name = shorten_name(suite.attrib.get("name", "unknown"))
+              tests = int(suite.attrib.get("tests", 0))
+              failures = int(suite.attrib.get("failures", 0))
+              errors = int(suite.attrib.get("errors", 0))
+              skipped = int(suite.attrib.get("skipped", 0))
+              timestamp = suite.attrib.get("timestamp", "")
+
+              total_tests += tests
+              total_failures += failures
+              total_errors += errors
+              total_skipped += skipped
+
+              status = "✅ Pass"
+              if failures > 0 or errors > 0:
+                  status = "❌ Fail"
+
+              suite_rows.append(
+                  (name, tests, failures, errors, skipped, status, timestamp)
+              )
+
+          # Sort suites: failures first, then by name
+          suite_rows.sort(key=lambda r: (r[5] == "✅ Pass", r[0]))
+
+          # Write Markdown
+          with open(MD_FILE, "w") as md:
+              md.write("# 🌙 Nightly Test Report\n\n")
+              md.write(f"**Date:** {datetime.utcnow().strftime('%Y-%m-%d')}\n\n")
+
+              md.write("## Summary\n\n")
+              md.write("| Metric | Value |\n")
+              md.write("|--------|-------|\n")
+              md.write(f"| Total Tests | {total_tests} |\n")
+              md.write(f"| Failures | {total_failures} |\n")
+              md.write(f"| Errors | {total_errors} |\n")
+              md.write(f"| Skipped | {total_skipped} |\n\n")
+
+              md.write("## Test Suites\n\n")
+              md.write("| Suite | Tests | Failures | Errors | Skipped | Status | Timestamp |\n")
+              md.write("|------|-------|----------|--------|----------|--------|-----------|\n")
+
+              for (
+                  name,
+                  tests,
+                  failures,
+                  errors,
+                  skipped,
+                  status,
+                  timestamp,
+              ) in suite_rows:
+                  md.write(
+                      f"| `{name}` | {tests} | {failures} | {errors} | {skipped} | {status} | {timestamp} |\n"
+                  )
+
+              md.write("\n---\n")
+              md.write("_Report generated automatically by GitHub Actions._\n")
+
+          print(f"Generated {MD_FILE}")
+          EOF
+
+      
       - name: Install github cli
         run: sudo apt install -y gh
 
@@ -134,6 +231,7 @@ jobs:
 
           mkdir -p "$TARGET_DIR"
           cp ../nightly.xml "$TARGET_DIR/nightly.xml"
+          cp ../nightly.md  "$TARGET_DIR/nightly.md"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
