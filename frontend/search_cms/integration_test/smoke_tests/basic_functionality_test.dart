@@ -32,9 +32,10 @@ void basicFunctionalityTest(Logger logger) {
     testWidgets("Login system functions correctly", (tester) async {
       logger.info("Running login system smoke test");
 
-      assert(
-      _testEmail.isNotEmpty && _testPassword.isNotEmpty,
-      'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
+      expect(
+        _testEmail.isNotEmpty && _testPassword.isNotEmpty,
+        isTrue,
+        reason: 'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
       );
 
       await initInjections();
@@ -62,13 +63,14 @@ void basicFunctionalityTest(Logger logger) {
       await tester.pump();
 
       bool success = false;
+      bool sawToast = false;
+      bool loginScreenGone = false;
 
       for (int i = 0; i < 60; i++) {
         await tester.pump(const Duration(seconds: 1));
 
-        final sawToast =
-        tester.any(find.byKey(const ValueKey('toast_successful_login')));
-        final loginScreenGone = !_isLoginScreenStillVisible(tester);
+        sawToast = tester.any(find.byKey(const ValueKey('toast_successful_login')));
+        loginScreenGone = !_isLoginScreenStillVisible(tester);
 
         if (sawToast || loginScreenGone) {
           success = true;
@@ -76,12 +78,11 @@ void basicFunctionalityTest(Logger logger) {
         }
       }
 
-      if (!success) {
-        logger.severe(
-          "Login did not reach a visible success state after waiting for auth + PowerSync sync",
-        );
-        fail("Could not observe login success");
-      }
+      expect(
+        success,
+        isTrue,
+        reason: 'Could not observe login success. sawToast=$sawToast, loginScreenGone=$loginScreenGone',
+      );
     });
   });
 }

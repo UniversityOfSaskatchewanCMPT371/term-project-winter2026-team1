@@ -89,8 +89,6 @@ void main() async {
 
       await tester.tap(fab);
       await tester.pumpAndSettle();
-
-      logger?.info("Done running button existence test");
     });
 
     /*
@@ -115,9 +113,10 @@ void main() async {
     testWidgets('Verify login system functions', (tester) async {
       logger?.info("Running login system integration test");
 
-      assert(
-      _testEmail.isNotEmpty && _testPassword.isNotEmpty,
-      'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
+      expect(
+        _testEmail.isNotEmpty && _testPassword.isNotEmpty,
+        isTrue,
+        reason: 'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
       );
 
       await initInjections();
@@ -144,28 +143,27 @@ void main() async {
       await tester.tap(fab);
       await tester.pump();
 
-      bool foundSuccess = false;
+      bool success = false;
+      bool sawToast = false;
+      bool loginScreenGone = false;
+
       for (int i = 0; i < 60; i++) {
         await tester.pump(const Duration(seconds: 1));
 
-        final sawToast =
-        tester.any(find.byKey(const ValueKey('toast_successful_login')));
-        final loginScreenGone = !_isLoginScreenStillVisible(tester);
+        sawToast = tester.any(find.byKey(const ValueKey('toast_successful_login')));
+        loginScreenGone = !_isLoginScreenStillVisible(tester);
 
         if (sawToast || loginScreenGone) {
-          foundSuccess = true;
+          success = true;
           break;
         }
       }
 
-      if (!foundSuccess) {
-        logger?.severe(
-          "Login failed; neither success toast nor login-screen dismissal was observed",
-        );
-        fail("Could not observe login success");
-      }
-
-      logger?.info("Done running login integration test");
+      expect(
+        success,
+        isTrue,
+        reason: 'Could not observe login success. sawToast=$sawToast, loginScreenGone=$loginScreenGone',
+      );
     });
   });
 

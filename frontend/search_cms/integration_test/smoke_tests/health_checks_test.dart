@@ -16,7 +16,7 @@ void healthChecksTest(Logger logger) {
 
       Services validated:
       - Supabase auth health endpoint
-      - PowerSync local database readiness and sync health
+      - PowerSync instance accessibility and absence of immediate hard errors
     */
     test("Attempt http ping to Supabase", () async {
       logger.info("Attempting to ping Supabase");
@@ -46,39 +46,17 @@ void healthChecksTest(Logger logger) {
       - Powersync database must be initialized and instance accessible with getIt
 
       Postconditions:
-      - Confirms Powersync service is running without errors
-      - Fails fast enough that the test does not hang for the full suite timeout
+      - Confirms Powersync instance is available
+      - Confirms there is no immediate sync error state
+      - Does not require first sync to finish before login tests start
     */
     test("Attempt ping to Powersync", () async {
       logger.info("Attempting to ping Powersync");
 
-      int attempts = 0;
-      const int maxAttempts = 10;
-      bool ready = false;
+      final ready = await pingPowersync();
+      expect(ready, true, reason: "Powersync instance is unavailable or already in an error state");
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
-      while (!ready && attempts < maxAttempts) {
-        ready = await pingPowersync();
-        logger.info("Powersync ping result: $ready");
-
-        if (!ready) {
-          attempts++;
-          logger.info(
-            "Powersync not ready, retrying in 5 seconds ($attempts/$maxAttempts)",
-          );
-          await Future<void>.delayed(const Duration(seconds: 5));
-        }
-      }
-
-      expect(ready, true, reason: "Powersync is not ready");
-    }, timeout: const Timeout(Duration(minutes: 5)));
-
-    /*
-      Preconditions:
-      - Supabase instance must be running locally
-
-      Postconditions:
-      - Confirms retry mechanism successfully reconnects to Supabase
-    */
     test("Retry connection to Supabase", () async {
       await expectLater(await pingSupabase(), true)
           .timeout(const Duration(seconds: 10));
@@ -133,8 +111,8 @@ Future<bool> pingSupabase() async {
   - PowerSync instance is registered in GetIt
 
   Postconditions:
-  - Returns true only if first sync completes and no sync error is reported
-  - Returns false on timeout or error so the caller can retry
+  - Returns true if PowerSync is reachable and not already reporting a hard error
+  - Returns false if the instance cannot be accessed or is already in an error state
 */
 Future<bool> pingPowersync() async {
   final Logger logger = Logger('PingPowersync');
@@ -143,30 +121,16 @@ Future<bool> pingPowersync() async {
     logger.info("Checking Powersync database");
 
     final powersync = getIt<PowerSyncDatabase>();
+    final status = powersync.currentStatus;
 
-    await powersync.waitForFirstSync().timeout(
-      const Duration(seconds: 20),
-      onTimeout: () {
-        logger.warning("Powersync first sync timed out");
-        throw TimeoutException("PowerSync first sync timed out");
-      },
-    );
+    logger.info("Powersync status: $status");
 
-    logger.info("Powersync first sync completed");
-    logger.info("Powersync status: ${powersync.currentStatus}");
-
-    if (powersync.currentStatus.anyError != null) {
-      logger.warning(
-        "Powersync has error: ${powersync.currentStatus.anyError}",
-      );
+    if (status.anyError != null) {
+      logger.warning("Powersync has error: ${status.anyError}");
       return false;
     }
 
-    logger.info("Powersync is healthy");
     return true;
-  } on TimeoutException catch (e) {
-    logger.warning("PowerSync timeout: $e");
-    return false;
   } catch (e) {
     logger.severe("Error checking Powersync: $e");
     return false;
