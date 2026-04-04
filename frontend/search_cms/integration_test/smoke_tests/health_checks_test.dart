@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
+
 import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/utils/constants.dart';
-
-import 'dart:async';
 
 void healthChecksTest(Logger logger) {
   group("Health Checks", () {
