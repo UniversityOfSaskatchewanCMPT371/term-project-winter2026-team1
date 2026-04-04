@@ -6,11 +6,11 @@ import 'package:search_cms/features/dashboard/presentation/bloc/data_table_cubit
 void main(){
 
   var testList = [
-    TableRowEntity(borden: "diRx-2", siteName: "site1", areaName: "Western End of Slope", unitName: "N84SW1", levelName: "level 1", upLimit: 0, lowLimit: 0, assemblageName: "Level 1 Faunal Assemblage", comment: "some comment", preExcavFrags: 1, postExcavFrags: 1, elements: 1, porosity: 1),
-    TableRowEntity(borden: "DiRx-7", siteName: "site2", areaName: "Eastern End of Slope", unitName: "N100SW2", levelName: " ", upLimit: 0, lowLimit: 0, assemblageName: "", comment: "", preExcavFrags: 1, postExcavFrags: 1, elements: 1, porosity: 4),
-    TableRowEntity(borden: "diRx-28", siteName: "site3", areaName: "North End of Slope", unitName: "W84SW1", levelName: "level 2", upLimit: 1, lowLimit: 4, assemblageName: "Level 2 Faunal Assemblage", comment: "aaa", preExcavFrags: 13, postExcavFrags: 15, elements: 7, porosity: 2, sizeUpper: 14, sizeLower: 9),
-    TableRowEntity(borden: "diRx-8", siteName: "site4", areaName: "South End of Slope", unitName: "N8SW1", levelName: "level 3", upLimit: 2, lowLimit: 3, assemblageName: "Level 3 Faunal Assemblage", comment: "bbbb", preExcavFrags: 1, postExcavFrags: 3, elements: 18, porosity: 3, sizeUpper: 5, sizeLower: 2),
-    TableRowEntity(borden: "diRx-0", siteName: "site5", areaName: "W End of Slope", unitName: "S84SW1", levelName: "level 4", upLimit: 17, lowLimit: 21, assemblageName: "Level 3 Faunal Assemblage", comment: "ccc", preExcavFrags: 1, postExcavFrags: 6, elements: 7, porosity: 1),
+    TableRowEntity(borden: "diRx-2", siteName: "site1", areaName: "Western End of Slope", unitName: "N84SW1", levelName: "level 1", upLimit: '0', lowLimit: '0', assemblageName: "Level 1 Faunal Assemblage", comment: "some comment", preExcavFrags: '1', postExcavFrags: '1', elements: '1', porosity: '1'),
+    TableRowEntity(borden: "DiRx-7", siteName: "site2", areaName: "Eastern End of Slope", unitName: "N100SW2", levelName: " ", upLimit: '0', lowLimit: '0', assemblageName: "", comment: "", preExcavFrags: '1', postExcavFrags: '1', elements: '1', porosity: '4'),
+    TableRowEntity(borden: "diRx-28", siteName: "site3", areaName: "North End of Slope", unitName: "W84SW1", levelName: "level 2", upLimit: '1', lowLimit: '4', assemblageName: "Level 2 Faunal Assemblage", comment: "aaa", preExcavFrags: '13', postExcavFrags: '15', elements: '7', porosity: '2', sizeUpper: '14', sizeLower: '9'),
+    TableRowEntity(borden: "diRx-8", siteName: "site4", areaName: "South End of Slope", unitName: "N8SW1", levelName: "level 3", upLimit: '2', lowLimit: '3', assemblageName: "Level 3 Faunal Assemblage", comment: "bbbb", preExcavFrags: '1', postExcavFrags: '3', elements: '18', porosity: '3', sizeUpper: '5', sizeLower: '2'),
+    TableRowEntity(borden: "diRx-0", siteName: "site5", areaName: "W End of Slope", unitName: "S84SW1", levelName: "level 4", upLimit: '17', lowLimit: '21', assemblageName: "Level 3 Faunal Assemblage", comment: "ccc", preExcavFrags: '1', postExcavFrags: '6', elements: '7', porosity: '1'),
 
   ];
 
