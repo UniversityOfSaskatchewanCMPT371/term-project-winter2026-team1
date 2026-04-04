@@ -38,7 +38,6 @@ void basicFunctionalityTest(Logger logger) {
         reason: 'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
       );
 
-      await initInjections();
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 

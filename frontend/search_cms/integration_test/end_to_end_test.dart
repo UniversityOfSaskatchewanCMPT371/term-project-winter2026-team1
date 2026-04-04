@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
@@ -34,6 +35,8 @@ void main() async {
   logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  await GetIt.instance.reset();
+  await initInjections();
 
   group('end-to-end-integration test', () {
     /*
@@ -78,7 +81,6 @@ void main() async {
     testWidgets('Verify access system button exists', (tester) async {
       logger?.info("Running access system button existence test");
 
-      await initInjections();
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -119,7 +121,6 @@ void main() async {
         reason: 'TEST_EMAIL and TEST_PASSWORD must be provided via --dart-define.',
       );
 
-      await initInjections();
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
