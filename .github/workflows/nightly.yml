@@ -238,6 +238,7 @@ jobs:
 
 
           git add "$TARGET_DIR/nightly.xml"
+          git add "$TARGET_DIR/nightly.md"
           git commit -m "Nightly report for ${NIGHTLY_DATE}" || exit 0
           git push
 
