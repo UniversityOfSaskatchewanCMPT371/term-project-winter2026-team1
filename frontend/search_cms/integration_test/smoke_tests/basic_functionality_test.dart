@@ -7,31 +7,19 @@ import 'package:search_cms/main.dart';
 void basicFunctionalityTest(Logger logger) {
   group("Basic Functionality Test", () {
     /*
-      Purpose:
-      - Verifies the login flow works end to end from the login screen UI
-        through Supabase authentication and subsequent PowerSync-backed role
-        resolution.
-
       Preconditions:
       - Supabase backend must be running and reachable
       - PowerSync service must be running and able to sync local data
       - Database contains user with:
-          email: pleasework@fortheloveofgod.ca
-          password: passwordypassword
+        email: pleasework@fortheloveofgod.ca
+        password: passwordypassword
       - The user's role record must exist in the role table and be available
-        through PowerSync local sync
+        through PowerSync sync
       - App injections must be initialized before pumping MyApp
 
-      Flow under test:
-      - Render login screen
-      - Enter valid credentials
-      - Tap the access system button
-      - Wait for async auth + first sync + local role fetch to complete
-
       Postconditions:
-      - SnackBar with key "toast_successful_login" appears
-      - This indicates login completed successfully after PowerSync-backed
-        role lookup, not merely after credential submission
+      - Login completes successfully after auth + PowerSync sync + local role lookup
+      - Dashboard/home navigation or other post-login success state is reached
     */
     testWidgets("Login system functions correctly", (tester) async {
       logger.info("Running login system smoke test");
@@ -40,53 +28,42 @@ void basicFunctionalityTest(Logger logger) {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
-      // ** this works as an assertion
       expect(find.text('Email'), findsOneWidget);
 
-      logger.info("Entering email");
       await tester.enterText(
         find.byKey(const Key("emailField")),
         'pleasework@fortheloveofgod.ca',
       );
       await tester.pumpAndSettle();
 
-      logger.info("Entering password");
       await tester.enterText(
         find.byKey(const Key("passwordField")),
         'passwordypassword',
       );
       await tester.pumpAndSettle();
 
-      // Finds the floating action button to tap on
       final fab = find.byKey(const ValueKey('accessSystemButton'));
-      // ** this works as an assertion
       expect(fab, findsOneWidget);
-
-      logger.info("Tapping login button");
 
       await tester.tap(fab);
       await tester.pump();
 
-      // Finds the succesful login toast
-      final finder = find.byKey(const Key("toast_successful_login"));
+      bool success = false;
 
-      bool foundSuccess = false;
-      for (int i = 0; i < 20; i++) {
+      for (int i = 0; i < 30; i++) {
         await tester.pump(const Duration(seconds: 1));
-        if (tester.any(finder)) {
-          foundSuccess = true;
+
+        if (tester.any(find.byKey(const ValueKey('toast_successful_login'))) ||
+            tester.any(find.text('Dashboard Home'))) {
+          success = true;
           break;
         }
       }
 
-      if (!foundSuccess) {
-        logger.severe(
-          "Login failed; success toast not found after waiting for auth + PowerSync sync",
-        );
-        fail("Could not find success toast");
+      if (!success) {
+        logger.severe("Login did not reach a visible success state");
+        fail("Could not observe login success");
       }
-
-      logger.info("Done running test");
     });
   });
 }

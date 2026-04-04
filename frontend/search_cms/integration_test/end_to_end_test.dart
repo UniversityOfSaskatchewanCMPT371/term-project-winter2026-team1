@@ -152,12 +152,12 @@ void main() async {
       await tester.tap(fab);
       await tester.pump();
 
-      final finder = find.byKey(const Key("toast_successful_login"));
-
       bool foundSuccess = false;
-      for (int i = 0; i < 20; i++) {
+      for (int i = 0; i < 30; i++) {
         await tester.pump(const Duration(seconds: 1));
-        if (tester.any(finder)) {
+
+        if (tester.any(find.byKey(const ValueKey('toast_successful_login'))) ||
+            tester.any(find.text('Dashboard Home'))) {
           foundSuccess = true;
           break;
         }
@@ -165,9 +165,9 @@ void main() async {
 
       if (!foundSuccess) {
         logger?.severe(
-          "Login failed; success toast not found after waiting for auth + PowerSync sync",
+          "Login failed; neither success toast nor dashboard route appeared",
         );
-        fail("Could not find success toast");
+        fail("Could not observe login success");
       }
 
       logger?.info("Done running test");

@@ -5,6 +5,8 @@ import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/utils/constants.dart';
 
+import 'dart:async';
+
 void healthChecksTest(Logger logger) {
   group("Health Checks", () {
     /*
@@ -144,9 +146,15 @@ Future<bool> pingPowersync() async {
 
     final powersync = getIt<PowerSyncDatabase>();
 
-    await powersync.waitForFirstSync();
-    logger.info("Powersync first sync completed");
+    await powersync.waitForFirstSync().timeout(
+      const Duration(seconds: 20),
+      onTimeout: () {
+        logger.warning("Powersync first sync timed out");
+        throw TimeoutException("PowerSync first sync timed out");
+      },
+    );
 
+    logger.info("Powersync first sync completed");
     logger.info("Powersync status: ${powersync.currentStatus}");
 
     if (powersync.currentStatus.anyError != null) {
@@ -156,8 +164,10 @@ Future<bool> pingPowersync() async {
       return false;
     }
 
-    logger.info("Powersync is healthy");
     return true;
+  } on TimeoutException catch (e) {
+    logger.warning("PowerSync timeout: $e");
+    return false;
   } catch (e) {
     logger.severe("Error checking Powersync: $e");
     return false;
