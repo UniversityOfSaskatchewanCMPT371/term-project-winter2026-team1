@@ -24,131 +24,136 @@ class DashboardHomePage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                
-              // SizedBox is just empty spaced used to layout other widget, add margins, etc.  
-              SizedBox(width: 1.w),
+        return 
+        BlocProvider(
+          create: (_) => DataTableCubit()..initialFetch(state.tableRowEntities),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  
+                // SizedBox is just empty spaced used to layout other widget, add margins, etc.  
+                SizedBox(width: 1.w),
 
-              // Home title card
-              Text.rich(
-                TextSpan(
-                  text: 'Home',
-                  style: TextStyle(
-                    fontSize: 7.sp,
-                    color: AppColors.mainText,
-                    fontWeight: FontWeight.w300,
+                // Home title card
+                Text.rich(
+                  TextSpan(
+                    text: 'Home',
+                    style: TextStyle(
+                      fontSize: 7.sp,
+                      color: AppColors.mainText,
+                      fontWeight: FontWeight.w300,
+                    )
+                  ),
+                ),
+
+                const Spacer(), // Push the last updated text to the right edge of the row
+                // TODO: Last updated text, should be dynamic in the future (or NUKED lol)
+                Text.rich(
+                  TextSpan(
+                    text: 'Last Updated: 2024-06-01',
+                    style: TextStyle(
+                      fontSize: 3.sp,
+                      color: AppColors.mutedText,
+                      fontWeight: FontWeight.w300,
+                    ),
                   )
                 ),
+                
+                SizedBox(width: 1.w)  
+                
+                ]
               ),
 
-              const Spacer(), // Push the last updated text to the right edge of the row
-              // TODO: Last updated text, should be dynamic in the future (or NUKED lol)
-              Text.rich(
-                TextSpan(
-                  text: 'Last Updated: 2024-06-01',
-                  style: TextStyle(
-                    fontSize: 3.sp,
-                    color: AppColors.mutedText,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
+              // Horizontal bar
+              const Divider(
+                height: 2,
+                thickness: 2,
+                indent: 5,
+                endIndent: 5,
+                color: AppColors.inputBorder,
               ),
-              
-              SizedBox(width: 1.w)  
-              
-              ]
-            ),
 
-            // Horizontal bar
-            const Divider(
-              height: 2,
-              thickness: 2,
-              indent: 5,
-              endIndent: 5,
-              color: AppColors.inputBorder,
-            ),
+              SizedBox(height: 2.h),
 
-            SizedBox(height: 2.h),
-
-            // Search / Advanced Search Toggle
-            Row(mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
-                SearchToggle(onSelectionChanged: (index) {
-                  context.read<HomeCubit>().updateSearchToggle(index);
-                },),
-              ]
-            ),
-
-            SizedBox(height: 2.h),
-
-            // Search Bar and Filter Columns Dropdown
-            // Basic search case
-            if (state.selectedSearch == 0)
+              // Search / Advanced Search Toggle
               Row(mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 1.w),
+                  SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
+                  SearchToggle(onSelectionChanged: (index) {
+                    context.read<HomeCubit>().updateSearchToggle(index);
+                  },),
+                ]
+              ),
 
-                  const Expanded(child: BasicSearchBar()),
+              SizedBox(height: 2.h),
 
-                  SizedBox(width: 35.w),
+              // Search Bar and Filter Columns Dropdown
+              // Basic search case
+              if (state.selectedSearch == 0)
+                Row(mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 1.w),
 
-                  FilterColumnsPopup(
-                    selectedColumns: state.selectedColumns,
-                    onSelectionChanged: (columns) {
-                      // Update UI State
-                      context.read<HomeCubit>().updateSelectedColumns(columns);
-                
-                      // Trigger data table refresh
-                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
-                    },
-                  ),
+                    const Expanded(child: BasicSearchBar()),
+
+                    SizedBox(width: 35.w),
+
+                    FilterColumnsPopup(
+                      selectedColumns: state.selectedColumns,
+                      onSelectionChanged: (columns) {
+                        // Update UI State
+                        context.read<HomeCubit>().updateSelectedColumns(columns);
                   
-                  SizedBox(width: 1.w),
-            ],)
-              
-            else
-            // Advanced search
-              Row(mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 1.w),
-
-                  const Expanded(child: AdvancedSearchBar()), // TODO implement real advanced search
-
-                  SizedBox(width: 35.w),
-
-                  FilterColumnsPopup(
-                    selectedColumns: state.selectedColumns,
-                    onSelectionChanged: (columns) {
-                      // Update UI State
-                      context.read<HomeCubit>().updateSelectedColumns(columns);
+                        // Trigger data table refresh
+                        //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
+                      },
+                    ),
+                    
+                    SizedBox(width: 1.w),
+              ],)
                 
-                      // Trigger data table refresh
-                      //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
-                    },
-                  ),
+              else
+              // Advanced search
+                Row(mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 1.w),
+
+                    const Expanded(child: AdvancedSearchBar()), // TODO implement real advanced search
+
+                    SizedBox(width: 35.w),
+
+                    FilterColumnsPopup(
+                      selectedColumns: state.selectedColumns,
+                      onSelectionChanged: (columns) {
+                        // Update UI State
+                        context.read<HomeCubit>().updateSelectedColumns(columns);
                   
-                  SizedBox(width: 1.w),
-                ])
+                        // Trigger data table refresh
+                        //BlocProvider.of<DataTableCubit>(context).updateColumns(columns);
+                      },
+                    ),
+                    
+                    SizedBox(width: 1.w),
+                  ])
 
-            ,const SizedBox(height: 20),
+              ,const SizedBox(height: 20),
 
-            // Data table takes up remaining area
-            Expanded(
-              child: Padding(
-                padding: EdgeInsetsGeometry.all(2.5.h),
-                child: BlocProvider(
-                    create: (_) => DataTableCubit()..initialFetch(state.tableRowEntities),
-                    child: const DataTableWidget(),
-                  ),
-                ) 
-            )
-          ],
+              // Data table takes up remaining area
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(2.5.h),
+                  child: const DataTableWidget(),
+                  // BlocProvider(
+                  //     create: (_) => DataTableCubit()..initialFetch(state.tableRowEntities),
+                  //     child: const DataTableWidget(),
+                  //   ),
+                  ) 
+              )
+            ],
+          )
         );
       }
     );
@@ -218,13 +223,7 @@ class BasicSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // return TextField(
-    //   decoration: const InputDecoration(
-    //     hintText: "Search...",
-    //     border: OutlineInputBorder(),
-    //   ),
-    // //onSubmitted: context.read<DataTableCubit>().add(basicFetch(query));
-    // );
+    String searchBarContents = "";
 
     return Row(
       children: [
@@ -235,6 +234,11 @@ class BasicSearchBar extends StatelessWidget {
               hintText: "Search...",
               border: OutlineInputBorder(),
             ),
+            onChanged : (value){searchBarContents = value;},
+            onSubmitted: (value){
+              context.read<DataTableCubit>().basicFetch(value);
+            },
+
           ),
         ),
 
@@ -243,7 +247,9 @@ class BasicSearchBar extends StatelessWidget {
         // search button
         ElevatedButton(
           key: Key("searchButton"),
-          onPressed: (){}, // Function ran when the button is pressed
+          onPressed: (){ // perform basic search
+            context.read<DataTableCubit>().basicFetch(searchBarContents);          
+            }, 
 
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(90, 40),
