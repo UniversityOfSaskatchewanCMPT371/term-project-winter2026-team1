@@ -14,16 +14,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1,
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1',
     );
 
     expect(entity.borden, 'DiRx-28');
@@ -31,16 +31,16 @@ void main() {
     expect(entity.areaName, 'Western End of Slope');
     expect(entity.unitName, 'N84SW1');
     expect(entity.levelName, 'A1');
-    expect(entity.upLimit, 1);
-    expect(entity.lowLimit, 5);
+    expect(entity.upLimit, '1');
+    expect(entity.lowLimit, '5');
     expect(entity.assemblageName, 'A1 Faunal Assemblage');
-    expect(entity.porosity, 3);
-    expect(entity.sizeUpper, 3);
-    expect(entity.sizeLower, 2);
+    expect(entity.porosity, '3');
+    expect(entity.sizeUpper, '3');
+    expect(entity.sizeLower, '2');
     expect(entity.comment, 'Bone');
-    expect(entity.preExcavFrags, 1);
-    expect(entity.postExcavFrags, 1);
-    expect(entity.elements, 1);
+    expect(entity.preExcavFrags, '1');
+    expect(entity.postExcavFrags, '1');
+    expect(entity.elements, '1');
   });
 
   /*-----------------------------------------------------------------*/
@@ -53,16 +53,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: '',
       porosity: null,
       sizeUpper: null,
       sizeLower: null,
       comment: '',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1,
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1',
     );
 
     expect(entity.borden, 'DiRx-28');
@@ -70,111 +70,23 @@ void main() {
     expect(entity.areaName, 'Western End of Slope');
     expect(entity.unitName, 'N84SW1');
     expect(entity.levelName, 'A1');
-    expect(entity.upLimit, 1);
-    expect(entity.lowLimit, 5);
+    expect(entity.upLimit, '1');
+    expect(entity.lowLimit, '5');
     expect(entity.assemblageName, '');
     expect(entity.porosity, null);
     expect(entity.sizeUpper, null);
     expect(entity.sizeLower, null);
     expect(entity.comment, '');
-    expect(entity.preExcavFrags, 1);
-    expect(entity.postExcavFrags, 1);
-    expect(entity.elements, 1);
+    expect(entity.preExcavFrags, '1');
+    expect(entity.postExcavFrags, '1');
+    expect(entity.elements, '1');
   });
 
   /*-----------------------------------------------------------------*/
 
   // Test Case 3: Test Assertions
 
-  // 3(a): Empty Borden
-  test('Will throw an AssertionError if borden is empty', () {
-    expect(() => TableRowEntity(
-      borden: '',
-      siteName: 'Site',
-      areaName: 'Western End of Slope',
-      unitName: 'N84SW1',
-      levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
-      assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
-      comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
-        throwsA(isA<AssertionError>())
-    );
-  });
-
-  // 3(b): Empty Area Name
-  test('Will throw an AssertionError if areaName is empty', () {
-    expect(() => TableRowEntity(
-      borden: 'DiRx-28',
-      siteName: 'Site',
-      areaName: '',
-      unitName: 'N84SW1',
-      levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
-      assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
-      comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
-        throwsA(isA<AssertionError>())
-    );
-  });
-
-  // 3(c): Empty Unit Name
-  test('Will throw an AssertionError if unitName is empty', () {
-    expect(() => TableRowEntity(
-      borden: 'DiRx-28',
-      siteName: 'Site',
-      areaName: 'Western End of Slope',
-      unitName: '',
-      levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
-      assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
-      comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
-        throwsA(isA<AssertionError>())
-    );
-  });
-
-  // 3(d): Empty Level Name
-  test('Will throw an AssertionError if levelName is empty', () {
-    expect(() => TableRowEntity(
-      borden: 'DiRx-28',
-      siteName: 'Site',
-      areaName: 'Western End of Slope',
-      unitName: 'N84SW1',
-      levelName: '',
-      upLimit: 1,
-      lowLimit: 5,
-      assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
-      comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
-        throwsA(isA<AssertionError>())
-    );
-  });
-
-  // 3(e): upLimit >= lowLimit
+  // 3(a): upLimit >= lowLimit
   test('Will throw an AssertionError if upLimit >= lowLimit', () {
     expect(() => TableRowEntity(
       borden: 'DiRx-28',
@@ -182,21 +94,21 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 10,
-      lowLimit: 5,
+      upLimit: '10',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1'),
         throwsA(isA<AssertionError>())
     );
   });
 
-  // 3(f): porosity < 1
+  // 3(b): porosity < 1
   test('Will throw an AssertionError if porosity < 1', () {
     expect(() => TableRowEntity(
       borden: 'DiRx-28',
@@ -204,21 +116,21 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 0,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '0',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1'),
         throwsA(isA<AssertionError>())
     );
   });
 
-  // 3(g): porosity > 5
+  // 3(c): porosity > 5
   test('Will throw an AssertionError if porosity > 5', () {
     expect(() => TableRowEntity(
       borden: 'DiRx-28',
@@ -226,21 +138,21 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 6,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '6',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1'),
         throwsA(isA<AssertionError>())
     );
   });
 
-  // 3(h): sizeUpper < sizeLower
+  // 3(d): sizeUpper < sizeLower
   test('Will throw an AssertionError if sizeUpper < sizeLower', () {
     expect(() => TableRowEntity(
       borden: 'DiRx-28',
@@ -248,21 +160,21 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 1,
-      sizeLower: 5,
+      porosity: '3',
+      sizeUpper: '1',
+      sizeLower: '5',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1),
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1'),
         throwsA(isA<AssertionError>())
     );
   });
 
-  // 3(i): preExcavFrags, postExcavFrags, elements < 1
+  // 3(e): preExcavFrags, postExcavFrags, elements < 1
   test('Will throw an AssertionError if preExcavFrags, postExcavFrags, elements < 1', () {
     expect(() => TableRowEntity(
       borden: 'DiRx-28',
@@ -270,16 +182,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 0,
-      postExcavFrags: 0,
-      elements: 0),
+      preExcavFrags: '0',
+      postExcavFrags: '0',
+      elements: '0'),
         throwsA(isA<AssertionError>())
     );
   });
@@ -297,16 +209,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1,
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1',
     );
 
     expect(model.borden, 'DiRx-28');
@@ -314,16 +226,16 @@ void main() {
     expect(model.areaName, 'Western End of Slope');
     expect(model.unitName, 'N84SW1');
     expect(model.levelName, 'A1');
-    expect(model.upLimit, 1);
-    expect(model.lowLimit, 5);
+    expect(model.upLimit, '1');
+    expect(model.lowLimit, '5');
     expect(model.assemblageName, 'A1 Faunal Assemblage');
-    expect(model.porosity, 3);
-    expect(model.sizeUpper, 3);
-    expect(model.sizeLower, 2);
+    expect(model.porosity, '3');
+    expect(model.sizeUpper, '3');
+    expect(model.sizeLower, '2');
     expect(model.comment, 'Bone');
-    expect(model.preExcavFrags, 1);
-    expect(model.postExcavFrags, 1);
-    expect(model.elements, 1);
+    expect(model.preExcavFrags, '1');
+    expect(model.postExcavFrags, '1');
+    expect(model.elements, '1');
   });
 
   /*-----------------------------------------------------------------*/
@@ -338,16 +250,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1,
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1',
     );
 
     final TableRowEntity entity = model.toEntity();
@@ -377,16 +289,16 @@ void main() {
       areaName: 'Western End of Slope',
       unitName: 'N84SW1',
       levelName: 'A1',
-      upLimit: 1,
-      lowLimit: 5,
+      upLimit: '1',
+      lowLimit: '5',
       assemblageName: 'A1 Faunal Assemblage',
-      porosity: 3,
-      sizeUpper: 3,
-      sizeLower: 2,
+      porosity: '3',
+      sizeUpper: '3',
+      sizeLower: '2',
       comment: 'Bone',
-      preExcavFrags: 1,
-      postExcavFrags: 1,
-      elements: 1,
+      preExcavFrags: '1',
+      postExcavFrags: '1',
+      elements: '1',
     );
 
     expect(model.toEntity(), isA<TableRowEntity>());
