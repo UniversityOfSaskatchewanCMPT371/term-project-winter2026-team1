@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:logging/logging.dart';
 import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -55,7 +57,12 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
 
       if (session != null) {
         // waitforfirstsync allows you to load the data to powersync after you login
-        await _powerSyncDatabase.waitForFirstSync();
+        await _powerSyncDatabase.waitForFirstSync().timeout(
+          const Duration(seconds: 20),
+          onTimeout: () {
+            throw TimeoutException('PowerSync sync timed out during login');
+          },
+        );
 
         // Query the role of the user from the role table
         final queryResult = await _powerSyncDatabase.getAll(
