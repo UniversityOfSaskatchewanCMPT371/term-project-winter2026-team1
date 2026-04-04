@@ -336,14 +336,14 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                           //These are the listed sections that are displayed in the Add Data Page
                           //eventually will be displayed in the Homepage and also in the database
                           createAddDataWidget(context, "Site Information", {
-                            "Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Name": "Enter Site Name (e.g., western end of slope)",
                             "Borden": "Enter Borden Number (e.g., DiRw-28)",
                             "Area": "Enter Area (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Unit", {
                             "Name": "Enter Unit Name (e.g., N84SW1)",
-                            "Site Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Site Name": "Enter Site Name (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Level", {
@@ -373,7 +373,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                                 "Enter Pre Excavation Fragments (e.g., 1)",
                             "Post Excavation Fragments":
                                 "Enter Post Excavation Fragments (e.g., 2)",
-                            "Elements": "Enter Elements (e.g., vertebra)",
+                            "Elements": "Enter Elements (e.g., 2)",
                           }, twoColumnFields: true),
                         ],
                       ),

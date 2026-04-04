@@ -3,6 +3,8 @@ import 'package:logging/logging.dart';
 import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.dart';
 import './data_table_state.dart';
 
+// ignore_for_file: unnecessary_null_comparison
+
 // Manager for functions of the data table
 class DataTableCubit extends Cubit<DataTableState> {
   DataTableCubit() : super(const DataTableInitial());
@@ -38,7 +40,6 @@ class DataTableCubit extends Cubit<DataTableState> {
     // List of rows for the table where each row is a list of strings 
     // One string per column
     List<List<String>> allRows = [];
-    TableRowEntity entity;
 
     tableRows = entities;
     allRows = prepareTableRowEntitiesForDisplay(entities);
@@ -176,8 +177,8 @@ properties / formal specification:
 List<TableRowEntity> basicSearch(List<TableRowEntity> rows, String searchString,) {
   String searchQuery = searchString.trim(); 
 
-   final Logger _logger = Logger('Basic search');
-   _logger.info("basic search for $searchQuery");
+   final Logger logger = Logger('Basic search');
+   logger.info("basic search for $searchQuery");
 
   List<TableRowEntity> result = rows.where((row) {
     // look through TableRowEntity's attributes for searchString
@@ -216,7 +217,7 @@ List<TableRowEntity> basicSearch(List<TableRowEntity> rows, String searchString,
     return inSite || inArea || inUnit || inLevel || inAssemblage || inArtifactFaunal; // if true, include the row
   }).toList(); // turning the iterator (from where) into a list for the proper return type
 
-  _logger.info("results of basicSearch for $searchQuery : $result");
+  logger.info("results of basicSearch for $searchQuery : $result");
   return result;
 }
 
