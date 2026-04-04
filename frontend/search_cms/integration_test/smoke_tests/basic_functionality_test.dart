@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
-import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/main.dart';
 
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
