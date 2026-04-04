@@ -78,6 +78,17 @@ void basicFunctionalityTest(Logger logger) {
         }
       }
 
+      if (!success) {
+        print(
+          'basic_functionality_test failure: '
+              'sawToast=$sawToast, '
+              'loginScreenGone=$loginScreenGone, '
+              'emailFieldVisible=${tester.any(find.byKey(const Key("emailField")))}, '
+              'passwordFieldVisible=${tester.any(find.byKey(const Key("passwordField")))}, '
+              'accessButtonVisible=${tester.any(find.byKey(const ValueKey("accessSystemButton")))}',
+        );
+      }
+
       expect(
         success,
         isTrue,

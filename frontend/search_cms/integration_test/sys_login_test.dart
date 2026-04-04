@@ -210,7 +210,7 @@ void main() {
       - Dashboard Home test route is shown
     */
     testWidgets(
-      'backend accepts valid credentials, LoginSuccces with toast shown, route to home page',
+      'backend accepts valid credentials and resolves to LoginSuccess with user id and role',
           (WidgetTester tester) async {
         logger?.info('Running login success case');
 
@@ -232,8 +232,11 @@ void main() {
 
         expect(state, isNotNull, reason: 'Login did not resolve to success or failure within 60 seconds.');
 
+        print('sys_login_test state: $state');
+
         if (state is LoginFailure) {
-          fail('Login resolved to LoginFailure: ${(state).message}');
+          print('sys_login_test failure message: ${state.message}');
+          fail('Login resolved to LoginFailure: ${state.message}');
         }
 
         expect(state, isA<LoginSuccess>());
