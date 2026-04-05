@@ -65,7 +65,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
       // waitForFirstSync allows you to load the data to PowerSync after login.
       // Keep a bounded wait so the login flow fails cleanly instead of hanging forever.
       await _powerSyncDatabase.waitForFirstSync().timeout(
-        const Duration(seconds: 20),
+        const Duration(seconds: 60),
         onTimeout: () {
           throw TimeoutException('PowerSync sync timed out during login');
         },
