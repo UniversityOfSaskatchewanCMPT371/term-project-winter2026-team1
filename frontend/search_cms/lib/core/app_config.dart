@@ -1,18 +1,36 @@
-// Copy this template: `cp lib/app_config_template.dart lib/app_config.dart`
-// Edit lib/app_config.dart and enter your Supabase and PowerSync project details.
 import 'package:flutter/foundation.dart';
 
+const String _envSupabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: '');
+const String _envPowersyncUrl = String.fromEnvironment('POWERSYNC_URL', defaultValue: '');
+
 class AppConfig {
-  // Use localhost for iOS/macOS/Web, 10.0.2.2 for Android emulator
-  static String get _host {
+  
+  // This helper strictly handles figuring out the correct "localhost" string
+  static String get _localHostString {
     final isApple =
         defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
     return (kIsWeb || isApple) ? 'http://localhost' : 'http://127.0.0.1';
   }
 
-  static String get supabaseUrl => '$_host:54321';
-  static String get powersyncUrl => '$_host:8080';
+  // Supabase Logic
+  static String get supabaseUrl {
+    // If the environment is passed update it.
+    if (_envSupabaseUrl.isNotEmpty) {
+      return _envSupabaseUrl; 
+    }
+    // Fallback to local if its not up.
+    return '$_localHostString:54321';
+  }
+
+  static String get powersyncUrl {
+    // Same logic: use the injected URL if it exists
+    if (_envPowersyncUrl.isNotEmpty) {
+      return _envPowersyncUrl;
+    }
+    // Fallback to local
+    return '$_localHostString:8080';
+  }
 
   static const String supabaseAnonKey =
   // ignore: lines_longer_than_80_chars
