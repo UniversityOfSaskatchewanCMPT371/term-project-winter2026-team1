@@ -1,14 +1,6 @@
 name: Flutter Desktop Nightly
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'frontend/search_cms/**'
-      - '.github/workflows/desktop-nightly.yml'
-  schedule:
-    # 06:00 UTC ≈ midnight / 11pm in SK depending on DST; adjust as you like
-    - cron: '0 6 * * *'
   workflow_dispatch:
 
   workflow_call:

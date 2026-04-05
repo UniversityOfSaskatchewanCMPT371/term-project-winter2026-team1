@@ -115,7 +115,7 @@ Widget createAddDataWidget(
                       const SizedBox(height: 8),
                       TextFormField(
                         key: Key("$title-$name"),
-                        maxLines: 1,
+                        maxLines: null,
                         style: TextStyle(fontSize: 14),
 
                         onChanged: (value) {
@@ -124,7 +124,7 @@ Widget createAddDataWidget(
                             name,
                             value,
                           );
-                          _logger?.info("$title-$name");
+                          // _logger?.info("$title-$name"); // slows down everytime you type a character
                         },
 
                         //The validator receives the text that user has entered
@@ -336,14 +336,14 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                           //These are the listed sections that are displayed in the Add Data Page
                           //eventually will be displayed in the Homepage and also in the database
                           createAddDataWidget(context, "Site Information", {
-                            "Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Name": "Enter Site Name (e.g., western end of slope)",
                             "Borden": "Enter Borden Number (e.g., DiRw-28)",
                             "Area": "Enter Area (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Unit", {
                             "Name": "Enter Unit Name (e.g., N84SW1)",
-                            "Site Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Site Name": "Enter Site Name (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Level", {
@@ -373,7 +373,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                                 "Enter Pre Excavation Fragments (e.g., 1)",
                             "Post Excavation Fragments":
                                 "Enter Post Excavation Fragments (e.g., 2)",
-                            "Elements": "Enter Elements (e.g., vertebra)",
+                            "Elements": "Enter Elements (e.g., 2)",
                           }, twoColumnFields: true),
                         ],
                       ),
