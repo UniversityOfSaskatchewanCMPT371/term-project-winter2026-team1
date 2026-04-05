@@ -1,10 +1,5 @@
 name: Nightly Master Suite
 on:
-  # Temporary for testing
-  push:
-    branches: [ "develop", "main" ]
-  pull_request:
-    branches: [ "develop", "main" ]
   workflow_dispatch:
   schedule:
     - cron: '0 6 * * *'
