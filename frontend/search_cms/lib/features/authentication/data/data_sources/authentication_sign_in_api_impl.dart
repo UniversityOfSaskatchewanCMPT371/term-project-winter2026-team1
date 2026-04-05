@@ -8,8 +8,7 @@ import '../models/user_model.dart';
 import 'abstract_authentication_sign_in_api.dart';
 
 // The api for signing in with Supabase through email and password
-class AuthenticationSignInApiImpl
-    implements AbstractAuthenticationSignInApi {
+class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
   // The Supabase client that is passed into this class
   final SupabaseClient _supabaseClient;
   final PowerSyncDatabase _powerSyncDatabase;
@@ -100,23 +99,29 @@ class AuthenticationSignInApiImpl
 
       if (queryResult.isEmpty) {
         throw StateError(
-          'No synced role row found for user ${session.user.id}',
+          'No synced role row found for user ${session.user.id} using query role.user_id = auth.users.id',
         );
       }
 
       if (queryResult.length > 1) {
         throw StateError(
-          'Multiple synced role rows found for user ${session.user.id}: '
-              '${queryResult.length}',
+          'Multiple synced role rows found for user ${session.user.id}: ${queryResult.length}',
         );
       }
 
-      final dynamic id = queryResult[0]['id'];
+      final dynamic userId = queryResult[0]['user_id'];
       final dynamic role = queryResult[0]['role'];
 
-      if (id == null) {
+      if (userId == null) {
         throw StateError(
-          'Synced role row is missing id for user ${session.user.id}',
+          'Synced role row is missing user_id for user ${session.user.id}',
+        );
+      }
+
+      if (userId != session.user.id) {
+        throw StateError(
+          'Synced role row user_id does not match authenticated user. '
+              'Expected ${session.user.id}, got $userId',
         );
       }
 
@@ -133,7 +138,7 @@ class AuthenticationSignInApiImpl
       }
 
       final UserModel userModel = UserModel(
-        id: id as String,
+        id: session.user.id,
         role: role as String,
       );
 
