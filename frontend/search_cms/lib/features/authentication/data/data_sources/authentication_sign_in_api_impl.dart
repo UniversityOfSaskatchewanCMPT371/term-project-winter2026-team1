@@ -76,7 +76,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
       // Give PowerSync a short window after first sync for the role row to appear.
       for (int i = 0; i < 10; i++) {
         final rawResult = await _powerSyncDatabase.getAll(
-          'SELECT * FROM role WHERE user_id = ?',
+          'SELECT * FROM role WHERE id = ?',
           [session.user.id],
         );
 
@@ -99,7 +99,7 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
 
       if (queryResult.isEmpty) {
         throw StateError(
-          'No synced role row found for user ${session.user.id} using query role.user_id = auth.users.id',
+          'No synced role row found for user ${session.user.id} using query role.id = auth.users.id',
         );
       }
 
@@ -109,18 +109,18 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
         );
       }
 
-      final dynamic userId = queryResult[0]['user_id'];
+      final dynamic userId = queryResult[0]['id'];
       final dynamic role = queryResult[0]['role'];
 
       if (userId == null) {
         throw StateError(
-          'Synced role row is missing user_id for user ${session.user.id}',
+          'Synced role row is missing id for user ${session.user.id}',
         );
       }
 
       if (userId != session.user.id) {
         throw StateError(
-          'Synced role row user_id does not match authenticated user. '
+          'Synced role row id does not match authenticated user. '
               'Expected ${session.user.id}, got $userId',
         );
       }

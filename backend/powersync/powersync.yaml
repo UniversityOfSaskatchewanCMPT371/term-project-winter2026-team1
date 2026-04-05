@@ -24,6 +24,7 @@ sync_rules:
           - SELECT * FROM level
           - SELECT * FROM assemblage
           - SELECT * FROM artifact_faunal
+          - SELECT * FROM role
 
 client_auth:
   jwks_uri: "http://host.docker.internal:54321/auth/v1/.well-known/jwks.json"

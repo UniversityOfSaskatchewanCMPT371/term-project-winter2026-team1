@@ -14,21 +14,21 @@ import 'package:sqlite3/sqlite3.dart';
 import '../../mocks/authentication_mocks.mocks.dart';
 
 ResultSet buildRoleResultSet({
-  required String userId,
+  required String id,
   required String role,
 }) {
   final db = sqlite3.openInMemory();
-  db.execute('CREATE TABLE role (user_id TEXT, role TEXT);');
+  db.execute('CREATE TABLE role (id TEXT, role TEXT);');
   db.execute(
-    'INSERT INTO role (user_id, role) VALUES (?, ?);',
-    [userId, role],
+    'INSERT INTO role (id, role) VALUES (?, ?);',
+    [id, role],
   );
   return db.select('SELECT * FROM role;');
 }
 
 ResultSet buildEmptyResultSet() {
   final db = sqlite3.openInMemory();
-  db.execute('CREATE TABLE role (user_id TEXT, role TEXT);');
+  db.execute('CREATE TABLE role (id TEXT, role TEXT);');
   return db.select('SELECT * FROM role;');
 }
 
@@ -68,7 +68,7 @@ void main() {
       when(powerSyncDatabase.waitForFirstSync()).thenAnswer((_) async {});
 
       when(powerSyncDatabase.getAll(
-        'SELECT * FROM role WHERE user_id = ?',
+        'SELECT * FROM role WHERE id = ?',
         ['u1'],
       )).thenAnswer(
             (_) async => buildRoleResultSet(userId: 'u1', role: 'viewer'),
@@ -92,7 +92,7 @@ void main() {
 
       verify(powerSyncDatabase.waitForFirstSync()).called(1);
       verify(powerSyncDatabase.getAll(
-        'SELECT * FROM role WHERE user_id = ?',
+        'SELECT * FROM role WHERE id = ?',
         ['u1'],
       )).called(1);
     });
@@ -121,7 +121,7 @@ void main() {
 
       verifyNever(powerSyncDatabase.waitForFirstSync());
       verifyNever(powerSyncDatabase.getAll(
-        'SELECT * FROM role WHERE user_id = ?',
+        'SELECT * FROM role WHERE id = ?',
         ['u1'],
       ));
     });
