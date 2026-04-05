@@ -60,7 +60,6 @@ const schema = Schema([
   ]),
 
   Table('role', [
-    Column.text('id'), // user id of the user
     Column.text('created_at'), // When a role was created
     Column.text('role'), // Either 'admin', 'researcher', or 'viewer'
   ]),

@@ -71,7 +71,7 @@ void main() {
         'SELECT * FROM role WHERE id = ?',
         ['u1'],
       )).thenAnswer(
-            (_) async => buildRoleResultSet(userId: 'u1', role: 'viewer'),
+            (_) async => buildRoleResultSet(id: 'u1', role: 'viewer'),
       );
 
       final api = AuthenticationSignInApiImpl(
