@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:search_cms/core/app_config.dart';
 import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
+import 'package:search_cms/features/authentication/presentation/bloc/login_cubit.dart';
+import 'package:search_cms/features/authentication/presentation/bloc/login_state.dart';
 import 'package:search_cms/main.dart';
 
 const String _testEmail = String.fromEnvironment('TEST_EMAIL');
@@ -126,10 +129,7 @@ void main() async {
 
       expect(find.text('Email'), findsOneWidget);
 
-      await tester.enterText(
-        find.byKey(const Key("emailField")),
-        _testEmail,
-      );
+      await tester.enterText(find.byKey(const Key("emailField")), _testEmail);
       await tester.pumpAndSettle();
 
       await tester.enterText(
@@ -147,12 +147,31 @@ void main() async {
       bool success = false;
       bool sawToast = false;
       bool loginScreenGone = false;
+      String? failureMessage;
+
+      final blocFinder = find.byType(BlocConsumer<LoginCubit, LoginState>);
 
       for (int i = 0; i < 60; i++) {
         await tester.pump(const Duration(seconds: 1));
 
-        sawToast = tester.any(find.byKey(const ValueKey('toast_successful_login')));
+        sawToast =
+            tester.any(find.byKey(const ValueKey('toast_successful_login')));
         loginScreenGone = !_isLoginScreenStillVisible(tester);
+
+        if (tester.any(blocFinder)) {
+          final cubit = tester.element(blocFinder).read<LoginCubit>();
+          final state = cubit.state;
+
+          if (state is LoginFailure) {
+            failureMessage = state.message;
+            break;
+          }
+
+          if (state is LoginSuccess) {
+            success = true;
+            break;
+          }
+        }
 
         if (sawToast || loginScreenGone) {
           success = true;
@@ -163,7 +182,9 @@ void main() async {
       expect(
         success,
         isTrue,
-        reason: 'Could not observe login success. sawToast=$sawToast, loginScreenGone=$loginScreenGone',
+        reason: failureMessage == null
+            ? 'Could not observe login success. sawToast=$sawToast, loginScreenGone=$loginScreenGone'
+            : 'Login resolved to failure: $failureMessage',
       );
     });
   });
