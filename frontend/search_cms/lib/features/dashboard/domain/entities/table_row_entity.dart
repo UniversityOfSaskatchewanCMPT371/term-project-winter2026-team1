@@ -23,19 +23,13 @@
   - elements: Number of elements in an artifact
 
   Invariants:
-  - borden must be a non-empty string
-  - siteName may be empty but must not be null
-  - areaName must be a non-empty string
-  - unitName must be a non-empty string
-  - levelName must be a non-empty string
-  - upLimit <= lowLimit
-  - assemblageName must be a non-empty string
-  - porosity is null or between 1-5
-  - If sizeUpper and sizeLower are not null, then sizeUpper >= sizeLower
-  - comment may be empty but must not be null
-  - preExcavFrags > 0
-  - postExcavFrags > 0
-  - elements > 0
+  - Any combination of fields may be present; no single field is required
+  - All fields are strings; null model fields are converted to '' before construction
+  - porosity, sizeUpper, sizeLower remain nullable (absent means no value)
+  - If upLimit and lowLimit are both non-empty valid integers, upLimit <= lowLimit
+  - porosity is null or a valid integer between 1-5
+  - If sizeUpper and sizeLower are both non-null valid numbers, sizeUpper >= sizeLower
+  - preExcavFrags, postExcavFrags, elements are '' or a valid integer > 0
 */
 
 class TableRowEntity {
@@ -52,20 +46,20 @@ class TableRowEntity {
 
   // Level
   final String levelName;
-  final int upLimit;
-  final int lowLimit;
+  final String upLimit;
+  final String lowLimit;
 
   // Assemblage
   final String assemblageName;
 
   // Artifact_Faunal
-  final int? porosity;
-  final double? sizeUpper;
-  final double? sizeLower;
+  final String? porosity;
+  final String? sizeUpper;
+  final String? sizeLower;
   final String comment;
-  final int preExcavFrags;
-  final int postExcavFrags;
-  final int elements;
+  final String preExcavFrags;
+  final String postExcavFrags;
+  final String elements;
 
 TableRowEntity({
   required this.borden,
@@ -84,16 +78,41 @@ TableRowEntity({
   required this.postExcavFrags,
   required this.elements,
 })
-: assert(borden.isNotEmpty),
-  assert(areaName.isNotEmpty),
-  assert(unitName.isNotEmpty),
-  assert(levelName.isNotEmpty),
-  assert(upLimit <= lowLimit),
-  assert(porosity == null || (porosity > 0 && porosity <= 5)),
-  assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower),
-  assert(preExcavFrags > 0),
-  assert(postExcavFrags > 0),
-  assert(elements > 0);
+: assert(
+    // if upLimit and lowLimit exist, assert upLimit <= lowLimit
+    upLimit.isEmpty || lowLimit.isEmpty ||
+    int.tryParse(upLimit) == null || int.tryParse(lowLimit) == null ||
+    int.parse(upLimit) <= int.parse(lowLimit),
+    'Up limit must be lower than low limit'
+  ),
+  assert(
+    // if porosity exists, assert 1 <= porosity <= 5
+    porosity == null ||
+    (int.tryParse(porosity) != null && int.parse(porosity) > 0 && int.parse(porosity) <= 5),
+    'Porosity must be between 1-5'
+  ),
+  assert(
+    // if sizeUpper and sizeLower exist, assert sizeUpper >= sizeLower
+    sizeUpper == null || sizeLower == null ||
+    double.tryParse(sizeUpper) == null || double.tryParse(sizeLower) == null ||
+    double.parse(sizeUpper) >= double.parse(sizeLower),
+    'Size upper must be greater than size lower'
+  ),
+  assert(
+    // allows empty strings but rejects non-numberical, zero or negative values
+    preExcavFrags.isEmpty || (int.tryParse(preExcavFrags) ?? -1) > 0,
+    'There must be at least 1 pre excav frag'
+  ),
+  assert(
+    // allows empty strings but rejects non-numberical, zero or negative values
+    postExcavFrags.isEmpty || (int.tryParse(postExcavFrags) ?? -1) > 0,
+    'There must be at least 1 post excav frag'
+  ),
+  assert(
+    // allows empty strings but rejects non-numberical, zero or negative values
+    elements.isEmpty || (int.tryParse(elements) ?? -1) > 0,
+    'There must be at least 1 element'
+  );
 }
 
 

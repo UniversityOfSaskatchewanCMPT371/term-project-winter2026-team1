@@ -1,15 +1,18 @@
 name: Flutter Desktop Nightly
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'frontend/search_cms/**'
-      - '.github/workflows/desktop-nightly.yml'
-  schedule:
-    # 06:00 UTC ≈ midnight / 11pm in SK depending on DST; adjust as you like
-    - cron: '0 6 * * *'
   workflow_dispatch:
+
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
 
 # Prevent overlapping runs fighting over the "nightly" tag/release
 concurrency:
@@ -25,8 +28,12 @@ defaults:
     working-directory: frontend/search_cms
 
 jobs:
+
   build:
     name: Build ${{ matrix.platform }}
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     strategy:
       fail-fast: false
       matrix:

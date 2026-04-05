@@ -5,10 +5,13 @@ on:
     - cron:  '0 6 * * *'
 
 jobs:
+
   nightly-merge:
 
     runs-on: ubuntu-latest # Just use githubs runner for this, no need for self hosted
-
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4

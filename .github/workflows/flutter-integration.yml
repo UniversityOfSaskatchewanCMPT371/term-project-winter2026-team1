@@ -21,12 +21,25 @@ on:
         default: 'staging'
         type: string
 
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
 permissions:
   checks: write
   pull-requests: write
 
 jobs:
   build:
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     # Runs on ubuntu latest, this means the display driver does not test mac or windows
     runs-on: ubuntu-latest
     steps:
