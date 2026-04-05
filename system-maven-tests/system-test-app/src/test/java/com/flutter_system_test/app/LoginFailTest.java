@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.Duration;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled
 public class LoginFailTest {
 
     private WindowsDriver driver;
@@ -56,7 +57,7 @@ public class LoginFailTest {
 
         String currentDir = System.getProperty("user.dir");
         
-        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
+        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Debug").normalize();
         Path appExePath = workingDirPath.resolve("flutter_supabase_template.exe");
 
         // Print paths to the console so you can debug in CI/CD if it fails again

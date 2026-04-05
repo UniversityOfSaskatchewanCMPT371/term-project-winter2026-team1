@@ -57,7 +57,7 @@ public class LoginTest {
         // Working directory and application path
         String currentDir = System.getProperty("user.dir");
         
-        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Release").normalize();
+        Path workingDirPath = Paths.get(currentDir, "..", "..", "frontend", "search_cms", "build", "windows", "x64", "runner", "Debug").normalize();
         Path appExePath = workingDirPath.resolve("flutter_supabase_template.exe");
 
         // Print paths to the console so you can debug in CI/CD if it fails again
