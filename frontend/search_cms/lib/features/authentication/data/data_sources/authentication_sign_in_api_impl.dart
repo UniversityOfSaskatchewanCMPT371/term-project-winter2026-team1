@@ -62,82 +62,90 @@ class AuthenticationSignInApiImpl implements AbstractAuthenticationSignInApi {
         return null;
       }
 
-      // waitForFirstSync allows you to load the data to PowerSync after login.
-      // Keep a bounded wait so the login flow fails cleanly instead of hanging forever.
-      await _powerSyncDatabase.waitForFirstSync().timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          throw TimeoutException('PowerSync sync timed out during login');
-        },
-      );
-
       List<Map<String, dynamic>> queryResult = [];
 
-      // Give PowerSync a short window after first sync for the role row to appear.
-      for (int i = 0; i < 10; i++) {
-        final rawResult = await _powerSyncDatabase.getAll(
-          'SELECT * FROM role WHERE id = ?',
-          [session.user.id],
+      try {
+        await _powerSyncDatabase.waitForFirstSync().timeout(
+          const Duration(seconds: 60),
+          onTimeout: () {
+            throw TimeoutException('PowerSync sync timed out during login');
+          },
         );
 
-        queryResult = rawResult
-            .map(
-              (row) => row.map(
-                (key, value) => MapEntry(key, value),
-          ),
-        )
-            .toList();
+        for (int i = 0; i < 10; i++) {
+          final rawResult = await _powerSyncDatabase.getAll(
+            'SELECT * FROM role WHERE id = ?',
+            [session.user.id],
+          );
 
-        _logger.finest(queryResult);
+          queryResult = rawResult
+              .map((row) => row.map((key, value) => MapEntry(key, value)))
+              .toList();
 
-        if (queryResult.length == 1) {
-          break;
+          _logger.finest(queryResult);
+
+          if (queryResult.length == 1) {
+            break;
+          }
+
+          await Future<void>.delayed(const Duration(seconds: 1));
         }
+      } on TimeoutException catch (e) {
+        _logger.warning(
+          'PowerSync sync timed out during login, falling back to Supabase role query: $e',
+        );
+      }
 
-        await Future<void>.delayed(const Duration(seconds: 1));
+      if (queryResult.isEmpty) {
+        final fallbackResult = await _supabaseClient
+            .from('role')
+            .select('id, role')
+            .eq('id', session.user.id);
+
+        queryResult = List<Map<String, dynamic>>.from(fallbackResult);
+        _logger.finest('Fallback Supabase role query result: $queryResult');
       }
 
       if (queryResult.isEmpty) {
         throw StateError(
-          'No synced role row found for user ${session.user.id} using query role.id = auth.users.id',
+          'No role row found for user ${session.user.id} in PowerSync or Supabase',
         );
       }
 
       if (queryResult.length > 1) {
         throw StateError(
-          'Multiple synced role rows found for user ${session.user.id}: ${queryResult.length}',
+          'Multiple role rows found for user ${session.user.id}: ${queryResult.length}',
         );
       }
 
-      final dynamic userId = queryResult[0]['id'];
+      final dynamic rowId = queryResult[0]['id'];
       final dynamic role = queryResult[0]['role'];
 
-      if (userId == null) {
+      if (rowId == null) {
         throw StateError(
-          'Synced role row is missing id for user ${session.user.id}',
+          'Role row is missing id for user ${session.user.id}',
         );
       }
 
-      if (userId != session.user.id) {
+      if (rowId != session.user.id) {
         throw StateError(
-          'Synced role row id does not match authenticated user. '
-              'Expected ${session.user.id}, got $userId',
+          'Role row id does not match authenticated user. Expected ${session.user.id}, got $rowId',
         );
       }
 
       if (role == null) {
         throw StateError(
-          'Synced role row is missing role for user ${session.user.id}',
+          'Role row is missing role for user ${session.user.id}',
         );
       }
 
       if (role != 'admin' && role != 'researcher' && role != 'viewer') {
         throw StateError(
-          'Unexpected synced role value for user ${session.user.id}: $role',
+          'Unexpected role value for user ${session.user.id}: $role',
         );
       }
 
-      final UserModel userModel = UserModel(
+      final userModel = UserModel(
         id: session.user.id,
         role: role as String,
       );
