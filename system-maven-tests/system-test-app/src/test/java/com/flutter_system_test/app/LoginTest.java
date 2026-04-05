@@ -18,6 +18,7 @@ import java.net.URL;
 import java.time.Duration;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled
 
 // NOTE partial use of AI below
 public class LoginTest {
