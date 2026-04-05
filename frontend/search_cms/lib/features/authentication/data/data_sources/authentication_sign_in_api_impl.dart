@@ -77,7 +77,7 @@ class AuthenticationSignInApiImpl
       // Give PowerSync a short window after first sync for the role row to appear.
       for (int i = 0; i < 10; i++) {
         final rawResult = await _powerSyncDatabase.getAll(
-          'SELECT * FROM role WHERE id = ?',
+          'SELECT * FROM role WHERE user_id = ?',
           [session.user.id],
         );
 
