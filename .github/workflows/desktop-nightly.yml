@@ -3,6 +3,17 @@ name: Flutter Desktop Nightly
 on:
   workflow_dispatch:
 
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
+
 # Prevent overlapping runs fighting over the "nightly" tag/release
 concurrency:
   group: flutter-desktop-nightly
@@ -17,8 +28,12 @@ defaults:
     working-directory: frontend/search_cms
 
 jobs:
+
   build:
     name: Build ${{ matrix.platform }}
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     strategy:
       fail-fast: false
       matrix:
