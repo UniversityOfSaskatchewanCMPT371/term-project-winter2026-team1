@@ -73,7 +73,112 @@ void main() {
 
 //Site Information failure case
 
-/*
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+//
+// Postconditions:
+// - Errors are properly handled and Site Information missing fields are show
+
+  group('SYS-ADD-01 - Site Information Failure Case', () {
+    testWidgets(
+      'missing Borden and Area leads to SaveIncomplete and error message',
+      (WidgetTester tester) async {
+
+        logger?.info('Running site information failure case');
+
+        //Uses the helpers to build the Add Data page
+        await tester.pumpWidget(wrap(const DashboardAddPage()));
+        await tester.pumpAndSettle();
+
+        await tester.enterText(
+          find.byKey(const Key('Site Information-Name')),
+          'DiRx-28',
+        );
+
+        // The "save button" is being tap and waits for the UI and validation to complete
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle(const Duration(seconds: 10));
+
+
+        // Gets the Add Data Page from the widget tree
+        final cubit = tester
+            .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
+            .read<AddDataCubit>();
+
+        // SaveIncomplete indicates missing required Site Information fields (Borden and Area) and displays validation errors
+        expect(cubit.state, isA<SaveIncomplete>());
+        expect(find.textContaining('Missing required fields:'), findsOneWidget);
+        expect(find.textContaining('Site Information: Borden'), findsOneWidget);
+        expect(find.textContaining('Site Information: Area'), findsOneWidget);
+
+        logger?.info('Site information failure case finished');
+      },
+    );
+  });
+
+// System Testing - 02 (SYS ADD-DATA-02)
+//
+// Unit failure case
+//
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Site Information fields are filled
+//
+// Postconditions:
+// - Errors are properly handled and the missing Unit Site Name field is shown
+
+group('SYS-ADD-02 - Unit Failure Case', () {
+  testWidgets(
+    'missing Unit Site Name leads to SaveIncomplete and error message',
+    (WidgetTester tester) async {
+      logger?.info('Running unit failure case');
+
+      // Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      // Enters valid Site Information fields
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Name')),
+        'DiRx-28',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Borden')),
+        '1234',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Area')),
+        'Western End of Slope',
+      );
+
+      // Enters only the Unit Name field
+      await tester.enterText(
+        find.byKey(const Key('Unit-Name')),
+        'N84SW1',
+      );
+
+      // Taps the save button and waits for validation and UI updates to finish
+      await tester.tap(find.byKey(const Key('saveButton')));
+      await tester.pumpAndSettle(const Duration(seconds: 10));
+
+      // Gets the Add Data cubit from the widget tree
+      final cubit = tester
+          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
+          .read<AddDataCubit>();
+
+      // SaveIncomplete indicates the required (Unit Site Name) field is missing
+      expect(cubit.state, isA<SaveIncomplete>());
+      expect(find.textContaining('Unit: Site Name'), findsOneWidget);
+
+      logger?.info('Unit failure case finished');
+    },
+  );
+});
+
+
+  
+
+
 
     
 
