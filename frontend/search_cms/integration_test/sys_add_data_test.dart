@@ -183,7 +183,7 @@ group('SYS-ADD-02 - Unit Failure Case', () {
         'N84SW1',
       );
 
-      // Taps the save button and waits for validation and UI updates to finish
+        // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -255,7 +255,7 @@ group('SYS-ADD-03 - Level Failure Case', () {
         '1',
       );
 
-      // Taps the save button and waits for validation and UI updates to finish
+      // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -337,7 +337,7 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
         'Level 1 Faunal',
       );
 
-    // Taps the save button and waits for validation and UI updates to finish 
+      // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -361,7 +361,6 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
 //
 // Postconditions:
 // - Errors are properly handled and missing Artifact fields are shown
-
 group('SYS-ADD-05 - Artifact Failure Case', () {
   testWidgets(
     'missing Artifact Assemblage Name leads to SaveIncomplete and error message',
@@ -374,53 +373,6 @@ group('SYS-ADD-05 - Artifact Failure Case', () {
       await tester.pumpAndSettle();
 
       await tester.enterText(
-        find.byKey(const Key('Site Information-Name')),
-        'DiRx-28',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Site Information-Borden')),
-        '1234',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Site Information-Area')),
-        'Area A',
-      );
-
-      await tester.enterText(
-        find.byKey(const Key('Unit-Name')),
-        'N84SW1',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Unit-Site Name')),
-        'DiRx-28',
-      );
-
-      await tester.enterText(
-        find.byKey(const Key('Level-Name')),
-        'Level 1',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Level-Unit Name')),
-        'N84SW1',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Level-Parent Name')),
-        'Parent A',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Level-Upper Limit')),
-        '2',
-      );
-      await tester.enterText(
-        find.byKey(const Key('Level-Lower Limit')),
-        '1',
-      );
-
-      await tester.enterText(
-        find.byKey(const Key('Assemblage-Assemblage Name')),
-        'Level 1 Faunal',
-      );
-      await tester.enterText(
         find.byKey(const Key('Assemblage-Unit Name')),
         'N84SW1',
       );
@@ -429,13 +381,13 @@ group('SYS-ADD-05 - Artifact Failure Case', () {
         'Level 1',
       );
 
-      // Enters one optional Artifact field and leaves the required Assemblage Name empty
+      // Enters any "comment-text" Artifact field and leaves the required Assemblage Name empty
       await tester.enterText(
         find.byKey(const Key('Artifact (Faunal)-Comment')),
-        'test comment',
+        'test comment123',
       );
 
-      // Taps the save button and waits for validation and UI updates to finish
+      // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -449,6 +401,8 @@ group('SYS-ADD-05 - Artifact Failure Case', () {
     },
   );
 });
+
+
 
 
 }
