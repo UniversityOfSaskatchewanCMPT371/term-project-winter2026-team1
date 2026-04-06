@@ -58,4 +58,23 @@ Widget wrap(Widget child) {
 void main() {
 
   final Logger? logger = 
-    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
+    logLevel != Level.OFF ? Logger('Add Data System Test') : null;
+    
+    setUpAll(() async {
+    // Reset GetIt before registering to avoid double registration
+    // across each of the test runs
+      await GetIt.instance.reset();
+      IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+      await initInjections();
+  });
+}
+
+//System Testing - 01 (SYS ADD-DATA-01)
+
+//Site Information failure case
+
+/*
+
+    
+
+
