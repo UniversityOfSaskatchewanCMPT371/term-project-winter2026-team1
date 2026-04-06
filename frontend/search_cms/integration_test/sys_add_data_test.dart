@@ -333,7 +333,6 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
         find.byKey(const Key('Level-Lower Limit')),
         '1',
       );
-
       await tester.enterText(
         find.byKey(const Key('Assemblage-Assemblage Name')),
         'Level 1 Faunal',
@@ -351,6 +350,18 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
     },
   );
 });
+
+//System Testing - 05 (SYS ADD-DATA-05)
+
+//Artifact failure case
+
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Previous required sections are filled
+// - The artifact section is being inserted by entering the following fields
+//
+// Postconditions:
+// - Errors are properly handled and missing Artifact fields are shown
 
 }
 
