@@ -12,3 +12,25 @@ import 'package:search_cms/features/dashboard/presentation/bloc/add_data_state.d
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 import 'package:sizer/sizer.dart';
 
+// Helper functions
+
+// Build a copy of the real router for use in this test suite
+// This test only checks the add data page flow is switched to
+
+GoRouter _buildTestRouter() {
+  return GoRouter(
+    initialLocation: '/dashboard/add',
+    routes: [
+      GoRoute(
+        path: '/dashboard/add',
+        builder: (_, __) => const DashboardAddPage(),
+      ),
+      GoRoute(
+        path: '/dashboard/home',
+        builder: (_, __) => const Scaffold(
+          body: Center(child: Text('Dashboard Home')),
+        ),
+      ),
+    ],
+  );
+}
