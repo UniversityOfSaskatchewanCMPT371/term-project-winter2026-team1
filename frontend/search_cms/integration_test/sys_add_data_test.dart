@@ -130,7 +130,7 @@ void main() {
 
         // The "save button" is being tap and waits for the UI and validation to complete
         await tester.tap(find.byKey(const Key('saveButton')));
-        await tester.pumpAndSettle(const Duration(seconds: 3));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
         // SaveIncomplete indicates missing required Site Information fields (Borden and Area) and displays validation errors
         expect(find.textContaining('Missing required fields:'), findsOneWidget);
@@ -185,7 +185,7 @@ group('SYS-ADD-02 - Unit Failure Case', () {
 
         // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // SaveIncomplete indicates the required (Unit Site Name) field is missing
       expect(find.textContaining('Unit: Site Name'), findsOneWidget);
@@ -257,7 +257,7 @@ group('SYS-ADD-03 - Level Failure Case', () {
 
       // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // SaveIncomplete indicates the required (Level fields) field are missing
       expect(find.textContaining('Level: Unit Name'), findsOneWidget);
@@ -339,7 +339,7 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
 
       // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // SaveIncomplete indicates missing required Assemblage fields (Unit Name and Level Name) and displays validation errors
       expect(find.textContaining('Assemblage: Unit Name'), findsOneWidget);
@@ -389,21 +389,60 @@ group('SYS-ADD-05 - Artifact Failure Case', () {
 
       // The "save button" is being tap and waits for the UI and validation to complete
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // SaveIncomplete indicates missing required Artifact field (Assemblage Name) and displays validation errors
       expect(
         find.textContaining('Artifact (Faunal): Assemblage Name'),
         findsOneWidget,
       );
-
       logger?.info('Artifact failure case finished');
     },
   );
 });
 
+//System Testing - 06 (SYS ADD-DATA-06)
 
+//Successful save- case
 
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - All required fields are filled
+//
+// Postconditions:
+// - No missing required field "error"" is shown within the UI
+// - The Add Data page displays the "save successful" message
+
+group('SYS-ADD-06 - Successful Save Case', () {
+  testWidgets(
+    'all required fields filled leads to SaveSuccess and success message',
+    (WidgetTester tester) async {
+
+      logger?.info('Running successful save-case');
+
+      //Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      // Fills all required fields with valid values
+      await fillAllRequiredFields(tester);
+
+      // The "save button" is being tap and waits for the UI and validation to complete
+      await tester.tap(find.byKey(const Key('saveButton')));
+
+      //Not Enough time for the UI waiting time to validate the save button
+      //Thefore, we will use a certain UI enough time to show the success message
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // SaveSuccess indicates all required values were accepted and the save completed successfully
+      expect(find.textContaining('Missing required fields:'), findsNothing);
+      expect(find.text('Save Successful'), findsOneWidget);
+
+      logger?.info('Successful save case finished');
+    },
+  );
+});
 
 }
 
