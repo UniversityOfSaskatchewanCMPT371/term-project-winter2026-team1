@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
-import 'package:sizer/sizer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search_cms/features/dashboard/presentation/bloc/home_cubit.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
-import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 
 // Build a copy of the real router for use in this test suite
 // Mirrors the Add Data and Home routes for navigation testing
@@ -580,7 +580,7 @@ group('SYS-ADD-08 - Homepage Row Display Case', () {
       expect(find.textContaining('DiRx-28'), findsWidgets);
       expect(find.textContaining('1234'), findsWidgets);
       expect(find.textContaining('N84SW1'), findsWidgets);
-      
+
       logger?.info('Homepage row display case finished');
     },
   );
