@@ -68,13 +68,17 @@ Widget wrap(Widget child) {
 // - All required Add Data fields are filled with valid values
 
 Future<void> fillAllRequiredFields(WidgetTester tester) async {
+
+//This fixes the duplication that supabase causes an error towards it 
+  final String uniqueBorden = DateTime.now().millisecondsSinceEpoch.toString();
+
   await tester.enterText(
     find.byKey(const Key('Site Information-Name')),
     'DiRx-28',
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Borden')),
-    'uniqueBorden',
+    uniqueBorden,
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Area')),
