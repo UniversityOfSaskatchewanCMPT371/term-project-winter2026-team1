@@ -17,15 +17,14 @@ Widget wrap(Widget child) {
   );
 }
 
-// Helper function that fills valid inputs and submits the form
+// Helper function that fills all the valid inputs and submits the form
 //
 // Preconditions:
 // - The Add Data page fully renders within the loaded state
-// - Valid input values are passed into the helper function
+// - THe requri3ed fields keys usually exist on the page
 //
 // Postconditions:
 // - All required Add Data fields are filled with valid values
-// - The save button is being pressed and the form submission completes
 
 Future<void> fillAllRequiredFields(WidgetTester tester) async {
   await tester.enterText(
@@ -256,7 +255,7 @@ group('SYS-ADD-03 - Level Failure Case', () {
         '1',
       );
 
-      // Taps the save button and waits for validation and UI updates to finish (10 seconds)
+      // Taps the save button and waits for validation and UI updates to finish
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -338,7 +337,7 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
         'Level 1 Faunal',
       );
 
-    // Taps the save button and waits for validation and UI updates to finish (10 seconds)  
+    // Taps the save button and waits for validation and UI updates to finish 
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
@@ -362,6 +361,95 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
 //
 // Postconditions:
 // - Errors are properly handled and missing Artifact fields are shown
+
+group('SYS-ADD-05 - Artifact Failure Case', () {
+  testWidgets(
+    'missing Artifact Assemblage Name leads to SaveIncomplete and error message',
+    (WidgetTester tester) async {
+
+      logger?.info('Running artifact failure case');
+
+      //Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Name')),
+        'DiRx-28',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Borden')),
+        '1234',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Area')),
+        'Area A',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Unit-Name')),
+        'N84SW1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Unit-Site Name')),
+        'DiRx-28',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Level-Name')),
+        'Level 1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Unit Name')),
+        'N84SW1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Parent Name')),
+        'Parent A',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Upper Limit')),
+        '2',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Lower Limit')),
+        '1',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Assemblage-Assemblage Name')),
+        'Level 1 Faunal',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Assemblage-Unit Name')),
+        'N84SW1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Assemblage-Level Name')),
+        'Level 1',
+      );
+
+      // Enters one optional Artifact field and leaves the required Assemblage Name empty
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Comment')),
+        'test comment',
+      );
+
+      // Taps the save button and waits for validation and UI updates to finish
+      await tester.tap(find.byKey(const Key('saveButton')));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+
+      // SaveIncomplete indicates missing required Artifact field (Assemblage Name) and displays validation errors
+      expect(
+        find.textContaining('Artifact (Faunal): Assemblage Name'),
+        findsOneWidget,
+      );
+
+      logger?.info('Artifact failure case finished');
+    },
+  );
+});
+
 
 }
 
