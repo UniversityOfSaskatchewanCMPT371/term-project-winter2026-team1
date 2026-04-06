@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
 import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
-import 'package:search_cms/features/dashboard/presentation/bloc/add_data_cubit.dart';
-import 'package:search_cms/features/dashboard/presentation/bloc/add_data_state.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 import 'package:sizer/sizer.dart';
-
-// Wrap the router with a Sizer for AddDataPage responsive layouts
-Widget wrapWithRouter(GoRouter router) {
-  return Sizer(
-    builder: (_, __, ___) => MaterialApp.router(
-      routerConfig: router,
-    ),
-  );
-}
 
 // A standard wrapper for widget tests that are being condemmed
 Widget wrap(Widget child) {
@@ -38,7 +25,7 @@ Widget wrap(Widget child) {
 //
 // Postconditions:
 // - All required Add Data fields are filled with valid values
-// - The save button is tapped and the form submission completes
+// - The save button is being pressed and the form submission completes
 
 Future<void> fillAndSubmitValidAddData(
   WidgetTester tester, {
