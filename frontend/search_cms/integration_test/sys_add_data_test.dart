@@ -7,6 +7,33 @@ import 'package:search_cms/core/injections.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:search_cms/features/dashboard/presentation/bloc/home_cubit.dart';
+import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
+import 'package:go_router/go_router.dart';
+
+// Build a copy of the real router for use in this test suite
+// Mirrors the Add Data and Home routes for navigation testing
+// This test only goes as far as checking the route of the page is switched to
+// '/dashboard/home' and does not test any of the actual rendering of the home page 
+//(This has been taken from Matt's Approach to render + load from page to another page)
+GoRouter _buildTestRouter() {
+  return GoRouter(
+    initialLocation: '/dashboard/add',
+    routes: [
+      GoRoute(
+        path: '/dashboard/add',
+        builder: (_, __) => const DashboardAddPage(),
+      ),
+      GoRoute(
+        path: '/dashboard/home',
+        builder: (_, __) => const Scaffold(
+          body: Center(child: Text('Dashboard Home')),
+        ),
+      ),
+    ],
+  );
+}
 
 // A standard wrapper for widget tests that are being condemmed
 Widget wrap(Widget child) {
