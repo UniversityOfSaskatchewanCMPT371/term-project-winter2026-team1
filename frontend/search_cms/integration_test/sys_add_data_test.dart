@@ -254,6 +254,97 @@ group('SYS-ADD-03 - Level Failure Case', () {
   );
 });
 
+//System Testing - 04 (SYS ADD-DATA-04)
+
+//Assemblage failure case
+
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Previous required sections are filled
+//
+// Postconditions:
+// - Errors are properly handled and missing Assemblage fields are shown
+
+group('SYS-ADD-04 - Assemblage Failure Case', () {
+  testWidgets(
+    'missing Assemblage Unit Name and Level Name lead to SaveIncomplete and error message',
+    (WidgetTester tester) async {
+
+      logger?.info('Running assemblage failure case');
+
+      //Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Name')),
+        'DiRx-28',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Borden')),
+        '1234',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Area')),
+        'Area A',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Unit-Name')),
+        'N84SW1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Unit-Site Name')),
+        'DiRx-28',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Level-Name')),
+        'Level 1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Unit Name')),
+        'N84SW1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Parent Name')),
+        'Parent A',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Upper Limit')),
+        '0',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Lower Limit')),
+        '0',
+      );
+
+      await tester.enterText(
+        find.byKey(const Key('Assemblage-Assemblage Name')),
+        'Level 1 Faunal',
+      );
+
+    // Taps the save button and waits for validation and UI updates to finish (10 seconds)  
+      await tester.tap(find.byKey(const Key('saveButton')));
+      await tester.pumpAndSettle(const Duration(seconds: 10));
+
+      // Gets the Add Data Page from the widget tree
+      final cubit = tester
+          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
+          .read<AddDataCubit>();
+
+      // SaveIncomplete indicates missing required Assemblage fields (Unit Name and Level Name) and displays validation errors
+      expect(cubit.state, isA<SaveIncomplete>());
+      expect(find.textContaining('Assemblage: Unit Name'), findsOneWidget);
+      expect(find.textContaining('Assemblage: Level Name'), findsOneWidget);
+
+      logger?.info('Assemblage failure case finished');
+    },
+  );
+});
+
+
+
   
 
 
