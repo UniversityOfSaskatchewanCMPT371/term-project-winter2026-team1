@@ -35,6 +35,15 @@ GoRouter _buildTestRouter() {
   );
 }
 
+// Wrap the router with a Sizer for LoginPage responsive layouts
+Widget wrapWithRouter(GoRouter router) {
+  return Sizer(
+    builder: (_, __, ___) => MaterialApp.router(
+      routerConfig: router,
+    )
+  );
+}
+
 // A standard wrapper for widget tests that are being condemmed
 Widget wrap(Widget child) {
   return Sizer(
