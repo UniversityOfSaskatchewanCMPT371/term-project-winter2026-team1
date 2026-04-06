@@ -176,10 +176,6 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
 
-        // Gets the Add Data Page from the widget tree
-        final cubit = tester
-            .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
-            .read<AddDataCubit>();
 
         // SaveIncomplete indicates missing required Site Information fields (Borden and Area) and displays validation errors
         expect(find.textContaining('Missing required fields:'), findsOneWidget);
@@ -235,11 +231,6 @@ group('SYS-ADD-02 - Unit Failure Case', () {
       // Taps the save button and waits for validation and UI updates to finish
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
-
-      // Gets the Add Data cubit from the widget tree
-      final cubit = tester
-          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
-          .read<AddDataCubit>();
 
       // SaveIncomplete indicates the required (Unit Site Name) field is missing
       expect(find.textContaining('Unit: Site Name'), findsOneWidget);
@@ -312,11 +303,6 @@ group('SYS-ADD-03 - Level Failure Case', () {
       // Taps the save button and waits for validation and UI updates to finish (10 seconds)
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
-
-      // Gets the Add Data cubit from the widget tree
-      final cubit = tester
-          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
-          .read<AddDataCubit>();
 
       // SaveIncomplete indicates the required (Level fields) field are missing
       expect(find.textContaining('Level: Unit Name'), findsOneWidget);
@@ -400,11 +386,6 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
     // Taps the save button and waits for validation and UI updates to finish (10 seconds)  
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 3));
-
-      // Gets the Add Data Page from the widget tree
-      final cubit = tester
-          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
-          .read<AddDataCubit>();
 
       // SaveIncomplete indicates missing required Assemblage fields (Unit Name and Level Name) and displays validation errors
       expect(find.textContaining('Assemblage: Unit Name'), findsOneWidget);
