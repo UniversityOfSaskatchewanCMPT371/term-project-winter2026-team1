@@ -175,6 +175,84 @@ group('SYS-ADD-02 - Unit Failure Case', () {
   );
 });
 
+// System Testing - 03 (SYS ADD-DATA-03)
+//
+// Level failure case
+//
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Level required sections (fields) are filled
+//
+// Postconditions:
+// - Errors are properly handled and missing Level fields are shown
+
+group('SYS-ADD-03 - Level Failure Case', () {
+  testWidgets(
+    'missing Level Unit Name and Parent Name lead to SaveIncomplete and error message',
+    (WidgetTester tester) async {
+      logger?.info('Running level failure case');
+
+      // Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      // Enters valid Site Information fields
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Name')),
+        'DiRx-28',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Borden')),
+        '1234',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Area')),
+        'Western End of Slope',
+      );
+
+      // Enters only the Unit Name field
+      await tester.enterText(
+        find.byKey(const Key('Unit-Name')),
+        'N84SW1',
+      );
+
+            await tester.enterText(
+        find.byKey(const Key('Unit-Site Name')),
+        'DiRx-28',
+      );
+
+      // Enters the "Level" fields only and leaves Unit Name and leaves the other ones empty
+      await tester.enterText(
+        find.byKey(const Key('Level-Name')),
+        'Level 1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Upper Limit')),
+        '0',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Level-Lower Limit')),
+        '0',
+      );
+
+      // Taps the save button and waits for validation and UI updates to finish
+      await tester.tap(find.byKey(const Key('saveButton')));
+      await tester.pumpAndSettle(const Duration(seconds: 10));
+
+      // Gets the Add Data cubit from the widget tree
+      final cubit = tester
+          .element(find.byType(BlocConsumer<AddDataCubit, AddDataState>))
+          .read<AddDataCubit>();
+
+      // SaveIncomplete indicates the required (Level fields) field are missing
+      expect(cubit.state, isA<SaveIncomplete>());
+      expect(find.textContaining('Level: Unit Name'), findsOneWidget);
+      expect(find.textContaining('Level: Parent Name'), findsOneWidget);
+
+      logger?.info('Level failure case finished');
+    },
+  );
+});
 
   
 
