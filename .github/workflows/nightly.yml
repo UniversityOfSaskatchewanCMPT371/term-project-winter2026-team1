@@ -1,0 +1,266 @@
+name: Nightly Master Suite
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  # Setup all jobs being ran for the nightly test. This will
+  # isolate and run each test then recombine them further down
+
+  # The with: command is important here, we pass the nightly tag
+  # So our uploaded artifact has 'nightly' inside of it
+  docker-build-test:
+      uses: ./.github/workflows/docker-build-test.yml
+      with:
+        run_type: nightly # Note here: We pass nightly to generate artifact reports
+        artifact_suffix: nightly
+      secrets: inherit
+    
+  flutter-integration:
+    uses: ./.github/workflows/flutter-integration.yml
+    with:
+      run_type: nightly
+      artifact_suffix: nightly
+    secrets: inherit
+
+  flutter-linter:
+    uses: ./.github/workflows/flutter-linter.yml
+    with:
+      run_type: nightly
+      artifact_suffix: nightly
+    secrets: inherit
+  
+  unit-tests:
+    uses: ./.github/workflows/flutter.yml
+    with:
+      run_type: nightly
+      artifact_suffix: nightly
+    secrets: inherit
+
+  system-tests:
+    uses: ./.github/workflows/system-test.yml
+    with:
+      run_type: nightly
+      artifact_suffix: nightly
+    secrets: inherit
+
+
+#---------HEAVY AI USAGE-----------------
+# Please refer to ai usage for copilot usage here
+# This was used to help build parsing programs
+# to collect and convert xml test reports into one big
+# xml then create a markdown file that gets uploaded to the wiki
+  collect:
+    runs-on: ubuntu-latest
+    needs:
+      - docker-build-test
+      - flutter-integration
+      - flutter-linter
+      - unit-tests
+      - system-tests
+  
+    #Collect the latest and download available artifacts
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts from this run
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      
+      # Collect all tests and build a combined nightly xml
+      # This program searches for the 'nightly' tag inside the artifacts
+      # and sorts them by newest and grabs the latest for each test.
+      - name: Merge latest nightly XML results
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OUTPUT="nightly.xml"
+
+          echo "<nightlyReport date=\"$(date -u +%Y-%m-%d)\">" > "$OUTPUT"
+
+          declare -A latest_files
+
+          # Find all nightly XML files
+          while IFS= read -r file; do
+            filename=$(basename "$file")
+
+            # Example:
+            # end_to_end_nightly_2026-04-02_06-00-45.xml
+            test_name="${filename%%_nightly_*}"
+            timestamp="${filename##*_nightly_}"
+            timestamp="${timestamp%.xml}"
+
+            if [[ -z "${latest_files[$test_name]:-}" ]]; then
+              latest_files[$test_name]="$file"
+            else
+              existing="${latest_files[$test_name]}"
+              existing_ts="${existing##*_nightly_}"
+              existing_ts="${existing_ts%.xml}"
+
+              # Lexicographic comparison works with your timestamp format
+              if [[ "$timestamp" > "$existing_ts" ]]; then
+                latest_files[$test_name]="$file"
+              fi
+            fi
+          done < <(find artifacts -type f -name "*_nightly_*.xml")
+
+          # Merge latest files
+          for test in "${!latest_files[@]}"; do
+            file="${latest_files[$test]}"
+            echo "Including $file"
+
+            # Strip XML declaration if present
+            sed '1{/^<?xml/d}' "$file" >> "$OUTPUT"
+          done
+
+          echo "</nightlyReport>" >> "$OUTPUT"
+
+      
+      
+      # AI USAGE
+      # This parses out the xml and sorts the in suites
+      # and dumps each separate suite into it's own table
+      # This is a python file that just gets ran as code.
+      - name: Generate Markdown summary from nightly.xml
+        run: |
+          python << 'EOF'
+          import xml.etree.ElementTree as ET
+          from datetime import datetime
+          from collections import defaultdict
+
+          XML_FILE = "nightly.xml"
+          MD_FILE = "nightly.md"
+
+          tree = ET.parse(XML_FILE)
+          root = tree.getroot()
+
+          # Collect all testsuite elements anywhere in the document
+          suites = root.findall(".//testsuite")
+
+          total_tests = 0
+          total_failures = 0
+          total_errors = 0
+          total_skipped = 0
+
+          suite_rows = []
+
+          def shorten_name(name: str) -> str:
+              """
+              Reduce long JUnit names to something readable.
+              Example:
+              .home.runner.work...frontend.search_cms.integration_test.smoke
+              -> integration_test.smoke
+              """
+              parts = name.split(".")
+              if len(parts) > 3:
+                  return ".".join(parts[-3:])
+              return name
+
+          for suite in suites:
+              name = shorten_name(suite.attrib.get("name", "unknown"))
+              tests = int(suite.attrib.get("tests", 0))
+              failures = int(suite.attrib.get("failures", 0))
+              errors = int(suite.attrib.get("errors", 0))
+              skipped = int(suite.attrib.get("skipped", 0))
+              timestamp = suite.attrib.get("timestamp", "")
+
+              total_tests += tests
+              total_failures += failures
+              total_errors += errors
+              total_skipped += skipped
+
+              status = "✅ Pass"
+              if failures > 0 or errors > 0:
+                  status = "❌ Fail"
+
+              suite_rows.append(
+                  (name, tests, failures, errors, skipped, status, timestamp)
+              )
+
+          # Sort suites: failures first, then by name
+          suite_rows.sort(key=lambda r: (r[5] == "✅ Pass", r[0]))
+
+          # Write Markdown
+          with open(MD_FILE, "w") as md:
+              md.write("# 🌙 Nightly Test Report\n\n")
+              md.write(f"**Date:** {datetime.utcnow().strftime('%Y-%m-%d')}\n\n")
+
+              md.write("## Summary\n\n")
+              md.write("| Metric | Value |\n")
+              md.write("|--------|-------|\n")
+              md.write(f"| Total Tests | {total_tests} |\n")
+              md.write(f"| Failures | {total_failures} |\n")
+              md.write(f"| Errors | {total_errors} |\n")
+              md.write(f"| Skipped | {total_skipped} |\n\n")
+
+              md.write("## Test Suites\n\n")
+              md.write("| Suite | Tests | Failures | Errors | Skipped | Status | Timestamp |\n")
+              md.write("|------|-------|----------|--------|----------|--------|-----------|\n")
+
+              for (
+                  name,
+                  tests,
+                  failures,
+                  errors,
+                  skipped,
+                  status,
+                  timestamp,
+              ) in suite_rows:
+                  md.write(
+                      f"| `{name}` | {tests} | {failures} | {errors} | {skipped} | {status} | {timestamp} |\n"
+                  )
+
+              md.write("\n---\n")
+              md.write("_Report generated automatically by GitHub Actions._\n")
+
+          print(f"Generated {MD_FILE}")
+          EOF
+
+      
+      # Authenticate the github action bot so we can make a commit
+      - name: Install github cli
+        run: sudo apt install -y gh
+
+      - name: Authenticate github
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+          gh auth setup-git
+      
+      # Publishes the nightly markdown AND xml generates to the wiki.
+      - name: Publish nightly report to Wiki (historical)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+
+          NIGHTLY_DATE=$(date -u +%Y-%m-%d)
+          TARGET_DIR="Nightly/${NIGHTLY_DATE}"
+
+          gh repo clone "${{ github.repository }}.wiki" wiki
+          cd wiki
+
+          mkdir -p "$TARGET_DIR"
+          cp ../nightly.xml "$TARGET_DIR/nightly.xml"
+          cp ../nightly.md  "$TARGET_DIR/nightly.md"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+
+          git add "$TARGET_DIR/nightly.xml"
+          git add "$TARGET_DIR/nightly.md"
+          git commit -m "Nightly report for ${NIGHTLY_DATE}" || exit 0
+          git push
+
+
+
+
+
+
+
+
