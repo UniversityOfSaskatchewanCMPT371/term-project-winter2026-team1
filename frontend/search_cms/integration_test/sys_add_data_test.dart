@@ -216,7 +216,7 @@ group('SYS-ADD-03 - Level Failure Case', () {
         'N84SW1',
       );
 
-            await tester.enterText(
+      await tester.enterText(
         find.byKey(const Key('Unit-Site Name')),
         'DiRx-28',
       );
@@ -228,14 +228,14 @@ group('SYS-ADD-03 - Level Failure Case', () {
       );
       await tester.enterText(
         find.byKey(const Key('Level-Upper Limit')),
-        '0',
+        '2',
       );
       await tester.enterText(
         find.byKey(const Key('Level-Lower Limit')),
-        '0',
+        '1',
       );
 
-      // Taps the save button and waits for validation and UI updates to finish
+      // Taps the save button and waits for validation and UI updates to finish (10 seconds)
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pumpAndSettle(const Duration(seconds: 10));
 
