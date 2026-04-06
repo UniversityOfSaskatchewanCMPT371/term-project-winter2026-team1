@@ -1,8 +1,6 @@
 name: Flutter Lint Check
 
 on:
-  push:
-    branches: [ "develop", "main" ]
   pull_request:
     branches: [ "develop", "main" ]
   workflow_dispatch:
@@ -22,11 +20,23 @@ on:
         default: 'staging'
         type: string
 
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
+
 permissions:
   checks: write
   pull-requests: write
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     steps:

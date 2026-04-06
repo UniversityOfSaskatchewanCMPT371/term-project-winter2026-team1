@@ -115,7 +115,7 @@ Widget createAddDataWidget(
                       const SizedBox(height: 8),
                       TextFormField(
                         key: Key("$title-$name"),
-                        maxLines: 1,
+                        maxLines: null,
                         style: TextStyle(fontSize: 14),
 
                         onChanged: (value) {
@@ -124,7 +124,7 @@ Widget createAddDataWidget(
                             name,
                             value,
                           );
-                          _logger?.info("$title-$name");
+                          // _logger?.info("$title-$name"); // slows down everytime you type a character
                         },
 
                         //The validator receives the text that user has entered
@@ -205,9 +205,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
   ///  - If the form is valid, then the save function is called
   ///  - if the form is not valid, than the saving does not happen
   void _handleSave(BuildContext context) {
-    // if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-    _logger?.info("Save Button Clicked");
-    saveButtonClicked();
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _logger?.info("Save Button Clicked");
+      saveButtonClicked();
+      context.read<AddDataCubit>().save();
+    }
   }
 
   /// PreConditions:
@@ -222,8 +224,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
 
   void _handleReset(BuildContext context) {
     _logger?.info("Reset Button Clicked");
-    _formKey.currentState?.reset();
-    context.read<AddDataCubit>().resetFields();
+    _formKey.currentState?.reset();   // resets field entries
+    context.read<AddDataCubit>().resetFields(); // resets state memory
     resetButtonClicked();
   }
 
@@ -243,7 +245,67 @@ class DashboardAddPageState extends State<DashboardAddPage> {
       create: (context) => AddDataCubit()..init(),
 
       // it provides the AddDataCubit state to the page and calls the init()
-      child: BlocBuilder<AddDataCubit, AddDataState>(
+      child: BlocConsumer<AddDataCubit, AddDataState>(
+        listener: (context, state) {
+          // Error handling, listener runs once per state change
+          // Displays error for missing fields
+          if (state is SaveIncomplete) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: 
+                  Text("Missing required fields: ${state.missing.join(', ')}",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                    )),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.danger,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                action: SnackBarAction(label: 'X', onPressed: () => {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
+                }),  // X button to dismiss
+                persist: true,  // remain until dismissed
+              )
+            );
+          }
+          // Displays error if backend failed and in which forms
+          if (state is SaveFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: 
+                  Text("An error occured while saving",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                    )),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.danger,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                action: SnackBarAction(label: 'X', onPressed: () => {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar()
+                }),
+                persist: true,  // remain until dismissed
+              )
+            );
+          }
+          // Display success message
+          if (state is SaveSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: 
+                  Text("Save Successful",
+                    style: TextStyle(
+                      color: AppColors.mainText,
+                  )),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.primaryBlue,
+                margin: EdgeInsets.only(top: 50, left: 16, right: 16),
+                duration: Duration(seconds: 3), // auto dismiss
+              )
+            );
+
+            // reset all fields to empty
+            _formKey.currentState?.reset();
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             //Main background for the AddDataPage
@@ -274,14 +336,14 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                           //These are the listed sections that are displayed in the Add Data Page
                           //eventually will be displayed in the Homepage and also in the database
                           createAddDataWidget(context, "Site Information", {
-                            "Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Name": "Enter Site Name (e.g., western end of slope)",
                             "Borden": "Enter Borden Number (e.g., DiRw-28)",
                             "Area": "Enter Area (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Unit", {
                             "Name": "Enter Unit Name (e.g., N84SW1)",
-                            "Site Name": "Enter Site Name (e.g., DiRw-28)",
+                            "Site Name": "Enter Site Name (e.g., western end of slope)",
                           }),
 
                           createAddDataWidget(context, "Level", {
@@ -311,7 +373,7 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                                 "Enter Pre Excavation Fragments (e.g., 1)",
                             "Post Excavation Fragments":
                                 "Enter Post Excavation Fragments (e.g., 2)",
-                            "Elements": "Enter Elements (e.g., vertebra)",
+                            "Elements": "Enter Elements (e.g., 2)",
                           }, twoColumnFields: true),
                         ],
                       ),
@@ -340,7 +402,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                       // Uses the "save" handler when clicked
                       TextButton(
                         key: Key("saveButton"),
-                        onPressed: () => _handleSave(context),
+                        // prevent repeated press if already processing a save
+                        onPressed: state is SaveLoading ? null : () => _handleSave(context),
                         style: TextButton.styleFrom(
                           backgroundColor: AppColors.addDataFieldFocus,
                           foregroundColor: Colors.white,
@@ -356,7 +419,8 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                       const SizedBox(width: 10),
                       TextButton(
                         key: Key("resetButton"),
-                        onPressed: () => _handleReset(context),
+                        // prevent reset during save
+                        onPressed: state is SaveLoading ? null : () => _handleReset(context),
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: AppColors.mainText,
@@ -367,6 +431,11 @@ class DashboardAddPageState extends State<DashboardAddPage> {
                         ),
                         child: const Text("Reset"),
                       ),
+
+                      const SizedBox(width: 10),
+                      // If processing a save, show a small indicator
+                      if (state is SaveLoading)
+                        Center(child: CircularProgressIndicator()),
                     ],
                   ),
                 ),

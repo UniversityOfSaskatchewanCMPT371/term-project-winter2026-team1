@@ -1,8 +1,6 @@
 name: Flutter Unit Test
 
 on:
-  push:
-    branches: [ "develop", "main" ]
   pull_request:
     branches: [ "develop", "main" ]
   workflow_dispatch:
@@ -21,15 +19,29 @@ on:
         required: true
         default: 'staging'
         type: string
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
 
 permissions:
     checks: write
     pull-requests: write
 
 jobs:
+
   build:
     # Unit tests are ran through flutter, windows and mac wont affect it
     runs-on: ubuntu-latest
+    env:
+      RUN_TYPE: ${{ inputs.run_type || 'default' }}
+      ARTIFACT_SUFFIX: ${{ inputs.artifact_suffix || 'pr' }}
     steps:
 
       - uses: actions/checkout@v4
@@ -59,12 +71,11 @@ jobs:
         run: flutter pub global activate junitreport
         working-directory: ./frontend/search_cms
 
-      
       # Runs Flutter unit tests and generated machine json to make a report artifact
       - name: Run Fluutter Unit tests 
         run: | 
           mkdir -p test-results
-          flutter test --machine | tojunit --output test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml
+          flutter test --machine | tojunit --output test-results/flutter_test_report_${{ env.ARTIFACT_SUFFIX }}_${{ env.TIMESTAMP }}.xml
         working-directory: ./frontend/search_cms
 
       # Upload out flutter test to the artifacts
@@ -73,14 +84,14 @@ jobs:
           # Name of the artifact to upload.
           # Optional. Default is 'artifact'
           name: flutter_test_report_${{ env.TIMESTAMP }}
-          path: frontend/search_cms/test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml
+          path: frontend/search_cms/test-results/flutter_test_report_${{ env.ARTIFACT_SUFFIX }}_${{ env.TIMESTAMP }}.xml
 
       # Publish test Report to github with a valid timestamp
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v6
         if: success() || failure() # always run even if the previous step fails
         with:
-          report_paths: 'frontend/search_cms/test-results/flutter_test_report_${{ env.TIMESTAMP }}.xml'
+          report_paths: 'frontend/search_cms/test-results/flutter_test_report_${{ env.ARTIFACT_SUFFIX }}_${{ env.TIMESTAMP }}.xml'
           include_passed: True
           fail_on_failure: True
       
