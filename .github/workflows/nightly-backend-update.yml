@@ -4,8 +4,20 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+  
+  workflow_call:
+      inputs:
+        run_type:
+          description: "Indicates how this workflow was triggered"
+          required: false
+          type: string
+        artifact_suffix:
+          required: false
+          type: string
+
 
 jobs:
+
   refresh-system:
     runs-on: self-hosted 
 
