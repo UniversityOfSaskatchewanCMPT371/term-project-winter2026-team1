@@ -13,7 +13,7 @@ import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.d
   Responsibilities:
   - Provide a mapping function (toEntity()) to convert the model into an entity
   - Extract raw values from a PowerSync SQLite row
-  - Convert dynamic raw values into Dart data types (String, int, Datetime, etc.)
+  - Convert dynamic raw values into trimmed strings
   - Handle nullable fields and optional values
   - Check that all the required fields are present before creating a model (object)
 */
@@ -21,68 +21,68 @@ import 'package:search_cms/features/dashboard/domain/entities/table_row_entity.d
 class TableRowModel {
 
   // Site
-  final String borden;
+  final String? borden;
   final String? siteName;
 
   // Area
-  final String areaName;
+  final String? areaName;
 
   // Unit
-  final String unitName;
+  final String? unitName;
 
   // Level
-  final String levelName;
-  final int upLimit;
-  final int lowLimit;
+  final String? levelName;
+  final String? upLimit;
+  final String? lowLimit;
 
   // Assemblage
   final String? assemblageName;
 
   // Artifact_Faunal
-  final int? porosity;
-  final double? sizeUpper;
-  final double? sizeLower;
+  final String? porosity;
+  final String? sizeUpper;
+  final String? sizeLower;
   final String? comment;
-  final int preExcavFrags;
-  final int postExcavFrags;
-  final int elements;
+  final String? preExcavFrags;
+  final String? postExcavFrags;
+  final String? elements;
 
   TableRowModel({
-    required this.borden,
-    required this.siteName,
-    required this.areaName,
-    required this.unitName,
-    required this.levelName,
-    required this.upLimit,
-    required this.lowLimit,
-    required this.assemblageName,
+    this.borden,
+    this.siteName,
+    this.areaName,
+    this.unitName,
+    this.levelName,
+    this.upLimit,
+    this.lowLimit,
+    this.assemblageName,
     this.porosity,
     this.sizeUpper,
     this.sizeLower,
-    required this.comment,
-    required this.preExcavFrags,
-    required this.postExcavFrags,
-    required this.elements,
+    this.comment,
+    this.preExcavFrags,
+    this.postExcavFrags,
+    this.elements,
   });
 
   // Map TableRowEntity instead of inheriting it to prevent coupling and proper separation
   TableRowEntity toEntity() {
     return TableRowEntity(
-      borden: borden, 
+      borden: borden ?? '', 
       siteName: siteName ?? '', 
-      areaName: areaName, 
-      unitName: unitName, 
-      levelName: levelName, 
-      upLimit: upLimit, 
-      lowLimit: lowLimit, 
+      areaName: areaName ?? '', 
+      unitName: unitName ?? '', 
+      levelName: levelName ?? '', 
+      upLimit: upLimit ?? '',
+      lowLimit: lowLimit ?? '',
       assemblageName: assemblageName ?? '',
       porosity: porosity,
       sizeUpper: sizeUpper,
-      sizeLower: sizeLower, 
-      comment: comment ?? '', 
-      preExcavFrags: preExcavFrags, 
-      postExcavFrags: postExcavFrags, 
-      elements: elements
+      sizeLower: sizeLower,
+      comment: comment ?? '',
+      preExcavFrags: preExcavFrags ?? '',
+      postExcavFrags: postExcavFrags ?? '',
+      elements: elements ?? ''
     );
   }
 
@@ -90,18 +90,13 @@ class TableRowModel {
     Creates an TableRowModel from a PowerSync SQLite row.
 
     Preconditions:
-    - Row must contain: 
-      'borden', 'site_name', 'area_name', 'unit_name',
-      'level_name', 'up_limit', 'low_limit', 'assemblage_name',
-      'comment', 'pre_excav_frags', 'post_excav_frags', 
-      'elements'
-    - 'porosity', 'size_upper', 'size_lower' are optional
+    - Row cannot be completely empty
 
     Postconditions:
     - Returns an TableRow Model
     - Ensures invariants are satisfied before creating the model
 
-    Throws a FormatException if required columns are missing.
+    Throws a FormatException if row is empty.
   */
 
   factory TableRowModel.fromRow(sqlite.Row row) {
@@ -123,93 +118,79 @@ class TableRowModel {
     final dynamic postExcavFragsRaw = row['post_excav_frags'];
     final dynamic elementsRaw = row['elements'];
 
-    // Check if anything is null. If so, throw an exception
+    // Check if everthing is null. If so, throw an exception
     if (
-      bordenRaw == null ||
-      areaNameRaw == null ||
-      unitNameRaw == null ||
-      levelNameRaw == null ||
-      upLimitRaw == null ||
-      lowLimitRaw == null ||
-      preExcavFragsRaw == null ||
-      postExcavFragsRaw == null ||
+      bordenRaw == null &&
+      siteNameRaw == null &&
+      areaNameRaw == null &&
+      unitNameRaw == null &&
+      levelNameRaw == null &&
+      upLimitRaw == null &&
+      lowLimitRaw == null &&
+      assemblageNameRaw == null &&
+      porosityRaw == null &&
+      sizeUpperRaw == null &&
+      sizeLowerRaw == null &&
+      commentRaw == null &&
+      preExcavFragsRaw == null &&
+      postExcavFragsRaw == null &&
       elementsRaw == null) {
-      throw FormatException('Missing required column(s) for TableRowModel');
+      throw FormatException('Row Empty in TableRowModel');
     }
 
-    // Convert raw values from PowerSync rows
-    final String borden = bordenRaw.toString().trim();
-    final String areaName = areaNameRaw.toString().trim();
-    final String unitName = unitNameRaw.toString().trim();
-    final String levelName = levelNameRaw.toString().trim();
-    final int upLimit = int.parse(upLimitRaw.toString());
-    final int lowLimit = int.parse(lowLimitRaw.toString());
-    final int preExcavFrags = int.parse(preExcavFragsRaw.toString());
-    final int postExcavFrags = int.parse(postExcavFragsRaw.toString());
-    final int elements = int.parse(elementsRaw.toString());
+    // Convert raw values from PowerSync rows into trimmed strings (or null if absent)
+    final String? borden = bordenRaw?.toString().trim();
+    final String? siteName = siteNameRaw?.toString().trim();
+    final String? areaName = areaNameRaw?.toString().trim();
+    final String? unitName = unitNameRaw?.toString().trim();
+    final String? levelName = levelNameRaw?.toString().trim();
+    final String? upLimit = upLimitRaw?.toString().trim();
+    final String? lowLimit = lowLimitRaw?.toString().trim();
+    final String? assemblageName = assemblageNameRaw?.toString().trim();
+    final String? porosity = porosityRaw?.toString().trim();
+    final String? sizeUpper = sizeUpperRaw?.toString().trim();
+    final String? sizeLower = sizeLowerRaw?.toString().trim();
+    final String? comment = commentRaw?.toString().trim();
+    final String? preExcavFrags = preExcavFragsRaw?.toString().trim();
+    final String? postExcavFrags = postExcavFragsRaw?.toString().trim();
+    final String? elements = elementsRaw?.toString().trim();
 
-    // Optional fields
-
-    // If site name is not null, then trim it; otherwise, make it null
-    final String? siteName;
-    if(siteNameRaw != null) {
-      siteName = siteNameRaw.toString().trim();
-    } else {
-      siteName = null;
-    }
-
-    // If assemblage name is not null, then trim it; otherwise, make it null
-    final String? assemblageName;
-    if(assemblageNameRaw != null) {
-      assemblageName = assemblageNameRaw.toString().trim();
-    } else {
-      assemblageName = null;
-    }
-
-    // As per the schema, porosity can be null or must be between 1-5
-    final int? porosity;
-    if (porosityRaw != null) {
-      porosity = int.parse(porosityRaw.toString());
-    } else {
-      porosity = null;
-    }
-
-    // As per the schema, size upper can be null or have a value
-    final double? sizeUpper;
-    if (sizeUpperRaw != null) {
-      sizeUpper = double.parse(sizeUpperRaw.toString());
-    } else {
-      sizeUpper = null;
-    }
-
-    // As per the schema, size lower can be null or have a value
-    final double? sizeLower;
-    if (sizeLowerRaw != null) {
-      sizeLower = double.parse(sizeLowerRaw.toString());
-    } else {
-      sizeLower = null;
-    }
-    
-    // If comment is not null, then trim it; otherwise, make it null
-    final String? comment;
-    if (commentRaw != null) {
-      comment = commentRaw.toString().trim();
-    } else {
-      comment = null;
-    }
-
-    assert(borden.isNotEmpty, 'Borden cannot be empty');
-    assert(areaName.isNotEmpty, 'Area name cannot be empty');
-    assert(unitName.isNotEmpty, 'Unit name cannot be empty');
-    assert(levelName.isNotEmpty, 'Level name cannot be empty');
-    assert(upLimit <= lowLimit, 'Up limit must be lower than low limit');
-    assert(porosity == null || (porosity > 0 && porosity <= 5), 
-    'Porosity must be between 1-5');
-    assert(sizeUpper == null || sizeLower == null || sizeUpper >= sizeLower, 
-    'Size upper must be greater than size lower');
-    assert(preExcavFrags > 0, 'There must be at least 1 pre excav frag');
-    assert(postExcavFrags > 0, 'There must be at least 1 post excav frag');
-    assert(elements > 0, 'There must be at least 1 element');
+    // Validate numeric invariants by parsing the string values
+    assert(
+      // if upLimit and lowLimit exist, ensure upLimit <= lowLimit
+      upLimit == null || lowLimit == null ||
+      int.tryParse(upLimit) == null || int.tryParse(lowLimit) == null ||
+      int.parse(upLimit) <= int.parse(lowLimit),
+      'Up limit must be lower than low limit'
+    );
+    assert(
+      // if porosity exists, assert 1 <= porosity <= 5
+      porosity == null ||
+      (int.tryParse(porosity) != null && int.parse(porosity) > 0 && int.parse(porosity) <= 5),
+      'Porosity must be between 1-5'
+    );
+    assert(
+      // if sizeUpper and sizeLower exist, assert sizeUpper >= sizeLower
+      sizeUpper == null || sizeLower == null ||
+      double.tryParse(sizeUpper) == null || double.tryParse(sizeLower) == null ||
+      double.parse(sizeUpper) >= double.parse(sizeLower),
+      'Size upper must be greater than size lower'
+    );
+    assert(
+      // allows empty strings but will reject non-numeric, zeros and negatives
+      preExcavFrags == null || (int.tryParse(preExcavFrags) ?? -1) > 0,
+      'There must be at least 1 pre excav frag'
+    );
+    assert(
+      // allows empty strings but will reject non-numeric, zeros and negatives
+      postExcavFrags == null || (int.tryParse(postExcavFrags) ?? -1) > 0,
+      'There must be at least 1 post excav frag'
+    );
+    assert(
+      // allows empty strings but will reject non-numeric, zeros and negatives
+      elements == null || (int.tryParse(elements) ?? -1) > 0,
+      'There must be at least 1 element'
+    );
 
     return TableRowModel(
       borden: borden, 

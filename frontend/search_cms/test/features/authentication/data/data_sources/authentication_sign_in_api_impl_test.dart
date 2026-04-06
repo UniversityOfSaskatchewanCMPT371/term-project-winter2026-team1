@@ -2,117 +2,140 @@
 
 Confirms API layer:
 - authenticates via auth.signInWithPassword
-- fetches role from `role` table
+- waits for first PowerSync sync
+- fetches role from PowerSync
 */
-
-import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:search_cms/features/authentication/data/data_sources/authentication_sign_in_api_impl.dart';
-import 'package:search_cms/features/authentication/data/models/user_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 import '../../mocks/authentication_mocks.mocks.dart';
 
-// Supabase query builders are "awaitable" objects.
-// Since `eq()` returns a builder (not a Future), we create this Fake builder
-// that supports chaining and becomes awaitable by implementing `then()`.
-class RoleFilterBuilderFake extends Fake
-    implements PostgrestFilterBuilder<List<Map<String, dynamic>>> {
-  RoleFilterBuilderFake(this.rows);
+ResultSet buildRoleResultSet({
+  required String id,
+  required String role,
+}) {
+  final db = sqlite3.openInMemory();
+  db.execute('CREATE TABLE role (id TEXT, role TEXT);');
+  db.execute(
+    'INSERT INTO role (id, role) VALUES (?, ?);',
+    [id, role],
+  );
+  return db.select('SELECT * FROM role;');
+}
 
-  final List<Map<String, dynamic>> rows;
-
-  @override
-  PostgrestFilterBuilder<List<Map<String, dynamic>>> eq(
-      String column,
-      Object value, {
-        bool? ascending,
-        bool? nullsFirst,
-      }) {
-    return this;
-  }
-
-  @override
-  Future<R> then<R>(
-      FutureOr<R> Function(List<Map<String, dynamic>> value) onValue, {
-        Function? onError,
-      }) {
-    return Future<R>.value(onValue(rows));
-  }
+ResultSet buildEmptyResultSet() {
+  final db = sqlite3.openInMemory();
+  db.execute('CREATE TABLE role (id TEXT, role TEXT);');
+  return db.select('SELECT * FROM role;');
 }
 
 void main() {
   group('AuthenticationSignInApiImpl', () {
+    late MockSupabaseClient client;
+    late MockGoTrueClient auth;
+    late MockPowerSyncDatabase powerSyncDatabase;
+    late MockAuthResponse authResponse;
+
+    setUpAll(() {
+      provideDummy<ResultSet>(buildEmptyResultSet());
+    });
+
+    setUp(() {
+      client = MockSupabaseClient();
+      auth = MockGoTrueClient();
+      powerSyncDatabase = MockPowerSyncDatabase();
+      authResponse = MockAuthResponse();
+
+      when(client.auth).thenReturn(auth);
+    });
+
     test('DATA-SOURCE-1-returns UserModel when session exists and role query is valid', () async {
-      final client = MockSupabaseClient();
-      final auth = MockGoTrueClient();
-      final authResponse = MockAuthResponse();
       final session = MockSession();
       final user = MockUser();
 
-      final queryBuilder = MockSupabaseQueryBuilder();
+      when(auth.signInWithPassword(
+        email: 'abc@abc.com',
+        password: '123456',
+      )).thenAnswer((_) async => authResponse);
 
-      when(client.auth).thenAnswer((_) => auth);
+      when(authResponse.session).thenReturn(session);
+      when(session.user).thenReturn(user);
+      when(user.id).thenReturn('u1');
 
-      when(auth.signInWithPassword(email: 'abc@abc.com', password: '123456'))
-          .thenAnswer((_) async => authResponse);
+      when(powerSyncDatabase.waitForFirstSync()).thenAnswer((_) async {});
 
-      when(authResponse.session).thenAnswer((_) => session);
-      when(session.user).thenAnswer((_) => user);
-      when(user.id).thenAnswer((_) => 'u1');
+      when(powerSyncDatabase.getAll(
+        'SELECT * FROM role WHERE id = ?',
+        ['u1'],
+      )).thenAnswer(
+            (_) async => buildRoleResultSet(id: 'u1', role: 'viewer'),
+      );
 
-      final roleRows = <Map<String, dynamic>>[
-        {'id': 'u1', 'role': 'viewer'},
-      ];
-      final roleFilter = RoleFilterBuilderFake(roleRows);
+      final api = AuthenticationSignInApiImpl(
+        supabaseClient: client,
+        powerSyncDatabase: powerSyncDatabase,
+      );
 
-      when(client.from('role')).thenAnswer((_) => queryBuilder);
-      when(queryBuilder.select(any)).thenAnswer((_) => roleFilter);
-
-      final api = AuthenticationSignInApiImpl(supabaseClient: client);
-
-      final UserModel? result = await api.signIn('abc@abc.com', '123456');
+      final result = await api.signIn('abc@abc.com', '123456');
 
       expect(result, isNotNull);
       expect(result!.id, 'u1');
       expect(result.role, 'viewer');
 
-      verify(auth.signInWithPassword(email: 'abc@abc.com', password: '123456')).called(1);
-      verify(client.from('role')).called(1);
-      verify(queryBuilder.select(any)).called(1);
+      verify(auth.signInWithPassword(
+        email: 'abc@abc.com',
+        password: '123456',
+      )).called(1);
+
+      verify(powerSyncDatabase.waitForFirstSync()).called(1);
+      verify(powerSyncDatabase.getAll(
+        'SELECT * FROM role WHERE id = ?',
+        ['u1'],
+      )).called(1);
     });
 
     test('DATA-SOURCE-2-returns null when session is null', () async {
-      final client = MockSupabaseClient();
-      final auth = MockGoTrueClient();
-      final authResponse = MockAuthResponse();
+      when(auth.signInWithPassword(
+        email: 'abc@abc.com',
+        password: '123456',
+      )).thenAnswer((_) async => authResponse);
 
-      when(client.auth).thenAnswer((_) => auth);
-      when(auth.signInWithPassword(email: 'abc@abc.com', password: '123456'))
-          .thenAnswer((_) async => authResponse);
+      when(authResponse.session).thenReturn(null);
 
-      when(authResponse.session).thenAnswer((_) => null);
-
-      final api = AuthenticationSignInApiImpl(supabaseClient: client);
+      final api = AuthenticationSignInApiImpl(
+        supabaseClient: client,
+        powerSyncDatabase: powerSyncDatabase,
+      );
 
       final result = await api.signIn('abc@abc.com', '123456');
 
       expect(result, isNull);
-      verify(auth.signInWithPassword(email: 'abc@abc.com', password: '123456')).called(1);
-      verifyNever(client.from(any));
+
+      verify(auth.signInWithPassword(
+        email: 'abc@abc.com',
+        password: '123456',
+      )).called(1);
+
+      verifyNever(powerSyncDatabase.waitForFirstSync());
+      verifyNever(powerSyncDatabase.getAll(
+        'SELECT * FROM role WHERE id = ?',
+        ['u1'],
+      ));
     });
 
     test('DATA-SOURCE-3-rethrows when Supabase throws', () async {
-      final client = MockSupabaseClient();
-      final auth = MockGoTrueClient();
+      when(auth.signInWithPassword(
+        email: 'abc@abc.com',
+        password: '123456',
+      )).thenThrow(Exception('boom'));
 
-      when(client.auth).thenAnswer((_) => auth);
-      when(auth.signInWithPassword(email: 'abc@abc.com', password: '123456'))
-          .thenThrow(Exception('boom'));
-
-      final api = AuthenticationSignInApiImpl(supabaseClient: client);
+      final api = AuthenticationSignInApiImpl(
+        supabaseClient: client,
+        powerSyncDatabase: powerSyncDatabase,
+      );
 
       expect(
             () => api.signIn('abc@abc.com', '123456'),
@@ -120,9 +143,11 @@ void main() {
       );
     });
 
-    test('DATA-SOURCE-4-asserts when password length is invalid', () async {
-      final client = MockSupabaseClient();
-      final api = AuthenticationSignInApiImpl(supabaseClient: client);
+    test('DATA-SOURCE-4-asserts when password length is invalid', () {
+      final api = AuthenticationSignInApiImpl(
+        supabaseClient: client,
+        powerSyncDatabase: powerSyncDatabase,
+      );
 
       expect(
             () => api.signIn('abc@abc.com', '12345'),
