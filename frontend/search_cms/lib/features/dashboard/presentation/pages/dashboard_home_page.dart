@@ -78,15 +78,15 @@ class DashboardHomePage extends StatelessWidget {
 
               SizedBox(height: 2.h),
 
-              // Search / Advanced Search Toggle
-              Row(mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
-                  SearchToggle(onSelectionChanged: (index) {
-                    context.read<HomeCubit>().updateSearchToggle(index);
-                  },),
-                ]
-              ),
+              // // Search / Advanced Search Toggle
+              // Row(mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     SizedBox(width: 1.w), // Add some spacing between the left edge and the toggle buttons
+              //     SearchToggle(onSelectionChanged: (index) {
+              //       context.read<HomeCubit>().updateSearchToggle(index);
+              //     },),
+              //   ]
+              // ),
 
               SizedBox(height: 2.h),
 
