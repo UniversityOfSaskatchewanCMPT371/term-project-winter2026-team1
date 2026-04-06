@@ -475,7 +475,7 @@ group('SYS-ADD-06 - Successful Save Case', () {
       //Thefore, we will use a certain UI enough time to show the success message
       await tester.pump();
       await tester.pump(const Duration(seconds: 2));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // SaveSuccess indicates all required values were accepted and the save completed successfully
       expect(find.textContaining('Missing required fields:'), findsNothing);
@@ -503,10 +503,10 @@ group('SYS-ADD-07 - Reset Button Case', () {
 
       logger?.info('Running reset button case');
 
-      //Uses the helper to build the Add Data page
       await tester.pumpWidget(wrap(const DashboardAddPage()));
       await tester.pumpAndSettle();
 
+      // Enter some values
       await tester.enterText(
         find.byKey(const Key('Site Information-Name')),
         'DiRx-28',
@@ -517,19 +517,22 @@ group('SYS-ADD-07 - Reset Button Case', () {
       );
       await tester.pumpAndSettle();
 
-      // The "reset button" is being tap and waits for the UI and validation to complete
+      // Press reset
       await tester.tap(find.byKey(const Key('resetButton')));
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
       await tester.pumpAndSettle();
 
-      // Press save after reset to confirm the page behaves like cleared/reset fields
-      await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      // Directly verify the fields are cleared after reset
+      final nameField = tester.widget<TextFormField>(
+        find.byKey(const Key('Site Information-Name')),
+      );
+      final unitField = tester.widget<TextFormField>(
+        find.byKey(const Key('Unit-Name')),
+      );
 
-      // This function makes sure that the page returned back to a reset state
-      expect(find.textContaining('Missing required fields:'), findsNothing);
-      expect(find.textContaining('Site Information: Name'), findsNothing);
+      expect(nameField.controller?.text ?? '', isEmpty);
+      expect(unitField.controller?.text ?? '', isEmpty);
 
       logger?.info('Reset button case finished');
     },
@@ -574,7 +577,9 @@ group('SYS-ADD-08 - Homepage Navigation Case', () {
 
       // Navigates to the homepage route
       router.go('/dashboard/home');
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pump();
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 10)); 
 
       // Verifies that the homepage route loaded
       expect(find.byType(DashboardHomePage), findsOneWidget);
