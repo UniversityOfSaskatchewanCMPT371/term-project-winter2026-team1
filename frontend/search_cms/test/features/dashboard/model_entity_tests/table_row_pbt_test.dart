@@ -12,12 +12,12 @@ extension AnyTableRowEntity on Any {
     StringAnys(any).nonEmptyLetters,          // areaName
     StringAnys(any).nonEmptyLetters,          // unitName
     StringAnys(any).nonEmptyLetters,          // levelName
-    any.validLimitRange,                      // [upLimit, lowLimit]: 0 pair or valid ordered pair
+    any.validLimitRangeString,                // [upLimit, lowLimit]: 0 pair or valid ordered pair
     any.letters,                              // assemblageName: string or empty, never null (entity requires String)
-    any.nullablePorosity,                     // porosity: null or int between 1-5
-    any.nullableValidSizeRange,               // [sizeUpper, sizeLower]: null pair or valid ordered pair
+    any.nullablePorosityString,               // porosity: null or int between 1-5
+    any.nullableValidSizeRangeString,         // [sizeUpper, sizeLower]: null pair or valid ordered pair
     any.letters,                              // comment: string or empty, never null (entity requires String)
-    any.validTripleRange,                     // [preExcavFrags, postExcavFrags, elements]: all > 0 pair
+    any.validTripleRangeString,               // [preExcavFrags, postExcavFrags, elements]: all > 0 pair
     (borden, areaName, unitName, levelName, limitPair, assemblageName, porosity, sizePair, comment, triplet) {
       return TableRowEntity(
         borden: borden, 
@@ -44,16 +44,16 @@ extension AnyTableRowEntity on Any {
 // call with 'tableRowModel'
 extension AnyTableRowModel on Any {
   Generator<TableRowModel> get tableRowModel => combine10(
-    StringAnys(any).nonEmptyLetters,          // borden
-    StringAnys(any).nonEmptyLetters,          // areaName
-    StringAnys(any).nonEmptyLetters,          // unitName
-    StringAnys(any).nonEmptyLetters,          // levelName
-    any.validLimitRange,                      // [upLimit, lowLimit]: 0 pair or valid ordered pair
-    any.letters,                              // assemblageName: string or empty, never null (entity requires String)
-    any.nullablePorosity,                     // porosity: null or int between 1-5
-    any.nullableValidSizeRange,               // [sizeUpper, sizeLower]: null pair or valid ordered pair
-    any.letters,                              // comment: string or empty, never null (entity requires String)
-    any.validTripleRange,                     // [preExcavFrags, postExcavFrags, elements]: all > 0 pair
+    any.letters,                              // borden (entity requires String, model allows null)
+    any.letters,                              // areaName (entity requires String, model allows null)
+    any.letters,                              // unitName (entity requires String, model allows null)
+    any.letters,                              // levelName (entity requires String, model allows null)
+    any.validLimitRangeString,                // [upLimit, lowLimit]: 0 pair or valid ordered pair
+    any.letters,                              // assemblageName: string or empty, never null (entity requires String, model allows null)
+    any.nullablePorosityString,               // porosity: null or int between 1-5
+    any.nullableValidSizeRangeString,         // [sizeUpper, sizeLower]: null pair or valid ordered pair
+    any.letters,                              // comment: string or empty, never null (entity requires String, model allows null)
+    any.validTripleRangeString,               // [preExcavFrags, postExcavFrags, elements]: all > 0 pair
     (borden, areaName, unitName, levelName, limitPair, assemblageName, porosity, sizePair, comment, triplet) {
       return TableRowModel(
         borden: borden, 
@@ -107,29 +107,29 @@ void main() {
         expect(tableRowEntity.levelName, isA<String>());
 
         // upLimit <= lowLimit when both are present
-        expect(tableRowEntity.upLimit, lessThanOrEqualTo(tableRowEntity.lowLimit));
+        expect(int.parse(tableRowEntity.upLimit), lessThanOrEqualTo(int.parse(tableRowEntity.lowLimit)));
 
         // assemblageName is always a String (never null) on the entity
         expect(tableRowEntity.assemblageName, isA<String>());
 
         // porosity must be null or between 1-5
         if (tableRowEntity.porosity != null) {
-          expect(tableRowEntity.porosity, greaterThanOrEqualTo(1));
-          expect(tableRowEntity.porosity, lessThanOrEqualTo(5));
+          expect(int.parse(tableRowEntity.porosity!), greaterThanOrEqualTo(1));
+          expect(int.parse(tableRowEntity.porosity!), lessThanOrEqualTo(5));
         }
  
         // sizeUpper >= sizeLower when both are present
         if (tableRowEntity.sizeUpper != null && tableRowEntity.sizeLower != null) {
-          expect(tableRowEntity.sizeUpper, greaterThanOrEqualTo(tableRowEntity.sizeLower!));
+          expect(double.parse(tableRowEntity.sizeUpper!), greaterThanOrEqualTo(double.parse(tableRowEntity.sizeLower!)));
         }
  
         // comment is always a String (never null) on the entity
         expect(tableRowEntity.comment, isA<String>());
 
         // fragment and element counts must all be > 0
-        expect(tableRowEntity.preExcavFrags, greaterThan(0));
-        expect(tableRowEntity.postExcavFrags, greaterThan(0));
-        expect(tableRowEntity.elements, greaterThan(0));
+        expect(int.parse(tableRowEntity.preExcavFrags), greaterThan(0));
+        expect(int.parse(tableRowEntity.postExcavFrags), greaterThan(0));
+        expect(int.parse(tableRowEntity.elements), greaterThan(0));
       });
 
     /*** Test 2 - TableRowModel ***/
@@ -140,25 +140,33 @@ void main() {
       'generated TableRowModel has valid fields', 
       (tableRowModel) {
 
-        // borden must always be a valid string
-        expect(tableRowModel.borden, isA<String>());
+        // borden is nullable on the model
+        if (tableRowModel.borden != null) {
+          expect(tableRowModel.borden, isA<String>());
+        }
 
         // siteName is nullable on the model
         if (tableRowModel.siteName != null) {
           expect(tableRowModel.siteName, isA<String>());
         }
 
-        // areaName must always be a valid string
-        expect(tableRowModel.areaName, isA<String>());
+        // areaName is nullable on the model
+        if (tableRowModel.areaName != null) {
+          expect(tableRowModel.areaName, isA<String>());
+        }
 
-        // unitName must always be a valid string
-        expect(tableRowModel.unitName, isA<String>());
+        // unitName is nullable on the model
+        if (tableRowModel.unitName != null) {
+          expect(tableRowModel.unitName, isA<String>());
+        }
 
-        // levelName must always be a valid string
-        expect(tableRowModel.levelName, isA<String>());
+        // levelName is nullable on the model
+        if (tableRowModel.levelName != null) {
+          expect(tableRowModel.levelName, isA<String>());
+        }
 
-        // upLimit <= lowLimit when both are present
-        expect(tableRowModel.upLimit, lessThanOrEqualTo(tableRowModel.lowLimit));
+        // upLimit <= lowLimit when both are present; nullable on the model
+        expect(int.parse(tableRowModel.upLimit!), lessThanOrEqualTo(int.parse(tableRowModel.lowLimit!)));
 
         // assemblageName is nullable on the model
         if (tableRowModel.assemblageName != null) {
@@ -167,13 +175,13 @@ void main() {
 
         // porosity must be null or between 1-5
         if (tableRowModel.porosity != null) {
-          expect(tableRowModel.porosity, greaterThanOrEqualTo(1));
-          expect(tableRowModel.porosity, lessThanOrEqualTo(5));
+          expect(int.parse(tableRowModel.porosity!), greaterThanOrEqualTo(1));
+          expect(int.parse(tableRowModel.porosity!), lessThanOrEqualTo(5));
         }
  
         // sizeUpper >= sizeLower when both are present
         if (tableRowModel.sizeUpper != null && tableRowModel.sizeLower != null) {
-          expect(tableRowModel.sizeUpper, greaterThanOrEqualTo(tableRowModel.sizeLower!));
+          expect(double.parse(tableRowModel.sizeUpper!), greaterThanOrEqualTo(double.parse(tableRowModel.sizeLower!)));
         }
  
         // comment is nullable on the model
@@ -181,10 +189,10 @@ void main() {
           expect(tableRowModel.comment, isA<String>());
         }
 
-        // fragment and element counts must all be > 0
-        expect(tableRowModel.preExcavFrags, greaterThan(0));
-        expect(tableRowModel.postExcavFrags, greaterThan(0));
-        expect(tableRowModel.elements, greaterThan(0));
+        // fragment and element counts must all be > 0; nullable on the model
+        expect(int.parse(tableRowModel.preExcavFrags!), greaterThan(0));
+        expect(int.parse(tableRowModel.postExcavFrags!), greaterThan(0));
+        expect(int.parse(tableRowModel.elements!), greaterThan(0));
       });
 
     /*** Test 3 - toEntity() ***/
@@ -199,8 +207,12 @@ void main() {
         // Entity is the correct type
         expect(entity, isA<TableRowEntity>());
 
-        // Returned entity has the same values for all fields
-        expect(entity.borden, tableRowModel.borden);
+        // If model.borden is null it gets converted to empty string in toEntity()
+        if (tableRowModel.borden == null) {
+          expect(entity.borden, isEmpty);
+        } else {
+          expect(entity.borden, tableRowModel.borden);
+        }
 
         // If model.siteName is null it gets converted to empty string in toEntity()
         if (tableRowModel.siteName == null) {
@@ -209,9 +221,30 @@ void main() {
           expect(entity.siteName, tableRowModel.siteName);
         }
 
-        expect(entity.areaName, tableRowModel.areaName);
-        expect(entity.unitName, tableRowModel.unitName);
-        expect(entity.levelName, tableRowModel.levelName);
+        // If model.areaName is null it gets converted to empty string in toEntity()
+        if (tableRowModel.areaName == null) {
+          expect(entity.areaName, isEmpty);
+        } else {
+          expect(entity.areaName, tableRowModel.areaName);
+        }
+
+        // If model.unitName is null it gets converted to empty string in toEntity()
+        if (tableRowModel.unitName == null) {
+          expect(entity.unitName, isEmpty);
+        } else {
+          expect(entity.unitName, tableRowModel.unitName);
+        }
+
+        // If model.levelName is null it gets converted to empty string in toEntity()
+        if (tableRowModel.levelName == null) {
+          expect(entity.levelName, isEmpty);
+        } else {
+          expect(entity.levelName, tableRowModel.levelName);
+        }
+
+        // Always generated, no null check needed
+        expect(entity.upLimit, tableRowModel.upLimit);
+        expect(entity.lowLimit, tableRowModel.lowLimit);
 
         // If model.assemblageName is null it gets converted to empty string in toEntity()
         if (tableRowModel.assemblageName == null) {
@@ -220,10 +253,10 @@ void main() {
           expect(entity.assemblageName, tableRowModel.assemblageName);
         }
 
+        // Both model and entity are nullable, no check needed
         expect(entity.porosity, tableRowModel.porosity);
         expect(entity.sizeUpper, tableRowModel.sizeUpper);
         expect(entity.sizeLower, tableRowModel.sizeLower);
-
         
         // If model.comment is null it gets converted to empty string in toEntity()
         if (tableRowModel.comment == null) {
@@ -232,12 +265,15 @@ void main() {
           expect(entity.comment, tableRowModel.comment);
         }
 
+        // Always generated, no null check needed
         expect(entity.preExcavFrags, tableRowModel.preExcavFrags);
         expect(entity.postExcavFrags, tableRowModel.postExcavFrags);
         expect(entity.elements, tableRowModel.elements);
       });
   });
 }
+
+
 
 
 
