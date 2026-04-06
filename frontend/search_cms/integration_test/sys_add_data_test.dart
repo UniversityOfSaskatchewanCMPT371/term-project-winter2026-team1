@@ -16,7 +16,7 @@ import 'package:go_router/go_router.dart';
 // Mirrors the Add Data and Home routes for navigation testing
 // This test only goes as far as checking the route of the page is switched to
 // '/dashboard/home' and does not test any of the actual rendering of the home page 
-//(This has been taken from Matt's Approach to render + load from page to another page)
+// (This has been taken from Matt's Approach to render + load from page to another page)
 GoRouter _buildTestRouter() {
   return GoRouter(
     initialLocation: '/dashboard/add',
@@ -525,6 +525,60 @@ group('SYS-ADD-07 - Reset Button Case', () {
       expect(find.text('N84SW1'), findsNothing);
 
       logger?.info('Reset button case finished');
+    },
+  );
+});
+
+//System Testing - 08 (SYS ADD-DATA-08)
+
+//Homepage row display case
+
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - All required fields are filled
+// - The save action completes successfully
+// - The Add Data page redirects to the Homepage after the save button is pressed
+//
+// Postconditions:
+// - The inserted values are shown on the homepage as a row / columns
+
+group('SYS-ADD-08 - Homepage Row Display Case', () {
+  testWidgets(
+    'pressing save shows the inserted data on the homepage as a row',
+    (WidgetTester tester) async {
+
+      logger?.info('Running homepage row display case');
+
+      // Builds the Add Data page and the Home page through the router
+      final GoRouter router = _buildTestRouter();
+      await tester.pumpWidget(wrapWithRouter(router));
+      await tester.pumpAndSettle();
+
+      // Fills all required fields with valid values
+      await fillAllRequiredFields(tester);
+
+      // The "save button" is being tap and waits for the UI and validation to complete
+      await tester.tap(find.byKey(const Key('saveButton')));
+
+      // Gives enough time for the success message to appear in the UI
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // SaveSuccess indicates all required values were accepted and the save completed successfully
+      expect(find.textContaining('Missing required fields:'), findsNothing);
+      expect(find.text('Save Successful'), findsOneWidget);
+
+      // Navigates to the homepage route after the save was successful
+      router.go('/dashboard/home');
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+
+      // Verifies that the inserted values are visible on the homepage
+      expect(find.textContaining('DiRx-28'), findsOneWidget);
+      expect(find.textContaining('1234'), findsOneWidget);
+      expect(find.textContaining('N84SW1'), findsOneWidget);
+      expect(find.textContaining('Level 1'), findsOneWidget);
+
+      logger?.info('Homepage row display case finished');
     },
   );
 });
