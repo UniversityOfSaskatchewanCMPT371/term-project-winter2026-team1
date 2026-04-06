@@ -1,3 +1,4 @@
+import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/data/data_sources/authentication_sign_in_api_impl.dart';
 import 'package:search_cms/features/authentication/data/repositories/authentication_sign_in_repository_impl.dart';
@@ -13,7 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
  */
 void initAuthenticationInjections() {
   getIt.registerFactory<AuthenticationSignInApiImpl>(() =>
-      AuthenticationSignInApiImpl(supabaseClient: getIt<SupabaseClient>()));
+      AuthenticationSignInApiImpl(supabaseClient: getIt<SupabaseClient>(), powerSyncDatabase: getIt<PowerSyncDatabase>()));
 
   getIt.registerFactory<AuthenticationSignInRepositoryImpl>(() =>
       AuthenticationSignInRepositoryImpl(api: getIt<AuthenticationSignInApiImpl>()));
