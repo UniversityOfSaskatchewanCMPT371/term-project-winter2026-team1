@@ -27,44 +27,36 @@ Widget wrap(Widget child) {
 // - All required Add Data fields are filled with valid values
 // - The save button is being pressed and the form submission completes
 
-Future<void> fillAndSubmitValidAddData(
-  WidgetTester tester, {
-  required String siteName,
-  required String borden,
-  required String area,
-  required String unitName,
-  required String levelName,
-  required String assemblageName,
-}) async {
+Future<void> fillAllRequiredFields(WidgetTester tester) async {
   await tester.enterText(
     find.byKey(const Key('Site Information-Name')),
-    siteName,
+    'DiRx-28',
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Borden')),
-    borden,
+    '1234',
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Area')),
-    area,
+    'Area A',
   );
 
   await tester.enterText(
     find.byKey(const Key('Unit-Name')),
-    unitName,
+    'N84SW1',
   );
   await tester.enterText(
     find.byKey(const Key('Unit-Site Name')),
-    siteName,
+    'DiRx-28',
   );
 
   await tester.enterText(
     find.byKey(const Key('Level-Name')),
-    levelName,
+    'Level 1',
   );
   await tester.enterText(
     find.byKey(const Key('Level-Unit Name')),
-    unitName,
+    'N84SW1',
   );
   await tester.enterText(
     find.byKey(const Key('Level-Parent Name')),
@@ -81,57 +73,23 @@ Future<void> fillAndSubmitValidAddData(
 
   await tester.enterText(
     find.byKey(const Key('Assemblage-Assemblage Name')),
-    assemblageName,
+    'Level 1 Faunal',
   );
   await tester.enterText(
     find.byKey(const Key('Assemblage-Unit Name')),
-    unitName,
+    'N84SW1',
   );
   await tester.enterText(
     find.byKey(const Key('Assemblage-Level Name')),
-    levelName,
+    'Level 1',
   );
 
   await tester.enterText(
     find.byKey(const Key('Artifact (Faunal)-Assemblage Name')),
-    assemblageName,
+    'Level 1 Faunal',
   );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Porosity')),
-    '4',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Size Upper')),
-    '3',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Size Lower')),
-    '2',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Comment')),
-    'system test comment',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Pre Excavation Fragments')),
-    '1',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Post Excavation Fragments')),
-    '1',
-  );
-  await tester.enterText(
-    find.byKey(const Key('Artifact (Faunal)-Elements')),
-    '1',
-  );
-
-  // The "save button" is being tap and waits for the UI and validation to complete
-  await tester.tap(find.byKey(const Key('saveButton')));
-  await tester.pumpAndSettle(const Duration(seconds: 3));
 }
-
 // Start test
-
 void main() {
 
   final Logger? logger = 
@@ -174,8 +132,6 @@ void main() {
         // The "save button" is being tap and waits for the UI and validation to complete
         await tester.tap(find.byKey(const Key('saveButton')));
         await tester.pumpAndSettle(const Duration(seconds: 3));
-
-
 
         // SaveIncomplete indicates missing required Site Information fields (Borden and Area) and displays validation errors
         expect(find.textContaining('Missing required fields:'), findsOneWidget);
@@ -395,7 +351,10 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
     },
   );
 });
+
 }
+
+
 
 
   
