@@ -34,3 +34,28 @@ GoRouter _buildTestRouter() {
     ],
   );
 }
+
+// Wrap the router with a Sizer for AddDataPage responsive layouts
+Widget wrapWithRouter(GoRouter router) {
+  return Sizer(
+    builder: (_, __, ___) => MaterialApp.router(
+      routerConfig: router,
+    ),
+  );
+}
+
+// A standard wrapper for widget tests that are being condemmed
+Widget wrap(Widget child) {
+  return Sizer(
+    builder: (_, __, ___) {
+      return MaterialApp(home: child);
+    },
+  );
+}
+
+// Start test
+
+void main() {
+
+  final Logger? logger = 
+    logLevel != Level.OFF ? Logger('Authentication Sign In API') : null;
