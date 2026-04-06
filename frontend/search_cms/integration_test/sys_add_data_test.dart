@@ -74,7 +74,7 @@ Future<void> fillAllRequiredFields(WidgetTester tester) async {
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Borden')),
-    '1234',
+    'uniqueBorden',
   );
   await tester.enterText(
     find.byKey(const Key('Site Information-Area')),
@@ -517,7 +517,7 @@ group('SYS-ADD-07 - Reset Button Case', () {
       );
       await tester.pumpAndSettle();
 
-      // Press reset
+      // Press the reset button
       await tester.tap(find.byKey(const Key('resetButton')));
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
