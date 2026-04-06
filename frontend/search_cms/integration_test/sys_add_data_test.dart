@@ -444,15 +444,53 @@ group('SYS-ADD-06 - Successful Save Case', () {
   );
 });
 
+//System Testing - 07 (SYS ADD-DATA-07)
+
+// Reset button case
+
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Some fields are filled before pressing the button reset
+//
+// Postconditions:
+// - The entered values are cleared from the Add Data page after pressing the button reset
+
+group('SYS-ADD-07 - Reset Button Case', () {
+  testWidgets(
+    'pressing the reset button clears the entered field values',
+    (WidgetTester tester) async {
+
+      logger?.info('Running reset button case');
+
+      //Uses the helper to build the Add Data page
+      await tester.pumpWidget(wrap(const DashboardAddPage()));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('Site Information-Name')),
+        'DiRx-28',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Unit-Name')),
+        'N84SW1',
+      );
+      await tester.pumpAndSettle();
+
+      // Makes sure the values are visible(inputted) before reset
+      expect(find.text('DiRx-28'), findsOneWidget);
+      expect(find.text('N84SW1'), findsOneWidget);
+
+      // The "reset button" is being tap and waits for the UI and validation to complete
+      await tester.tap(find.byKey(const Key('resetButton')));
+      await tester.pumpAndSettle();
+
+      // This function makes sure that the inserted values are not visible after pressing the "reset button"
+      expect(find.text('DiRx-28'), findsNothing);
+      expect(find.text('N84SW1'), findsNothing);
+
+      logger?.info('Reset button case finished');
+    },
+  );
+});
+
 }
-
-
-
-
-  
-
-
-
-    
-
-
