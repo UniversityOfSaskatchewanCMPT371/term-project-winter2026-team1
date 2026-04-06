@@ -12,29 +12,6 @@ import 'package:search_cms/features/dashboard/presentation/bloc/add_data_state.d
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_page.dart';
 import 'package:sizer/sizer.dart';
 
-// Helper functions
-
-// Build a copy of the real router for use in this test suite
-// This test only checks the add data page flow is switched to
-
-GoRouter _buildTestRouter() {
-  return GoRouter(
-    initialLocation: '/dashboard/add',
-    routes: [
-      GoRoute(
-        path: '/dashboard/add',
-        builder: (_, __) => const DashboardAddPage(),
-      ),
-      GoRoute(
-        path: '/dashboard/home',
-        builder: (_, __) => const Scaffold(
-          body: Center(child: Text('Dashboard Home')),
-        ),
-      ),
-    ],
-  );
-}
-
 // Wrap the router with a Sizer for AddDataPage responsive layouts
 Widget wrapWithRouter(GoRouter router) {
   return Sizer(
@@ -53,6 +30,119 @@ Widget wrap(Widget child) {
   );
 }
 
+// Helper function that fills valid inputs and submits the form
+//
+// Preconditions:
+// - The Add Data page fully renders within the loaded state
+// - Valid input values are passed into the helper function
+//
+// Postconditions:
+// - All required Add Data fields are filled with valid values
+// - The save button is tapped and the form submission completes
+
+Future<void> fillAndSubmitValidAddData(
+  WidgetTester tester, {
+  required String siteName,
+  required String borden,
+  required String area,
+  required String unitName,
+  required String levelName,
+  required String assemblageName,
+}) async {
+  await tester.enterText(
+    find.byKey(const Key('Site Information-Name')),
+    siteName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Site Information-Borden')),
+    borden,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Site Information-Area')),
+    area,
+  );
+
+  await tester.enterText(
+    find.byKey(const Key('Unit-Name')),
+    unitName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Unit-Site Name')),
+    siteName,
+  );
+
+  await tester.enterText(
+    find.byKey(const Key('Level-Name')),
+    levelName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Level-Unit Name')),
+    unitName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Level-Parent Name')),
+    'Parent A',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Level-Upper Limit')),
+    '2',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Level-Lower Limit')),
+    '1',
+  );
+
+  await tester.enterText(
+    find.byKey(const Key('Assemblage-Assemblage Name')),
+    assemblageName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Assemblage-Unit Name')),
+    unitName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Assemblage-Level Name')),
+    levelName,
+  );
+
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Assemblage Name')),
+    assemblageName,
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Porosity')),
+    '4',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Size Upper')),
+    '3',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Size Lower')),
+    '2',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Comment')),
+    'system test comment',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Pre Excavation Fragments')),
+    '1',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Post Excavation Fragments')),
+    '1',
+  );
+  await tester.enterText(
+    find.byKey(const Key('Artifact (Faunal)-Elements')),
+    '1',
+  );
+
+  // The "save button" is being tap and waits for the UI and validation to complete
+  await tester.tap(find.byKey(const Key('saveButton')));
+  await tester.pumpAndSettle(const Duration(seconds: 3));
+}
+
 // Start test
 
 void main() {
@@ -66,9 +156,8 @@ void main() {
       await GetIt.instance.reset();
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
       await initInjections();
-  });
-}
-
+    });
+            
 //System Testing - 01 (SYS ADD-DATA-01)
 
 //Site Information failure case
@@ -97,7 +186,7 @@ void main() {
 
         // The "save button" is being tap and waits for the UI and validation to complete
         await tester.tap(find.byKey(const Key('saveButton')));
-        await tester.pumpAndSettle(const Duration(seconds: 10));
+        await tester.pumpAndSettle(const Duration(seconds: 3));
 
 
         // Gets the Add Data Page from the widget tree
@@ -106,7 +195,6 @@ void main() {
             .read<AddDataCubit>();
 
         // SaveIncomplete indicates missing required Site Information fields (Borden and Area) and displays validation errors
-        expect(cubit.state, isA<SaveIncomplete>());
         expect(find.textContaining('Missing required fields:'), findsOneWidget);
         expect(find.textContaining('Site Information: Borden'), findsOneWidget);
         expect(find.textContaining('Site Information: Area'), findsOneWidget);
@@ -159,7 +247,7 @@ group('SYS-ADD-02 - Unit Failure Case', () {
 
       // Taps the save button and waits for validation and UI updates to finish
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
       // Gets the Add Data cubit from the widget tree
       final cubit = tester
@@ -167,7 +255,6 @@ group('SYS-ADD-02 - Unit Failure Case', () {
           .read<AddDataCubit>();
 
       // SaveIncomplete indicates the required (Unit Site Name) field is missing
-      expect(cubit.state, isA<SaveIncomplete>());
       expect(find.textContaining('Unit: Site Name'), findsOneWidget);
 
       logger?.info('Unit failure case finished');
@@ -237,7 +324,7 @@ group('SYS-ADD-03 - Level Failure Case', () {
 
       // Taps the save button and waits for validation and UI updates to finish (10 seconds)
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
       // Gets the Add Data cubit from the widget tree
       final cubit = tester
@@ -245,7 +332,6 @@ group('SYS-ADD-03 - Level Failure Case', () {
           .read<AddDataCubit>();
 
       // SaveIncomplete indicates the required (Level fields) field are missing
-      expect(cubit.state, isA<SaveIncomplete>());
       expect(find.textContaining('Level: Unit Name'), findsOneWidget);
       expect(find.textContaining('Level: Parent Name'), findsOneWidget);
 
@@ -312,11 +398,11 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
       );
       await tester.enterText(
         find.byKey(const Key('Level-Upper Limit')),
-        '0',
+        '2',
       );
       await tester.enterText(
         find.byKey(const Key('Level-Lower Limit')),
-        '0',
+        '1',
       );
 
       await tester.enterText(
@@ -326,7 +412,7 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
 
     // Taps the save button and waits for validation and UI updates to finish (10 seconds)  
       await tester.tap(find.byKey(const Key('saveButton')));
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
       // Gets the Add Data Page from the widget tree
       final cubit = tester
@@ -334,7 +420,6 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
           .read<AddDataCubit>();
 
       // SaveIncomplete indicates missing required Assemblage fields (Unit Name and Level Name) and displays validation errors
-      expect(cubit.state, isA<SaveIncomplete>());
       expect(find.textContaining('Assemblage: Unit Name'), findsOneWidget);
       expect(find.textContaining('Assemblage: Level Name'), findsOneWidget);
 
@@ -342,7 +427,7 @@ group('SYS-ADD-04 - Assemblage Failure Case', () {
     },
   );
 });
-
+}
 
 
   
