@@ -17,6 +17,7 @@ import 'package:sizer/sizer.dart';
 // This test only goes as far as checking the route of the page is switched to
 // '/dashboard/home' and does not test any of the actual rendering of the home page 
 // (This has been taken from Matt's Approach to render + load from page to another page)
+
 GoRouter _buildTestRouter() {
   return GoRouter(
     initialLocation: '/dashboard/add',
