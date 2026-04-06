@@ -58,6 +58,11 @@ const schema = Schema([
     Column.text('created_at'), // When an artifact was created
     Column.text('updated_at'), // When was data last updated
   ]),
+
+  Table('role', [
+    Column.text('created_at'), // When a role was created
+    Column.text('role'), // Either 'admin', 'researcher', or 'viewer'
+  ]),
 ]);
 
 
