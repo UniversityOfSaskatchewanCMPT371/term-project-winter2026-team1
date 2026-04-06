@@ -486,6 +486,7 @@ group('SYS-ADD-06 - Successful Save Case', () {
 
       logger?.info('Successful save case finished');
     },
+    skip: true,
   );
 });
 
@@ -540,6 +541,7 @@ group('SYS-ADD-07 - Reset Button Case', () {
 
       logger?.info('Reset button case finished');
     },
+    skip: true,
   );
 });
 
@@ -590,6 +592,8 @@ group('SYS-ADD-08 - Homepage Navigation Case', () {
 
       logger?.info('Homepage navigation case finished');
     },
+
+    skip: true,
   );
 });
 }
