@@ -1,14 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:search_cms/core/utils/class_templates/result.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/domain/entities/get_all_table_rows_result_classes.dart'
 as table_rows_result;
 import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases.dart';
-
 import './home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
+  final Logger _logger = Logger('Home cubit');
 
   HomeCubit() : super(const HomeInitial());
 
@@ -21,9 +22,9 @@ class HomeCubit extends Cubit<HomeState> {
 
     if (result is table_rows_result.Success) {
       emit(HomeLoaded(tableRowEntities: result.listOfTableRowEntity));
-    } else {
+    } else if (result is table_rows_result.Failure) {
       // The call failed
-      // For now just emit an empty state
+      _logger.warning('Failure loading table: ${result.errorMessage}');
       emit(const HomeLoaded());
     }
   }

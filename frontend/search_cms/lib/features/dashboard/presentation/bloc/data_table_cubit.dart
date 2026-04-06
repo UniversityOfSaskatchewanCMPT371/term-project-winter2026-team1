@@ -10,7 +10,7 @@ class DataTableCubit extends Cubit<DataTableState> {
   DataTableCubit() : super(const DataTableInitial());
 
   // Column headers for table
-  final Set<String> columnHeaders = {
+  static const Set<String> columnHeaders = {
     'Borden',
     'Site Name',
     'Area',
