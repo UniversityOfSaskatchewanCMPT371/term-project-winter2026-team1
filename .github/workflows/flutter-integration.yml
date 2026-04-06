@@ -1,6 +1,8 @@
 name: Flutter Integration Test
 
 on:
+  push:
+    branches: [ "develop", "main" ]
   pull_request:
     branches: [ "develop", "main" ]
   workflow_dispatch:
@@ -18,7 +20,7 @@ on:
         required: true
         default: 'staging'
         type: string
-  
+
   workflow_call:
       inputs:
         run_type:
@@ -34,7 +36,6 @@ permissions:
   pull-requests: write
 
 jobs:
-
   build:
     env:
       RUN_TYPE: ${{ inputs.run_type || 'default' }}
@@ -125,7 +126,7 @@ jobs:
            bash -c "flutter test integration_test/smoke_test.dart -d linux --machine | tojunit --output test-results/smoke_${{ env.TIMESTAMP }}.xml"
            bash -c "flutter test integration_test/sys_login_test.dart -d linux --machine --dart-define=TEST_EMAIL=$TEST_EMAIL --dart-define=TEST_PASSWORD=$TEST_PASSWORD | tojunit --output test-results/sys_login_${{ env.TIMESTAMP }}.xml"
            bash -c "flutter test integration_test/sys_add_data_test.dart -d linux --machine | tojunit --output test-results/sys_add_data_${{ env.TIMESTAMP }}.xml"
-
+           
           working-directory: ./frontend/search_cms
         env:
           API_BASE_URL: http://localhost:8080

@@ -6,6 +6,7 @@ and that GetIt can resolve them.
 */
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:powersync/powersync.dart';
 import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/authentication/authentication_injections.dart';
 import 'package:search_cms/features/authentication/data/data_sources/authentication_sign_in_api_impl.dart';
@@ -18,9 +19,17 @@ import 'mocks/authentication_mocks.mocks.dart';
 
 void main() {
   group('initAuthenticationInjections', () {
+    late MockSupabaseClient mockSupabaseClient;
+    late MockPowerSyncDatabase mockPowerSyncDatabase;
+
     setUp(() async {
       await getIt.reset();
-      getIt.registerSingleton<SupabaseClient>(MockSupabaseClient());
+
+      mockSupabaseClient = MockSupabaseClient();
+      mockPowerSyncDatabase = MockPowerSyncDatabase();
+
+      getIt.registerSingleton<SupabaseClient>(mockSupabaseClient);
+      getIt.registerSingleton<PowerSyncDatabase>(mockPowerSyncDatabase);
     });
 
     tearDown(() async {

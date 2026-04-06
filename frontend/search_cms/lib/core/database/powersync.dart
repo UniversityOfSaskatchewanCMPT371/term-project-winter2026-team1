@@ -157,7 +157,7 @@ Future<String> getDatabasePath() async {
   return join(dir.path, dbFilename);
 }
 
-const options = SyncOptions(syncImplementation: SyncClientImplementation.rust);
+const options = SyncOptions(syncImplementation: SyncClientImplementation.defaultClient);
 
 // ignore: lines_longer_than_80_chars
 Future<PowerSyncDatabase> openDatabase(PowerSyncDatabase powersyncDatabase) async {
