@@ -172,19 +172,21 @@ class _LoginPageState extends State<LoginPage> {
 
                     return Form(
                       key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Logo
-                          Center(
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/shishalh.png',
-                                  height: 80,
-                                  errorBuilder: (context, error, stackTrace) => const SizedBox(height: 80),
-                                ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Logo
+                            Center(
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/shishalh.png',
+                                    height: 80,
+                                    //this loads the images from the assets/images
+                                    errorBuilder: (context, error, stackTrace) => const SizedBox(height: 80),
+                                  ),
                                 SizedBox(height: 0.5.h),
                                 Text(
                                   '',
@@ -413,6 +415,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
+                        ),
                         );
                       },
                     ),
