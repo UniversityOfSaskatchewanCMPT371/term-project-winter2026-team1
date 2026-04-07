@@ -164,6 +164,47 @@ void main() {
     );
   });
 
+  // System Testing - 003 (SYS HOME-003)
+  //
+  // Homepage search - Success submission
+  //
+  // Preconditions:
+  // - The Homepage has at least one row in the database
+  // - The Search field and Search button are both visible to the UI layout
+  //
+  // Postconditions:
+  // - The row should match is represented and the search is also executed
+
+
+  group('SYS-HOME-03 - Homepage Search Success Case', () {
+    testWidgets(
+      'search finds a matching row',
+      (WidgetTester tester) async {
+        logger?.info('Running homepage search success case');
+
+        await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        // The Homepage loads first with the basic search field visible
+        expect(_findBasicSearchField(), findsOneWidget);
+
+        // Then the matching value is entered into the basic search field
+        await tester.enterText(_findBasicSearchField(), 'DiRx-28');
+
+        // Search button is being pressed
+        await tester.tap(_findSearchButton());
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        // Laterwards, the matching row should appear in the Homepage table
+        expect(find.textContaining('DiRx-28'), findsWidgets);
+
+        logger?.info('Homepage search success case finished');
+      },
+    );
+  });
+  
+
+
 
 
 
