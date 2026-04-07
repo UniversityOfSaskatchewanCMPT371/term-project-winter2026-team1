@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.flutter_system_test.app.FullSystemTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.886 s - in com.flutter_system_test.app.FullSystemTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 44.695 s - in com.flutter_system_test.app.FullSystemTest
