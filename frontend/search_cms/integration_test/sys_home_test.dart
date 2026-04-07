@@ -174,8 +174,6 @@ void main() {
   //
   // Postconditions:
   // - The row should match is represented and the search is also executed
-
-
   group('SYS-HOME-03 - Homepage Search Success Case', () {
     testWidgets(
       'search finds a matching row',
@@ -202,6 +200,21 @@ void main() {
       },
     );
   });
+
+  // System Testing - 04 (SYS HOME-04)
+  //
+  // Homepage No result case to the HomePage
+  //
+  // Preconditions:
+  // - Homepage properly renders
+  // - Search field and Search button are visible
+  // - Search term does not exist in any database row
+  //
+  // Postconditions:
+  // - The search value is entered into the basic search field
+  // - The Search button is pressed
+  // - No matching database row is shown after the search is being executed
+  // - The Homepage displays the "no data in database display message"
   
 
 
