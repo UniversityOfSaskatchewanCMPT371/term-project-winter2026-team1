@@ -44,3 +44,23 @@ Widget wrapWithRouter(GoRouter router) {
     ),
   );
 }
+
+//Uses a helper for locating the normal basic search input
+Finder _findBasicSearchField() {
+  return find.byKey(const Key('basicSearchBar'));
+}
+
+//Uses helper for locating the normal "search" button 
+Finder _findSearchButton() {
+  return find.byKey(const Key('searchButton'));
+}
+
+//Uses helper for locating toggle buttons
+Finder _findSearchToggle() {
+  return find.text('Search').first;
+}
+
+//Uses the helper to findAdvancedSearchToggle to the Advanced Search
+Finder _findAdvancedSearchToggle() {
+  return find.text('Advanced Search');
+}
