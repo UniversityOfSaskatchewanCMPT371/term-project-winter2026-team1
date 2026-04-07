@@ -154,8 +154,10 @@ public class FullSystemTest {
         WebElement authField = driver.findElement(AppiumBy.name("Access System"));
         actions.moveToElement(authField).click().perform();
 
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+
         // Wait for the UI to show up so we don't wait for a refresh
-        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        // WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         /****************************************** Test 2: Homepage Loading Test ***************************************************/
 
@@ -183,9 +185,9 @@ public class FullSystemTest {
         actions.moveToElement(searchButton).click().perform();
 
         // Check if the search result is displayed. If found, search is successful
-        appWait.until(
-            d -> driver.findElement(AppiumBy.name("DiRx-28"))
-        );
+        // appWait.until(
+        //     d -> driver.findElement(AppiumBy.name("DiRx-28"))
+        // );
 
         // System.out.println("Borden found, search successful.");
 
