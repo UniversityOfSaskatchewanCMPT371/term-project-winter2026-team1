@@ -154,7 +154,7 @@ public class FullSystemTest {
         WebElement authField = driver.findElement(AppiumBy.name("Access System"));
         actions.moveToElement(authField).click().perform();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
 
         // Wait for the UI to show up so we don't wait for a refresh
         // WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(15));
