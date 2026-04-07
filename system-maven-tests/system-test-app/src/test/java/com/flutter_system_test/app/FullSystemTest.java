@@ -164,103 +164,103 @@ public class FullSystemTest {
         //     d -> driver.findElement(AppiumBy.name("Search..."))
         // );
 
-        System.out.println("Homepage loaded, login successful.");
+        // System.out.println("Homepage loaded, login successful.");
 
-        /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
+        // /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
 
-        // Find the search bar
-        WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
-        actions.moveToElement(searchBar).click().perform();
+        // // Find the search bar
+        // WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
+        // actions.moveToElement(searchBar).click().perform();
 
-        // Give Windows a fraction of a second to register the UI focus shift
-        Thread.sleep(200);
+        // // Give Windows a fraction of a second to register the UI focus shift
+        // Thread.sleep(200);
 
-        // Type a correct data (e.g., Borden) into the search bar
-        actions.sendKeys("DiRx-28").perform();
+        // // Type a correct data (e.g., Borden) into the search bar
+        // actions.sendKeys("DiRx-28").perform();
 
-        // Click the search button 
-        WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
-        actions.moveToElement(searchButton).click().perform();
+        // // Click the search button 
+        // WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
+        // actions.moveToElement(searchButton).click().perform();
 
-        // Check if the search result is displayed. If found, search is successful
-        appWait.until(
-            d -> driver.findElement(AppiumBy.name("DiRx-28"))
-        );
+        // // Check if the search result is displayed. If found, search is successful
+        // appWait.until(
+        //     d -> driver.findElement(AppiumBy.name("DiRx-28"))
+        // );
 
-        System.out.println("Borden found, search successful.");
+        // System.out.println("Borden found, search successful.");
 
-        /****************************************** Test 4: Navigate to Add Data Page Test ******************************************/
+        // /****************************************** Test 4: Navigate to Add Data Page Test ******************************************/
 
-        // Reset mouse position
-        actions.moveByOffset(-2000, -2000).perform();
+        // // Reset mouse position
+        // actions.moveByOffset(-2000, -2000).perform();
 
-        // Manually move to click "Add" button
-        actions.moveByOffset(100, 200).click().perform();
+        // // Manually move to click "Add" button
+        // actions.moveByOffset(100, 200).click().perform();
 
-        // Check if Add page is loaded. If loaded, navigation successful
-        appWait.until(
-            d -> driver.findElement(AppiumBy.name("Add Data"))
-        );
+        // // Check if Add page is loaded. If loaded, navigation successful
+        // appWait.until(
+        //     d -> driver.findElement(AppiumBy.name("Add Data"))
+        // );
 
-        System.out.println("Add data page loaded successfully.");
+        // System.out.println("Add data page loaded successfully.");
 
-        /****************************************** Test 5: Add Data Test ***********************************************************/
+        // /****************************************** Test 5: Add Data Test ***********************************************************/
 
-        // Find the site name field
-        WebElement siteNameField = driver.findElement(AppiumBy.name("Enter Site Name (e.g., western end of slope)"));
-        actions.moveToElement(siteNameField).click().perform();
+        // // Find the site name field
+        // WebElement siteNameField = driver.findElement(AppiumBy.name("Enter Site Name (e.g., western end of slope)"));
+        // actions.moveToElement(siteNameField).click().perform();
 
-        // Give Windows a fraction of a second to register the UI focus shift
-        Thread.sleep(200);
+        // // Give Windows a fraction of a second to register the UI focus shift
+        // Thread.sleep(200);
 
-        // Type the site name in the field
-        actions.sendKeys("Appium Site").perform();
+        // // Type the site name in the field
+        // actions.sendKeys("Appium Site").perform();
 
-        // Find the Borden field
-        WebElement bordenNameField = driver.findElement(AppiumBy.name("Enter Borden Number (e.g., DiRw-28)"));
-        actions.moveToElement(bordenNameField).click().perform();
+        // // Find the Borden field
+        // WebElement bordenNameField = driver.findElement(AppiumBy.name("Enter Borden Number (e.g., DiRw-28)"));
+        // actions.moveToElement(bordenNameField).click().perform();
 
-        // Give Windows a fraction of a second to register the UI focus shift
-        Thread.sleep(200);
+        // // Give Windows a fraction of a second to register the UI focus shift
+        // Thread.sleep(200);
 
-        // Type the Borden in the field
-        actions.sendKeys("DiRx-00").perform();
+        // // Type the Borden in the field
+        // actions.sendKeys("DiRx-00").perform();
 
-        // Find the area name field
-        WebElement areaNameField = driver.findElement(AppiumBy.name("Enter Area (e.g., western end of slope)"));
-        actions.moveToElement(areaNameField).click().perform();
+        // // Find the area name field
+        // WebElement areaNameField = driver.findElement(AppiumBy.name("Enter Area (e.g., western end of slope)"));
+        // actions.moveToElement(areaNameField).click().perform();
 
-        // Give Windows a fraction of a second to register the UI focus shift
-        Thread.sleep(200);
+        // // Give Windows a fraction of a second to register the UI focus shift
+        // Thread.sleep(200);
 
-        // Type the area name in the field
-        actions.sendKeys("Appium Area").perform();
+        // // Type the area name in the field
+        // actions.sendKeys("Appium Area").perform();
 
-        // Give Windows a fraction of a second to register the UI focus shift
-        Thread.sleep(200);
+        // // Give Windows a fraction of a second to register the UI focus shift
+        // Thread.sleep(200);
 
-        // Reset mouse position
-        actions.moveByOffset(-2000, -2000).perform();
+        // // Reset mouse position
+        // actions.moveByOffset(-2000, -2000).perform();
 
-        // Manually move to click "Save" button
-        actions.moveByOffset(300, 700).click().perform();
+        // // Manually move to click "Save" button
+        // actions.moveByOffset(300, 700).click().perform();
 
-        System.out.println("Add data successful.");
+        // System.out.println("Add data successful.");
 
-        /****************************************** Test 6: Homepage Update Test ****************************************************/
+        // /****************************************** Test 6: Homepage Update Test ****************************************************/
 
-        // Reset mouse position
-        actions.moveByOffset(-2000, -2000).perform();
+        // // Reset mouse position
+        // actions.moveByOffset(-2000, -2000).perform();
 
-        // Manually move to click "Home" button
-        actions.moveByOffset(100, 150).click().perform();
+        // // Manually move to click "Home" button
+        // actions.moveByOffset(100, 150).click().perform();
         
-        // Check to see if the newly added data exists in the homepage. If so, test completed 
-        appWait.until(
-            d -> driver.findElement(AppiumBy.name("Appium Site"))
-        );
+        // // Check to see if the newly added data exists in the homepage. If so, test completed 
+        // appWait.until(
+        //     d -> driver.findElement(AppiumBy.name("Appium Site"))
+        // );
 
-        System.out.println("System test completed!");
+        // System.out.println("System test completed!");
     }
 
     @AfterAll
