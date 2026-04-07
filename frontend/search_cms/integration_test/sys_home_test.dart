@@ -216,16 +216,32 @@ void main() {
   // - No matching database row is shown after the search is being executed
   // - The Homepage displays the "no data in database display message"
   
+    group('SYS-HOME-04 - Homepage No result Case', () {
+    testWidgets(
+      'Search with the incorrect missing value shows the no row in the database message',
+      (WidgetTester tester) async {
+        logger?.info('Running homepage search success case');
 
+        await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
+        // The Homepage loads first with the basic search field visible
+        expect(_findBasicSearchField(), findsOneWidget);
 
+        // Then the matching value is entered into the basic search field
+        await tester.enterText(_findBasicSearchField(), 'qwerty123456');
 
+        // Search button is being pressed
+        await tester.tap(_findSearchButton());
+        await tester.pumpAndSettle(const Duration(seconds: 5));
 
+        // Laterwards, the matching row should appear in the Homepage table
+        expect(find.text('No data in database to display'), findsOneWidget,);
 
-
-
-
-
+        logger?.info('Homepage no result case finished');
+      },
+    );
+  });
 
 }
         
