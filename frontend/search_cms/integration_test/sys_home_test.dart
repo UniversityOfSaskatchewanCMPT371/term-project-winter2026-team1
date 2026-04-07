@@ -14,6 +14,11 @@ import 'package:sizer/sizer.dart';
 // Helper functions
 
 // Build a copy of the real router for use in this test suite
+// Mirrors the Homepage for navigation testing
+// This test only goes as far as checking the route of the page is switched to
+// '/dashboard/home' and does not test any of the actual rendering of the home page
+
+// (This has been taken from Matt's Approach to render + load from page to another page)
 GoRouter _buildTestRouter() {
   return GoRouter(
     initialLocation: '/dashboard/home',
@@ -28,5 +33,14 @@ GoRouter _buildTestRouter() {
         ),
       ),
     ],
+  );
+}
+
+// Wrap the router with a Sizer for DashboardHomePage responsive layouts
+Widget wrapWithRouter(GoRouter router) {
+  return Sizer(
+    builder: (_, __, ___) => MaterialApp.router(
+      routerConfig: router,
+    ),
   );
 }
