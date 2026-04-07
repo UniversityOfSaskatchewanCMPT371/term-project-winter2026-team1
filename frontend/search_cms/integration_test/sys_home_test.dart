@@ -70,14 +70,13 @@ void main() {
 
   final Logger? logger = 
     logLevel != Level.OFF ? Logger('Home Page System Test') : null;
+
     
     setUpAll(() async {
     // Reset GetIt before registering to avoid double registration
     // across each of the test runs
-      await GetIt.instance.reset();
-
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
+      await GetIt.instance.reset();
       await initInjections();
     });
 
