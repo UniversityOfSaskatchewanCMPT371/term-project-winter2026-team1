@@ -105,7 +105,7 @@ void main() {
 
             //Uses the helper to build the HomePage
             await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
-            await tester.pumpAndSettle(const Duration(seconds: 10));
+            await tester.pumpAndSettle(const Duration(seconds: 5));
 
             //Indicates the following widgets within the helper function
             expect(find.text('Home'), findsOneWidget);
@@ -133,7 +133,38 @@ void main() {
   // - Advanced Search field and selected after pressing Advanced Search
   // - Basic Search field reappears after pressing Search
 
-  
+    group('SYS-HOME-02 - Homepage Toggle Case', () {
+    testWidgets(
+      'toggle switches between Search and Advanced Search',
+      (WidgetTester tester) async {
+        logger?.info('Running homepage toggle case');
+
+        await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+
+        // The Basic Search section appears first 
+        expect(_findBasicSearchField(), findsOneWidget);
+
+        // Then the "AdvancedSearch" is selected 
+        await tester.tap(_findAdvancedSearchToggle());
+        await tester.pumpAndSettle();
+
+        // Advanced Search field should now display within the selected option
+        expect(find.text('Advanced Search...'), findsOneWidget);
+
+        // Search section box is being pressed
+        await tester.tap(_findSearchToggle());
+        await tester.pumpAndSettle();
+
+        // Laterwards, Basic Search section box is being pressed
+        expect(_findBasicSearchField(), findsOneWidget);
+
+        logger?.info('Homepage toggle case finished');
+      },
+    );
+  });
+
+
 
 
 
