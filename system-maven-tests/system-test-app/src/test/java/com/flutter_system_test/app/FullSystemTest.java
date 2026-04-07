@@ -168,24 +168,24 @@ public class FullSystemTest {
 
         // /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
 
-        // // Find the search bar
-        // WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
-        // actions.moveToElement(searchBar).click().perform();
+        // Find the search bar
+        WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
+        actions.moveToElement(searchBar).click().perform();
 
-        // // Give Windows a fraction of a second to register the UI focus shift
-        // Thread.sleep(200);
+        // Give Windows a fraction of a second to register the UI focus shift
+        Thread.sleep(200);
 
-        // // Type a correct data (e.g., Borden) into the search bar
-        // actions.sendKeys("DiRx-28").perform();
+        // Type a correct data (e.g., Borden) into the search bar
+        actions.sendKeys("DiRx-28").perform();
 
-        // // Click the search button 
-        // WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
-        // actions.moveToElement(searchButton).click().perform();
+        // Click the search button 
+        WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
+        actions.moveToElement(searchButton).click().perform();
 
-        // // Check if the search result is displayed. If found, search is successful
-        // appWait.until(
-        //     d -> driver.findElement(AppiumBy.name("DiRx-28"))
-        // );
+        // Check if the search result is displayed. If found, search is successful
+        appWait.until(
+            d -> driver.findElement(AppiumBy.name("DiRx-28"))
+        );
 
         // System.out.println("Borden found, search successful.");
 
