@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
             Image.asset(
               'assets/images/shishalh-background-login.png',
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(color: AppColors.background),
             ),
             // Dark overlay for readability
             Container(
@@ -182,6 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Image.asset(
                                   'assets/images/shishalh.png',
                                   height: 80,
+                                  errorBuilder: (context, error, stackTrace) => const SizedBox(height: 80),
                                 ),
                                 SizedBox(height: 0.5.h),
                                 Text(
