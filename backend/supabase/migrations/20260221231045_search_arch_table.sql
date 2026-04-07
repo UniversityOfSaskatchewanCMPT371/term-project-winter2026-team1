@@ -9,6 +9,15 @@ create table public.role (
   constraint role_id_fkey foreign KEY (id) references auth.users (id) on update CASCADE on delete CASCADE
 ) TABLESPACE pg_default;
 
+-- Enable RLS policy. Prevent users from reading other users roles
+alter table public.role enable row level security;
+
+create policy "User can only read their own role"
+on role
+for select
+to authenticated
+using (auth.uid() = id);
+
 -- A Site represents the top-level in the system
 CREATE TABLE site (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
