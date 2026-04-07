@@ -162,11 +162,11 @@ public class FullSystemTest {
         /****************************************** Test 2: Homepage Loading Test ***************************************************/
 
         // Find an element on the homepage. If found, login is successful
-        // appWait.until(
-        //     d -> driver.findElement(AppiumBy.name("Search..."))
-        // );
+        appWait.until(
+            d -> driver.findElement(AppiumBy.name("Search..."))
+        );
 
-        // System.out.println("Homepage loaded, login successful.");
+        System.out.println("Homepage loaded, login successful.");
 
         // /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
 
