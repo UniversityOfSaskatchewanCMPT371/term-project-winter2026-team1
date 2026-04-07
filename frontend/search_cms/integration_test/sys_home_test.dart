@@ -121,6 +121,21 @@ void main() {
   });
 
 
+  // System Testing - 02 (SYS HOME-02)
+  //
+  // Homepage toggle case
+  //
+  // Preconditions:
+  // - The Homepage properly renders
+  // - Search toggle buttons are visible and shown
+  //
+  // Postconditions:
+  // - Advanced Search field and selected after pressing Advanced Search
+  // - Basic Search field reappears after pressing Search
+
+  
+
+
 
 
 
