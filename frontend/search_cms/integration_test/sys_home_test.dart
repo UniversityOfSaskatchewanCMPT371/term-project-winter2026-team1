@@ -104,7 +104,7 @@ void main() {
 
             //Uses the helper to build the HomePage
             await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
-            await tester.pumpAndSettle(const Duration(seconds: 5));
+            await tester.pump(const Duration(seconds: 5));
 
             //Indicates the following widgets within the helper function
             expect(find.text('Home'), findsOneWidget);
@@ -139,7 +139,7 @@ void main() {
         logger?.info('Running homepage toggle case');
 
         await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
 
         // The Basic Search section appears first 
         expect(_findBasicSearchField(), findsOneWidget);
@@ -180,7 +180,7 @@ void main() {
         logger?.info('Running homepage search success case');
 
         await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
 
         // The Homepage loads first with the basic search field visible
         expect(_findBasicSearchField(), findsOneWidget);
@@ -190,7 +190,7 @@ void main() {
 
         // Search button is being pressed
         await tester.tap(_findSearchButton());
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
 
         // Laterwards, the matching row should appear in the Homepage table
         expect(find.textContaining('DiRx-28'), findsWidgets);
@@ -222,7 +222,7 @@ void main() {
         logger?.info('Running homepage search success case');
 
         await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
 
         // The Homepage loads first with the basic search field visible
         expect(_findBasicSearchField(), findsOneWidget);
@@ -232,7 +232,7 @@ void main() {
 
         // Search button is being pressed
         await tester.tap(_findSearchButton());
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
 
         // Laterwards, the matching row should appear in the Homepage table
         expect(find.text('No data in database to display'), findsOneWidget,);
