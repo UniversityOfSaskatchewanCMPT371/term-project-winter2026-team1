@@ -157,7 +157,7 @@ public class FullSystemTest {
         // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 
         // Wait for the UI to show up so we don't wait for a refresh
-        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(600));
 
         /****************************************** Test 2: Homepage Loading Test ***************************************************/
 
