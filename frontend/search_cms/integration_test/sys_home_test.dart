@@ -10,6 +10,7 @@ import 'package:search_cms/core/utils/constants.dart';
 import 'package:search_cms/features/dashboard/presentation/bloc/home_cubit.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
 import 'package:sizer/sizer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Helper functions
 
@@ -78,7 +79,17 @@ void main() {
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
       await GetIt.instance.reset();
       await initInjections();
+
+      // Includes the login assertion for the supabase session
+      await getIt<SupabaseClient>().auth.signInWithPassword(
+      email: const String.fromEnvironment('TEST_EMAIL'),
+      password: const String.fromEnvironment('TEST_PASSWORD'),);
+
     });
+
+    tearDownAll(() async {
+    await getIt<SupabaseClient>().auth.signOut();
+});
 
     /*--------- System tests (Homepage) ---------*/
 
