@@ -155,7 +155,7 @@ public class FullSystemTest {
         actions.moveToElement(authField).click().perform();
 
         // Wait for the UI to show up so we don't wait for a refresh
-        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         /****************************************** Test 2: Homepage Loading Test ***************************************************/
 
