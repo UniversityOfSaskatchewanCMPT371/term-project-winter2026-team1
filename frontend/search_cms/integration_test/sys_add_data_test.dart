@@ -70,7 +70,7 @@ Widget wrap(Widget child) {
 Future<void> fillAllRequiredFields(WidgetTester tester) async {
 
 //This fixes the duplication that supabase causes an error towards it 
-  final String uniqueBorden = DateTime.now().millisecondsSinceEpoch.toString();
+  final String uniqueBorden = '12345';
 
   await tester.enterText(
     find.byKey(const Key('Site Information-Name')),
@@ -469,26 +469,56 @@ group('SYS-ADD-06 - Successful Save Case', () {
     'all required fields filled leads to SaveSuccess and success message',
     (WidgetTester tester) async {
 
-      logger?.info('Running successful save-case');
+      logger?.info('Running successful save case');
 
-      //Uses the helper to build the Add Data page
+      // Uses the helper to build the Add Data page
       await tester.pumpWidget(wrap(const DashboardAddPage()));
       await tester.pumpAndSettle();
 
       // Fills all required fields with valid values
       await fillAllRequiredFields(tester);
 
-      // The "save button" is being tap and waits for the UI and validation to complete
+      // Fills additional optional Artifact fields
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Porosity')),
+        '4',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Size Upper')),
+        '30',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Size Lower')),
+        '4',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Comment')),
+        'broken fish vertebrae',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Pre Excavation Fragments')),
+        '1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Post Excavation Fragments')),
+        '2',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Elements')),
+        '2',
+      );
+
+      // Taps the save button and waits for the UI and backend to complete
       await tester.tap(find.byKey(const Key('saveButton')));
-
-      //Not Enough time for the UI waiting time to validate the save button
-      //Thefore, we will use a certain UI enough time to show the success message
       await tester.pump();
-      await tester.pump(const Duration(seconds: 2));
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 5));
 
-      // SaveSuccess indicates all required values were accepted and the save completed successfully
+      // No validation errors should appear
       expect(find.textContaining('Missing required fields:'), findsNothing);
+      expect(find.text('An error occured while saving'), findsNothing);
+
+      // Save Successful message must appear
+      expect(find.text('Save Successful'), findsOneWidget);
 
       logger?.info('Successful save case finished');
     },
@@ -563,15 +593,14 @@ group('SYS-ADD-07 - Reset Button Case', () {
 //
 // Postconditions:
 // - The inserted values are shown on the homepage as a row / columns
-
-group('SYS-ADD-08 - Homepage Navigation Case', () {
+group('SYS-ADD-08 - Homepage Row Display Case', () {
   testWidgets(
-    'pressing save allows navigation to the homepage route',
+    'after saving all fields the homepage displays the inserted data as rows',
     (WidgetTester tester) async {
 
-      logger?.info('Running homepage navigation case');
+      logger?.info('Running homepage row display case');
 
-      // Builds the Add Data page and the Home page through the router
+      // Builds both the Add Data page and Home page through the router
       final GoRouter router = _buildTestRouter();
       await tester.pumpWidget(wrapWithRouter(router));
       await tester.pumpAndSettle();
@@ -579,26 +608,59 @@ group('SYS-ADD-08 - Homepage Navigation Case', () {
       // Fills all required fields with valid values
       await fillAllRequiredFields(tester);
 
-      // The "save button" is being tap and waits for the UI and validation to complete
+      // Fills additional optional Artifact fields
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Porosity')),
+        '4',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Size Upper')),
+        '30',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Size Lower')),
+        '4',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Comment')),
+        'broken fish vertebrae',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Pre Excavation Fragments')),
+        '1',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Post Excavation Fragments')),
+        '2',
+      );
+      await tester.enterText(
+        find.byKey(const Key('Artifact (Faunal)-Elements')),
+        '2',
+      );
+
+      // Taps the save button and waits for the backend to complete
       await tester.tap(find.byKey(const Key('saveButton')));
       await tester.pump();
-      await tester.pump(const Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 5));
 
-      // No missing field validation should appear before navigation
+      // Confirms save completed without errors
       expect(find.textContaining('Missing required fields:'), findsNothing);
+      expect(find.text('An error occured while saving'), findsNothing);
+      expect(find.text('Save Successful'), findsOneWidget);
 
-      // Navigates to the homepage route
+      // Navigates to the homepage
       router.go('/dashboard/home');
       await tester.pump();
-      await tester.pumpAndSettle(const Duration(seconds: 3));
-      await tester.pumpAndSettle(const Duration(seconds: 10)); 
+      await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      // Verifies that the homepage route loaded
+      // Verifies the homepage loaded
       expect(find.byType(DashboardHomePage), findsOneWidget);
 
-      logger?.info('Homepage navigation case finished');
-    },
+      // Verifies the inserted site name appears as a row on the homepage
+      expect(find.textContaining('DiRx-28'), findsWidgets);
 
+      logger?.info('Homepage row display case finished');
+    },
     skip: skipCiOnlyAddDataTests,
   );
 });
