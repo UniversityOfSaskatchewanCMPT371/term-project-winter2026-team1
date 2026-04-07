@@ -154,10 +154,10 @@ public class FullSystemTest {
         WebElement authField = driver.findElement(AppiumBy.name("Access System"));
         actions.moveToElement(authField).click().perform();
 
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 
         // Wait for the UI to show up so we don't wait for a refresh
-        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait appWait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         /****************************************** Test 2: Homepage Loading Test ***************************************************/
 
@@ -168,28 +168,28 @@ public class FullSystemTest {
 
         System.out.println("Homepage loaded, login successful.");
 
-        // /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
+        /****************************************** Test 3: Search Bar and Data Table Test ******************************************/
 
-        // // Find the search bar
-        // WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
-        // actions.moveToElement(searchBar).click().perform();
+        // Find the search bar
+        WebElement searchBar = driver.findElement(AppiumBy.name("Search..."));
+        actions.moveToElement(searchBar).click().perform();
 
-        // // Give Windows a fraction of a second to register the UI focus shift
-        // Thread.sleep(200);
+        // Give Windows a fraction of a second to register the UI focus shift
+        Thread.sleep(200);
 
-        // // Type a correct data (e.g., Borden) into the search bar
-        // actions.sendKeys("DiRx-28").perform();
+        // Type a correct data (e.g., Borden) into the search bar
+        actions.sendKeys("DiRx-28").perform();
 
-        // // Click the search button 
-        // WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
-        // actions.moveToElement(searchButton).click().perform();
+        // Click the search button 
+        WebElement searchButton = driver.findElement(AppiumBy.name("Search"));
+        actions.moveToElement(searchButton).click().perform();
 
         // Check if the search result is displayed. If found, search is successful
-        // appWait.until(
-        //     d -> driver.findElement(AppiumBy.name("DiRx-28"))
-        // );
+        appWait.until(
+            d -> driver.findElement(AppiumBy.name("DiRx-28"))
+        );
 
-        // System.out.println("Borden found, search successful.");
+        System.out.println("Borden found, search successful.");
 
         // /****************************************** Test 4: Navigate to Add Data Page Test ******************************************/
 
@@ -199,12 +199,12 @@ public class FullSystemTest {
         // Manually move to click "Add" button
         actions.moveByOffset(100, 200).click().perform();
 
-        // // Check if Add page is loaded. If loaded, navigation successful
-        // appWait.until(
-        //     d -> driver.findElement(AppiumBy.name("Add Data"))
-        // );
+        // Check if Add page is loaded. If loaded, navigation successful
+        appWait.until(
+            d -> driver.findElement(AppiumBy.name("Add Data"))
+        );
 
-        // System.out.println("Add data page loaded successfully.");
+        System.out.println("Add data page loaded successfully.");
 
         // /****************************************** Test 5: Add Data Test ***********************************************************/
 
@@ -247,7 +247,7 @@ public class FullSystemTest {
         // Manually move to click "Save" button
         actions.moveByOffset(300, 700).click().perform();
 
-        // System.out.println("Add data successful.");
+        System.out.println("Add data successful.");
 
         // /****************************************** Test 6: Homepage Update Test ****************************************************/
 
@@ -257,12 +257,12 @@ public class FullSystemTest {
         // Manually move to click "Home" button
         actions.moveByOffset(100, 150).click().perform();
         
-        // // Check to see if the newly added data exists in the homepage. If so, test completed 
-        // appWait.until(
-        //     d -> driver.findElement(AppiumBy.name("Appium Site"))
-        // );
+        // Check to see if the newly added data exists in the homepage. If so, test completed 
+        appWait.until(
+            d -> driver.findElement(AppiumBy.name("Appium Site"))
+        );
 
-        // System.out.println("System test completed!");
+        System.out.println("System test completed!");
     }
 
     @AfterAll
