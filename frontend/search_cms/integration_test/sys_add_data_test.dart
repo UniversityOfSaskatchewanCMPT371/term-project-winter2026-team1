@@ -133,6 +133,12 @@ Future<void> fillAllRequiredFields(WidgetTester tester) async {
     'Level 1 Faunal',
   );
 }
+
+const bool skipCiOnlyAddDataTests = bool.fromEnvironment(
+  'SKIP_CI_ONLY_ADD_DATA_TESTS',
+  defaultValue: false,
+);
+
 // Start test
 void main() {
 
@@ -486,7 +492,7 @@ group('SYS-ADD-06 - Successful Save Case', () {
 
       logger?.info('Successful save case finished');
     },
-    skip: true,
+    skip: skipCiOnlyAddDataTests,
   );
 });
 
@@ -541,7 +547,7 @@ group('SYS-ADD-07 - Reset Button Case', () {
 
       logger?.info('Reset button case finished');
     },
-    skip: true,
+    skip: skipCiOnlyAddDataTests,
   );
 });
 
@@ -593,7 +599,7 @@ group('SYS-ADD-08 - Homepage Navigation Case', () {
       logger?.info('Homepage navigation case finished');
     },
 
-    skip: true,
+    skip: skipCiOnlyAddDataTests,
   );
 });
 }
