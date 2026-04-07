@@ -110,26 +110,42 @@ class _LoginPageState extends State<LoginPage> {
       create: (_) => LoginCubit(),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxCardWidth),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: outerPad),
-              child: Container(
-                padding: EdgeInsets.all(cardPad),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(AppDimens.cardRadius),
-                  border: Border.all(color: AppColors.cardBorder, width: 1),
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 6,
-                      spreadRadius: -1,
-                      color: Color.fromRGBO(0, 0, 0, 0.10),
-                    ),
-                  ],
-                ),
+        
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Background image
+            Image.asset(
+              'assets/images/shishalh-background-login.png',
+              fit: BoxFit.cover,
+            ),
+            // Dark overlay for readability
+            Container(
+              color: Colors.black.withValues(alpha: 0.4),
+            ),
+
+
+            Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxCardWidth),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: outerPad),
+                  child: Container(
+                    padding: EdgeInsets.all(cardPad),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(AppDimens.cardRadius),
+                      border: Border.all(color: AppColors.cardBorder, width: 1),
+                      boxShadow: const [
+                        BoxShadow(
+                          offset: Offset(0, 4),
+                          blurRadius: 6,
+                          spreadRadius: -1,
+                          color: Color.fromRGBO(0, 0, 0, 0.10),
+                        ),
+                      ],
+                  ),
+
                 child: BlocConsumer<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state is LoginFailure) {
@@ -160,6 +176,27 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Logo
+                          Center(
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/shishalh.png',
+                                  height: 80,
+                                ),
+                                SizedBox(height: 0.5.h),
+                                Text(
+                                  '',
+                                  style: TextStyle(
+                                    fontSize: subtitleSize,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.mainText,
+                                  ),
+                                ),
+                                SizedBox(height: 0.5.h),
+                              ],
+                            ),
+                          ),
+
                           Center(
                             child: RichText(
                               text: TextSpan(
@@ -371,15 +408,17 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             child: const Text('Request Account Access'),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

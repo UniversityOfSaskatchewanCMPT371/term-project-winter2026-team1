@@ -44,19 +44,29 @@ class DashboardLayout extends StatelessWidget {
                   padding: const EdgeInsets.all(24.0),
 
                   // Logo
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 16,
-                        height: 1.1,
-                        letterSpacing: 1.0,
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/shishalh-sidebar-logo.png',
+                        height: 90,
+                          ),
+                        ),
+                    SizedBox(height: 8),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 16,
+                          height: 1.1,
+                          letterSpacing: 1.0,
+                        ),
                       children: [
                         TextSpan(
                           text: 's',
                           style: TextStyle(
                             color: AppColors.primaryBlue,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                         TextSpan(
@@ -64,13 +74,14 @@ class DashboardLayout extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-
+                ),
                 // Dashboard navigation items
                 // Buttons for home and add page, see routes.dart for widget mounting location
                 Divider(color: AppColors.mutedText, height: 1),
