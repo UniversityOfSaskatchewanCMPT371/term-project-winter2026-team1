@@ -83,7 +83,49 @@ void main() {
 
     /*--------- System tests (Homepage) ---------*/
 
+      // System Testing - 01 (SYS HOME-01)
+      //
+      // Homepage render case
+      //
+      // Preconditions:
+      // - Homepage backend must be running
+      // - Homepage properly renders and can fetch the data
+      //
+      // Postconditions:
+      // - Homepage title is shown
+      // - Search and Advanced Search toggles are also shown
+      // - Basic search field and Search button are shown as well
+      group('SYS-HOME-01 - Homepage Render Case', () {
+        testWidgets(
+           
+          'homepage renders search controls and initial data',
+          (WidgetTester tester) async {
 
-    
+            logger?.info('Running homepage render case');
+
+            //Uses the helper to build the HomePage
+            await tester.pumpWidget(wrapWithRouter(_buildTestRouter()));
+            await tester.pumpAndSettle(const Duration(seconds: 10));
+
+            //Indicates the following widgets within the helper function
+            expect(find.text('Home'), findsOneWidget);
+            expect(_findSearchToggle(), findsOneWidget);
+            expect(_findAdvancedSearchToggle(), findsOneWidget);
+            expect(_findBasicSearchField(), findsOneWidget);
+            expect(_findSearchButton(), findsOneWidget);
+          
+
+            logger?.info('Homepage render case finished');
+      },
+    );
+  });
+
+
+
+
+
+
+
+
 }
         
