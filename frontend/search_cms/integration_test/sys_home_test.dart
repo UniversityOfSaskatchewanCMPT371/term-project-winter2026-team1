@@ -27,7 +27,7 @@ GoRouter _buildTestRouter() {
       GoRoute(
         path: '/dashboard/home',
         builder: (_, __) => BlocProvider(
-          create: (_) => HomeCubit()..init(),
+          create: (_) => getIt<HomeCubit>()..init(),
           child: const Scaffold(
             body: DashboardHomePage(),
           ),
