@@ -41,5 +41,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  assets:
+    - assets/images/shishalh-background-login.png
+    - assets/images/shishalh.png
+    - assets/images/shishalh-sidebar-logo.png
+
+
 dependency_overrides:
   powersync_core: 1.6.2
