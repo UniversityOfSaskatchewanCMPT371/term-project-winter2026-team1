@@ -8,8 +8,13 @@ void main() {
       TestWidgetsFlutterBinding.ensureInitialized();
 
   // Set screen sizes and ratio
-  testWidgetsFlutterBinding.window.physicalSizeTestValue = Size(1920, 1080);
-  testWidgetsFlutterBinding.window.devicePixelRatioTestValue = 1.0;
+  testWidgetsFlutterBinding.platformDispatcher.views.first.physicalSize = Size(
+    1920,
+    1080,
+  );
+  testWidgetsFlutterBinding.platformDispatcher.views.first.devicePixelRatio =
+  1.0;
+
 
   // widget tests for the add data page
   group("widget tests for the add data page", () {
