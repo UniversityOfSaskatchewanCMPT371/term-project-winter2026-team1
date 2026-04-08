@@ -37,6 +37,7 @@ import 'package:search_cms/features/dashboard/domain/usecases/insert_level_useca
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_area_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_site_usecase.dart';
 import 'package:search_cms/features/dashboard/domain/usecases/insert_unit_usecase.dart';
+import 'package:search_cms/features/dashboard/presentation/bloc/home_cubit.dart';
 
 /*
   This defines how getIt should construct the classes for us
@@ -75,6 +76,10 @@ void initDashboardInjections() {
       insertAssemblageUsecase: getIt<InsertAssemblageUsecase>(),
       insertArtifactUsecase: getIt<InsertArtifactUsecase>(),
     ),
+  );
+
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(dashboardUsecases: getIt<DashboardUsecases>()),
   );
 }
 
@@ -185,7 +190,9 @@ void _registerInsertSiteAreaUseCase() {
   );
   // Register the InsertSiteAreaUsecase
   getIt.registerFactory<InsertSiteAreaUsecase>(
-    () => InsertSiteAreaUsecase(repository: getIt<InsertSiteAreaRepositoryImpl>()),
+    () => InsertSiteAreaUsecase(
+      repository: getIt<InsertSiteAreaRepositoryImpl>(),
+    ),
   );
 }
 
@@ -261,7 +268,9 @@ void _registerGetAllTableRowsUseCase() {
 
   // Register the GetAllTableRowsUseCase
   getIt.registerFactory<GetAllTableRowsUseCase>(
-    () => GetAllTableRowsUseCase(repository: getIt<GetAllTableRowsRepositoryImpl>()),
+    () => GetAllTableRowsUseCase(
+      repository: getIt<GetAllTableRowsRepositoryImpl>(),
+    ),
   );
 }
 
@@ -269,9 +278,10 @@ void _registerGetAllTableRowsUseCase() {
  Register all the necessary dependency injections for the insert assemblage use case
 */
 void _registerInsertAssemblageUseCase() {
-    // Register the InsertAssemblageApiImpl
+  // Register the InsertAssemblageApiImpl
   getIt.registerFactory<InsertAssemblageApiImpl>(
-    () => InsertAssemblageApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
+    () =>
+        InsertAssemblageApiImpl(powerSyncDatabase: getIt<PowerSyncDatabase>()),
   );
   // Register the InsertAssemblageRepositoryImpl
   getIt.registerFactory<InsertAssemblageRepositoryImpl>(
@@ -279,7 +289,9 @@ void _registerInsertAssemblageUseCase() {
   );
   // Register the InsertAssemblageUsecase
   getIt.registerFactory<InsertAssemblageUsecase>(
-    () => InsertAssemblageUsecase(repository: getIt<InsertAssemblageRepositoryImpl>()),
+    () => InsertAssemblageUsecase(
+      repository: getIt<InsertAssemblageRepositoryImpl>(),
+    ),
   );
 }
 
@@ -297,6 +309,8 @@ void _registerInsertArtifactUseCase() {
   );
   // Register the InsertArtifactUsecase
   getIt.registerFactory<InsertArtifactUsecase>(
-    () => InsertArtifactUsecase(repository: getIt<InsertArtifactRepositoryImpl>()),
+    () => InsertArtifactUsecase(
+      repository: getIt<InsertArtifactRepositoryImpl>(),
+    ),
   );
 }

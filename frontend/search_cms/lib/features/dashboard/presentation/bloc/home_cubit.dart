@@ -8,10 +8,10 @@ import 'package:search_cms/features/dashboard/domain/usecases/dashboard_usecases
 import './home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  DashboardUsecases dashboardUsecases = getIt<DashboardUsecases>();
+  final DashboardUsecases dashboardUsecases;
   final Logger _logger = Logger('Home cubit');
 
-  HomeCubit() : super(const HomeInitial());
+  HomeCubit({required this.dashboardUsecases}) : super(const HomeInitial());
 
   Future<void> init() async {
     if (isClosed) return;

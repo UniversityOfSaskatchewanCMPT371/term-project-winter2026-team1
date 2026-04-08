@@ -7,6 +7,8 @@ import 'package:search_cms/features/dashboard/presentation/pages/dashboard_add_p
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_home_page.dart';
 import 'package:search_cms/features/dashboard/presentation/pages/dashboard_layout.dart';
 
+import '../../core/utils/constants.dart';
+
 /*
 The route settings for the application.
   Remember to define your routes here when you add new pages.
@@ -36,7 +38,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/dashboard/home',
           builder: (context, state) => BlocProvider(
-            create: (_) => HomeCubit()..init(),
+            create: (_) => getIt<HomeCubit>()..init(),
             child: const DashboardHomePage()
           )
           
