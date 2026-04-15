@@ -7,7 +7,7 @@
 - Theo Buckley (Build Master)
 - Talha Hassan (Risk Manager)
 - Huayi Huang (Developer/Tester; Dev Lead in ID1 and Test Lead in ID2)
-- Matt Berry (Developer/Tester; Test Lead in ID1, ID2, ID4, and Dev Lead in ID5)
+- Matt Berry (Developer/Tester; Dev Lead in ID5 and Test Lead in ID1, ID2, ID4)
 - Sayem Khondaker (Developer/Tester; Dev Lead in ID4 and Test Lead in ID5)
 - Himanshu Goyal (Developer/Tester; Dev Lead in ID3)
 - Yousif Warda (Developer/Tester)
