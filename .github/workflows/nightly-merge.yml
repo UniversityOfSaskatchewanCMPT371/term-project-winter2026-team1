@@ -5,9 +5,36 @@ on:
     - cron:  '0 6 * * *'
 
 jobs:
+  # Checks that merge will have an effect and skips otherwise avoiding a job failure
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+      version: ${{ steps.compare.outputs.develop_version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0\
+      - name: Compare versions
+        id: compare
+        run: |
+          DEV_VERSION=$(jq -r .version package.json)
+          NIGHTLY_VERSION=$(git show origin/nightly:package.json | jq -r .version)
 
+          echo "develop:  $DEV_VERSION"
+          echo "nightly:  $NIGHTLY_VERSION"
+
+          echo "develop_version=$DEV_VERSION" >> "$GITHUB_OUTPUT"
+          if [ "$DEV_VERSION" != "$NIGHTLY_VERSION" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          
   nightly-merge:
-
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest # Just use githubs runner for this, no need for self hosted
     env:
       RUN_TYPE: ${{ inputs.run_type || 'default' }}
